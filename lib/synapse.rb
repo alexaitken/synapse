@@ -109,6 +109,7 @@ module Synapse
 
     autoload :OjSerializer, 'synapse/serialization/serializer/oj'
     autoload :OxSerializer, 'synapse/serialization/serializer/ox'
+    autoload :MarshalSerializer, 'synapse/serialization/serializer/marshal'
 
     autoload :Serializer
     autoload :SerializedObject
