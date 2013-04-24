@@ -45,6 +45,17 @@ module Synapse
     end
   end
 
+  module EventHandling
+    extend ActiveSupport::Autoload
+
+    autoload_at 'synapse/event_handling/event_bus' do
+      autoload :EventBus
+      autoload :SubscriptionFailedError
+    end
+
+    autoload :SimpleEventBus
+  end
+
   module EventStore
     extend ActiveSupport::Autoload
 
@@ -79,7 +90,7 @@ module Synapse
     extend ActiveSupport::Autoload
 
     autoload :Converter
-    autoload :ConverterFactory, 'synapse/serialization/converter/factory'
+    autoload :ConverterFactory,  'synapse/serialization/converter/factory'
     autoload :IdentityConverter, 'synapse/serialization/converter/identity'
 
     autoload_at 'synapse/serialization/converter/json' do
@@ -107,13 +118,30 @@ module Synapse
       autoload :FixedRevisionResolver
     end
 
-    autoload :OjSerializer, 'synapse/serialization/serializer/oj'
-    autoload :OxSerializer, 'synapse/serialization/serializer/ox'
+    autoload :OjSerializer,      'synapse/serialization/serializer/oj'
+    autoload :OxSerializer,      'synapse/serialization/serializer/ox'
     autoload :MarshalSerializer, 'synapse/serialization/serializer/marshal'
 
     autoload :Serializer
     autoload :SerializedObject
     autoload :SerializedType
+  end
+
+  module UnitOfWork
+    extend ActiveSupport::Autoload
+
+    autoload_at 'synapse/uow/nesting' do
+      autoload :NestableUnitOfWork
+      autoload :OuterCommitUnitOfWorkListener
+    end
+
+    autoload :AggregateStorageListener,     'synapse/uow/storage_listener'
+    autoload :TransactionManager
+    autoload :UnitOfWork,                   'synapse/uow/uow'
+    autoload :UnitOfWorkFactory,            'synapse/uow/factory'
+    autoload :UnitOfWorkListener,           'synapse/uow/listener'
+    autoload :UnitOfWorkListenerCollection, 'synapse/uow/listener_collection'
+    autoload :UnitOfWorkProvider,           'synapse/uow/provider'
   end
 
   module Upcasting
