@@ -14,6 +14,10 @@ module Synapse
     # version number given. This typically means that the aggregate has been modified by another
     # thread between the moment the data was queried and the command modifying the aggregate
     # was handled.
-    class ConflictingAggregateVersionError < ConflictingModificationError; end
+    class ConflictingAggregateVersionError < ConflictingModificationError
+      def initialize(aggregate, expected_version)
+        super 'Aggregate [%s] has version %s, expected %s' % [aggregate.id, aggregate.version, expected_version]
+      end
+    end
   end
 end

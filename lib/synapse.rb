@@ -53,6 +53,7 @@ module Synapse
       autoload :SubscriptionFailedError
     end
 
+    autoload :EventListener
     autoload :SimpleEventBus
   end
 
@@ -83,6 +84,12 @@ module Synapse
     end
 
     autoload :LockManager
+
+    autoload_at 'synapse/repository/locking' do
+      autoload :LockingRepository
+      autoload :LockCleaningUnitOfWorkListener
+    end
+
     autoload :Repository
   end
 
