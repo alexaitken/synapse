@@ -1,5 +1,6 @@
 module Synapse
   module Repository
+    # Partial implementation of a repository that handles integration with a lock manager
     # @abstract
     class LockingRepository < Repository
       # @return [LockManager]
@@ -56,6 +57,7 @@ module Synapse
 
       # Fetches the aggregate with the given identifier from the underlying aggregate store
       #
+      # @abstract
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found
       # @raise [ConflictingModificationError]
@@ -72,7 +74,7 @@ module Synapse
 
       # @return [Logger]
       def logger
-        @logger ||= Logger.new
+        @logger ||= Logging.logger[self.class]
       end
     end
 

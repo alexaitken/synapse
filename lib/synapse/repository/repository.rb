@@ -62,7 +62,7 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def assert_compatible(aggregate)
-        unless aggregate_type === aggregate.class
+        unless aggregate.is_a? aggregate_type
           raise ArgumentError, 'Incompatible aggregate type'
         end
 
@@ -79,8 +79,8 @@ module Synapse
       # @param [Integer] expected_version
       # @return [undefined]
       def assert_version_expected(aggregate, expected_version)
-        if expected_version and aggregate.version > expected_version
-          raise ConflictingAggregateVersionError, aggregate, expected_version
+        if expected_version and aggregate.version and aggregate.version > expected_version
+          raise ConflictingAggregateVersionError.new aggregate, expected_version
         end
       end
 
