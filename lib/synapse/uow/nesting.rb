@@ -8,6 +8,8 @@ module Synapse
     #
     # @abstract
     class NestableUnitOfWork
+      # @param [UnitOfWorkProvider] provider
+      # @return [undefined]
       def initialize(provider)
         @inner_units = Array.new
         @provider = provider
@@ -231,13 +233,13 @@ module Synapse
         @provider = provider
       end
 
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] outer_unit
       # @return [undefined]
       def after_commit(outer_unit)
         @inner_unit.perform_inner_commit
       end
 
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] outer_unit
       # @param [Error] cause
       # @return [undefined]
       def on_rollback(outer_unit, cause = nil)
@@ -250,7 +252,7 @@ module Synapse
         end
       end
 
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] outer_unit
       # @return [undefined]
       def on_cleanup(outer_unit)
         @inner_unit.perform_cleanup

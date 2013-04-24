@@ -5,9 +5,9 @@ module Synapse
     class UnitOfWorkListener
       # Invoked when the unit of work has been started
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @return [undefined]
-      def on_start(uow); end
+      def on_start(unit); end
 
       # Invoked when an event is registered for publication when the unit of work is committed
       #
@@ -15,10 +15,10 @@ module Synapse
       # meaning of the message does not change. Typically, this is done only by modifying the
       # metadata of the message.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @param [EventMessage] event
       # @return [EventMessage]
-      def on_event_registered(uow, event)
+      def on_event_registered(unit, event)
         event
       end
 
@@ -27,11 +27,11 @@ module Synapse
       # This phase can be used to do validation or any other activity that should be able to
       # prevent event publication in certain circumstances.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @param [Array<AggregateRoot>] aggregates
       # @param [Hash<EventBus, Array>] events
       # @return [undefined]
-      def on_prepare_commit(uow, aggregates, events); end
+      def on_prepare_commit(unit, aggregates, events); end
 
       # Invoked before the transaction bound to this unit of work is committed, but after all
       # other commit activities (publication of events and storage of aggregates) are performed
@@ -40,10 +40,10 @@ module Synapse
       # same transaction. Note that this method is only invoked if the unit of work is bound
       # to a transaction.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @param [Object] transaction
       # @return [undefined]
-      def on_prepare_transaction_commit(uow, transaction); end
+      def on_prepare_transaction_commit(unit, transaction); end
 
       # Invoked when the unit of work is committed
       #
@@ -51,19 +51,19 @@ module Synapse
       # been scheduled for publication. When processing of this method causes an exception, the
       # unit of work may choose to rollback.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @return [undefined]
-      def after_commit(uow); end
+      def after_commit(unit); end
 
       # Invoked when the unit of work is rolled back
       #
       # Alternatively, the unit of work may choose to invoke this method when the commit of the
       # unit of work failed as well.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @param [Error] cause
       # @return [undefined]
-      def on_rollback(uow, cause = nil); end
+      def on_rollback(unit, cause = nil); end
 
       # Invoked while a unit of work is being cleaned up
       #
@@ -71,9 +71,9 @@ module Synapse
       # during commit or rollback operations, such as locks. This method is always called after all
       # listeners have been notified of a commit or rollback operation.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @return [undefined]
-      def on_cleanup(uow); end
+      def on_cleanup(unit); end
     end
   end
 end

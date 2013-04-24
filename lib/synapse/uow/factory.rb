@@ -14,14 +14,14 @@ module Synapse
       # Creates and starts a unit of work
       # @return [UnitOfWork]
       def create
-        uow = UnitOfWork.new @provider
+        unit = UnitOfWork.new @provider
 
         if @transaction_manager
-          uow.transaction_manager = @transaction_manager
+          unit.transaction_manager = @transaction_manager
         end
 
-        uow.start
-        uow
+        unit.start
+        unit
       end
     end
   end

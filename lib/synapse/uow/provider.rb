@@ -12,10 +12,10 @@ module Synapse
       # If the given unit of work is not known to the provider, or it is not the active unit
       # of work, then this method will raise an exception.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @return [undefined]
-      def clear(uow)
-        unless stack.last == uow
+      def clear(unit)
+        unless stack.last == unit
           raise ArgumentError, 'The given unit of work is not the active unit of work'
         end
 
@@ -30,7 +30,7 @@ module Synapse
 
       # Returns the current unit of work if one is set
       #
-      # @raise [StandardError] If no unit of work is active
+      # @raise [RuntimeError] If no unit of work is active
       # @return [UnitOfWork]
       def current
         if stack.empty?
@@ -46,10 +46,10 @@ module Synapse
       # If there are other units of work bound to this provider, they will be held until the given
       # unit of work is cleared.
       #
-      # @param [UnitOfWork] uow
+      # @param [UnitOfWork] unit
       # @return [undefined]
-      def push(uow)
-        stack.push uow
+      def push(unit)
+        stack.push unit
       end
 
       # Returns true if there is an active unit of work

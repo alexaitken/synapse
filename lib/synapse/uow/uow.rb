@@ -148,6 +148,9 @@ module Synapse
 
       # Checks if an aggregate of the same type and identifier as the given aggregate has been
       # previously registered with this unit work. If one is found, it is returned.
+      #
+      # @param [AggregateRoot] aggregate
+      # @return [AggregateRoot] Returns nil if no similar aggregate was found
       def find_similar_aggregate(aggregate)
         @aggregates.each_key do |candidate|
           if aggregate.class === candidate and aggregate.id == candidate.id
