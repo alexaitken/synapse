@@ -8,4 +8,6 @@ group :development do
     gem 'ox'
 end
 
+gem 'coveralls', require: false
+
 gemspec

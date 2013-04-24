@@ -1,10 +1,6 @@
-require 'simplecov'
+require 'coveralls'
 
-if ENV['COVERAGE']
-  SimpleCov.start do
-    add_filter '/test/'
-  end
-end
+Coveralls.wear!
 
 require 'pp'
 require 'test/unit'
