@@ -1,6 +1,7 @@
 module Synapse
   module Serialization
     # Represents a mechanism for serializing and deserializing objects
+    # @abstract
     class Serializer
       # @return [ConverterFactory]
       attr_writer :converter_factory

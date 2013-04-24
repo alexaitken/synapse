@@ -12,6 +12,7 @@ module Synapse
       # - Raise an exception at any other time while the aggregate is registered with the current
       #   unit of work.
       #
+      # @abstract
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found
       # @raise [ConflictingModificationError]
@@ -27,6 +28,7 @@ module Synapse
       # registered with the current unit of work. To force storage of an aggregate, commit the
       # current unit of work.
       #
+      # @abstract
       # @raise [ArgumentError] If the version of the aggregate is not null
       # @param [AggregateRoot] aggregate
       # @return [undefined]

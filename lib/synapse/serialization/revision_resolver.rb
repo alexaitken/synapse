@@ -1,6 +1,7 @@
 module Synapse
   module Serialization
     # Represents a mechanism for determining the revision of a payload being serialized
+    # @abstract
     class RevisionResolver
       # Determines the revision of the given payload type
       #

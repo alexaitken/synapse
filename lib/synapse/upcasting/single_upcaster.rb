@@ -42,12 +42,14 @@ module Synapse
 
     protected
 
+      # @abstract
       # @param [SerializedObject] intermediate
       # @param [UpcastingContext] upcast_context
       # @return [Object] If nil is returned, the serialized object will be dropped
       def perform_upcast(intermediate, upcast_context); end
 
-      # @param [SerializedType]
+      # @abstract
+      # @param [SerializedType] serialized_type
       # @return [SerializedType] If nil is returned, the serialized object will be dropped
       def perform_upcast_type(serialized_type); end
     end
