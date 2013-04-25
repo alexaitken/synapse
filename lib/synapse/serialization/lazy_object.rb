@@ -32,5 +32,27 @@ module Synapse
         !!@deserialized
       end
     end
+
+    # Deserialized object that has the same interface as a lazy object
+    class DeserializedObject
+      # @return [Object]
+      attr_reader :deserialized
+
+      # @return [Class]
+      attr_reader :type
+
+      # @param [Object] deserialized
+      # @return [undefined]
+      def initialize(deserialized)
+        @deserialized = deserialized
+        @type = deserialized.class
+      end
+
+      # Returns true if this object has been deserialized already; always true
+      # @return [Boolean]
+      def deserialized?
+        true
+      end
+    end
   end
 end

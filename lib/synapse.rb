@@ -119,7 +119,10 @@ module Synapse
       autoload :UnknownSerializedTypeError
     end
 
-    autoload :LazyObject
+    autoload_at 'synapse/serialization/lazy_object' do
+      autoload :DeserializedObject
+      autoload :LazyObject
+    end
 
     autoload_at 'synapse/serialization/revision_resolver' do
       autoload :RevisionResolver

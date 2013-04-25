@@ -7,9 +7,20 @@ module Synapse
       # @return [Time] The timestamp of when the event was reported
       attr_accessor :timestamp
 
-      def initialize
+    protected
+
+      # @return [undefined]
+      def populate_default
         super
         @timestamp ||= Time.now
+      end
+
+      # @param [EventMessage] message
+      # @param [Hash] metadata
+      # @return [undefined]
+      def populate_duplicate(message, metadata)
+        super
+        message.timestamp = @timestamp
       end
     end
 
@@ -24,6 +35,17 @@ module Synapse
 
       # @return [Integer] The sequence number of the event in the order of generation
       attr_accessor :sequence_number
+
+    protected
+
+      # @param [DomainEventMessage] message
+      # @param [Hash] metadata
+      # @return [undefined]
+      def populate_duplicate(message, metadata)
+        super
+        message.aggregate_id = @aggregate_id
+        message.sequence_number = @sequence_number
+      end
     end
   end
 end
