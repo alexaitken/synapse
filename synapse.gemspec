@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activesupport'
   s.add_dependency 'logging'
-  s.add_dependency 'uuidtools'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'

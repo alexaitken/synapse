@@ -1,4 +1,4 @@
-require 'uuidtools'
+require 'securerandom'
 
 module Synapse
   # Represents a mechanism for generating a unique identifier for domain objects
@@ -15,7 +15,7 @@ module Synapse
     # Generates a pseudo-random GUID
     # @return [String] The newly generated unique identifier
     def generate
-      UUIDTools::UUID.random_create.to_s
+      SecureRandom.uuid
     end
   end
 
