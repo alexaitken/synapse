@@ -70,24 +70,14 @@ module Synapse
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize_metadata(serializer, expected_type)
-        if serializer == @serialized_metadata.serializer
-          serialized = @serialized_metadata.serialized_object
-          serializer.converter_factory.converter(serialized.content_type, expected_type).convert(serialized)
-        else
-          serializer.serialize @serialized_metadata.deserialized, expected_type
-        end
+        serialize @serialized_metadata, serializer, expected_type
       end
 
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize_payload(serializer, expected_type)
-        if serializer == @serialized_payload.serializer
-          serialized = @serialized_payload.serialized_object
-          serializer.converter_factory.converter(serialized.content_type, expected_type).convert(serialized)
-        else
-          serializer.serialize @serialized_payload.deserialized, expected_type
-        end
+        serialize @serialized_payload, serializer, expected_type
       end
 
     protected
@@ -101,6 +91,21 @@ module Synapse
         message.id = @id
         message.serialized_metadata = DeserializedObject.new metadata
         message.serialized_payload = @serialized_payload
+      end
+
+    private
+
+      # @param [LazyObject] object
+      # @param [Serializer] serializer
+      # @param [Class] expected_type
+      # @return [SerializedObject]
+      def serialize(object, serializer, expected_type)
+        if serializer == object.serializer
+          serialized = object.serialized_object
+          serializer.converter_factory.converter(serialized.content_type, expected_type).convert(serialized)
+        else
+          serializer.serialize object.deserialized, expected_type
+        end
       end
     end
   end
