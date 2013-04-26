@@ -23,6 +23,7 @@ module Synapse
 
         # ensure other fields were populated
         assert_equal @payload, @message.payload
+        assert_equal @payload.class, @message.payload_type
         assert_equal @aggregate_id, @message.aggregate_id
         assert_equal @sequence_number, @message.sequence_number
 

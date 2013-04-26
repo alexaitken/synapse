@@ -21,7 +21,7 @@ module Synapse
       # @abstract
       # @return [Boolean]
       def end?
-        return true
+        true
       end
 
       # Returns the next event in the stream and moves the stream's pointer forward

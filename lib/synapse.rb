@@ -27,35 +27,39 @@ module Synapse
   module Domain
     extend ActiveSupport::Autoload
 
-    autoload_at 'synapse/domain/aggregate_root' do
-      autoload :AggregateRoot
-      autoload :AggregateIdentifierNotInitializedError
-    end
+    eager_autoload do
+      autoload_at 'synapse/domain/aggregate_root' do
+        autoload :AggregateRoot
+        autoload :AggregateIdentifierNotInitializedError
+      end
 
-    autoload :EventContainer
+      autoload :EventContainer
 
-    autoload_at 'synapse/domain/message' do
-      autoload :EventMessage
-      autoload :DomainEventMessage
-    end
+      autoload_at 'synapse/domain/message' do
+        autoload :EventMessage
+        autoload :DomainEventMessage
+      end
 
-    autoload_at 'synapse/domain/stream' do
-      autoload :DomainEventStream
-      autoload :EndOfStreamError
-      autoload :SimpleDomainEventStream
+      autoload_at 'synapse/domain/stream' do
+        autoload :DomainEventStream
+        autoload :EndOfStreamError
+        autoload :SimpleDomainEventStream
+      end
     end
   end
 
   module EventHandling
     extend ActiveSupport::Autoload
 
-    autoload_at 'synapse/event_handling/event_bus' do
-      autoload :EventBus
-      autoload :SubscriptionFailedError
-    end
+    eager_autoload do
+      autoload_at 'synapse/event_handling/event_bus' do
+        autoload :EventBus
+        autoload :SubscriptionFailedError
+      end
 
-    autoload :EventListener
-    autoload :SimpleEventBus
+      autoload :EventListener
+      autoload :SimpleEventBus
+    end
   end
 
   module EventStore
@@ -77,29 +81,27 @@ module Synapse
   module Repository
     extend ActiveSupport::Autoload
 
-    autoload_at 'synapse/repository/errors' do
-      autoload :AggregateNotFoundError
-      autoload :ConcurrencyError
-      autoload :ConflictingAggregateVersionError
-      autoload :ConflictingModificationError
+    eager_autoload do
+      autoload_at 'synapse/repository/errors' do
+        autoload :AggregateNotFoundError
+        autoload :ConcurrencyError
+        autoload :ConflictingAggregateVersionError
+        autoload :ConflictingModificationError
+      end
+
+      autoload :LockManager
+
+      autoload_at 'synapse/repository/locking' do
+        autoload :LockingRepository
+        autoload :LockCleaningUnitOfWorkListener
+      end
+
+      autoload :Repository
     end
-
-    autoload :LockManager
-
-    autoload_at 'synapse/repository/locking' do
-      autoload :LockingRepository
-      autoload :LockCleaningUnitOfWorkListener
-    end
-
-    autoload :Repository
   end
 
   module Serialization
     extend ActiveSupport::Autoload
-
-    autoload :Converter
-    autoload :ConverterFactory,  'synapse/serialization/converter/factory'
-    autoload :IdentityConverter, 'synapse/serialization/converter/identity'
 
     autoload_at 'synapse/serialization/converter/json' do
       autoload :JsonToObjectConverter
@@ -111,48 +113,63 @@ module Synapse
       autoload :OxDocumentToXmlConverter
     end
 
-    autoload :SerializedDomainEventData, 'synapse/serialization/message/data'
-
-    autoload_at 'synapse/serialization/errors' do
-      autoload :ConversionError
-      autoload :SerializationError
-      autoload :UnknownSerializedTypeError
-    end
-
-    autoload_at 'synapse/serialization/lazy_object' do
-      autoload :DeserializedObject
-      autoload :LazyObject
-    end
-
-    autoload_at 'synapse/serialization/revision_resolver' do
-      autoload :RevisionResolver
-      autoload :FixedRevisionResolver
-    end
-
     autoload :OjSerializer,      'synapse/serialization/serializer/oj'
     autoload :OxSerializer,      'synapse/serialization/serializer/ox'
     autoload :MarshalSerializer, 'synapse/serialization/serializer/marshal'
 
-    autoload :Serializer
-    autoload :SerializedObject
-    autoload :SerializedType
+    eager_autoload do
+      autoload :Converter
+      autoload :ConverterFactory,  'synapse/serialization/converter/factory'
+      autoload :IdentityConverter, 'synapse/serialization/converter/identity'
+
+      autoload :SerializedObjectCache, 'synapse/serialization/message/cache'
+      autoload :SerializedDomainEventData, 'synapse/serialization/message/data'
+      autoload :SerializedMessage, 'synapse/serialization/message/message'
+
+      autoload_at 'synapse/serialization/message/domain' do
+        autoload :SerializedEventMessage
+        autoload :SerializedDomainEventMessage
+      end
+
+      autoload_at 'synapse/serialization/errors' do
+        autoload :ConversionError
+        autoload :SerializationError
+        autoload :UnknownSerializedTypeError
+      end
+
+      autoload_at 'synapse/serialization/lazy_object' do
+        autoload :DeserializedObject
+        autoload :LazyObject
+      end
+
+      autoload_at 'synapse/serialization/revision_resolver' do
+        autoload :RevisionResolver
+        autoload :FixedRevisionResolver
+      end
+
+      autoload :Serializer
+      autoload :SerializedObject
+      autoload :SerializedType
+    end
   end
 
   module UnitOfWork
     extend ActiveSupport::Autoload
 
-    autoload_at 'synapse/uow/nesting' do
-      autoload :NestableUnitOfWork
-      autoload :OuterCommitUnitOfWorkListener
-    end
+    eager_autoload do
+      autoload_at 'synapse/uow/nesting' do
+        autoload :NestableUnitOfWork
+        autoload :OuterCommitUnitOfWorkListener
+      end
 
-    autoload :AggregateStorageListener,     'synapse/uow/storage_listener'
-    autoload :TransactionManager
-    autoload :UnitOfWork,                   'synapse/uow/uow'
-    autoload :UnitOfWorkFactory,            'synapse/uow/factory'
-    autoload :UnitOfWorkListener,           'synapse/uow/listener'
-    autoload :UnitOfWorkListenerCollection, 'synapse/uow/listener_collection'
-    autoload :UnitOfWorkProvider,           'synapse/uow/provider'
+      autoload :StorageListener,              'synapse/uow/storage_listener'
+      autoload :TransactionManager,           'synapse/uow/transaction_manager'
+      autoload :UnitOfWork,                   'synapse/uow/uow'
+      autoload :UnitOfWorkFactory,            'synapse/uow/factory'
+      autoload :UnitOfWorkListener,           'synapse/uow/listener'
+      autoload :UnitOfWorkListenerCollection, 'synapse/uow/listener_collection'
+      autoload :UnitOfWorkProvider,           'synapse/uow/provider'
+    end
   end
 
   module Upcasting
@@ -163,6 +180,18 @@ module Synapse
     autoload :UpcasterChain, 'synapse/upcasting/chain'
     autoload :UpcastingContext, 'synapse/upcasting/context'
   end
+
+  def self.eager_autoload!
+    super
+    Domain.eager_autoload!
+    EventHandling.eager_autoload!
+    Repository.eager_autoload!
+    Serialization.eager_autoload!
+    UnitOfWork.eager_autoload!
+  end
+
+  # Eager load certain components
+  ActiveSupport::Autoload.eager_autoload!
 
   # Setup the default identifier factory
   ActiveSupport.on_load :identifier_factory  do

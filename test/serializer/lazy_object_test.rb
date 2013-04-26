@@ -5,7 +5,7 @@ module Synapse
   module Serialization
     class LazyObjectTest < Test::Unit::TestCase
       def test_deserialize_once
-        serializer = OxSerializer.new
+        serializer = MarshalSerializer.new
         event = TestEvent.new 'a', 'b'
 
         serialized = serializer.serialize event, String

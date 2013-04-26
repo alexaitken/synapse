@@ -51,7 +51,7 @@ module Synapse
       # Returns the listener that handles aggregate storage
       #
       # @abstract
-      # @return [AggregateStorageListener]
+      # @return [StorageListener]
       def storage_listener; end
 
       # Asserts that an aggregate being added is compatible with this repository and is newly

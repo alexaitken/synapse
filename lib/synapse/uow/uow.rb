@@ -40,7 +40,7 @@ module Synapse
       #
       # @param [AggregateRoot] aggregate
       # @param [EventBus] event_bus
-      # @param [AggregateStorageListener] storage_listener
+      # @param [StorageListener] storage_listener
       # @return [AggregateRoot]
       def register_aggregate(aggregate, event_bus, storage_listener)
         similar = find_similar_aggregate aggregate
