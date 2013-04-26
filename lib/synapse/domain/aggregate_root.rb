@@ -5,13 +5,13 @@ module Synapse
       # @return [Boolean] True if this aggregate has been marked for deletion
       attr_reader :deleted
 
+      alias deleted? deleted
+
       # @return [Object] The identifier of this aggregate
       attr_reader :id
 
       # @return [Integer] The version of this aggregate
       attr_reader :version
-
-      alias :deleted? :deleted
 
       # Adds a listener that will be notified when this aggregate registers an event to be published
       #
