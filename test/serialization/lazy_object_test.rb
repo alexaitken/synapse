@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'serializer/fixtures'
+require 'serialization/fixtures'
 
 module Synapse
   module Serialization
