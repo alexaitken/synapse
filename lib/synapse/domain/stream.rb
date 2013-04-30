@@ -51,7 +51,7 @@ module Synapse
       def to_a
         events = Array.new
         each do |event|
-          events << event
+          events.push event
         end
 
         events

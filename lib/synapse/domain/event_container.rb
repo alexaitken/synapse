@@ -46,7 +46,7 @@ module Synapse
         end
 
         @last_sequence_number = event.sequence_number
-        @events << event
+        @events.push event
 
         event
       end
@@ -59,7 +59,7 @@ module Synapse
       # @param [#call] listener
       # @return [undefined]
       def add_registration_listener(listener)
-        @listeners << listener
+        @listeners.push listener
 
         @events.map! do |event|
           listener.call event
@@ -120,13 +120,7 @@ module Synapse
       # Returns the next sequence number to use for registered events
       # @return [Integer]
       def next_sequence_number
-        current = last_sequence_number
-
-        unless current
-          return 0
-        end
-
-        current + 1
+        last_sequence_number ? last_sequence_number.next : 0
       end
     end
   end

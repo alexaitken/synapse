@@ -16,13 +16,15 @@ module Synapse
         @listeners = Array.new
       end
 
-      # Registers a unit of work listener with this collection
+      # Pushes a unit of work listener onto the end of this collection
       #
       # @param [UnitOfWorkListener] listener
       # @return [undefined]
-      def <<(listener)
-        @listeners << listener
+      def push(listener)
+        @listeners.push listener
       end
+
+      alias << push
 
       # @param [UnitOfWork] unit
       # @return [undefined]

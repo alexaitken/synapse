@@ -13,7 +13,7 @@ module Synapse
         upcast_objects = Array.new
 
         expected_types.each do |type|
-          upcast_objects << Serialization::SerializedObject.new(intermediate.content, Object, type)
+          upcast_objects.push Serialization::SerializedObject.new(intermediate.content, Object, type)
         end
 
         upcast_objects
@@ -21,9 +21,9 @@ module Synapse
 
       def upcast_type(serialized_type)
         upcast_types = Array.new
-        upcast_types << Serialization::SerializedType.new('FooEvent', '1')
-        upcast_types << Serialization::SerializedType.new('BazEvent', '1')
-        upcast_types << Serialization::SerializedType.new('BarEvent', '1')
+        upcast_types.push Serialization::SerializedType.new('FooEvent', '1')
+        upcast_types.push Serialization::SerializedType.new('BazEvent', '1')
+        upcast_types.push Serialization::SerializedType.new('BarEvent', '1')
         upcast_types
       end
     end

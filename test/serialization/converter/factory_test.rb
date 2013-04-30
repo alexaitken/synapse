@@ -23,7 +23,7 @@ module Synapse
         end
 
         converter = OxDocumentToXmlConverter.new
-        @factory << converter
+        @factory.register converter
 
         assert @factory.has_converter?(Ox::Document, String)
         assert_equal converter, @factory.converter(Ox::Document, String)

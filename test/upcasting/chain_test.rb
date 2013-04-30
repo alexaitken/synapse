@@ -7,10 +7,10 @@ module Synapse
 
       def test_multiple_upcasters
         chain = UpcasterChain.new
-        chain << TestTypeUpcaster.new
-        chain << TestSplitUpcaster.new
-        chain << TestPhaseOutUpcaster.new
-        chain.converter_factory << Serialization::JsonToObjectConverter.new
+        chain.push TestTypeUpcaster.new
+        chain.push TestSplitUpcaster.new
+        chain.push TestPhaseOutUpcaster.new
+        chain.converter_factory.register Serialization::JsonToObjectConverter.new
 
         content = Hash.new
 

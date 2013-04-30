@@ -39,7 +39,7 @@ module Synapse
         events = events_for stream.peek.aggregate_id
 
         until stream.end?
-          events << stream.next_event
+          events.push stream.next_event
         end
       end
 
@@ -52,7 +52,7 @@ module Synapse
       def append_snapshot_event(aggregate_type, snapshot_event)
         events = events_for snapshot_event.aggregate_id
         events.clear
-        events << snapshot_event
+        events.push snapshot_event
       end
 
       # Creates and/or retrieves an array of events for the given aggregate identifier

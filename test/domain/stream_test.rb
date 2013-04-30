@@ -6,8 +6,8 @@ module Synapse
 
       def setup
         @events = Array.new
-        @events << DomainEventMessage.new
-        @events << DomainEventMessage.new
+        @events.push DomainEventMessage.new
+        @events.push DomainEventMessage.new
 
         @stream = SimpleDomainEventStream.new @events
       end

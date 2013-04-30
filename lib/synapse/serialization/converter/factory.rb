@@ -13,8 +13,8 @@ module Synapse
       #
       # @param [Converter] converter
       # @return [undefined]
-      def <<(converter)
-        @converters << converter
+      def register(converter)
+        @converters.push converter
       end
 
       # Returns a converter that is capable of converting content of the given source type to

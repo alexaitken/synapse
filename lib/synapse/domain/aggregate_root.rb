@@ -55,7 +55,7 @@ module Synapse
 
     protected
 
-      # Publishes a domaine vent with the given payload and metadata (optional)
+      # Publishes a domain event with the given payload and metadata (optional)
       #
       # @param [Object] payload
       #   Payload of the message; the actual event object

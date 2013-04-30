@@ -167,7 +167,7 @@ module Synapse
       # @param [UnitOfWork] inner_unit
       # @return [undefined]
       def register_inner_unit(inner_unit)
-        @inner_units.append inner_unit
+        @inner_units.push inner_unit
       end
 
       # Executes logic required to clean up this unit of work

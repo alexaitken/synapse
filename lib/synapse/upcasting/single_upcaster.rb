@@ -22,7 +22,7 @@ module Synapse
           return upcast_objects
         end
 
-        upcast_objects << Serialization::SerializedObject.new(upcast_content, expected_content_type, expected_types.at(0))
+        upcast_objects.push Serialization::SerializedObject.new(upcast_content, expected_content_type, expected_types.at(0))
         upcast_objects
       end
 
@@ -36,7 +36,7 @@ module Synapse
           return upcast_types
         end
 
-        upcast_types << upcast_type
+        upcast_types.push upcast_type
         upcast_types
       end
 

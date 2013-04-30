@@ -8,20 +8,22 @@ module Synapse
         @upcasters = Array.new
       end
 
-      # Appends the given upcaster to the end of this upcaster chain
+      # Pushes the given upcaster onto the end of this upcaster chain
       #
       # @param [Upcaster] upcaster
       # @return [undefined]
-      def <<(upcaster)
-        @upcasters << upcaster
+      def push(upcaster)
+        @upcasters.push upcaster
       end
+
+      alias << push
 
       # @param [SerializedObject] serialized_object
       # @param [UpcastingContext] upcast_context
       # @return [Array<SerializedObject>]
       def upcast(serialized_object, upcast_context)
         serialized_objects = Array.new
-        serialized_objects << serialized_object
+        serialized_objects.push serialized_object
 
         @upcasters.each do |upcaster|
           serialized_objects = upcast_objects(upcaster, serialized_objects, upcast_context)
@@ -64,7 +66,7 @@ module Synapse
 
             upcast_objects.concat(perform_upcast(upcaster, serialized_object, expected_types, upcast_context))
           else
-            upcast_objects << serialized_object
+            upcast_objects.push serialized_object
           end
         end
 

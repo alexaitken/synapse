@@ -23,7 +23,7 @@ module Synapse
       # @param [UnitOfWorkListener] listener
       # @return [undefined]
       def register_listener(listener)
-        @listeners << listener
+        @listeners.push listener
       end
 
       # Registers an aggregate with this unit of work
@@ -71,7 +71,7 @@ module Synapse
           events = @events.store event_bus, Array.new
         end
 
-        events << event
+        events.push event
       end
 
       # Sets the transaction manager that will be used by this unit of work

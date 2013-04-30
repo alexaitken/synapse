@@ -17,7 +17,7 @@ module Synapse
         events = Array.new
 
         @person.add_registration_listener do |event|
-          events << event
+          events.push event
           event
         end
 
