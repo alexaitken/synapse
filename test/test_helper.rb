@@ -1,11 +1,10 @@
-if ENV['travis']
+if ENV['TRAVIS']
   require 'coveralls'
   Coveralls.wear!
 else
   require 'simplecov'
   SimpleCov.start
 end
-
 
 require 'pp'
 require 'test/unit'
