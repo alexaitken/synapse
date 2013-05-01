@@ -4,10 +4,7 @@ module Synapse
     # @abstract
     class LockingRepository < Repository
       # @return [LockManager]
-      attr_writer :lock_manager
-
-      # @return [Logger]
-      attr_writer :logger
+      attr_accessor :lock_manager
 
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found
@@ -17,19 +14,19 @@ module Synapse
       # @param [Integer] expected_version If this is nil, no version validation is performed
       # @return [AggregateRoot]
       def load(aggregate_id, expected_version = nil)
-        lock_manager.obtain_lock aggregate_id
+        @lock_manager.obtain_lock aggregate_id
 
         begin
           aggregate = perform_load aggregate_id, expected_version
 
           aggregate = register_aggregate aggregate
-          register_listener LockCleaningUnitOfWorkListener.new aggregate_id, lock_manager
+          register_listener LockCleaningUnitOfWorkListener.new aggregate_id, @lock_manager
 
           aggregate
         rescue
           logger.debug 'Excepton raised while loading an aggregate, releasing lock'
 
-          lock_manager.release_lock aggregate_id
+          @lock_manager.release_lock aggregate_id
           raise
         end
       end
@@ -38,17 +35,17 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def add(aggregate)
-        lock_manager.obtain_lock aggregate.id
+        @lock_manager.obtain_lock aggregate.id
 
         begin
           assert_compatible aggregate
 
           register_aggregate aggregate
-          register_listener LockCleaningUnitOfWorkListener.new aggregate.id, lock_manager
+          register_listener LockCleaningUnitOfWorkListener.new aggregate.id, @lock_manager
         rescue
           logger.debug 'Exception raised while adding an aggregate, releasing lock'
 
-          lock_manager.release_lock aggregate.id
+          @lock_manager.release_lock aggregate.id
           raise
         end
       end
@@ -66,11 +63,6 @@ module Synapse
       # @param [Integer] expected_version
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version); end
-
-      # @return [LockManager]
-      def lock_manager
-        @lock_manager ||= LockManager.new
-      end
 
       # @return [Logger]
       def logger

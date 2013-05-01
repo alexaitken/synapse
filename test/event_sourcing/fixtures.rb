@@ -24,6 +24,10 @@ module Synapse
         apply StubChangedEvent.new
       end
 
+      def delete_me
+        apply StubDeletedEvent.new
+      end
+
     protected
 
       def pre_initialize
@@ -37,6 +41,8 @@ module Synapse
 
         if type.eql? StubCreatedEvent
           @id = payload.id
+        elsif type.eql? StubDeletedEvent
+          mark_deleted
         end
 
         @event_count = @event_count.next
@@ -70,6 +76,8 @@ module Synapse
         @id = id
       end
     end
+
+    class StubDeletedEvent; end
 
     class StubChangedEvent; end
 

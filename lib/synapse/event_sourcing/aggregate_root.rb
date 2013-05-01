@@ -14,7 +14,6 @@ module Synapse
         # @return [AggregateRoot]
         def new_from_stream(stream)
           aggregate = allocate
-          aggregate.send :pre_initialize
           aggregate.initialize_from_stream stream
           aggregate
         end
@@ -34,6 +33,8 @@ module Synapse
         if uncommitted_event_count > 0
           raise 'Aggregate has already been initialized'
         end
+
+        pre_initialize
 
         last_sequence_number = nil
 

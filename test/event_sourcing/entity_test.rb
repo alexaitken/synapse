@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'event_sourcing/fixtures'
 
 module Synapse
   module EventSourcing

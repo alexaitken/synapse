@@ -4,10 +4,10 @@ module Synapse
     # @abstract
     class Repository
       # @return [EventBus]
-      attr_writer :event_bus
+      attr_accessor :event_bus
 
       # @return [UnitOfWorkProvider]
-      attr_writer :unit_provider
+      attr_accessor :unit_provider
 
       # Loads an aggregate with the given aggregate identifier
       #

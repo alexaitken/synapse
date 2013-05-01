@@ -74,6 +74,10 @@ module Synapse
     autoload :AggregateRoot
     autoload :Entity
     autoload :Member
+
+    autoload :EventSourcingRepository, 'synapse/event_sourcing/repository'
+    autoload :EventSourcedStorageListener, 'synapse/event_sourcing/storage_listener'
+    autoload :EventStreamDecorator, 'synapse/event_sourcing/stream_decorator'
   end
 
   module EventStore
