@@ -48,18 +48,27 @@ module Synapse
     end
   end
 
-  module EventHandling
+  module EventBus
     extend ActiveSupport::Autoload
 
     eager_autoload do
-      autoload_at 'synapse/event_handling/event_bus' do
+      autoload_at 'synapse/event_bus/event_bus' do
         autoload :EventBus
         autoload :SubscriptionFailedError
       end
 
       autoload :EventListener
+      autoload :EventListenerProxy
       autoload :SimpleEventBus
     end
+  end
+
+  module EventSourcing
+    extend ActiveSupport::Autoload
+
+    autoload :AggregateRoot
+    autoload :Entity
+    autoload :Member
   end
 
   module EventStore
@@ -103,20 +112,6 @@ module Synapse
   module Serialization
     extend ActiveSupport::Autoload
 
-    autoload_at 'synapse/serialization/converter/json' do
-      autoload :JsonToObjectConverter
-      autoload :ObjectToJsonConverter
-    end
-
-    autoload_at 'synapse/serialization/converter/ox' do
-      autoload :XmlToOxDocumentConverter
-      autoload :OxDocumentToXmlConverter
-    end
-
-    autoload :OjSerializer,      'synapse/serialization/serializer/oj'
-    autoload :OxSerializer,      'synapse/serialization/serializer/ox'
-    autoload :MarshalSerializer, 'synapse/serialization/serializer/marshal'
-
     eager_autoload do
       autoload :Converter
       autoload :ConverterFactory,  'synapse/serialization/converter/factory'
@@ -151,6 +146,20 @@ module Synapse
       autoload :SerializedObject
       autoload :SerializedType
     end
+
+    autoload_at 'synapse/serialization/converter/json' do
+      autoload :JsonToObjectConverter
+      autoload :ObjectToJsonConverter
+    end
+
+    autoload_at 'synapse/serialization/converter/ox' do
+      autoload :XmlToOxDocumentConverter
+      autoload :OxDocumentToXmlConverter
+    end
+
+    autoload :OjSerializer, 'synapse/serialization/serializer/oj'
+    autoload :OxSerializer, 'synapse/serialization/serializer/ox'
+    autoload :MarshalSerializer, 'synapse/serialization/serializer/marshal'
   end
 
   module UnitOfWork
@@ -162,13 +171,13 @@ module Synapse
         autoload :OuterCommitUnitOfWorkListener
       end
 
-      autoload :StorageListener,              'synapse/uow/storage_listener'
-      autoload :TransactionManager,           'synapse/uow/transaction_manager'
-      autoload :UnitOfWork,                   'synapse/uow/uow'
-      autoload :UnitOfWorkFactory,            'synapse/uow/factory'
-      autoload :UnitOfWorkListener,           'synapse/uow/listener'
+      autoload :StorageListener, 'synapse/uow/storage_listener'
+      autoload :TransactionManager, 'synapse/uow/transaction_manager'
+      autoload :UnitOfWork, 'synapse/uow/uow'
+      autoload :UnitOfWorkFactory, 'synapse/uow/factory'
+      autoload :UnitOfWorkListener, 'synapse/uow/listener'
       autoload :UnitOfWorkListenerCollection, 'synapse/uow/listener_collection'
-      autoload :UnitOfWorkProvider,           'synapse/uow/provider'
+      autoload :UnitOfWorkProvider, 'synapse/uow/provider'
     end
   end
 
@@ -183,6 +192,7 @@ module Synapse
 
   def self.eager_autoload!
     super
+
     Domain.eager_autoload!
     EventHandling.eager_autoload!
     Repository.eager_autoload!

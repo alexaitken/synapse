@@ -1,5 +1,5 @@
 module Synapse
-  module EventHandling
+  module EventBus
     # Represents a mechanism for event listeners to subscribe to events and for event publishers
     # to dispatch their events to any interested parties.
     #

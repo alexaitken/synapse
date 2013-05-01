@@ -1,5 +1,5 @@
 module Synapse
-  module EventHandling
+  module EventBus
     # Represents a listener that can be notified of events from an event bus. Implementations are
     # highly discouraged from throwing exceptions.
     #

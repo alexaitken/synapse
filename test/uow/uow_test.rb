@@ -195,9 +195,9 @@ module Synapse
         }
 
         listener = UnitOfWorkListener.new
-        mock(listener).on_event_registered(@uow, event) do
+        mock(listener).on_event_registered(@uow, event) {
           event
-        end
+        }
         mock(listener).after_commit.never
 
         @uow.start
@@ -295,10 +295,10 @@ module Synapse
       def test_events_continually_publish
         @uow.start
 
-        event_bus = Synapse::EventHandling::SimpleEventBus.new
+        event_bus = EventBus::SimpleEventBus.new
 
-        event_a = Synapse::Domain::EventMessage.new
-        event_b = Synapse::Domain::EventMessage.new
+        event_a = Domain::EventMessage.new
+        event_b = Domain::EventMessage.new
 
         listener = Object.new
         mock(listener).notify(event_a) {
@@ -322,13 +322,13 @@ module Synapse
     class TestError < StandardError; end
 
     class TestAggregateA
-      include Synapse::Domain::AggregateRoot
+      include Domain::AggregateRoot
       def initialize(id)
         @id = id
       end
     end
     class TestAggregateB
-      include Synapse::Domain::AggregateRoot
+      include Domain::AggregateRoot
       def initialize(id)
         @id = id
       end
