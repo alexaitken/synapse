@@ -8,9 +8,7 @@ module Synapse
       # @abstract
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
-      def validate_lock(aggregate)
-        true
-      end
+      def validate_lock(aggregate); end
 
       # Obtains a lock for an aggregate with the given aggregate identifier. Depending on
       # the strategy, this method may return immediately or block until a lock is held.
@@ -28,6 +26,15 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [undefined]
       def release_lock(aggregate_id); end
+    end
+    
+    # Implementation of a lock manager that does no locking
+    class NullLockManager < LockManager
+      # @param [AggregateRoot] aggregate
+      # @return [Boolean]
+      def validate_lock(aggregate)
+        true
+      end
     end
   end
 end

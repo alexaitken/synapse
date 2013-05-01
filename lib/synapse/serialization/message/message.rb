@@ -36,6 +36,12 @@ module Synapse
 
       # Convenience method used to populate the lazy object attributes
       #
+      # @example
+      #   message = SerializedMessage.new do |m|
+      #     m.id = id
+      #     m.with_serialized metadata, payload, serializer
+      #   end
+      #
       # @param [SerializedObject] metadata
       # @param [SerializedObject] payload
       # @param [Serializer] serializer

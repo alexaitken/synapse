@@ -33,7 +33,7 @@ module Synapse
       end
     end
 
-    # Deserialized object that has the same interface as a lazy object
+    # Deserialized object that has (nearly) the same interface as a lazy object
     class DeserializedObject
       # @return [Object]
       attr_reader :deserialized

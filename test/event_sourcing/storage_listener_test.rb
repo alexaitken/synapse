@@ -6,7 +6,7 @@ module Synapse
     class EventSourcedStorageListenerTest < Test::Unit::TestCase
       def test_store
         event_store = Object.new
-        lock_manager = Object.new
+        lock_manager = Repository::NullLockManager.new
         decorators = Array.new
         type_identifier = StubAggregate.to_s.demodulize
         aggregate = Object.new
@@ -32,8 +32,25 @@ module Synapse
         listener = EventSourcedStorageListener.new event_store, lock_manager, decorators, type_identifier
         listener.store aggregate
       end
-
+        
       def test_store_locking
+        event_store = Object.new
+        lock_manager = Repository::NullLockManager.new
+        decorators = Array.new
+        type_identifier = StubAggregate.to_s.demodulize
+        aggregate = StubAggregate.new 123
+
+        mock(aggregate).version do
+          123
+        end
+
+        mock(event_store).append(type_identifier, anything)
+
+        listener = EventSourcedStorageListener.new event_store, lock_manager, decorators, type_identifier
+        listener.store aggregate
+      end
+
+      def test_store_lock_failed
         event_store = Object.new
         lock_manager = Object.new
         decorators = Array.new
