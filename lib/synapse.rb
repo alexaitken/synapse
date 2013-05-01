@@ -24,6 +24,21 @@ module Synapse
     autoload :Message
   end
 
+  module Command
+    extend ActiveSupport::Autoload
+
+    autoload :CommandBus
+    autoload :SimpleCommandBus
+
+    autoload :CommandHandler
+    autoload :CommandMessage, 'synapse/command/message'
+
+    autoload_at 'synapse/command/errors' do
+      autoload :CommandExecutionError
+      autoload :NoHandlerError
+    end
+  end
+
   module Domain
     extend ActiveSupport::Autoload
 

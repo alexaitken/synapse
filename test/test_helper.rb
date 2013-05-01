@@ -1,6 +1,11 @@
-require 'coveralls'
+if ENV['travis']
+  require 'coveralls'
+  Coveralls.wear!
+else
+  require 'simplecov'
+  SimpleCov.start
+end
 
-Coveralls.wear!
 
 require 'pp'
 require 'test/unit'
