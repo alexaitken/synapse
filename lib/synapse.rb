@@ -66,6 +66,11 @@ module Synapse
   module EventSourcing
     extend ActiveSupport::Autoload
 
+    autoload_at 'synapse/event_sourcing/aggregate_factory' do
+      autoload :AggregateFactory
+      autoload :GenericAggregateFactory
+    end
+
     autoload :AggregateRoot
     autoload :Entity
     autoload :Member
