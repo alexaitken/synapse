@@ -30,8 +30,13 @@ module Synapse
     autoload :CommandBus
     autoload :SimpleCommandBus
 
+    autoload :CommandFilter
     autoload :CommandHandler
+
     autoload :CommandMessage, 'synapse/command/message'
+
+    autoload :DispatchInterceptor
+    autoload :InterceptorChain
 
     autoload_at 'synapse/command/errors' do
       autoload :CommandExecutionError
@@ -214,17 +219,6 @@ module Synapse
     autoload :UpcastingContext, 'synapse/upcasting/context'
   end
 
-  def self.eager_autoload!
-    super
-
-    Domain.eager_autoload!
-    EventHandling.eager_autoload!
-    Repository.eager_autoload!
-    Serialization.eager_autoload!
-    UnitOfWork.eager_autoload!
-  end
-
-  # Eager load certain components
   ActiveSupport::Autoload.eager_autoload!
 
   # Setup the default identifier factory

@@ -28,15 +28,12 @@ module Synapse
         @command_bus.dispatch command
       end
 
-      def test_dispatch_rollback_on_no_handler
+      def test_dispatch_no_handler
         command = CommandMessage.new do |m|
           m.payload = TestCommand.new
         end
 
-        mock(@logger).error(anything)
-        mock(@unit).rollback(is_a(NoHandlerError))
-
-        assert_raise CommandExecutionError do
+        assert_raise NoHandlerError do
           @command_bus.dispatch command
         end
       end

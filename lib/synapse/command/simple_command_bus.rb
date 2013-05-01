@@ -7,6 +7,8 @@ module Synapse
       # @return [undefined]
       def initialize(unit_factory)
         @handlers = Hash.new
+        @filters = Array.new
+        @interceptors = Array.new
         @unit_factory = unit_factory
       end
 
@@ -17,11 +19,17 @@ module Synapse
       # @param [CommandMessage] command
       # @return [undefined]
       def dispatch(command)
+        @filters.each do |filter|
+          command = filter.filter command
+        end
+
         unit = @unit_factory.create
+        handler = handler_for command
+
+        chain = InterceptorChain.new unit, @interceptors, handler
 
         begin
-          handler = handler_for command
-          handler.handle command, unit
+          chain.proceed command
         rescue => exception
           logger.error 'Exception occured while dispatching command [%s] [%s]; rolling back' %
             [command.payload_type, command.id]
