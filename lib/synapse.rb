@@ -52,6 +52,11 @@ module Synapse
       autoload :ActiveModelValidationFilter
       autoload :ActiveModelValidationError
     end
+
+    autoload_at 'synapse/command/rollback_policy' do
+      autoload :RollbackPolicy
+      autoload :RollbackOnAnyExceptionPolicy
+    end
   end
 
   module Domain

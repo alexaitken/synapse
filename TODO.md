@@ -3,11 +3,11 @@
 + Auditing component
 + Command bus
   + DSL for defining and subscribing command handlers to command types
-  + Command validation (ActiveModel)
+  + ~~Command validation (ActiveModel)~~
   + Asynchronous command bus
   + Command gateway
   + Abstraction of aggregate load/store
-  + Rollback policies
+  + ~~Rollback policies~~
 + Event handling
   + Clustered event bus
   + Asynchronous event bus

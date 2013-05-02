@@ -3,12 +3,16 @@ module Synapse
     # Implementation of a command bus that dispatches commands in the calling thread
     # @todo Thread safety?
     class SimpleCommandBus < CommandBus
+      # @return [RollbackPolicy]
+      attr_accessor :rollback_policy
+
       # @param [UnitOfWorkFactory] unit_factory
       # @return [undefined]
       def initialize(unit_factory)
         @handlers = Hash.new
         @filters = Array.new
         @interceptors = Array.new
+        @rollback_policy = RollbackOnAnyExceptionPolicy.new
         @unit_factory = unit_factory
       end
 
@@ -19,26 +23,7 @@ module Synapse
       # @param [CommandMessage] command
       # @return [undefined]
       def dispatch(command)
-        @filters.each do |filter|
-          command = filter.filter command
-        end
-
-        unit = @unit_factory.create
-        handler = handler_for command
-
-        chain = InterceptorChain.new unit, @interceptors, handler
-
-        begin
-          chain.proceed command
-        rescue => exception
-          logger.error 'Exception occured while dispatching command [%s] [%s]; rolling back' %
-            [command.payload_type, command.id]
-
-          unit.rollback exception
-          raise CommandExecutionError, exception
-        end
-
-        unit.commit
+        perform_dispatch command
       end
 
       # @param [Class] command_type
@@ -77,7 +62,45 @@ module Synapse
         end
       end
 
-    private
+    protected
+
+      # @raise [CommandExecutionError]
+      #   If an error occurs during the handling of the command
+      # @raise [NoHandlerError]
+      #   If no handler is subscribed that is capable of handling the command
+      # @param [CommandMessage] command
+      # @return [Object] The result from the command handler
+      def perform_dispatch(command)
+        @filters.each do |filter|
+          command = filter.filter command
+        end
+
+        handler = handler_for command
+        unit = @unit_factory.create
+
+        chain = InterceptorChain.new unit, @interceptors, handler
+
+        begin
+          result = chain.proceed command
+        rescue => exception
+          logger.error 'Exception occured while dispatching command [%s] [%s]' %
+            [command.payload_type, command.id]
+
+          if @rollback_policy.should_rollback exception
+            logger.debug 'Unit of work is being rolled back due to rollback policy'
+            unit.rollback exception
+          else
+            logger.info 'Unit of work is being committed due to rollback policy'
+            unit.commit
+          end
+
+          raise CommandExecutionError, exception
+        end
+
+        unit.commit
+
+        result
+      end
 
       # @raise [NoHandlerError]
       # @param [CommandMessage]

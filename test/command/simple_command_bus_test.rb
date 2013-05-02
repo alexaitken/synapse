@@ -38,7 +38,7 @@ module Synapse
         end
       end
 
-      def test_dispatch_rollback_on_execution
+      def test_dispatch_rollback_on_exception
         handler = Object.new
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
@@ -53,6 +53,32 @@ module Synapse
         mock(@logger).error(anything)
         mock(@unit).rollback(exception)
 
+        @command_bus.subscribe TestCommand, handler
+
+        assert_raise CommandExecutionError do
+          @command_bus.dispatch command
+        end
+      end
+
+      def test_dispatch_commit_on_exception
+        handler = Object.new
+        command = CommandMessage.build do |m|
+          m.payload = TestCommand.new
+        end
+
+        exception = TypeError.new
+
+        mock(handler).handle(command, @unit) do
+          raise exception
+        end
+
+        rollback_policy = Object.new
+        mock(rollback_policy).should_rollback(exception) do
+          false
+        end
+        mock(@unit).commit
+
+        @command_bus.rollback_policy = rollback_policy
         @command_bus.subscribe TestCommand, handler
 
         assert_raise CommandExecutionError do
