@@ -6,6 +6,12 @@ module Synapse
       # @return [RollbackPolicy]
       attr_accessor :rollback_policy
 
+      # @return [Array]
+      attr_reader :filters
+
+      # @return [Array]
+      attr_reader :interceptors
+
       # @param [UnitOfWorkFactory] unit_factory
       # @return [undefined]
       def initialize(unit_factory)
@@ -16,14 +22,25 @@ module Synapse
         @unit_factory = unit_factory
       end
 
-      # @raise [CommandExecutionError]
-      #   If an error occurs during the handling of the command
-      # @raise [NoHandlerError]
-      #   If no handler is subscribed that is capable of handling the command
       # @param [CommandMessage] command
       # @return [undefined]
       def dispatch(command)
-        perform_dispatch command
+        dispatch_with_callback command, CommandCallback.new
+      end
+
+      # @param [CommandMessage] command
+      # @param [CommandCallback] callback
+      # @return [undefined]
+      def dispatch_with_callback(command, callback)
+        begin
+          result = perform_dispatch command
+          callback.on_success result
+        rescue => exception
+          logger.error 'Exception occured while dispatching command [%s] [%s]: %s' %
+            [command.payload_type, command.id, exception.inspect]
+
+          callback.on_failure exception
+        end
       end
 
       # @param [Class] command_type
@@ -81,11 +98,11 @@ module Synapse
         chain = InterceptorChain.new unit, @interceptors, handler
 
         begin
+          logger.debug 'Dispatching command [%s] [%s] to handler [%s]' %
+            [command.id, command.payload_type, handler.class]
+
           result = chain.proceed command
         rescue => exception
-          logger.error 'Exception occured while dispatching command [%s] [%s]' %
-            [command.payload_type, command.id]
-
           if @rollback_policy.should_rollback exception
             logger.debug 'Unit of work is being rolled back due to rollback policy'
             unit.rollback exception

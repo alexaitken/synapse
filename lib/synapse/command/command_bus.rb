@@ -12,13 +12,18 @@ module Synapse
       # Dispatches the given command to the handler subscribed to its type
       #
       # @abstract
-      # @raise [CommandExecutionError]
-      #   If an error occurs during the handling of the command
-      # @raise [NoHandlerError]
-      #   If no handler is subscribed that is capable of handling the command
       # @param [CommandMessage] command
       # @return [undefined]
       def dispatch(command); end
+
+      # Dispatches the given command to the handler subscribed to its type and notifies the
+      # given callback of the outcome of the dispatch
+      #
+      # @abstract
+      # @param [CommandMessage] command
+      # @param [CommandCallback] callback
+      # @return [undefined]
+      def dispatch_with_callback(command, callback); end
 
       # Subscribes the given handler to the given command type, replacing the currently subscribed
       # handler, if any.

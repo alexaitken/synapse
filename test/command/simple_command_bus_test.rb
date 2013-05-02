@@ -28,14 +28,34 @@ module Synapse
         @command_bus.dispatch command
       end
 
+      def test_dispatch_result
+        handler = Object.new
+        callback = Object.new
+        command = CommandMessage.build do |m|
+          m.payload = TestCommand.new
+        end
+
+        result = 123
+
+        mock(handler).handle(command, @unit) do
+          result
+        end
+        mock(callback).on_success(result)
+        mock(@unit).commit
+
+        @command_bus.subscribe TestCommand, handler
+        @command_bus.dispatch_with_callback command, callback
+      end
+
       def test_dispatch_no_handler
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
         end
 
-        assert_raise NoHandlerError do
-          @command_bus.dispatch command
-        end
+        callback = Object.new
+        mock(callback).on_failure(is_a(NoHandlerError))
+
+        @command_bus.dispatch_with_callback command, callback
       end
 
       def test_dispatch_rollback_on_exception
@@ -55,9 +75,10 @@ module Synapse
 
         @command_bus.subscribe TestCommand, handler
 
-        assert_raise CommandExecutionError do
-          @command_bus.dispatch command
-        end
+        callback = Object.new
+        mock(callback).on_failure(is_a(CommandExecutionError))
+
+        @command_bus.dispatch_with_callback command, callback
       end
 
       def test_dispatch_commit_on_exception
@@ -81,9 +102,10 @@ module Synapse
         @command_bus.rollback_policy = rollback_policy
         @command_bus.subscribe TestCommand, handler
 
-        assert_raise CommandExecutionError do
-          @command_bus.dispatch command
-        end
+        callback = Object.new
+        mock(callback).on_failure(is_a(CommandExecutionError))
+
+        @command_bus.dispatch_with_callback command, callback
       end
 
       def test_subscribe

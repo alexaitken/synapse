@@ -31,6 +31,7 @@ module Synapse
     autoload :CommandBus
     autoload :SimpleCommandBus
 
+    autoload :CommandCallback
     autoload :CommandFilter
     autoload :CommandHandler
 
