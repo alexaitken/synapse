@@ -40,6 +40,8 @@ module Synapse
       autoload :CommandMessageBuilder
     end
 
+    autoload :CommandGateway, 'synapse/command/gateway'
+
     autoload :DispatchInterceptor
     autoload :InterceptorChain
 

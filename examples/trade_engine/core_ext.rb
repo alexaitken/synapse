@@ -11,13 +11,3 @@ class SortedSet
     to_a[length - 1]
   end
 end
-
-def as_command(command)
-  if command.is_a? CommandMessage
-    command
-  else
-    CommandMessage.build do |b|
-      b.payload = command
-    end
-  end
-end

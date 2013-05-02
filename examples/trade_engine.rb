@@ -42,6 +42,8 @@ command_bus.subscribe CreateOrderbookCommand, ob_handler
 command_bus.subscribe PlaceBuyOrderCommand, ob_handler
 command_bus.subscribe PlaceSellOrderCommand, ob_handler
 
+gateway = CommandGateway.new command_bus
+
 # End infrastructure
 
 x = 50
@@ -51,9 +53,9 @@ orderbook_ids = Array.new
 x.times do
   orderbook_id = IdentifierFactory.instance.generate
 
-  command_bus.dispatch as_command(CreateOrderbookCommand.new { |c|
+  gateway.send CreateOrderbookCommand.new { |c|
     c.orderbook_id = orderbook_id
-  })
+  }
 
   orderbook_ids.push orderbook_id
 end
@@ -65,12 +67,12 @@ time = Benchmark.realtime do
   n.times do
     command_type = [PlaceBuyOrderCommand, PlaceSellOrderCommand].sample
 
-    command_bus.dispatch as_command(command_type.new { |c|
+    gateway.send command_type.new { |c|
       c.orderbook_id = orderbook_ids.sample
       c.order_id = IdentifierFactory.instance.generate
       c.trade_count = 10
       c.item_price = 5
-    })
+    }
   end
 
 end
