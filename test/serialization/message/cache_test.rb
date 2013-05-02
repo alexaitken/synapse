@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   class SerializationAwareMessageTest < Test::Unit::TestCase
     def setup
-      @message = Message.new do |m|
+      @message = Message.build do |m|
         m.payload = Object.new
       end
 

@@ -34,11 +34,11 @@ module Synapse
       #
       # @return [DomainEventMessage] The event that will be committed
       def register_event(payload, metadata)
-        event = DomainEventMessage.new do |e|
-          e.aggregate_id = @aggregate_id
-          e.sequence_number = next_sequence_number
-          e.metadata = metadata
-          e.payload = payload
+        event = DomainEventMessage.build do |b|
+          b.aggregate_id = @aggregate_id
+          b.sequence_number = next_sequence_number
+          b.metadata = metadata
+          b.payload = payload
         end
 
         @listeners.each do |listener|
@@ -68,12 +68,12 @@ module Synapse
 
       # Sets the last committed sequence number for the container
       #
-      # @raise [NonTransientError] If events have already been registered to the container
+      # @raise [RuntimeError] If events have already been registered to the container
       # @param [Integer] last_known
       # @return [undefined]
       def initialize_sequence_number(last_known)
         unless @events.empty?
-          raise NonTransientError, 'Sequence number must be set before events are registered'
+          raise 'Sequence number must be set before events are registered'
         end
 
         @last_committed_sequence_number = last_known

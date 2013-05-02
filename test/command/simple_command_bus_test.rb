@@ -17,7 +17,7 @@ module Synapse
 
       def test_dispatch
         handler = Object.new
-        command = CommandMessage.new do |m|
+        command = CommandMessage.build do |m|
           m.payload = TestCommand.new
         end
 
@@ -29,7 +29,7 @@ module Synapse
       end
 
       def test_dispatch_no_handler
-        command = CommandMessage.new do |m|
+        command = CommandMessage.build do |m|
           m.payload = TestCommand.new
         end
 
@@ -40,7 +40,7 @@ module Synapse
 
       def test_dispatch_rollback_on_execution
         handler = Object.new
-        command = CommandMessage.new do |m|
+        command = CommandMessage.build do |m|
           m.payload = TestCommand.new
         end
 

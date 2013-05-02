@@ -8,10 +8,10 @@ module Synapse
         @aggregate_id = 123
         @sequence_number = 1
 
-        @message = DomainEventMessage.new do |m|
-          m.payload = @payload
-          m.aggregate_id = @aggregate_id
-          m.sequence_number = @sequence_number
+        @message = DomainEventMessage.build do |b|
+          b.payload = @payload
+          b.aggregate_id = @aggregate_id
+          b.sequence_number = @sequence_number
         end
       end
 
@@ -26,11 +26,6 @@ module Synapse
         assert_equal @payload.class, @message.payload_type
         assert_equal @aggregate_id, @message.aggregate_id
         assert_equal @sequence_number, @message.sequence_number
-
-        # ensure message is properly frozen
-        assert @message.frozen?
-        assert @message.metadata.frozen?
-        assert @message.payload.frozen?
       end
 
       def test_and_metadata

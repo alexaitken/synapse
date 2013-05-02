@@ -7,12 +7,12 @@ module Synapse
       def test_create_aggregate
         factory = GenericAggregateFactory.new StubAggregate
 
-        event = Domain::DomainEventMessage.new do |m|
+        event = Domain::DomainEventMessage.build do |m|
           m.payload = StubCreatedEvent.new 123
         end
 
         snapshot = StubAggregate.new 123
-        snapshot_event = Domain::DomainEventMessage.new do |m|
+        snapshot_event = Domain::DomainEventMessage.build do |m|
           m.payload = snapshot
         end
 

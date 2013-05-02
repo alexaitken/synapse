@@ -10,6 +10,9 @@ module Synapse
       end
     end
 
+    # Raised when a command is refused because of structural validation errors
+    class CommandValidationError < NonTransientError; end
+
     # Raised when a dispatched command has no handler subscribed to it
     class NoHandlerError < NonTransientError; end
   end

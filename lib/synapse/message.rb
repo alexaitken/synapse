@@ -8,22 +8,30 @@ module Synapse
   # of the same conceptual message. In such case, the metadata may be different for both
   # representations. The payload *may* be identical.
   class Message
-    # @return [String] Unique identifier of this message
-    attr_accessor :id
+    # Unique identifier of this message
+    # @return [String]
+    attr_reader :id
 
-    # @return [Hash] Metadata attached to this message by the application
-    attr_accessor :metadata
+    # Metadata attached to this message by the application
+    # @return [Hash]
+    attr_reader :metadata
 
-    # @return [Object] The payload of this message; examples include commands and events
-    attr_accessor :payload
+    # Payload of this message; examples include commands and events. A payload is expected to
+    # be immutable to provide thread safety.
+    #
+    # @return [Object]
+    attr_reader :payload
 
-    # @yield [Message]
+    # @param [String] id
+    # @param [Hash] metadata
+    # @param [Object] payload
     # @return [undefined]
-    def initialize
-      yield self if block_given?
+    def initialize(id, metadata, payload)
+      @id = id
+      @metadata = metadata
+      @payload = payload
 
-      populate_default
-      freeze
+      @metadata.freeze
     end
 
     # Returns the class of the payload of this message; use this instead of calling payload
@@ -39,9 +47,9 @@ module Synapse
     # @param [Hash] metadata
     # @return [Message]
     def and_metadata(metadata)
-      self.class.new do |message|
-        populate_duplicate message, @metadata.merge(metadata)
-      end
+      builder = self.class.builder.new
+      build_duplicate(builder, @metadata.merge(metadata))
+      builder.build
     end
 
     # Returns a copy of this message with the metadata replaced with the given metadata
@@ -49,37 +57,37 @@ module Synapse
     # @param [Hash] metadata
     # @return [Message]
     def with_metadata(metadata)
-      self.class.new do |message|
-        populate_duplicate message, metadata
-      end
+      builder = self.class.builder.new
+      build_duplicate(builder, metadata)
+      builder.build
     end
 
-    # Freezes this message object, along with its metadata and payload
-    # @return [undefined]
-    def freeze
-      super
-      @metadata.freeze
-      @payload.freeze
+    # Yields a message builder that can be used to produce a message
+    #
+    # @see MessageBuilder#build
+    # @yield [MessageBuilder]
+    # @return [Message]
+    def self.build(&block)
+      builder.build(&block)
+    end
+
+    # Returns the type of builder that can be used to build this type of message
+    # @return [Class]
+    def self.builder
+      MessageBuilder
     end
 
   protected
 
-    # Populates the default values of this message
-    # @return [undefined]
-    def populate_default
-      @id ||= IdentifierFactory.instance.generate
-      @metadata ||= Hash.new
-    end
-
     # Populates a duplicated message with attributes from this method
     #
-    # @param [Message] message
+    # @param [MessageBuilder] message
     # @param [Hash] metadata
     # @return [undefined]
-    def populate_duplicate(message, metadata)
-      message.id = @id
-      message.metadata = metadata
-      message.payload = @payload
+    def build_duplicate(builder, metadata)
+      builder.id = @id
+      builder.metadata = metadata
+      builder.payload = @payload
     end
   end
 end

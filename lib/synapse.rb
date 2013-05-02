@@ -22,6 +22,7 @@ module Synapse
     end
 
     autoload :Message
+    autoload :MessageBuilder
   end
 
   module Command
@@ -33,14 +34,23 @@ module Synapse
     autoload :CommandFilter
     autoload :CommandHandler
 
-    autoload :CommandMessage, 'synapse/command/message'
+    autoload_at 'synapse/command/message' do
+      autoload :CommandMessage
+      autoload :CommandMessageBuilder
+    end
 
     autoload :DispatchInterceptor
     autoload :InterceptorChain
 
     autoload_at 'synapse/command/errors' do
       autoload :CommandExecutionError
+      autoload :CommandValidationError
       autoload :NoHandlerError
+    end
+
+    autoload_at 'synapse/command/filters/validation' do
+      autoload :ActiveModelValidationFilter
+      autoload :ActiveModelValidationError
     end
   end
 
@@ -58,6 +68,11 @@ module Synapse
       autoload_at 'synapse/domain/message' do
         autoload :EventMessage
         autoload :DomainEventMessage
+      end
+
+      autoload_at 'synapse/domain/message_builder' do
+        autoload :EventMessageBuilder
+        autoload :DomainEventMessageBuilder
       end
 
       autoload_at 'synapse/domain/stream' do

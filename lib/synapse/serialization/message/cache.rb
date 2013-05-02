@@ -6,19 +6,17 @@ module Synapse
 
     # @yield [Message]
     # @return [undefined]
-    def initialize(&block)
-      @guard = Mutex.new
-      @cache = Serialization::SerializedObjectCache.new self
-
-      initialize_super(&block)
+    def initialize(*args)
+      @cache_lock = Mutex.new
+      initialize_super(*args)
     end
 
     # @param [Serializer] serializer
     # @param [Class] expected_type
     # @return [SerializedObject]
     def serialize_metadata(serializer, expected_type)
-      @guard.synchronize do
-        @cache.serialize_metadata(serializer, expected_type)
+      with_cache do |cache|
+        cache.serialize_metadata(serializer, expected_type)
       end
     end
 
@@ -26,8 +24,19 @@ module Synapse
     # @param [Class] expected_type
     # @return [SerializedObject]
     def serialize_payload(serializer, expected_type)
-      @guard.synchronize do
-        @cache.serialize_payload(serializer, expected_type)
+      with_cache do |cache|
+        cache.serialize_payload(serializer, expected_type)
+      end
+    end
+
+  private
+
+    # @yield [SerializedObjectCache]
+    # @return [undefined]
+    def with_cache
+      @cache_lock.synchronize do
+        @cache ||= Serialization::SerializedObjectCache.new self
+        yield @cache
       end
     end
   end

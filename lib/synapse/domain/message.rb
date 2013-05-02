@@ -4,23 +4,33 @@ module Synapse
     # to another component of the application. It contains the relevant data for other
     # components to act upon.
     class EventMessage < Message
-      # @return [Time] The timestamp of when the event was reported
-      attr_accessor :timestamp
+      # The timestamp of when the event was reported
+      # @return [Time]
+      attr_reader :timestamp
+
+      # @param [String] id
+      # @param [Hash] metadata
+      # @param [Object] payload
+      # @param [Time] timestamp
+      # @return [undefined]
+      def initialize(id, metadata, payload, timestamp)
+        super id, metadata, payload
+        @timestamp = timestamp
+      end
+
+      # @return [Class]
+      def self.builder
+        EventMessageBuilder
+      end
 
     protected
 
-      # @return [undefined]
-      def populate_default
-        super
-        @timestamp ||= Time.now
-      end
-
-      # @param [EventMessage] message
+      # @param [EventMessageBuilder] builder
       # @param [Hash] metadata
       # @return [undefined]
-      def populate_duplicate(message, metadata)
+      def build_duplicate(builder, metadata)
         super
-        message.timestamp = @timestamp
+        builder.timestamp = @timestamp
       end
     end
 
@@ -30,21 +40,42 @@ module Synapse
     # aggregate that reported it. It also contains a sequence number that allows the messages to be placed
     # in the order they were reported.
     class DomainEventMessage < EventMessage
-      # @return [Object] The identifier of the aggregate that reported the event
-      attr_accessor :aggregate_id
+      # The identifier of the aggregate that reported the event
+      # @return [Object]
+      attr_reader :aggregate_id
 
-      # @return [Integer] The sequence number of the event in the order of generation
-      attr_accessor :sequence_number
+      # The sequence number of the event in the order of generation
+      # @return [Integer]
+      attr_reader :sequence_number
+
+      # @param [String] id
+      # @param [Hash] metadata
+      # @param [Object] payload
+      # @param [Time] timestamp
+      # @param [Object] aggregate_id
+      # @param [Integer] sequence_number
+      # @return [undefined]
+      def initialize(id, metadata, payload, timestamp, aggregate_id, sequence_number)
+        super id, metadata, payload, timestamp
+
+        @aggregate_id = aggregate_id
+        @sequence_number = sequence_number
+      end
+
+      # @return [Class]
+      def self.builder
+        DomainEventMessageBuilder
+      end
 
     protected
 
-      # @param [DomainEventMessage] message
+      # @param [DomainEventMessageBuilder] builder
       # @param [Hash] metadata
       # @return [undefined]
-      def populate_duplicate(message, metadata)
+      def build_duplicate(builder, metadata)
         super
-        message.aggregate_id = @aggregate_id
-        message.sequence_number = @sequence_number
+        builder.aggregate_id = @aggregate_id
+        builder.sequence_number = @sequence_number
       end
     end
   end

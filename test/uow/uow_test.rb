@@ -297,8 +297,8 @@ module Synapse
 
         event_bus = EventBus::SimpleEventBus.new
 
-        event_a = Domain::EventMessage.new
-        event_b = Domain::EventMessage.new
+        event_a = Domain::EventMessage.build
+        event_b = Domain::EventMessage.build
 
         listener = Object.new
         mock(listener).notify(event_a) {
