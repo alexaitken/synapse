@@ -5,8 +5,9 @@ module Synapse
   module Serialization
 
     class OxSerializerTest < Test::Unit::TestCase
-
       def setup
+        skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
+
         @serializer = OxSerializer.new
       end
 
@@ -29,7 +30,6 @@ module Synapse
           @serializer.class_for(SerializedType.new('NonExistentClass', nil))
         end
       end
-
     end
 
   end

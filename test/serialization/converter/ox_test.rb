@@ -3,6 +3,10 @@ require 'test_helper'
 module Synapse
   module Serialization
     class OxDocumentToXmlConverterTest < Test::Unit::TestCase
+      def setup
+        skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
+      end
+
       def test_convert
         converter = OxDocumentToXmlConverter.new
 
@@ -17,13 +21,17 @@ module Synapse
     end
 
     class XmlToOxDocumentConverterTest < Test::Unit::TestCase
+      def setup
+        skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
+      end
+
       def test_convert
         converter = XmlToOxDocumentConverter.new
 
         assert_equal String, converter.source_type
         assert_equal Ox::Document, converter.target_type
 
-        output = converter.convert_content('<?xml?>')
+        output = converter.convert_content '<?xml?>'
 
         assert_equal Ox::Document, output.class
       end

@@ -5,6 +5,9 @@ module Synapse
   module Serialization
 
     class OjSerializerTest < Test::Unit::TestCase
+      def setup
+        skip 'Oj not supported on JRuby' if defined? JRUBY_VERSION
+      end
 
       def test_serialize_deserialize
         serializer = OjSerializer.new
@@ -15,7 +18,6 @@ module Synapse
 
         assert_equal event, deserialized
       end
-
     end
 
   end

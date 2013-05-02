@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'ox'
 
 module Synapse
   module Serialization
@@ -16,17 +15,17 @@ module Synapse
       end
 
       def test_converter
-        refute @factory.has_converter?(Ox::Document, String)
+        refute @factory.has_converter?(Object, String)
 
         assert_raise ConversionError do
-          @factory.converter(Ox::Document, String)
+          @factory.converter(Object, String)
         end
 
-        converter = OxDocumentToXmlConverter.new
+        converter = ObjectToJsonConverter.new
         @factory.register converter
 
-        assert @factory.has_converter?(Ox::Document, String)
-        assert_equal converter, @factory.converter(Ox::Document, String)
+        assert @factory.has_converter?(Object, String)
+        assert_equal converter, @factory.converter(Object, String)
       end
     end
 

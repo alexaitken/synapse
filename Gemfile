@@ -7,8 +7,8 @@ group :development do
     gem 'activemodel'
 
     # Used for serialization component
-    gem 'oj'
-    gem 'ox'
+    gem 'oj', platform: :ruby
+    gem 'ox', platform: :ruby
 end
 
 gemspec
