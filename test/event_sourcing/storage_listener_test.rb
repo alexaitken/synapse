@@ -27,12 +27,12 @@ module Synapse
           decorated_stream
         end
 
-        mock(event_store).append(type_identifier, decorated_stream)
+        mock(event_store).append_events(type_identifier, decorated_stream)
 
         listener = EventSourcedStorageListener.new event_store, lock_manager, decorators, type_identifier
         listener.store aggregate
       end
-        
+
       def test_store_locking
         event_store = Object.new
         lock_manager = Repository::NullLockManager.new
@@ -44,7 +44,7 @@ module Synapse
           123
         end
 
-        mock(event_store).append(type_identifier, anything)
+        mock(event_store).append_events(type_identifier, anything)
 
         listener = EventSourcedStorageListener.new event_store, lock_manager, decorators, type_identifier
         listener.store aggregate

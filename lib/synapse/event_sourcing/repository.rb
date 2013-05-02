@@ -39,7 +39,7 @@ module Synapse
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version)
         begin
-          stream = @event_store.read type_identifier, aggregate_id
+          stream = @event_store.read_events type_identifier, aggregate_id
         rescue EventStore::StreamNotFoundError
           raise Repository::AggregateNotFoundError
         end

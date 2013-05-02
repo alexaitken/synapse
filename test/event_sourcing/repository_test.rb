@@ -18,7 +18,7 @@ module Synapse
       def test_load
         event = create_event(123, 0, StubCreatedEvent.new(123))
 
-        mock(@event_store).read(@factory.type_identifier, 123) do
+        mock(@event_store).read_events(@factory.type_identifier, 123) do
           Domain::SimpleDomainEventStream.new event
         end
 
@@ -26,7 +26,7 @@ module Synapse
       end
 
       def test_load_not_found
-        mock(@event_store).read(@factory.type_identifier, 123) do
+        mock(@event_store).read_events(@factory.type_identifier, 123) do
           raise EventStore::StreamNotFoundError
         end
 
@@ -39,7 +39,7 @@ module Synapse
         event_a = create_event(123, 0, StubCreatedEvent.new(123))
         event_b = create_event(123, 1, StubDeletedEvent.new)
 
-        mock(@event_store).read(@factory.type_identifier, 123) do
+        mock(@event_store).read_events(@factory.type_identifier, 123) do
           Domain::SimpleDomainEventStream.new event_a, event_b
         end
 

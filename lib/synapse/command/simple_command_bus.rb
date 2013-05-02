@@ -36,8 +36,9 @@ module Synapse
           result = perform_dispatch command
           callback.on_success result
         rescue => exception
-          logger.error 'Exception occured while dispatching command [%s] [%s]: %s' %
-            [command.payload_type, command.id, exception.inspect]
+          backtrace = exception.backtrace.join $/
+          logger.error 'Exception occured while dispatching command [%s] [%s]: %s %s' %
+            [command.payload_type, command.id, exception.inspect, backtrace]
 
           callback.on_failure exception
         end

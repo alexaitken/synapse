@@ -8,6 +8,10 @@ module Synapse
         @cause = cause
         set_backtrace cause.backtrace
       end
+
+      def inspect
+        @cause.inspect
+      end
     end
 
     # Raised when a command is refused because of structural validation errors

@@ -26,7 +26,7 @@ module Synapse
           stream = decorator.decorate_for_append @type_identifier, aggregate, stream
         end
 
-        @event_store.append @type_identifier, stream
+        @event_store.append_events @type_identifier, stream
         aggregate.mark_committed
       end
     end

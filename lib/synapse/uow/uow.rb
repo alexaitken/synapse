@@ -62,6 +62,7 @@ module Synapse
       #
       # @param [EventMessage] event
       # @param [EventBus] event_bus
+      # @return [EventMessage] The event that will be published to the event bus
       def publish_event(event, event_bus)
         event = @listeners.on_event_registered self, event
 
@@ -72,6 +73,7 @@ module Synapse
         end
 
         events.push event
+        event
       end
 
       # Sets the transaction manager that will be used by this unit of work
