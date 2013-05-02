@@ -57,25 +57,30 @@ module Synapse
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize_metadata(serializer, expected_type)
-        begin
-          serialized = @metadata.fetch(serializer)
-          serializer.converter_factory.converter(serialized.content_type, expected_type).convert(serialized)
-        rescue KeyError
-          serialized = serializer.serialize(@message.metadata, expected_type)
-          @metadata.store(serializer, serialized)
-        end
+        serialize @message.metadata, @metadata, serializer, expected_type
       end
 
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize_payload(serializer, expected_type)
+        serialize @message.payload, @payload, serializer, expected_type
+      end
+
+    private
+
+      # @param [Object] original
+      # @param [Hash] cache
+      # @param [Serializer] serializer
+      # @param [Class] expected_type
+      # @return [SerializedObject]
+      def serialize(original, cache, serializer, expected_type)
         begin
-          serialized = @payload.fetch(serializer)
+          serialized = cache.fetch(serializer)
           serializer.converter_factory.converter(serialized.content_type, expected_type).convert(serialized)
         rescue KeyError
-          serialized = serializer.serialize(@message.payload, expected_type)
-          @payload.store(serializer, serialized)
+          serialized = serializer.serialize(original, expected_type)
+          cache.store(serializer, serialized)
         end
       end
     end
