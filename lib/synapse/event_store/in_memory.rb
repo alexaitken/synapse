@@ -43,18 +43,6 @@ module Synapse
         end
       end
 
-      # Clears the event stream for the given snapshot's aggregate and appends the snapshot to
-      # the stream
-      #
-      # @param [String] aggregate_type Type descriptor of the aggregate to append to
-      # @param [DomainEventMessage] snapshot_event
-      # @return [undefined]
-      def append_snapshot_event(aggregate_type, snapshot_event)
-        events = events_for snapshot_event.aggregate_id
-        events.clear
-        events.push snapshot_event
-      end
-
       # Creates and/or retrieves an array of events for the given aggregate identifier
       #
       # @param [Object] aggregate_id

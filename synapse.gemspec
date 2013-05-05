@@ -11,6 +11,8 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_dependency 'activesupport'
+  s.add_dependency 'atomic'
+  s.add_dependency 'eventmachine'
   s.add_dependency 'logging'
 
   s.add_development_dependency 'bundler'

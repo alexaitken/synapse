@@ -30,25 +30,11 @@ module Synapse
         assert_equal [event_a, event_b, event_c], stream.to_a
       end
 
-      def test_read_with_snapshot
-        event_a = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
-        event_b = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
-
-        stream = Domain::SimpleDomainEventStream.new event_a, event_b
-
-        snapshot_event = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
+      def test_clear
+        event = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
+        stream = Domain::SimpleDomainEventStream.new event
 
         @event_store.append_events 'Person', stream
-        @event_store.append_snapshot_event 'Person', snapshot_event
-
-        stream = @event_store.read_events 'Person', 123
-
-        assert_equal [snapshot_event], stream.to_a
-      end
-
-      def test_clear
-        snapshot_event = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
-        @event_store.append_snapshot_event 'Person', snapshot_event
         @event_store.clear
 
         assert_raise StreamNotFoundError do

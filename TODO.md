@@ -17,11 +17,13 @@
   + Event replay framework
   + Event scheduling framework (Quartz-like)
 + Event sourcing
-  + Snapshot support
+  + ~~Snapshot support~~
   + Conflict resolution support
   + Caching repository
   + Hybrid event storage
 + Event store
   + Persistent implementations (management, DataMapper, ActiveRecord, MongoMapper, etc.)
++ Repository
+  + Optimistic/pessimistic lock manager
 
 TODO Finish this TODO list

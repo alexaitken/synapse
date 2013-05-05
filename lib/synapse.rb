@@ -1,5 +1,6 @@
 require 'active_support'
 require 'active_support/core_ext'
+require 'eventmachine'
 require 'logging'
 require 'set'
 
@@ -121,6 +122,20 @@ module Synapse
     autoload :EventSourcingRepository, 'synapse/event_sourcing/repository'
     autoload :EventSourcedStorageListener, 'synapse/event_sourcing/storage_listener'
     autoload :EventStreamDecorator, 'synapse/event_sourcing/stream_decorator'
+
+    autoload_at 'synapse/event_sourcing/snapshot/taker' do
+      autoload :AggregateSnapshotTaker
+      autoload :DeferredSnapshotTaker
+      autoload :SnapshotTaker
+    end
+
+    autoload_at 'synapse/event_sourcing/snapshot/count_stream' do
+      autoload :CountingEventStream
+      autoload :TriggeringEventStream
+      autoload :SnapshotUnitOfWorkListener
+    end
+
+    autoload :EventCountSnapshotTrigger, 'synapse/event_sourcing/snapshot/count_trigger'
   end
 
   module EventStore
@@ -168,15 +183,6 @@ module Synapse
       autoload :Converter
       autoload :ConverterFactory,  'synapse/serialization/converter/factory'
       autoload :IdentityConverter, 'synapse/serialization/converter/identity'
-
-      autoload :SerializedObjectCache, 'synapse/serialization/message/cache'
-      autoload :SerializedDomainEventData, 'synapse/serialization/message/data'
-      autoload :SerializedMessage, 'synapse/serialization/message/message'
-
-      autoload_at 'synapse/serialization/message/domain' do
-        autoload :SerializedEventMessage
-        autoload :SerializedDomainEventMessage
-      end
 
       autoload_at 'synapse/serialization/errors' do
         autoload :ConversionError
