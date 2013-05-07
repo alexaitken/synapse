@@ -18,14 +18,15 @@
   + Event scheduling framework (Quartz-like)
 + Event sourcing
   + ~~Snapshot support~~
-  + Conflict resolution support
+  + ~~Conflict resolution support~~
   + Caching repository
-  + Hybrid event storage
+  + Hybrid ES repository
 + Event store
   + ~~Mongo event store~~
-  + DataMapper or ActiveRecord event store
+  + Sequel event store
   + Management
 + Repository
   + Optimistic/pessimistic lock manager
+  + Non-event sourced repository (MongoMapper and ActiveRecord?)
 
 TODO Finish this TODO list
