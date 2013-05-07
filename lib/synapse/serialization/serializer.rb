@@ -4,10 +4,14 @@ module Synapse
     # @abstract
     class Serializer
       # @return [ConverterFactory]
-      attr_writer :converter_factory
+      attr_accessor :converter_factory
 
       # @return [RevisionResolver]
       attr_accessor :revision_resolver
+
+      def initialize
+        @converter_factory = ConverterFactory.new
+      end
 
       # @param [Object] object
       # @param [Class] representation_type
@@ -53,11 +57,6 @@ module Synapse
         else
           SerializedType.new(type.to_s)
         end
-      end
-
-      # @return [ConverterFactory]
-      def converter_factory
-        @converter_factory ||= ConverterFactory.new
       end
 
     protected

@@ -1,10 +1,16 @@
 module Synapse
   module Upcasting
     class UpcasterChain
-      attr_writer :converter_factory
-      attr_reader :upcasters
+      # @return [ConverterFactory]
+      attr_accessor :converter_factory
 
-      def initialize
+      # @return [Array<Upcaster>]
+      attr_accessor :upcasters
+
+      # @param [ConverterFactory] converter_factory
+      # @return [undefined]
+      def initialize(converter_factory)
+        @converter_factory = converter_factory
         @upcasters = Array.new
       end
 
@@ -30,11 +36,6 @@ module Synapse
         end
 
         serialized_objects
-      end
-
-      # @return [ConverterFactory]
-      def converter_factory
-        @converter_factory ||= Serialization::ConverterFactory.new
       end
 
     protected

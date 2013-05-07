@@ -29,37 +29,44 @@ module Synapse
   module Command
     extend ActiveSupport::Autoload
 
-    autoload :CommandBus
-    autoload :SimpleCommandBus
+    eager_autoload do
+      autoload :CommandBus
+      autoload :SimpleCommandBus
 
-    autoload :CommandCallback
-    autoload :CommandFilter
-    autoload :CommandHandler
+      autoload :CommandCallback
+      autoload :CommandFilter
+      autoload :CommandHandler
 
-    autoload_at 'synapse/command/message' do
-      autoload :CommandMessage
-      autoload :CommandMessageBuilder
-    end
+      autoload_at 'synapse/command/message' do
+        autoload :CommandMessage
+        autoload :CommandMessageBuilder
+      end
 
-    autoload :CommandGateway, 'synapse/command/gateway'
+      autoload :CommandGateway, 'synapse/command/gateway'
 
-    autoload :DispatchInterceptor
-    autoload :InterceptorChain
+      autoload :DispatchInterceptor
+      autoload :InterceptorChain
 
-    autoload_at 'synapse/command/errors' do
-      autoload :CommandExecutionError
-      autoload :CommandValidationError
-      autoload :NoHandlerError
-    end
+      autoload_at 'synapse/command/errors' do
+        autoload :CommandExecutionError
+        autoload :CommandValidationError
+        autoload :NoHandlerError
+      end
 
-    autoload_at 'synapse/command/filters/validation' do
-      autoload :ActiveModelValidationFilter
-      autoload :ActiveModelValidationError
-    end
+      autoload_at 'synapse/command/filters/serialization' do
+        autoload :SerializationOptimizingInterceptor
+        autoload :SerializationOptimizingListener
+      end
 
-    autoload_at 'synapse/command/rollback_policy' do
-      autoload :RollbackPolicy
-      autoload :RollbackOnAnyExceptionPolicy
+      autoload_at 'synapse/command/filters/validation' do
+        autoload :ActiveModelValidationFilter
+        autoload :ActiveModelValidationError
+      end
+
+      autoload_at 'synapse/command/rollback_policy' do
+        autoload :RollbackPolicy
+        autoload :RollbackOnAnyExceptionPolicy
+      end
     end
   end
 
@@ -110,48 +117,66 @@ module Synapse
   module EventSourcing
     extend ActiveSupport::Autoload
 
-    autoload_at 'synapse/event_sourcing/aggregate_factory' do
-      autoload :AggregateFactory
-      autoload :GenericAggregateFactory
+    eager_autoload do
+      autoload_at 'synapse/event_sourcing/aggregate_factory' do
+        autoload :AggregateFactory
+        autoload :GenericAggregateFactory
+      end
+
+      autoload :AggregateRoot
+      autoload :Entity
+      autoload :Member
+
+      autoload :EventSourcingRepository, 'synapse/event_sourcing/repository'
+      autoload :EventSourcedStorageListener, 'synapse/event_sourcing/storage_listener'
+      autoload :EventStreamDecorator, 'synapse/event_sourcing/stream_decorator'
+
+      autoload_at 'synapse/event_sourcing/snapshot/taker' do
+        autoload :AggregateSnapshotTaker
+        autoload :DeferredSnapshotTaker
+        autoload :SnapshotTaker
+      end
+
+      autoload_at 'synapse/event_sourcing/snapshot/count_stream' do
+        autoload :CountingEventStream
+        autoload :TriggeringEventStream
+        autoload :SnapshotUnitOfWorkListener
+      end
+
+      autoload :EventCountSnapshotTrigger, 'synapse/event_sourcing/snapshot/count_trigger'
     end
-
-    autoload :AggregateRoot
-    autoload :Entity
-    autoload :Member
-
-    autoload :EventSourcingRepository, 'synapse/event_sourcing/repository'
-    autoload :EventSourcedStorageListener, 'synapse/event_sourcing/storage_listener'
-    autoload :EventStreamDecorator, 'synapse/event_sourcing/stream_decorator'
-
-    autoload_at 'synapse/event_sourcing/snapshot/taker' do
-      autoload :AggregateSnapshotTaker
-      autoload :DeferredSnapshotTaker
-      autoload :SnapshotTaker
-    end
-
-    autoload_at 'synapse/event_sourcing/snapshot/count_stream' do
-      autoload :CountingEventStream
-      autoload :TriggeringEventStream
-      autoload :SnapshotUnitOfWorkListener
-    end
-
-    autoload :EventCountSnapshotTrigger, 'synapse/event_sourcing/snapshot/count_trigger'
   end
 
   module EventStore
     extend ActiveSupport::Autoload
 
-    autoload_at 'synapse/event_store/errors' do
-      autoload :EventStoreError
-      autoload :StreamNotFoundError
-    end
+    eager_autoload do
+      autoload_at 'synapse/event_store/errors' do
+        autoload :EventStoreError
+        autoload :StreamNotFoundError
+      end
 
-    autoload_at 'synapse/event_store/event_store' do
-      autoload :EventStore
-      autoload :SnapshotEventStore
+      autoload_at 'synapse/event_store/event_store' do
+        autoload :EventStore
+        autoload :SnapshotEventStore
+      end
     end
 
     autoload :InMemoryEventStore, 'synapse/event_store/in_memory'
+
+    module Mongo
+      extend ActiveSupport::Autoload
+
+      autoload :MongoEventStore, 'synapse/event_store/mongo/event_store'
+      autoload :DocumentPerEventStrategy, 'synapse/event_store/mongo/per_event_strategy'
+      autoload :DocumentPerCommitStrategy, 'synapse/event_store/mongo/per_commit_strategy'
+      autoload :StorageStrategy, 'synapse/event_store/mongo/storage_strategy'
+
+      autoload_at 'synapse/event_store/mongo/template' do
+        autoload :MongoTemplate
+        autoload :DefaultMongoTemplate
+      end
+    end
   end
 
   module Repository
@@ -166,6 +191,7 @@ module Synapse
       end
 
       autoload :LockManager
+      autoload :PessimisticLockManager
 
       autoload_at 'synapse/repository/locking' do
         autoload :LockingRepository
@@ -198,6 +224,29 @@ module Synapse
       autoload_at 'synapse/serialization/revision_resolver' do
         autoload :RevisionResolver
         autoload :FixedRevisionResolver
+      end
+
+      autoload :SerializedDomainEventData, 'synapse/serialization/message/data'
+      autoload :MessageSerializer, 'synapse/serialization/message/serializer'
+      autoload :SerializedMetadata, 'synapse/serialization/message/metadata'
+      autoload :SerializationAware, 'synapse/serialization/message/serialization_aware'
+      autoload :SerializedObjectCache, 'synapse/serialization/message/serialized_object_cache'
+
+      autoload_at 'synapse/serialization/message/serialization_aware_message' do
+        autoload :SerializationAwareEventMessage
+        autoload :SerializationAwareDomainEventMessage
+      end
+
+      autoload_at 'synapse/serialization/message/serialized_message' do
+        autoload :SerializedMessage
+        autoload :SerializedEventMessage
+        autoload :SerializedDomainEventMessage
+      end
+
+      autoload_at 'synapse/serialization/message/serialized_message_builder' do
+        autoload :SerializedMessageBuilder
+        autoload :SerializedEventMessageBuilder
+        autoload :SerializedDomainEventMessageBuilder
       end
 
       autoload :Serializer
@@ -245,7 +294,13 @@ module Synapse
     autoload :SingleUpcaster
     autoload :Upcaster
     autoload :UpcasterChain, 'synapse/upcasting/chain'
-    autoload :UpcastingContext, 'synapse/upcasting/context'
+
+    autoload_at 'synapse/upcasting/context' do
+      autoload :UpcastingContext
+      autoload :SerializedDomainEventUpcastingContext
+    end
+
+    autoload :UpcastSerializedDomainEventData, 'synapse/upcasting/data'
   end
 
   ActiveSupport::Autoload.eager_autoload!

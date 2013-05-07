@@ -38,6 +38,9 @@ module Synapse
       # @return [Object]
       attr_reader :deserialized
 
+      # @return [Serializer] This will always be nil
+      attr_reader :serializer
+
       # @return [Class]
       attr_reader :type
 

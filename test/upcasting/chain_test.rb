@@ -6,7 +6,9 @@ module Synapse
     class UpcasterChainTest < Test::Unit::TestCase
 
       def test_multiple_upcasters
-        chain = UpcasterChain.new
+        factory = Serialization::ConverterFactory.new
+
+        chain = UpcasterChain.new factory
         chain.push TestTypeUpcaster.new
         chain.push TestSplitUpcaster.new
         chain.push TestPhaseOutUpcaster.new

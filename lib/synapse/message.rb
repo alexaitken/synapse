@@ -47,6 +47,10 @@ module Synapse
     # @param [Hash] metadata
     # @return [Message]
     def and_metadata(metadata)
+      if metadata.empty?
+        return self
+      end
+
       builder = self.class.builder.new
       build_duplicate(builder, @metadata.merge(metadata))
       builder.build
@@ -57,6 +61,10 @@ module Synapse
     # @param [Hash] metadata
     # @return [Message]
     def with_metadata(metadata)
+      if @metadata == metadata
+        return self
+      end
+
       builder = self.class.builder.new
       build_duplicate(builder, metadata)
       builder.build
@@ -79,7 +87,7 @@ module Synapse
 
   protected
 
-    # Populates a duplicated message with attributes from this method
+    # Populates a duplicated message with attributes from this message
     #
     # @param [MessageBuilder] message
     # @param [Hash] metadata

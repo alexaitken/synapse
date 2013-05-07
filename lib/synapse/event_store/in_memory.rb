@@ -13,14 +13,14 @@ module Synapse
       end
 
       # @raise [StreamNotFoundError] If the stream for the given aggregate identifier is empty
-      # @param [String] aggregate_type Type descriptor of the aggregate to retrieve
+      # @param [String] type_identifier Type descriptor of the aggregate to retrieve
       # @param [Object] aggregate_id
       # @return [DomainEventStream]
-      def read_events(aggregate_type, aggregate_id)
+      def read_events(type_identifier, aggregate_id)
         events = events_for aggregate_id
 
         if events.empty?
-          raise StreamNotFoundError, 'Stream not found for [%s] [%s]' % [aggregate_type, aggregate_id]
+          raise StreamNotFoundError.new type_identifier, aggregate_id
         end
 
         Domain::SimpleDomainEventStream.new events
@@ -28,10 +28,10 @@ module Synapse
 
       # Appends any events in the given stream to the end of the aggregate's stream
       #
-      # @param [String] aggregate_type Type descriptor of the aggregate to append to
+      # @param [String] type_identifier Type descriptor of the aggregate to append to
       # @param [DomainEventStream] stream
       # @return [undefined]
-      def append_events(aggregate_type, stream)
+      def append_events(type_identifier, stream)
         if stream.end?
           return
         end

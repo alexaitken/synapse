@@ -5,6 +5,7 @@ module Synapse
     class SimpleEventBus < EventBus
       def initialize
         @listeners = Set.new
+        @logger = Logging.logger.new self.class
       end
 
       # @param [EventMessage...] events
@@ -17,9 +18,9 @@ module Synapse
         events.flatten!
         events.each do |event|
           @listeners.each do |listener|
-            if logger.debug?
+            if @logger.debug?
               listener_type = actual_type listener
-              logger.debug 'Dispatching event [%s] to listener [%s]' %
+              @logger.debug 'Dispatching event [%s] to listener [%s]' %
                 [event.payload_type, listener_type]
             end
 
@@ -34,9 +35,9 @@ module Synapse
         listener_type = actual_type listener
 
         if @listeners.add? listener
-          logger.debug 'Event listener [%s] subscribed' % listener_type
+          @logger.debug 'Event listener [%s] subscribed' % listener_type
         else
-          logger.info 'Event listener [%s] not added, was already subscribed' % listener_type
+          @logger.info 'Event listener [%s] not added, was already subscribed' % listener_type
         end
       end
 
@@ -46,18 +47,13 @@ module Synapse
         listener_type = actual_type listener
 
         if @listeners.delete? listener
-          logger.debug 'Event listener [%s] unsubscribed' % listener_type
+          @logger.debug 'Event listener [%s] unsubscribed' % listener_type
         else
-          logger.info 'Event listener [%s] not removed, was not subscribed' % listener_type
+          @logger.info 'Event listener [%s] not removed, was not subscribed' % listener_type
         end
       end
 
     private
-
-      # @return [Logger]
-      def logger
-        @logger ||= Logging.logger[self.class]
-      end
 
       # @param [EventListener] listener
       # @return [Class]

@@ -2,10 +2,10 @@ module TradeEngine
   class Order
     include Synapse::EventSourcing::Entity
 
-    attr_reader :identifier, :item_price, :trade_count, :items_remaining
+    attr_reader :id, :item_price, :trade_count, :items_remaining
 
-    def initialize(identifier, item_price, trade_count)
-      @identifier = identifier
+    def initialize(id, item_price, trade_count)
+      @id = id
       @item_price = item_price
       @trade_count = @items_remaining = trade_count
     end
@@ -20,7 +20,7 @@ module TradeEngine
       e = event.payload
 
       if e.is_a? TradeExecutedEvent
-        if e.buy_order_id == @identifier or e.sell_order_id == @identifier
+        if e.buy_order_id == @id or e.sell_order_id == @id
           record_traded e.trade_count
         end
       end

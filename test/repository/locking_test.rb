@@ -13,9 +13,8 @@ module Synapse
         @unit.start
 
         # I herd you like dependencies
-        @repository = TestRepository.new
+        @repository = TestRepository.new @lock_manager
         @repository.event_bus = @event_bus
-        @repository.lock_manager = @lock_manager
         @repository.storage_listener = @storage_listener
         @repository.unit_provider = @unit_provider
       end

@@ -5,6 +5,10 @@ module Synapse
     # Snapshot trigger that counts the number of events between snapshots to decide when to
     # schedule the next snapshot
     class EventCountSnapshotTrigger < EventStreamDecorator
+      # Default threshold for a snapshot to be scheduled
+      # @return [Integer]
+      DEFAULT_THRESHOLD = 50
+
       # @return [SnapshotTaker]
       attr_reader :snapshot_taker
 
@@ -20,8 +24,10 @@ module Synapse
       def initialize(snapshot_taker, unit_provider)
         @counters = Hash.new
         @lock = Mutex.new
+        @logger = Logging.logger.new self.class
+        @threshold = DEFAULT_THRESHOLD
+
         @snapshot_taker = snapshot_taker
-        @threshold = 50
         @unit_provider = unit_provider
       end
 
@@ -34,7 +40,7 @@ module Synapse
       # @return [undefined]
       def trigger_snapshot(type_identifier, aggregate_id, counter)
         if counter.value > @threshold
-          logger.debug 'Snapshot threshold reached for [%s] [%s]' % [type_identifier, aggregate_id]
+          @logger.debug 'Snapshot threshold reached for [%s] [%s]' % [type_identifier, aggregate_id]
 
           @snapshot_taker.schedule_snapshot type_identifier, aggregate_id
           counter.value = 1
@@ -79,13 +85,6 @@ module Synapse
         @lock.synchronize do
           @counters.delete aggregate_id
         end
-      end
-
-    private
-
-      # @return [Logger]
-      def logger
-        @logger ||= Logging.logger[self.class]
       end
     end
   end

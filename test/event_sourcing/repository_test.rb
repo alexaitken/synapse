@@ -9,10 +9,10 @@ module Synapse
         @unit.start
         @factory = GenericAggregateFactory.new StubAggregate
         @event_store = Object.new
+        @lock_manager = Repository::NullLockManager.new
 
-        @repository = EventSourcingRepository.new @factory, @event_store
+        @repository = EventSourcingRepository.new @factory, @event_store, @lock_manager
         @repository.unit_provider = @unit_provider
-        @repository.lock_manager = Repository::LockManager.new # Dummy lock manager
       end
 
       def test_load
@@ -27,7 +27,7 @@ module Synapse
 
       def test_load_not_found
         mock(@event_store).read_events(@factory.type_identifier, 123) do
-          raise EventStore::StreamNotFoundError
+          raise EventStore::StreamNotFoundError.new @factory.type_identifier, 123
         end
 
         assert_raise Repository::AggregateNotFoundError do

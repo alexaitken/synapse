@@ -5,6 +5,7 @@ module TradeEngine
     child_entity :buy_orders, :sell_orders
 
     def initialize(identifier)
+      pre_initialize
       apply OrderbookCreatedEvent.new { |e|
         e.orderbook_id = identifier
       }
@@ -12,7 +13,7 @@ module TradeEngine
 
     def add_buy_order(order_id, trade_count, item_price)
       apply BuyOrderPlacedEvent.new { |e|
-        e.orderbook_id = @identifier
+        e.orderbook_id = @id
         e.order_id = order_id
         e.trade_count = trade_count
         e.item_price = item_price
@@ -22,7 +23,7 @@ module TradeEngine
 
     def add_sell_order(order_id, trade_count, item_price)
       apply SellOrderPlacedEvent.new { |e|
-        e.orderbook_id = @identifier
+        e.orderbook_id = @id
         e.order_id = order_id
         e.trade_count = trade_count
         e.item_price = item_price
@@ -30,7 +31,7 @@ module TradeEngine
       execute_trades
     end
 
-  private
+  protected
 
     def handle_event(event)
       e = event.payload
@@ -38,37 +39,38 @@ module TradeEngine
       if e.is_a? OrderbookCreatedEvent
         @id = e.orderbook_id
       elsif e.is_a? BuyOrderPlacedEvent
-        buy_orders.add Order.new e.order_id, e.item_price, e.trade_count
+        @buy_orders.push Order.new e.order_id, e.item_price, e.trade_count
       elsif e.is_a? SellOrderPlacedEvent
-        sell_orders.add Order.new e.order_id, e.item_price, e.trade_count
+        @sell_orders.push Order.new e.order_id, e.item_price, e.trade_count
       elsif e.is_a? TradeExecutedEvent
         # Cleans up after the last trade execution
-        highest_buyer = buy_orders.last
-        lowest_seller = sell_orders.first
+        highest_buyer = @buy_orders.last
+        lowest_seller = @sell_orders.first
 
         if highest_buyer.items_remaining <= e.trade_count
-          buy_orders.delete highest_buyer
+          @buy_orders.delete highest_buyer
         end
 
         if lowest_seller.items_remaining <= e.trade_count
-          sell_orders.delete lowest_seller
+          @sell_orders.delete lowest_seller
         end
       end
     end
 
-    def buy_orders
-      @buy_orders ||= SortedSet.new
-    end
-
-    def sell_orders
-      @sell_orders ||= SortedSet.new
+    def pre_initialize
+      @buy_orders = Array.new
+      @sell_orders = Array.new
     end
 
     def execute_trades
       done = false
-      until done or buy_orders.empty? or sell_orders.empty?
-        highest_buyer = buy_orders.last
-        lowest_seller = sell_orders.first
+
+      @buy_orders.sort!
+      @sell_orders.sort!
+
+      until done or @buy_orders.empty? or @sell_orders.empty?
+        highest_buyer = @buy_orders.last
+        lowest_seller = @sell_orders.first
 
         if highest_buyer.item_price >= lowest_seller.item_price
           matched_trade_count = [highest_buyer.items_remaining, lowest_seller.items_remaining].min
@@ -76,8 +78,8 @@ module TradeEngine
 
           apply TradeExecutedEvent.new { |e|
             e.orderbook_id = @id
-            e.buy_order_id = highest_buyer.identifier
-            e.sell_order_id = lowest_seller.identifier
+            e.buy_order_id = highest_buyer.id
+            e.sell_order_id = lowest_seller.id
             e.trade_count = matched_trade_count
             e.trade_price = matched_trade_price
           }

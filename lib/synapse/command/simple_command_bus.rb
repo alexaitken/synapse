@@ -18,6 +18,7 @@ module Synapse
         @handlers = Hash.new
         @filters = Array.new
         @interceptors = Array.new
+        @logger = Logging.logger.new self.class
         @rollback_policy = RollbackOnAnyExceptionPolicy.new
         @unit_factory = unit_factory
       end
@@ -37,7 +38,7 @@ module Synapse
           callback.on_success result
         rescue => exception
           backtrace = exception.backtrace.join $/
-          logger.error 'Exception occured while dispatching command [%s] [%s]: %s %s' %
+          @logger.error 'Exception occured while dispatching command [%s] [%s]: %s %s' %
             [command.payload_type, command.id, exception.inspect, backtrace]
 
           callback.on_failure exception
@@ -50,10 +51,10 @@ module Synapse
       def subscribe(command_type, handler)
         if @handlers.has_key? command_type
           current_handler = @handlers.fetch command_type
-          logger.info 'Command handler [%s] is being replaced by [%s] for command type [%s]' %
+          @logger.info 'Command handler [%s] is being replaced by [%s] for command type [%s]' %
             [current_handler.class, handler.class, command_type]
         else
-          logger.debug 'Command handler [%s] subscribed to command type [%s]' %
+          @logger.debug 'Command handler [%s] subscribed to command type [%s]' %
             [handler.class, command_type]
         end
 
@@ -69,14 +70,14 @@ module Synapse
           if current_handler.equal? handler
             @handlers.delete command_type
 
-            logger.debug 'Command handler [%s] unsubscribed from command type [%s]' %
+            @logger.debug 'Command handler [%s] unsubscribed from command type [%s]' %
               [handler.class, command_type]
           else
-            logger.info 'Command type [%s] subscribed to handler [%s] not [%s]' %
+            @logger.info 'Command type [%s] subscribed to handler [%s] not [%s]' %
               [command_type, current_handler.class, handler.class]
           end
         else
-          logger.info 'Command type [%s] not subscribed to any handler' % command_type
+          @logger.info 'Command type [%s] not subscribed to any handler' % command_type
         end
       end
 
@@ -99,16 +100,16 @@ module Synapse
         chain = InterceptorChain.new unit, @interceptors, handler
 
         begin
-          logger.debug 'Dispatching command [%s] [%s] to handler [%s]' %
+          @logger.debug 'Dispatching command [%s] [%s] to handler [%s]' %
             [command.id, command.payload_type, handler.class]
 
           result = chain.proceed command
         rescue => exception
           if @rollback_policy.should_rollback exception
-            logger.debug 'Unit of work is being rolled back due to rollback policy'
+            @logger.debug 'Unit of work is being rolled back due to rollback policy'
             unit.rollback exception
           else
-            logger.info 'Unit of work is being committed due to rollback policy'
+            @logger.info 'Unit of work is being committed due to rollback policy'
             unit.commit
           end
 
@@ -131,11 +132,6 @@ module Synapse
         rescue KeyError
           raise NoHandlerError, 'No handler subscribed for command [%s]' % type
         end
-      end
-
-      # @return [Logger]
-      def logger
-        @logger ||= Logging.logger[self.class]
       end
     end
   end

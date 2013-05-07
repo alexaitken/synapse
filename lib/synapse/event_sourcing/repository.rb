@@ -9,13 +9,21 @@ module Synapse
       # @return [EventStore]
       attr_reader :event_store
 
+      # @return [Array<EventStreamDecorator>]
+      attr_reader :stream_decorators
+
       # @param [AggregateFactory] aggregate_factory
       # @param [EventStore] event_store
+      # @param [LockManager] lock_manager
       # @return [undefined]
-      def initialize(aggregate_factory, event_store)
+      def initialize(aggregate_factory, event_store, lock_manager)
+        super lock_manager
+
         @aggregate_factory = aggregate_factory
         @event_store = event_store
         @stream_decorators = Array.new
+        @storage_listener =
+          EventSourcedStorageListener.new @event_store, @lock_manager, @stream_decorators, type_identifier
       end
 
       # Appends a stream decorator onto the end of the list of stream decorators
@@ -67,8 +75,7 @@ module Synapse
 
       # @return [StorageListener]
       def storage_listener
-        @storage_listener ||=
-          EventSourcedStorageListener.new @event_store, @lock_manager, @stream_decorators, type_identifier
+        @storage_listener
       end
 
       # @return [String]

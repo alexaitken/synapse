@@ -4,7 +4,12 @@ module Synapse
     # @abstract
     class LockingRepository < Repository
       # @return [LockManager]
-      attr_accessor :lock_manager
+      attr_reader :lock_manager
+
+      def initialize(lock_manager)
+        @lock_manager = lock_manager
+        @logger = Logging.logger.new self.class
+      end
 
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found
@@ -24,7 +29,7 @@ module Synapse
 
           aggregate
         rescue
-          logger.debug 'Excepton raised while loading an aggregate, releasing lock'
+          @logger.debug 'Excepton raised while loading an aggregate, releasing lock'
 
           @lock_manager.release_lock aggregate_id
           raise
@@ -43,7 +48,7 @@ module Synapse
           register_aggregate aggregate
           register_listener LockCleaningUnitOfWorkListener.new aggregate.id, @lock_manager
         rescue
-          logger.debug 'Exception raised while adding an aggregate, releasing lock'
+          @logger.debug 'Exception raised while adding an aggregate, releasing lock'
 
           @lock_manager.release_lock aggregate.id
           raise
@@ -64,9 +69,8 @@ module Synapse
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version); end
 
-      # @return [Logger]
       def logger
-        @logger ||= Logging.logger[self.class]
+
       end
     end
 
