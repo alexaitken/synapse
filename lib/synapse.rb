@@ -53,14 +53,14 @@ module Synapse
         autoload :NoHandlerError
       end
 
-      autoload_at 'synapse/command/interceptors/serialization' do
-        autoload :SerializationOptimizingInterceptor
-        autoload :SerializationOptimizingListener
-      end
-
       autoload_at 'synapse/command/filters/validation' do
         autoload :ActiveModelValidationFilter
         autoload :ActiveModelValidationError
+      end
+
+      autoload_at 'synapse/command/interceptors/serialization' do
+        autoload :SerializationOptimizingInterceptor
+        autoload :SerializationOptimizingListener
       end
 
       autoload_at 'synapse/command/rollback_policy' do
@@ -130,6 +130,12 @@ module Synapse
       autoload :EventSourcingRepository, 'synapse/event_sourcing/repository'
       autoload :EventSourcedStorageListener, 'synapse/event_sourcing/storage_listener'
       autoload :EventStreamDecorator, 'synapse/event_sourcing/stream_decorator'
+
+      autoload_at 'synapse/event_sourcing/conflict_resolver' do
+        autoload :ConflictResolver
+        autoload :ConflictResolvingUnitOfWorkListener
+        autoload :CapturingEventStream
+      end
 
       autoload_at 'synapse/event_sourcing/snapshot/taker' do
         autoload :AggregateSnapshotTaker
