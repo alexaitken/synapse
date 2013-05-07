@@ -185,6 +185,16 @@ module Synapse
     end
   end
 
+  module ProcessManager
+    extend ActiveSupport::Autoload
+
+    autoload :Correlation
+    autoload :CorrelationResolver
+    autoload :CorrelationSet
+
+    autoload :Process
+  end
+
   module Repository
     extend ActiveSupport::Autoload
 
