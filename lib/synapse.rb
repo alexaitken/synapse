@@ -53,7 +53,7 @@ module Synapse
         autoload :NoHandlerError
       end
 
-      autoload_at 'synapse/command/filters/serialization' do
+      autoload_at 'synapse/command/interceptors/serialization' do
         autoload :SerializationOptimizingInterceptor
         autoload :SerializationOptimizingListener
       end

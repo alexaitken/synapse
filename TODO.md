@@ -22,7 +22,9 @@
   + Caching repository
   + Hybrid event storage
 + Event store
-  + Persistent implementations (management, DataMapper, ActiveRecord, MongoMapper, etc.)
+  + ~~Mongo event store~~
+  + DataMapper or ActiveRecord event store
+  + Management
 + Repository
   + Optimistic/pessimistic lock manager
 
