@@ -85,18 +85,26 @@ module Synapse::EventStore::Mongo
     # Ensures that the correct indexes are in place
     # @return [undefined]
     def ensure_indexes
+      options = {
+        name: 'unique_aggregate_index',
+        unique: true
+      }
+
+      spec = {
+        aggregate_id: Mongo::ASCENDING,
+        aggregate_type: Mongo::ASCENDING,
+        sequence_number: Mongo::ASCENDING
+      }
+
+      @template.event_collection.ensure_index spec, options
+
       spec = {
         aggregate_id: Mongo::ASCENDING,
         aggregate_type: Mongo::ASCENDING,
         sequence_number: Mongo::DESCENDING
       }
 
-      options = {
-        name: 'unique_aggregate_index',
-        unique: true
-      }
-
-      @template.event_collection.ensure_index spec, options
+      @template.snapshot_collection.ensure_index spec, options
     end
   end
 end
