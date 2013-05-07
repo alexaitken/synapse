@@ -26,20 +26,6 @@ module Synapse
         @cache = SerializedObjectCache.new message
       end
 
-      # @param [Serializer] serializer
-      # @param [Class] expected_type
-      # @return [SerializedObject]
-      def serialize_metadata(serializer, expected_type)
-        @cache.serialize_metadata serializer, expected_type
-      end
-
-      # @param [Serializer] serializer
-      # @param [Class] expected_type
-      # @return [SerializedObject]
-      def serialize_payload(serializer, expected_type)
-        @cache.serialize_payload serializer, expected_type
-      end
-
       # @param [Hash] metadata
       # @return [SerializationAwareEventMessage]
       def and_metadata(metadata)
@@ -61,6 +47,9 @@ module Synapse
 
         self.class.new new_message
       end
+
+      # Delegators for the serialized object cache
+      def_delegators :@cache, :serialize_metadata, :serialize_payload
 
       # Delegators for message attribute readers
       def_delegators :@message, :id, :metadata, :payload, :payload_type, :timestamp

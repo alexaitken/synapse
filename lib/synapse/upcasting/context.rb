@@ -28,6 +28,8 @@ module Synapse
 
     # Upcasting context that provides information from serialized domain event data
     class SerializedDomainEventUpcastingContext < UpcastingContext
+      extend Forwardable
+
       # @return [Object]
       attr_reader :aggregate_id
 
@@ -44,25 +46,13 @@ module Synapse
         @serialized_metadata = Serialization::LazyObject.new @event_data.metadata, serializer
       end
 
-      # @return [String]
-      def message_id
-        @event_data.id
-      end
-
       # @return [Hash]
       def metadata
         @serialized_metadata.deserialized
       end
 
-      # @return [Time]
-      def timestamp
-        @event_data.timestamp
-      end
-
-      # @return [Integer]
-      def sequence_number
-        @event_data.sequence_number
-      end
+      # Delegators for serialized domain event data
+      def_delegators :@event_data, :id, :timestamp, :sequence_number
     end
   end
 end

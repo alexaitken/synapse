@@ -1,6 +1,8 @@
 module Synapse
   module Upcasting
     class UpcastSerializedDomainEventData < Serialization::SerializedDomainEventData
+      extend Forwardable
+
       # @param [SerializedDomainEventData] original
       # @param [Object] aggregate_id
       # @param [SerializedObject] upcast_payload
@@ -11,24 +13,9 @@ module Synapse
         @upcast_payload = upcast_payload
       end
 
-      # @return [String]
-      def id
-        @original.id
-      end
-
-      # @return [SerializedObject]
-      def metadata
-        @original.metadata
-      end
-
       # @return [SerializedObject]
       def payload
         @upcast_payload
-      end
-
-      # @return [Time]
-      def timestamp
-        @original.timestamp
       end
 
       # @return [Object]
@@ -36,10 +23,8 @@ module Synapse
         @aggregate_id
       end
 
-      # @return [Integer]
-      def sequence_number
-        @original.sequence_number
-      end
+      # Delegators for serialized domain event data
+      def_delegators :@original, :id, :metadata, :timestamp, :sequence_number
     end
   end
 end
