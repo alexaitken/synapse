@@ -45,10 +45,12 @@ command_bus.interceptors.push DuplicationCleanupInterceptor.new(recorder)
 command_bus.filters.push ActiveModelValidationFilter.new
 command_bus.filters.push DuplicationFilter.new(recorder)
 
+=begin
 serializer = OxSerializer.new
 serializer.serialize_options = {
   circular: true
 }
+=end
 
 upcaster_chain = UpcasterChain.new serializer.converter_factory
 
@@ -62,6 +64,7 @@ aggregate_taker = AggregateSnapshotTaker.new event_store
 aggregate_taker.register_factory aggregate_factory
 # deferred_taker = DeferredSnapshotTaker.new aggregate_taker
 snapshot_trigger = EventCountSnapshotTrigger.new aggregate_taker, unit_provider
+snapshot_trigger.threshold = 30
 
 #lock_manager = PessimisticLockManager.new
 lock_manager = NullLockManager.new
@@ -77,7 +80,7 @@ gateway = CommandGateway.new command_bus
 
 # End infrastructure
 
-x = 100
+x = 1
 
 orderbook_ids = Array.new
 
@@ -92,7 +95,7 @@ end
 
 command_types = [PlaceBuyOrderCommand, PlaceSellOrderCommand]
 
-n = 1000
+n = 500
 
 time = Benchmark.realtime do
 

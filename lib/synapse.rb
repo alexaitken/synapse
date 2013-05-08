@@ -123,6 +123,7 @@ module Synapse
       autoload :EventListener
       autoload :EventListenerProxy
       autoload :SimpleEventBus
+      autoload :WiringEventListener, 'synapse/event_bus/wiring'
     end
   end
 

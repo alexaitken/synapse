@@ -1,12 +1,8 @@
 module Synapse
   module ProcessManager
-    # Represents a mechanism for managing long-running business transactions
-    #
-    # Processes are instances that handle events and may possibly produce new commands or have other
-    # side effects. Multiple instances of a single type of process may exist. In that case, each
-    # process will be managing a different transaction. Processes some way of correlating themselves
-    # with relevant events. For example, if a process is associated with a specific order, it would
-    # correlate itself with the order's identifier.
+    # The term process is used in Enterprise Integration Patterns to describe a mechanism used to
+    # "maintain the state of the sequence and determine the next processing step based on
+    # intermediate results" (Hohpe 279). Processes are also called sagas in some CQRS frameworks.
     #
     # @abstract
     class Process
