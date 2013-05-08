@@ -30,7 +30,7 @@ module Synapse
       # @param [UnitOfWork] unit The current unit of work for this command dispatch
       # @param [InterceptorChain] chain
       # @return [Object] The result of the execution of the command
-      def handle(command, unit, chain)
+      def intercept(command, unit, chain)
         begin
           chain.proceed command
         rescue TransientError

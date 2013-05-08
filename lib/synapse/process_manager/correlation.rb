@@ -9,11 +9,11 @@ module Synapse
       attr_reader :value
 
       # @param [Symbol] key
-      # @param [Object] value
+      # @param [String] value
       # @return [undefined]
       def initialize(key, value)
         @key = key.to_sym
-        @value = value
+        @value = value.to_s
       end
 
       def ==(other)

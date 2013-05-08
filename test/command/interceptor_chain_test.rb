@@ -14,7 +14,7 @@ module Synapse
 
         chain = InterceptorChain.new unit, interceptors, handler
 
-        mock(interceptor).handle(command, unit, chain).ordered
+        mock(interceptor).intercept(command, unit, chain).ordered
         mock(handler).handle(command, unit).ordered
 
         chain.proceed command
