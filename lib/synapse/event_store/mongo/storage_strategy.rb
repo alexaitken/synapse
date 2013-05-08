@@ -35,6 +35,10 @@ module Synapse
         # @return [Array]
         def extract_events(document, aggregate_id); end
 
+        # Aliases of the Mongo constants for ascending and descending
+        ASCENDING = ::Mongo::ASCENDING
+        DESCENDING = ::Mongo::DESCENDING
+
         # Provides a cursor for accessing all events for an aggregate with the given identifier
         # and type identifier, with a sequence number equal to or greater than the given first
         # sequence number
@@ -56,7 +60,7 @@ module Synapse
           }
 
           sort = {
-            sequence_number: 1
+            sequence_number: ASCENDING
           }
 
           @template.event_collection.find(filter).sort(sort)
@@ -75,7 +79,7 @@ module Synapse
           }
 
           sort = {
-            sequence_number: -1
+            sequence_number: DESCENDING
           }
 
           @template.snapshot_collection.find(filter).sort(sort).limit(1)
@@ -90,17 +94,17 @@ module Synapse
           }
 
           spec = {
-            aggregate_id: 1,
-            aggregate_type: 1,
-            sequence_number: 1
+            aggregate_id: ASCENDING,
+            aggregate_type: ASCENDING,
+            sequence_number: ASCENDING
           }
 
           @template.event_collection.ensure_index spec, options
 
           spec = {
-            aggregate_id: 1,
-            aggregate_type: 1,
-            sequence_number: -1
+            aggregate_id: ASCENDING,
+            aggregate_type: ASCENDING,
+            sequence_number: DESCENDING
           }
 
           @template.snapshot_collection.ensure_index spec, options
