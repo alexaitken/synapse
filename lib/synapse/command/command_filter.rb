@@ -10,7 +10,7 @@ module Synapse
       #
       # @abstract
       # @param [CommandMessage] command
-      # @return [CommandMessage] The command to dispatch
+      # @return [CommandMessage] The command to dispatch on the bus
       def filter(command); end
     end
   end

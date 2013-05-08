@@ -27,7 +27,7 @@ module Synapse
       # @return [undefined]
       def release_lock(aggregate_id); end
     end
-    
+
     # Implementation of a lock manager that does no locking
     class NullLockManager < LockManager
       # @param [AggregateRoot] aggregate

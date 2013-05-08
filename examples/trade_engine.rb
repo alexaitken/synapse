@@ -33,13 +33,17 @@ end
 mongo_client = Mongo::MongoClient.new
 template = DefaultMongoTemplate.new mongo_client
 
+recorder = DuplicationRecorder.new
+
 unit_provider = UnitOfWorkProvider.new
 unit_factory = UnitOfWorkFactory.new unit_provider
 aggregate_factory = GenericAggregateFactory.new Orderbook
 event_bus = SimpleEventBus.new
 command_bus = SimpleCommandBus.new unit_factory
 command_bus.interceptors.push SerializationOptimizingInterceptor.new
-# command_bus.filters.push ActiveModelValidationFilter.new
+command_bus.interceptors.push DuplicationCleanupInterceptor.new(recorder)
+command_bus.filters.push ActiveModelValidationFilter.new
+command_bus.filters.push DuplicationFilter.new(recorder)
 
 serializer = OxSerializer.new
 serializer.serialize_options = {
@@ -64,7 +68,7 @@ lock_manager = NullLockManager.new
 repository = EventSourcingRepository.new aggregate_factory, event_store, lock_manager
 repository.event_bus = event_bus
 repository.unit_provider = unit_provider
-# repository.add_stream_decorator snapshot_trigger
+repository.add_stream_decorator snapshot_trigger
 
 ob_handler = OrderbookCommandHandler.new repository
 command_bus.subscribe CreateOrderbookCommand, ob_handler

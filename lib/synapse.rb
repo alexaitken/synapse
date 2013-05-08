@@ -24,6 +24,11 @@ module Synapse
 
     autoload :Message
     autoload :MessageBuilder
+
+    autoload_at 'synapse/duplication' do
+      autoload :DuplicationError
+      autoload :DuplicationRecorder
+    end
   end
 
   module Command
@@ -46,6 +51,11 @@ module Synapse
 
       autoload :DispatchInterceptor
       autoload :InterceptorChain
+
+      autoload_at 'synapse/command/duplication' do
+        autoload :DuplicationFilter
+        autoload :DuplicationCleanupInterceptor
+      end
 
       autoload_at 'synapse/command/errors' do
         autoload :CommandExecutionError
@@ -319,6 +329,7 @@ module Synapse
     autoload :UpcastSerializedDomainEventData, 'synapse/upcasting/data'
   end
 
+  # TODO this is more of an application call
   ActiveSupport::Autoload.eager_autoload!
 
   # Setup the default identifier factory

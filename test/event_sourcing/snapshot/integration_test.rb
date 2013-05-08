@@ -54,7 +54,7 @@ module Synapse
         events = Array.new
 
         size.times do
-          events.push Domain::DomainEventMessageBuilder.build
+          events.push Domain::DomainEventMessage.build
         end
 
         Domain::SimpleDomainEventStream.new events

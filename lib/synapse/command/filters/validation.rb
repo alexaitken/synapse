@@ -3,7 +3,7 @@ module Synapse
     class ActiveModelValidationFilter < CommandFilter
       # @raise [ActiveModelValidationError] If command doesn't pass validation
       # @param [CommandMessage] command
-      # @return [CommandMessage] The command to dispatch
+      # @return [CommandMessage] The command to dispatch on the bus
       def filter(command)
         payload = command.payload
 

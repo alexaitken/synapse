@@ -6,6 +6,8 @@ module Synapse
       # @return [LockManager]
       attr_reader :lock_manager
 
+      # @param [LockManager] lock_manager
+      # @return [undefined]
       def initialize(lock_manager)
         @lock_manager = lock_manager
         @logger = Logging.logger.new self.class

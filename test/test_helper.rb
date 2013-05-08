@@ -11,6 +11,7 @@ end
 require 'pp'
 require 'test/unit'
 require 'rr'
+require 'timecop'
 require 'synapse'
 
 class Test::Unit::TestCase
