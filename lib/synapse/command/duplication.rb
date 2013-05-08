@@ -33,7 +33,7 @@ module Synapse
       def handle(command, unit, chain)
         begin
           chain.proceed command
-        rescue NonTransientError
+        rescue TransientError
           @recorder.forget command
           raise
         end
