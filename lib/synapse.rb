@@ -183,6 +183,7 @@ module Synapse
     module Mongo
       extend ActiveSupport::Autoload
 
+      autoload :CursorDomainEventStream, 'synapse/event_store/mongo/cursor_event_stream'
       autoload :MongoEventStore, 'synapse/event_store/mongo/event_store'
       autoload :DocumentPerEventStrategy, 'synapse/event_store/mongo/per_event_strategy'
       autoload :DocumentPerCommitStrategy, 'synapse/event_store/mongo/per_commit_strategy'
