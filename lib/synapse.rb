@@ -77,6 +77,8 @@ module Synapse
         autoload :RollbackPolicy
         autoload :RollbackOnAnyExceptionPolicy
       end
+
+      autoload :WiringCommandHandler, 'synapse/command/wiring'
     end
   end
 
@@ -328,6 +330,14 @@ module Synapse
     end
 
     autoload :UpcastSerializedDomainEventData, 'synapse/upcasting/data'
+  end
+
+  module Wiring
+    extend ActiveSupport::Autoload
+
+    autoload :MessageWiring
+    autoload :Wire
+    autoload :WireRegistry
   end
 
   # TODO this is more of an application call

@@ -71,9 +71,7 @@ repository.unit_provider = unit_provider
 repository.add_stream_decorator snapshot_trigger
 
 ob_handler = OrderbookCommandHandler.new repository
-command_bus.subscribe CreateOrderbookCommand, ob_handler
-command_bus.subscribe PlaceBuyOrderCommand, ob_handler
-command_bus.subscribe PlaceSellOrderCommand, ob_handler
+ob_handler.subscribe command_bus
 
 gateway = CommandGateway.new command_bus
 
