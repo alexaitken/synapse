@@ -1,22 +1,31 @@
 source 'https://rubygems.org'
 
-gem 'json', '~> 1.7.7'
+group :test do
+  gem 'coveralls'
+  gem 'rr'
+  gem 'simplecov'
+  gem 'timecop'
+end
+
+group :test, :development do
+  # Used for command validation and serialization
+  gem 'activemodel'
+
+  # Used for serialization component
+  gem 'oj', platform: :ruby
+  gem 'ox', platform: :ruby
+end
 
 group :development do
-    gem 'coveralls'
+  # Used to generate documentation
+  gem 'redcarpet', platform: :ruby
+  gem 'yard'
+end
 
-    # Used for command validation and serialization
-    gem 'activemodel'
-
-    # Used for serialization component
-    gem 'oj', platform: :ruby
-    gem 'ox', platform: :ruby
-
-    # Used for Mongo event store
-    gem 'mongo'
-    gem 'bson_ext', platform: :ruby
-
-    gem 'redcarpet', platform: :ruby
+# Used for the Mongo event store and saga repository
+group :mongo do
+  gem 'mongo'
+  gem 'bson_ext', platform: :ruby
 end
 
 gemspec

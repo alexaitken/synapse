@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name = 'synapse'
+  s.name = 'synapse-core'
   s.version = '0.1.2'
   s.author = 'Ian Unruh'
   s.email = 'ianunruh@gmail.com'
@@ -14,11 +14,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'atomic'
   s.add_dependency 'eventmachine'
   s.add_dependency 'logging'
-
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rr'
-  s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'timecop'
-  s.add_development_dependency 'yard'
 end
