@@ -6,7 +6,7 @@
 
 == AxonFramework functionality
 
-+ Auditing component
++ ~~Auditing component~~
 + Command bus
   + ~~DSL for defining and subscribing command handlers to command types~~
   + ~~Command validation (ActiveModel)~~

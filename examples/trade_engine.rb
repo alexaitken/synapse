@@ -45,12 +45,10 @@ command_bus.interceptors.push DuplicationCleanupInterceptor.new(recorder)
 command_bus.filters.push ActiveModelValidationFilter.new
 command_bus.filters.push DuplicationFilter.new(recorder)
 
-=begin
 serializer = OxSerializer.new
 serializer.serialize_options = {
   circular: true
 }
-=end
 
 upcaster_chain = UpcasterChain.new serializer.converter_factory
 
@@ -80,7 +78,7 @@ gateway = CommandGateway.new command_bus
 
 # End infrastructure
 
-x = 1
+x = 1000
 
 orderbook_ids = Array.new
 
@@ -95,7 +93,7 @@ end
 
 command_types = [PlaceBuyOrderCommand, PlaceSellOrderCommand]
 
-n = 500
+n = 1000
 
 time = Benchmark.realtime do
 

@@ -4,6 +4,11 @@ module Synapse
     # applied to the aggregate
     module Member
       extend ActiveSupport::Concern
+      include Wiring::MessageWiring
+
+      included do
+        self.wire_registry = Wiring::WireRegistry.new true
+      end
 
       module ClassMethods
         # Registers an instance variable as a child entity
@@ -53,10 +58,14 @@ module Synapse
       # If the event is relative to this member, its parameters will be used to change
       # the state of this member
       #
-      # @abstract
       # @param [EventMessage] event
       # @return [undefined]
-      def handle_event(event); end
+      def handle_event(event)
+        wire = self.wire_registry.wire_for event.payload_type
+        if wire
+          invoke_wire event, wire
+        end
+      end
 
     private
 

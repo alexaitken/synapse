@@ -33,27 +33,29 @@ module TradeEngine
 
   protected
 
-    def handle_event(event)
-      e = event.payload
+    wire OrderbookCreatedEvent do |event|
+      @id = event.orderbook_id
+    end
 
-      if e.is_a? OrderbookCreatedEvent
-        @id = e.orderbook_id
-      elsif e.is_a? BuyOrderPlacedEvent
-        @buy_orders.push Order.new e.order_id, e.item_price, e.trade_count
-      elsif e.is_a? SellOrderPlacedEvent
-        @sell_orders.push Order.new e.order_id, e.item_price, e.trade_count
-      elsif e.is_a? TradeExecutedEvent
-        # Cleans up after the last trade execution
-        highest_buyer = @buy_orders.last
-        lowest_seller = @sell_orders.first
+    wire BuyOrderPlacedEvent do |event|
+      @buy_orders.push Order.new event.order_id, event.item_price, event.trade_count
+    end
 
-        if highest_buyer.items_remaining <= e.trade_count
-          @buy_orders.delete highest_buyer
-        end
+    wire SellOrderPlacedEvent do |event|
+      @sell_orders.push Order.new event.order_id, event.item_price, event.trade_count
+    end
 
-        if lowest_seller.items_remaining <= e.trade_count
-          @sell_orders.delete lowest_seller
-        end
+    wire TradeExecutedEvent do |event|
+      # Cleans up after the last trade execution
+      highest_buyer = @buy_orders.last
+      lowest_seller = @sell_orders.first
+
+      if highest_buyer.items_remaining <= event.trade_count
+        @buy_orders.delete highest_buyer
+      end
+
+      if lowest_seller.items_remaining <= event.trade_count
+        @sell_orders.delete lowest_seller
       end
     end
 
