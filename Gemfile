@@ -22,7 +22,7 @@ group :development do
   gem 'yard'
 end
 
-# Used for the Mongo event store and saga repository
+# Used for the Mongo event store and process repository
 group :mongo do
   gem 'mongo'
   gem 'bson_ext', platform: :ruby
