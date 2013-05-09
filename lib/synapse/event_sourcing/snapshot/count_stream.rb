@@ -2,17 +2,14 @@ module Synapse
   module EventSourcing
     # Event stream decorator that simply counts each event that is retrieved from a delegate stream
     class CountingEventStream < Domain::DomainEventStream
+      extend Forwardable
+
       # @param [DomainEventStream] delegate
       # @param [Atomic] counter
       # @return [undefined]
       def initialize(delegate, counter)
         @delegate = delegate
         @counter = counter
-      end
-
-      # @return [Boolean]
-      def end?
-        @delegate.end?
       end
 
       # @return [DomainEventMessage]
@@ -26,10 +23,8 @@ module Synapse
         next_event
       end
 
-      # @return [DomainEventMessage]
-      def peek
-        @delegate.peek
-      end
+      # Delegate un-decorated domain event stream operations
+      def_delegators :@delegate, :end?, :peek
     end
 
     # Event stream decorator that counts each event retrieved from the delegate stream and

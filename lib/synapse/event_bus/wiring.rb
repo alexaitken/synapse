@@ -15,7 +15,7 @@ module Synapse
       def notify(event)
         wire = self.wire_registry.wire_for event.payload_type
         if wire
-          invoke_wire command, wire
+          invoke_wire event, wire
         end
       end
     end

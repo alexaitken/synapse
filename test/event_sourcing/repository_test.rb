@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'domain/fixtures'
 
 module Synapse
   module EventSourcing
@@ -16,6 +17,14 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
+      def test_add_compatibility
+        aggregate = Domain::Person.new 123, 'Polandball'
+
+        assert_raise ArgumentError do
+          @repository.add aggregate # Polandball can't into repository :(
+        end
+      end
+
       def test_load
         event = create_event(123, 0, StubCreatedEvent.new(123))
 
@@ -24,6 +33,18 @@ module Synapse
         end
 
         aggregate = @repository.load 123
+      end
+
+      def test_load_incorrect_version
+        event = create_event(123, 1, StubCreatedEvent.new(123))
+
+        mock(@event_store).read_events(@factory.type_identifier, 123) do
+          Domain::SimpleDomainEventStream.new event
+        end
+
+        assert_raise Repository::ConflictingAggregateVersionError do
+          aggregate = @repository.load 123, 0
+        end
       end
 
       def test_load_not_found
