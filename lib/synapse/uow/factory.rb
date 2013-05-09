@@ -15,13 +15,13 @@ module Synapse
       # @return [UnitOfWork]
       def create
         unit = UnitOfWork.new @provider
+        unit.tap do
+          if @transaction_manager
+            unit.transaction_manager = @transaction_manager
+          end
 
-        if @transaction_manager
-          unit.transaction_manager = @transaction_manager
+          unit.start
         end
-
-        unit.start
-        unit
       end
     end
   end

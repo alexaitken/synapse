@@ -26,10 +26,9 @@ module Synapse
         begin
           aggregate = perform_load aggregate_id, expected_version
 
-          aggregate = register_aggregate aggregate
-          register_listener LockCleaningUnitOfWorkListener.new aggregate_id, @lock_manager
-
-          aggregate
+          register_aggregate(aggregate).tap do
+            register_listener LockCleaningUnitOfWorkListener.new aggregate_id, @lock_manager
+          end
         rescue
           @logger.debug 'Excepton raised while loading an aggregate, releasing lock'
 
@@ -70,10 +69,6 @@ module Synapse
       # @param [Integer] expected_version
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version); end
-
-      def logger
-
-      end
     end
 
     # Unit of work listener that releases the lock on an aggregate when the unit of work

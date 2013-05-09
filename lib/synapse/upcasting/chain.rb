@@ -63,7 +63,7 @@ module Synapse
 
           if upcaster.can_upcast? serialized_type
             serialized_object = converter_factory.convert serialized_object, upcaster.expected_content_type
-            expected_types = upcaster.upcast_type(serialized_type)
+            expected_types = upcaster.upcast_type serialized_type
 
             upcast_objects.concat(perform_upcast(upcaster, serialized_object, expected_types, upcast_context))
           else

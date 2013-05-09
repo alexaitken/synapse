@@ -30,9 +30,9 @@ module Synapse
 
         # @return [DomainEventMessage]
         def next_event
-          current = @next
-          initialize_next_event
-          current
+          @next.tap do
+            initialize_next_event
+          end
         end
 
         # @return [DomainEventMessage]

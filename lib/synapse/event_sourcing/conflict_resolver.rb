@@ -64,13 +64,11 @@ module Synapse
 
       # @return [DomainEventMessage]
       def next_event
-        event = @delegate.next_event
-
-        if @expected_version and event.sequence_number > @expected_version
-          @unseen_events.push event
+        @delegate.next_event.tap do |event|
+          if @expected_version and event.sequence_number > @expected_version
+            @unseen_events.push event
+          end
         end
-
-        event
       end
 
       # Delegators for domain event stream

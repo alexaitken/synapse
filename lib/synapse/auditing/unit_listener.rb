@@ -27,11 +27,9 @@ module Synapse
           audit_data.merge! data_provider.provide_data_for @command
         end
 
-        event = event.and_metadata audit_data
-
-        @recorded_events.push event
-
-        event
+        event.and_metadata(audit_data).tap do
+          @recorded_events.push event
+        end
       end
 
       # @param [UnitOfWork] unit

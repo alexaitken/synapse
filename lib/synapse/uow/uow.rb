@@ -48,13 +48,13 @@ module Synapse
           return similar
         end
 
-        aggregate.add_registration_listener do |event|
-          publish_event event, event_bus
+        aggregate.tap do
+          aggregate.add_registration_listener do |event|
+            publish_event event, event_bus
+          end
+
+          @aggregates.store aggregate, storage_listener
         end
-
-        @aggregates.store aggregate, storage_listener
-
-        aggregate
       end
 
       # Buffers an event for publication to the given event bus until this unit of work is
@@ -65,15 +65,15 @@ module Synapse
       # @return [EventMessage] The event that will be published to the event bus
       def publish_event(event, event_bus)
         event = @listeners.on_event_registered self, event
+        event.tap do
+          begin
+            events = @events.fetch event_bus
+          rescue KeyError
+            events = @events.store event_bus, Array.new
+          end
 
-        begin
-          events = @events.fetch event_bus
-        rescue KeyError
-          events = @events.store event_bus, Array.new
+          events.push event
         end
-
-        events.push event
-        event
       end
 
       # Sets the transaction manager that will be used by this unit of work
