@@ -62,7 +62,7 @@ module Synapse
           serialized_type = serialized_object.type
 
           if upcaster.can_upcast? serialized_type
-            serialized_object = ensure_correct_type(serialized_object, upcaster.expected_content_type)
+            serialized_object = converter_factory.convert serialized_object, upcaster.expected_content_type
             expected_types = upcaster.upcast_type(serialized_type)
 
             upcast_objects.concat(perform_upcast(upcaster, serialized_object, expected_types, upcast_context))
@@ -72,13 +72,6 @@ module Synapse
         end
 
         upcast_objects
-      end
-
-      # @param [SerializedObject] serialized_object
-      # @param [Class] expected_type
-      # @return [SerializedObject]
-      def ensure_correct_type(serialized_object, expected_type)
-        converter_factory.converter(serialized_object.content_type, expected_type).convert(serialized_object)
       end
     end
   end

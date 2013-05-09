@@ -44,29 +44,29 @@ module Synapse
 
     # Returns a copy of this message with the given metadata merged in
     #
-    # @param [Hash] metadata
+    # @param [Hash] additional_metadata
     # @return [Message]
-    def and_metadata(metadata)
-      if metadata.empty?
+    def and_metadata(additional_metadata)
+      if additional_metadata.empty?
         return self
       end
 
       builder = self.class.builder.new
-      build_duplicate(builder, @metadata.merge(metadata))
+      build_duplicate builder, @metadata.merge(additional_metadata)
       builder.build
     end
 
     # Returns a copy of this message with the metadata replaced with the given metadata
     #
-    # @param [Hash] metadata
+    # @param [Hash] replacement_metadata
     # @return [Message]
-    def with_metadata(metadata)
-      if @metadata == metadata
+    def with_metadata(replacement_metadata)
+      if @metadata == replacement_metadata
         return self
       end
 
       builder = self.class.builder.new
-      build_duplicate(builder, metadata)
+      build_duplicate builder, replacement_metadata
       builder.build
     end
 
@@ -89,7 +89,7 @@ module Synapse
 
     # Populates a duplicated message with attributes from this message
     #
-    # @param [MessageBuilder] message
+    # @param [MessageBuilder] builder
     # @param [Hash] metadata
     # @return [undefined]
     def build_duplicate(builder, metadata)

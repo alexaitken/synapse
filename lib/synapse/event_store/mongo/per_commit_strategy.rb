@@ -17,10 +17,8 @@ module Synapse
           document.from_events(type_identifier, events, @serializer).to_hash
         end
 
-        # @param [Hash] document
+        # @param [Hash] hash
         # @param [Object] aggregate_id
-        # @param [Serializer] serializer
-        # @param [UpcasterChain] upcaster_chain
         # @return [Array]
         def extract_events(hash, aggregate_id)
           document = CommitDocument.new
@@ -34,7 +32,7 @@ module Synapse
 
           # @param [String] type_identifier
           # @param [Array] events
-          # @param [Serializer] serialier
+          # @param [Serializer] serializer
           # @return [CommitDocument]
           def from_events(type_identifier, events, serializer)
             first_event = events.first

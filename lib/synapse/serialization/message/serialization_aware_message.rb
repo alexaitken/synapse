@@ -26,10 +26,11 @@ module Synapse
         @cache = SerializedObjectCache.new message
       end
 
-      # @param [Hash] metadata
+      # @see Message#and_metadata
+      # @param [Hash] additional_metadata
       # @return [SerializationAwareEventMessage]
-      def and_metadata(metadata)
-        new_message = @message.and_metadata metadata
+      def and_metadata(additional_metadata)
+        new_message = @message.and_metadata additional_metadata
         if new_message.equal? @message
           return self
         end
@@ -37,10 +38,11 @@ module Synapse
         self.class.new new_message
       end
 
-      # @param [Hash] metadata
+      # @see Message#with_metadata
+      # @param [Hash] replacement_metadata
       # @return [SerializationAwareEventMessage]
-      def with_metadata(metadata)
-        new_message = @message.with_metadata metadata
+      def with_metadata(replacement_metadata)
+        new_message = @message.with_metadata replacement_metadata
         if new_message.equal? @message
           return self
         end

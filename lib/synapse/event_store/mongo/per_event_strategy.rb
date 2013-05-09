@@ -19,10 +19,8 @@ module Synapse
           documents
         end
 
-        # @param [Hash] document
+        # @param [Hash] hash
         # @param [Object] aggregate_id
-        # @param [Serializer] serializer
-        # @param [UpcasterChain] upcaster_chain
         # @return [Array]
         def extract_events(hash, aggregate_id)
           document = EventDocument.new

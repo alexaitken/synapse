@@ -30,8 +30,6 @@ module Synapse
         # @abstract
         # @param [Hash] document
         # @param [Object] aggregate_id
-        # @param [Serializer] serializer
-        # @param [UpcasterChain] upcaster_chain
         # @return [Array]
         def extract_events(document, aggregate_id); end
 

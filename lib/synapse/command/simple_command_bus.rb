@@ -122,7 +122,7 @@ module Synapse
       end
 
       # @raise [NoHandlerError]
-      # @param [CommandMessage]
+      # @param [CommandMessage] command
       # @return [CommandHandler]
       def handler_for(command)
         type = command.payload_type

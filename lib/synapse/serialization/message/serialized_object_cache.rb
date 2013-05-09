@@ -37,9 +37,9 @@ module Synapse
         @lock.synchronize do
           serialized = cache[serializer]
           if serialized
-            serializer.converter_factory.convert(serialized.content_type, expected_type).convert(serialized)
+            serializer.converter_factory.convert serialized, expected_type
           else
-            serialized = serializer.serialize(object, expected_type)
+            serialized = serializer.serialize object, expected_type
             cache[serializer] = serialized
             serialized
           end

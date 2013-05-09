@@ -60,7 +60,7 @@ module Synapse
 
     private
 
-      # @param [Array] source
+      # @param [Array] entities
       # @return [Array]
       def filter_entities(entities)
         entities.select do |entity|

@@ -40,32 +40,35 @@ module Synapse
 
       # Returns a copy of this message with the given metadata merged in
       #
-      # @param [Hash] metadata
+      # @see Message#and_metadata
+      # @param [Hash] additional_metadata
       # @return [SerializedMessage]
-      def and_metadata(metadata)
-        if metadata.empty?
+      def and_metadata(additional_metadata)
+        if additional_metadata.empty?
           return self
         end
 
-        builder = self.class.builder.new
-        build_duplicate(builder, @serialized_metadat.deserialized.merge(metadata))
-        builder.build
+        self.class.build do |builder|
+          build_duplicate builder, metadata.merge(additional_metadata)
+        end
       end
 
       # Returns a copy of this message with the metadata replaced with the given metadata
       #
-      # @param [Hash] metadata
+      # @see Message#with_metadata
+      # @param [Hash] replacement_metadata
       # @return [SerializedMessage]
-      def with_metadata(metadata)
-        if @serialized_metadata.deserialized == metadata
+      def with_metadata(replacement_metadata)
+        if @serialized_metadata.deserialized == replacement_metadata
           return self
         end
 
-        builder = self.class.builder.new
-        build_duplicate(builder, metadata)
-        builder.build
+        self.class.build do |builder|
+          build_duplicate builder, replacement_metadata
+        end
       end
 
+      # @see SerializationAware#serialize_metadata
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
@@ -73,6 +76,7 @@ module Synapse
         serialize @serialized_metadata, serializer, expected_type
       end
 
+      # @see SerializationAware#serialize_payload
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
@@ -99,7 +103,7 @@ module Synapse
 
       # Populates a duplicated message with attributes from this message
       #
-      # @param [SerializedMessageBuilder] message
+      # @param [SerializedMessageBuilder] builder
       # @param [Hash] metadata
       # @return [undefined]
       def build_duplicate(builder, metadata)
@@ -117,9 +121,9 @@ module Synapse
       def serialize(object, serializer, expected_type)
         if object.serializer.equal? serializer
           serialized = object.serialized_object
-          serializer.converter_factory.converter(serialized.content_type, expected_type).convert(serialized)
+          serializer.converter_factory.convert serialized, expected_type
         else
-          serializer.serialize(object.deserialized, expected_type)
+          serializer.serialize object.deserialized, expected_type
         end
       end
     end

@@ -14,7 +14,7 @@ module Synapse
       def self.build
         builder = self.new
 
-        yield builder if block.given?
+        yield builder if block_given?
 
         builder.build
       end

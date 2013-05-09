@@ -15,6 +15,8 @@ group :development do
     # Used for Mongo event store
     gem 'mongo'
     gem 'bson_ext', platform: :ruby
+
+    gem 'redcarpet', platform: :ruby
 end
 
 gemspec

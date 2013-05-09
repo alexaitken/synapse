@@ -17,6 +17,16 @@ module Synapse
         @converters.push converter
       end
 
+      # Convenience method for converting a given serialized object to the given target type
+      #
+      # @param [SerializedObject] serialized_object
+      # @param [Class] target_type
+      # @return [SerializedObject]
+      def convert(serialized_object, target_type)
+        converter = converter serialized_object.content_type, target_type
+        converter.convert serialized_object
+      end
+
       # Returns a converter that is capable of converting content of the given source type to
       # the given target type, if one exists.
       #
