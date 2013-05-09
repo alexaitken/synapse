@@ -23,12 +23,12 @@ module Synapse
       # @return [EventMessage]
       def on_event_registered(unit, event)
         audit_data = Hash.new
-        @data_providers.each do |data_provider|
-          audit_data.merge! data_provider.provide_data_for @command
+        @data_providers.each do |provider|
+          audit_data.merge! provider.provide_data_for @command
         end
 
-        event.and_metadata(audit_data).tap do
-          @recorded_events.push event
+        event.and_metadata(audit_data).tap do |e|
+          @recorded_events.push e
         end
       end
 
