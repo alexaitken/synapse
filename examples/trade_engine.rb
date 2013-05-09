@@ -4,23 +4,15 @@ require 'synapse'
 require 'pp'
 require 'mongo'
 
+require_relative 'trade_engine/infrastructure'
+require_relative 'trade_engine/contracts'
 require_relative 'trade_engine/api'
 require_relative 'trade_engine/command'
 require_relative 'trade_engine/order'
 require_relative 'trade_engine/orderbook'
+require_relative 'trade_engine/bson'
 
 Logging.logger.root.appenders = Logging.appenders.stdout
-# Logging.logger.root.level = :warn
-
-include Synapse
-include Synapse::Command
-include Synapse::EventBus
-include Synapse::EventStore::Mongo
-include Synapse::EventSourcing
-include Synapse::Repository
-include Synapse::Serialization
-include Synapse::UnitOfWork
-include Synapse::Upcasting
 
 include TradeEngine
 
@@ -30,77 +22,54 @@ Thread.new do
   EventMachine.run
 end
 
-mongo_client = Mongo::MongoClient.new
-template = DefaultMongoTemplate.new mongo_client
+infrastructure = Infrastructure.configure do |infra|
+  infra.build_bus do |bus|
+    bus.with_validation
+    bus.with_deduplication
+  end
 
-recorder = DuplicationRecorder.new
+  infra.build_repository do |repo|
+    repo.serializer = ActiveModelSerializer.new
+    repo.serializer.converter_factory.register OrderedHashToHashConverter.new
+    repo.for_aggregate Orderbook
+    repo.with_mongo
+    # repo.with_snapshotting
+  end
+end
 
-unit_provider = UnitOfWorkProvider.new
-unit_factory = UnitOfWorkFactory.new unit_provider
-aggregate_factory = GenericAggregateFactory.new Orderbook
-event_bus = SimpleEventBus.new
-command_bus = SimpleCommandBus.new unit_factory
-command_bus.interceptors.push SerializationOptimizingInterceptor.new
-command_bus.interceptors.push DuplicationCleanupInterceptor.new(recorder)
-command_bus.filters.push ActiveModelValidationFilter.new
-command_bus.filters.push DuplicationFilter.new(recorder)
-
-serializer = OxSerializer.new
-serializer.serialize_options = {
-  circular: true
-}
-
-upcaster_chain = UpcasterChain.new serializer.converter_factory
-
-strategy = DocumentPerCommitStrategy.new template, serializer, upcaster_chain
-# strategy = DocumentPerEventStrategy.new template, serializer, upcaster_chain
-event_store = MongoEventStore.new template, strategy
-event_store.ensure_indexes
-# event_store = InMemoryEventStore.new
-
-aggregate_taker = AggregateSnapshotTaker.new event_store
-aggregate_taker.register_factory aggregate_factory
-# deferred_taker = DeferredSnapshotTaker.new aggregate_taker
-snapshot_trigger = EventCountSnapshotTrigger.new aggregate_taker, unit_provider
-snapshot_trigger.threshold = 30
-
-#lock_manager = PessimisticLockManager.new
-lock_manager = NullLockManager.new
-repository = EventSourcingRepository.new aggregate_factory, event_store, lock_manager
-repository.event_bus = event_bus
-repository.unit_provider = unit_provider
-repository.add_stream_decorator snapshot_trigger
-
-ob_handler = OrderbookCommandHandler.new repository
-ob_handler.subscribe command_bus
-
-gateway = CommandGateway.new command_bus
+gateway = infrastructure.gateway
+ob_handler = OrderbookCommandHandler.new infrastructure.repository
+ob_handler.subscribe infrastructure.command_bus
 
 # End infrastructure
 
-x = 1000
-
-orderbook_ids = Array.new
-
-x.times do
-  orderbook_id = IdentifierFactory.instance.generate
-  orderbook_ids.push orderbook_id
-
-  gateway.send CreateOrderbookCommand.new { |c|
-    c.orderbook_id = orderbook_id
-  }
-end
+id_factory = Synapse::IdentifierFactory.instance
 
 command_types = [PlaceBuyOrderCommand, PlaceSellOrderCommand]
 
-n = 1000
+# Number of orderbooks to create
+x = 1000
+
+# Number of orders to submit
+n = 100
+
+orderbook_ids = Array.new
 
 time = Benchmark.realtime do
 
-  n.times do |i|
+  x.times do
+    orderbook_id = id_factory.generate
+    orderbook_ids.push orderbook_id
+
+    gateway.send CreateOrderbookCommand.new { |c|
+      c.orderbook_id = orderbook_id
+    }
+  end
+
+  n.times do
     gateway.send command_types.sample.new { |c|
       c.orderbook_id = orderbook_ids.sample
-      c.order_id = IdentifierFactory.instance.generate
+      c.order_id = id_factory.generate
       c.trade_count = 10
       c.item_price = 5
     }
@@ -108,10 +77,12 @@ time = Benchmark.realtime do
 
 end
 
-overall = time.round(2)
-latency = (time/n * 1000).round(1)
-throughput = (n/time).round
+t = x + n
 
-puts '   Overall: Took %ss to handle %s commands' % [overall, n]
+overall = time.round(2)
+latency = (time/t * 1000).round(1)
+throughput = (t/time).round
+
+puts '   Overall: Took %ss to handle %s commands' % [overall, t]
 puts 'Throughput: %s commands/sec' % [throughput]
 puts '   Latency: %sms' % [latency]

@@ -1,17 +1,10 @@
 module TradeEngine
-  module Initializer
-    def initialize
-      yield self if block_given?
-    end
-  end
-
   ###################################################
   # Commands
   ###################################################
 
   class CreateOrderbookCommand
-    include ActiveModel::Validations
-    include Initializer
+    include DomainObject
 
     attr_accessor :orderbook_id
     validates_presence_of :orderbook_id
@@ -19,8 +12,7 @@ module TradeEngine
 
   # @abstract
   class PlaceOrderCommand
-    include ActiveModel::Validations
-    include Initializer
+    include DomainObject
 
     attr_accessor :orderbook_id, :order_id, :trade_count, :item_price
 
@@ -43,22 +35,22 @@ module TradeEngine
   ###################################################
 
   class OrderbookCreatedEvent
-    include Initializer
+    include DomainObject
     attr_accessor :orderbook_id
   end
 
   class BuyOrderPlacedEvent
-    include Initializer
+    include DomainObject
     attr_accessor :orderbook_id, :order_id, :trade_count, :item_price
   end
 
   class SellOrderPlacedEvent
-    include Initializer
+    include DomainObject
     attr_accessor :orderbook_id, :order_id, :trade_count, :item_price
   end
 
   class TradeExecutedEvent
-    include Initializer
+    include DomainObject
     attr_accessor :orderbook_id, :buy_order_id, :sell_order_id, :trade_count, :trade_price
   end
 end

@@ -36,7 +36,7 @@ module Synapse
       # @param [Class] representation_type
       # @return [Boolean]
       def can_serialize_to?(representation_type)
-        converter_factory.has_converter?(String, representation_type)
+        converter_factory.has_converter?(native_content_type, representation_type)
       end
 
       # @param [SerializedType] serialized_type
