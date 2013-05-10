@@ -19,3 +19,5 @@ require 'test_ext'
 class Test::Unit::TestCase
   include RR::Adapters::TestUnit
 end
+
+ActiveSupport::Autoload.eager_autoload!

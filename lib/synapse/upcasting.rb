@@ -1,16 +1,5 @@
-module Synapse
-  module Upcasting
-    extend ActiveSupport::Autoload
-
-    autoload :SingleUpcaster
-    autoload :Upcaster
-    autoload :UpcasterChain, 'synapse/upcasting/chain'
-
-    autoload_at 'synapse/upcasting/context' do
-      autoload :UpcastingContext
-      autoload :SerializedDomainEventUpcastingContext
-    end
-
-    autoload :UpcastSerializedDomainEventData, 'synapse/upcasting/data'
-  end
-end
+require 'synapse/upcasting/context'
+require 'synapse/upcasting/chain'
+require 'synapse/upcasting/data'
+require 'synapse/upcasting/upcaster'
+require 'synapse/upcasting/single_upcaster'

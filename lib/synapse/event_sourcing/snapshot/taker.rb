@@ -17,24 +17,6 @@ module Synapse
       def schedule_snapshot(type_identifier, aggregate_id); end
     end
 
-    # Snapshot taker that uses EventMachine to defer scheduling of snapshots
-    class DeferredSnapshotTaker < SnapshotTaker
-      # @param [SnapshotTaker] delegate
-      # @return [undefined]
-      def initialize(delegate)
-        @delegate = delegate
-      end
-
-      # @param [String] type_identifier
-      # @param [Object] aggregate_id
-      # @return [undefined]
-      def schedule_snapshot(type_identifier, aggregate_id)
-        EventMachine.defer do
-          @delegate.schedule_snapshot type_identifier, aggregate_id
-        end
-      end
-    end
-
     # Snapshot taker that uses the actual aggregate and its state to create a snapshot event
     class AggregateSnapshotTaker < SnapshotTaker
       # @param [SnapshotEventStore] event_store

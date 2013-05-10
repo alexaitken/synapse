@@ -1,18 +1,4 @@
-module Synapse
-  module Auditing
-    extend ActiveSupport::Autoload
-
-    eager_autoload do
-      autoload :AuditLogger
-
-      autoload_at 'synapse/auditing/data_provider' do
-        autoload :AuditDataProvider
-        autoload :CommandMetadataProvider
-        autoload :CorrelationDataProvider
-      end
-
-      autoload :AuditingUnitOfWorkListener, 'synapse/auditing/unit_listener'
-      autoload :AuditingDispatchInterceptor, 'synapse/auditing/dispatch_interceptor'
-    end
-  end
-end
+require 'synapse/auditing/audit_logger'
+require 'synapse/auditing/data_provider'
+require 'synapse/auditing/dispatch_interceptor'
+require 'synapse/auditing/unit_listener'

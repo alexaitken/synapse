@@ -1,35 +1,24 @@
 require 'active_support'
 require 'active_support/core_ext'
-require 'eventmachine'
 require 'logging'
 require 'set'
 
 require 'synapse/version'
 
+require 'synapse/common/errors'
+require 'synapse/common/identifier'
+require 'synapse/common/message'
+require 'synapse/common/message_builder'
+
 module Synapse
   extend ActiveSupport::Autoload
 
+  autoload_at 'synapse/common/duplication' do
+    autoload :DuplicationError
+    autoload :DuplicationRecorder
+  end
+
   eager_autoload do
-    autoload_at 'synapse/common/errors' do
-      autoload :SynapseError
-      autoload :ConfigurationError
-      autoload :NonTransientError
-      autoload :TransientError
-    end
-
-    autoload_at 'synapse/common/identifier' do
-      autoload :IdentifierFactory
-      autoload :GuidIdentifierFactory
-    end
-
-    autoload :Message, 'synapse/common/message'
-    autoload :MessageBuilder, 'synapse/common/message_builder'
-
-    autoload_at 'synapse/common/duplication' do
-      autoload :DuplicationError
-      autoload :DuplicationRecorder
-    end
-
     # Common components
     autoload :Command
     autoload :Domain
@@ -37,21 +26,14 @@ module Synapse
     autoload :Repository
     autoload :Serialization
     autoload :UnitOfWork, 'synapse/uow'
+    autoload :Wiring
   end
 
+  # Optional components
   autoload :Auditing
   autoload :EventSourcing
   autoload :EventStore
   autoload :Partitioning
   autoload :ProcessManager
   autoload :Upcasting
-  autoload :Wiring
-
-  # TODO this is more of an application call
-  ActiveSupport::Autoload.eager_autoload!
-
-  # Setup the default identifier factory
-  ActiveSupport.on_load :identifier_factory  do
-    IdentifierFactory.instance = GuidIdentifierFactory.new
-  end
 end

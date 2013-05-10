@@ -1,9 +1,3 @@
-module Synapse
-  module Wiring
-    extend ActiveSupport::Autoload
-
-    autoload :MessageWiring
-    autoload :Wire
-    autoload :WireRegistry
-  end
-end
+require 'synapse/wiring/message_wiring'
+require 'synapse/wiring/wire'
+require 'synapse/wiring/wire_registry'

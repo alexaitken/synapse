@@ -1,11 +1,4 @@
-module Synapse
-  module ProcessManager
-    extend ActiveSupport::Autoload
-
-    autoload :Correlation
-    autoload :CorrelationResolver
-    autoload :CorrelationSet
-
-    autoload :Process
-  end
-end
+require 'synapse/process_manager/correlation'
+require 'synapse/process_manager/correlation_resolver'
+require 'synapse/process_manager/correlation_set'
+require 'synapse/process_manager/process'

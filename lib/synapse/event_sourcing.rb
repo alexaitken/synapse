@@ -1,40 +1,13 @@
-module Synapse
-  module EventSourcing
-    extend ActiveSupport::Autoload
+require 'synapse/event_sourcing/aggregate_factory'
+require 'synapse/event_sourcing/conflict_resolver'
+require 'synapse/event_sourcing/repository'
+require 'synapse/event_sourcing/storage_listener'
+require 'synapse/event_sourcing/stream_decorator'
 
-    eager_autoload do
-      autoload_at 'synapse/event_sourcing/aggregate_factory' do
-        autoload :AggregateFactory
-        autoload :GenericAggregateFactory
-      end
+require 'synapse/event_sourcing/member'
+require 'synapse/event_sourcing/aggregate_root'
+require 'synapse/event_sourcing/entity'
 
-      autoload :AggregateRoot
-      autoload :Entity
-      autoload :Member
-
-      autoload :EventSourcingRepository, 'synapse/event_sourcing/repository'
-      autoload :EventSourcedStorageListener, 'synapse/event_sourcing/storage_listener'
-      autoload :EventStreamDecorator, 'synapse/event_sourcing/stream_decorator'
-
-      autoload_at 'synapse/event_sourcing/conflict_resolver' do
-        autoload :ConflictResolver
-        autoload :ConflictResolvingUnitOfWorkListener
-        autoload :CapturingEventStream
-      end
-
-      autoload_at 'synapse/event_sourcing/snapshot/taker' do
-        autoload :AggregateSnapshotTaker
-        autoload :DeferredSnapshotTaker
-        autoload :SnapshotTaker
-      end
-
-      autoload_at 'synapse/event_sourcing/snapshot/count_stream' do
-        autoload :CountingEventStream
-        autoload :TriggeringEventStream
-        autoload :SnapshotUnitOfWorkListener
-      end
-
-      autoload :EventCountSnapshotTrigger, 'synapse/event_sourcing/snapshot/count_trigger'
-    end
-  end
-end
+require 'synapse/event_sourcing/snapshot/count_stream'
+require 'synapse/event_sourcing/snapshot/count_trigger'
+require 'synapse/event_sourcing/snapshot/taker'

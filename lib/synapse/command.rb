@@ -2,51 +2,33 @@ module Synapse
   module Command
     extend ActiveSupport::Autoload
 
-    eager_autoload do
-      autoload :CommandBus
-      autoload :SimpleCommandBus
+    # Optional filters and interceptors
+    autoload_at 'synapse/command/duplication' do
+      autoload :DuplicationFilter
+      autoload :DuplicationCleanupInterceptor
+    end
 
-      autoload :CommandCallback
-      autoload :CommandFilter
-      autoload :CommandHandler
+    autoload_at 'synapse/command/filters/validation' do
+      autoload :ActiveModelValidationFilter
+      autoload :ActiveModelValidationError
+    end
 
-      autoload_at 'synapse/command/message' do
-        autoload :CommandMessage
-        autoload :CommandMessageBuilder
-      end
-
-      autoload :CommandGateway, 'synapse/command/gateway'
-
-      autoload :DispatchInterceptor
-      autoload :InterceptorChain
-
-      autoload_at 'synapse/command/duplication' do
-        autoload :DuplicationFilter
-        autoload :DuplicationCleanupInterceptor
-      end
-
-      autoload_at 'synapse/command/errors' do
-        autoload :CommandExecutionError
-        autoload :CommandValidationError
-        autoload :NoHandlerError
-      end
-
-      autoload_at 'synapse/command/filters/validation' do
-        autoload :ActiveModelValidationFilter
-        autoload :ActiveModelValidationError
-      end
-
-      autoload_at 'synapse/command/interceptors/serialization' do
-        autoload :SerializationOptimizingInterceptor
-        autoload :SerializationOptimizingListener
-      end
-
-      autoload_at 'synapse/command/rollback_policy' do
-        autoload :RollbackPolicy
-        autoload :RollbackOnAnyExceptionPolicy
-      end
-
-      autoload :WiringCommandHandler, 'synapse/command/wiring'
+    autoload_at 'synapse/command/interceptors/serialization' do
+      autoload :SerializationOptimizingInterceptor
+      autoload :SerializationOptimizingListener
     end
   end
 end
+
+require 'synapse/command/command_bus'
+require 'synapse/command/command_callback'
+require 'synapse/command/command_filter'
+require 'synapse/command/command_handler'
+require 'synapse/command/dispatch_interceptor'
+require 'synapse/command/errors'
+require 'synapse/command/gateway'
+require 'synapse/command/interceptor_chain'
+require 'synapse/command/message'
+require 'synapse/command/rollback_policy'
+require 'synapse/command/simple_command_bus'
+require 'synapse/command/wiring'

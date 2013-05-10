@@ -19,5 +19,6 @@ module Synapse
     end
   end
 
-  ActiveSupport.run_load_hooks :identifier_factory, IdentifierFactory
+  # Setup the default identifier factory
+  IdentifierFactory.instance = GuidIdentifierFactory.new
 end
