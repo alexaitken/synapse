@@ -23,9 +23,9 @@ module Synapse
   end
 end
 
+require 'synapse/serialization/converter_factory'
 require 'synapse/serialization/converter'
 require 'synapse/serialization/converter/chain'
-require 'synapse/serialization/converter/factory'
 require 'synapse/serialization/converter/identity'
 
 require 'synapse/serialization/errors'
