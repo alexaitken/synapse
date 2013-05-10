@@ -28,4 +28,9 @@ group :mongo do
   gem 'bson_ext', platform: :ruby
 end
 
+# Used for partitioning
+group :amqp do
+  gem 'amqp'
+end
+
 gemspec
