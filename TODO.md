@@ -3,6 +3,11 @@
 + Configuration DSL and dependency container
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
++ Move Mongo into its own gem
++ Move AMQP into its own gem
++ Disruptor (??) JRuby and pure Ruby?
++ Distributed locking (sharding should always be preferred, but just in case)
+  + Redis, Officer, Mongo, ZK?
 
 == AxonFramework functionality
 
@@ -11,15 +16,16 @@
   + ~~DSL for defining and subscribing command handlers to command types~~
   + ~~Command validation (ActiveModel)~~
   + Asynchronous command bus
+  + Instrumentation for command buses
   + Command gateway
-  + Abstraction of aggregate load/store
+  + Abstraction of aggregate load/store (plus aggregate target DSL)
   + ~~Rollback policies~~
 + Event handling
   + Listener groups and group bus
   + Asynchronous event bus
   + Distributed event bus (AMQP)
   + ~~DSL for defining and mapping event handlers to event types~~
-  + Metrics for event buses (Graphite, Ganglia, etc.)
+  + Instrumentation for event buses (Graphite, Ganglia, etc.)
   + Event replay framework
   + Event scheduling framework (Quartz-like)
 + Event sourcing
@@ -34,7 +40,7 @@
   + Management
 + Repository
   + Optimistic lock manager
-  + Pessimistic lock manager
+  + Pessimistic lock manager (sorta, needs re-write)
   + Non-event sourced repository (MongoMapper and ActiveRecord?)
 + Process management
   + Core interfaces (50%)

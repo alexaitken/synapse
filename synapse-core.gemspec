@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'synapse-core'
-  s.version = '0.1.2'
+  s.version = '0.2.0'
   s.author = 'Ian Unruh'
   s.email = 'ianunruh@gmail.com'
   s.homepage = 'https://github.com/iunruh/synapse'
