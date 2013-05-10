@@ -1,13 +1,14 @@
 module Synapse
   module Partitioning
     module AMQP
+      # Implementation of a queue reader that subscribes to an AMQP queue
       class AMQPQueueReader < QueueReader
         # The behavior when a message is not acknowledged by a message handler
         #
         # When a message is explicitly rejected, this usually indicates that there was an
         # error while processing the message. When the message is rejected, it can either be
         # put back on the queue so that it can be retried later, or it can be routed as a dead
-        # letter if you're using RabbitMQ.
+        # letter if using RabbitMQ.
         #
         # @see http://www.rabbitmq.com/dlx.html
         # @return [Boolean] Default value is true

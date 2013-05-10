@@ -1,12 +1,15 @@
 module Synapse
   module Partitioning
-    # Retrieves messages from one or more queues, waiting if needed
+    # Represents a mechanism for taking messages off a queue and handling the acknowledgement
+    # or rejection of each message
+    #
     # @abstract
     class QueueReader
-      # @return [undefined]
-      def start; end
-
       # Subscribes the given handler to the queue
+      #
+      # Depending on the implementation, this method may or may not return immediately. It should
+      # be assumed that the method will block until a message is received and then will go back
+      # to blocking after the given callback is invoked.
       #
       # @abstract
       # @yield [MessageReceipt] Receipt of the message taken off the queue

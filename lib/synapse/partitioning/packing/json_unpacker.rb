@@ -37,6 +37,8 @@ module Synapse
 
     private
 
+      # Deserializes the metadata of the given packed message
+      #
       # @param [Hash] packed
       # @return [Hash]
       def deserialize_metadata(packed)
@@ -44,6 +46,8 @@ module Synapse
         @serializer.deserialize Serialization::SerializedMetadata.new content, content.class
       end
 
+      # Deserializes the payload of the given packed message
+      #
       # @param [Hash] packed
       # @return [Object]
       def deserialize_payload(packed)
@@ -57,6 +61,9 @@ module Synapse
         @serializer.deserialize serialized_object
       end
 
+      # Returns the builder type for the given message type
+      #
+      # @raise [ArgumentError] If message type isn't supported by this unpacker
       # @param [Symbol] type
       # @return [Class]
       def builder_for(type)

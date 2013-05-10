@@ -46,6 +46,8 @@ module Synapse
 
     private
 
+      # Packs additional attributes specific to event messages
+      #
       # @param [EventMessage] unpacked
       # @param [Hash] packed
       # @return [undefined]
@@ -56,6 +58,8 @@ module Synapse
         packed.merge! additional
       end
 
+      # Packs additional attributes specific to domain event messages
+      #
       # @param [DomainEventMessage] unpacked
       # @param [Hash] packed
       # @return [undefined]
@@ -67,6 +71,9 @@ module Synapse
         packed.merge! additional
       end
 
+      # Returns the packed type for the given message
+      #
+      # @raise [ArgumentError] If the given message isn't supported by this packer
       # @param [Message] unpacked
       # @return [Symbol]
       def type_for(unpacked)

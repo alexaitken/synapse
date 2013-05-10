@@ -1,8 +1,9 @@
 module Synapse
   module Partitioning
     module AMQP
+      # Implementation of a queue writer that publishes packed messages to an AMQP exchange
       class AMQPQueueWriter < QueueWriter
-        # @return [Hash]
+        # @return [Hash] Additional options that will be used when publishing messages
         attr_accessor :publish_options
 
         # @param [AMQP::Exchange] exchange

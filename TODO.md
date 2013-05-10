@@ -27,13 +27,14 @@
   + ~~Conflict resolution support~~
   + Caching repository
   + Hybrid ES repository
-  + Hook into event handler wiring
+  + ~~Hook into event handler wiring~~
 + Event store
   + ~~Mongo event store~~
   + Sequel event store
   + Management
 + Repository
-  + Optimistic/pessimistic lock manager
+  + Optimistic lock manager
+  + Pessimistic lock manager
   + Non-event sourced repository (MongoMapper and ActiveRecord?)
 + Process management
   + Core interfaces (50%)
@@ -50,8 +51,11 @@
 + Engine processes
 + Message quarantine
 + Partitioning
-  + Queue reader/writer abstraction
-  + Queues for memory, Redis, AMQP, etc.
+  + ~~Queue reader/writer abstraction~~
+  + ~~JSON message packing~~
+  + ~~In-memory queue~~
+  + AMQP queue (in-progress)
+  + Redis queue
 + Projections
   + In-memory projections or serialized projections
 + Dashboard
