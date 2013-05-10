@@ -75,6 +75,10 @@ module TradeEngine
       repository
     end
 
+    def with_pessimistic_locking
+      @lock_manager = Synapse::Repository::PessimisticLockManager.new
+    end
+
     def for_aggregate(type)
       @aggregate_factory = Synapse::EventSourcing::GenericAggregateFactory.new type
     end

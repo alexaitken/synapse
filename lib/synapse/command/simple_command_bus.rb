@@ -100,7 +100,7 @@ module Synapse
         chain = InterceptorChain.new unit, @interceptors, handler
 
         begin
-          @logger.debug 'Dispatching command [%s] [%s] to handler [%s]' %
+          @logger.info 'Dispatching command [%s] [%s] to handler [%s]' %
             [command.id, command.payload_type, handler.class]
 
           result = chain.proceed command

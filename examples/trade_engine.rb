@@ -12,6 +12,7 @@ require_relative 'trade_engine/order'
 require_relative 'trade_engine/orderbook'
 
 Logging.logger.root.appenders = Logging.appenders.stdout
+Logging.logger.root.level = :info
 
 include TradeEngine
 
@@ -30,8 +31,10 @@ infrastructure = Infrastructure.configure do |infra|
   infra.build_repository do |repo|
     repo.for_aggregate Orderbook
     repo.with_attribute
+    # repo.with_ox
     repo.with_mongo
-    repo.with_snapshotting
+    repo.with_pessimistic_locking
+    # repo.with_snapshotting
   end
 end
 
@@ -49,7 +52,7 @@ command_types = [PlaceBuyOrderCommand, PlaceSellOrderCommand]
 x = 1000
 
 # Number of orders to submit
-n = 100
+n = 200
 
 orderbook_ids = Array.new
 

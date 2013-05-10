@@ -40,7 +40,7 @@ module Synapse
       # @return [undefined]
       def trigger_snapshot(type_identifier, aggregate_id, counter)
         if counter.value > @threshold
-          @logger.debug 'Snapshot threshold reached for [%s] [%s]' % [type_identifier, aggregate_id]
+          @logger.info 'Snapshot threshold reached for [%s] [%s]' % [type_identifier, aggregate_id]
 
           @snapshot_taker.schedule_snapshot type_identifier, aggregate_id
           counter.value = 1
