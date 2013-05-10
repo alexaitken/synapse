@@ -13,7 +13,10 @@ module Synapse
       autoload :OxDocumentToXmlConverter
     end
 
+    autoload :OrderedHashToHashConverter, 'synapse/serialization/converter/bson'
+
     # Optional serializers
+    autoload :AttributeSerializer, 'synapse/serialization/serializer/attribute'
     autoload :OjSerializer, 'synapse/serialization/serializer/oj'
     autoload :OxSerializer, 'synapse/serialization/serializer/ox'
     autoload :MarshalSerializer, 'synapse/serialization/serializer/marshal'

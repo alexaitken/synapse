@@ -10,7 +10,6 @@ require_relative 'trade_engine/api'
 require_relative 'trade_engine/command'
 require_relative 'trade_engine/order'
 require_relative 'trade_engine/orderbook'
-require_relative 'trade_engine/bson'
 
 Logging.logger.root.appenders = Logging.appenders.stdout
 
@@ -29,11 +28,10 @@ infrastructure = Infrastructure.configure do |infra|
   end
 
   infra.build_repository do |repo|
-    repo.serializer = ActiveModelSerializer.new
-    repo.serializer.converter_factory.register OrderedHashToHashConverter.new
     repo.for_aggregate Orderbook
+    repo.with_attribute
     repo.with_mongo
-    # repo.with_snapshotting
+    repo.with_snapshotting
   end
 end
 

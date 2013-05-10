@@ -79,6 +79,10 @@ module TradeEngine
       @aggregate_factory = Synapse::EventSourcing::GenericAggregateFactory.new type
     end
 
+    def with_attribute
+      @serializer = Synapse::Serialization::AttributeSerializer.new
+    end
+
     def with_marshal
       @serializer = Synapse::Serialization::MarshalSerializer.new
     end
@@ -95,6 +99,11 @@ module TradeEngine
     end
 
     def with_mongo
+      if @serializer.can_serialize_to? Hash
+        # Need this for compat if we're using a hash based serializer
+        @serializer.converter_factory.register Synapse::Serialization::OrderedHashToHashConverter.new
+      end
+
       # TODO Factor this out
       client = Mongo::MongoClient.new
       template = Synapse::EventStore::Mongo::DefaultMongoTemplate.new client
