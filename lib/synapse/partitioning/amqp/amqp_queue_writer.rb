@@ -5,9 +5,11 @@ module Synapse
         # @return [Hash]
         attr_accessor :publish_options
 
+        # @param [AMQP::Exchange] exchange
         # @param [RoutingKeyResolver] key_resolver
         # @return [undefined]
-        def initialize(key_resolver)
+        def initialize(exchange, key_resolver)
+          @exchange = exchange
           @key_resolver = key_resolver
           @publish_options = Hash.new
         end

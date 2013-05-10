@@ -1,8 +1,8 @@
 module Synapse
   module Partitioning
-    # Queue writer that pushes message into an in-memory EventMachine queue
+    # Queue writer that pushes message into an in-memory Ruby queue
     class MemoryQueueWriter < QueueWriter
-      # @param [EventMachine::Queue] queue
+      # @param [Queue] queue
       # @return [undefined]
       def initialize(queue)
         @queue = queue

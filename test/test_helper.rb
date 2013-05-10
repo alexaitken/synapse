@@ -14,6 +14,8 @@ require 'rr'
 require 'timecop'
 require 'synapse'
 
+require 'test_ext'
+
 class Test::Unit::TestCase
   include RR::Adapters::TestUnit
 end

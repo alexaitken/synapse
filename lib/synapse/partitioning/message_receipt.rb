@@ -12,7 +12,7 @@ module Synapse
       attr_reader :queue_name
 
       # @param [Object] tag
-      # @param [Message] packed
+      # @param [Object] packed
       # @param [String] queue_name
       # @return [undefined]
       def initialize(tag, packed, queue_name)
