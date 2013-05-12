@@ -17,6 +17,10 @@ group :development do
   # Used for serialization component
   gem 'oj', platform: :ruby
   gem 'ox', platform: :ruby
+
+  # Used for documentation
+  gem 'yard'
+  gem 'redcarpet', platform: :ruby
 end
 
 gemspec
