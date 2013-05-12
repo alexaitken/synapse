@@ -2,23 +2,6 @@ require 'test_helper'
 
 module Synapse
   class PublicLockTest < Test::Unit::TestCase
-    def test_waiting
-      @lock = PublicLock.new
-      @lock.lock
-
-      t1 = Thread.new do
-        @lock.lock
-      end
-
-      t2 = Thread.new do
-        @lock.lock
-      end
-
-      wait_until do
-        @lock.waiting == [t1, t2]
-      end
-    end
-
     def test_lock_raises
       @lock = PublicLock.new
       @lock.lock
