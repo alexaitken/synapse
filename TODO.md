@@ -3,8 +3,8 @@
 + Configuration DSL and dependency container
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
-+ Move Mongo into its own gem
-+ Move AMQP into its own gem
++ ~~Move Mongo into its own gem~~
++ ~~Move AMQP into its own gem~~
 + Disruptor (??) JRuby and pure Ruby?
 + Distributed locking (sharding should always be preferred, but just in case)
   + Redis, Officer, Mongo, ZK?
