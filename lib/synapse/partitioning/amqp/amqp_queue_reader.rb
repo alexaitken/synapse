@@ -27,7 +27,7 @@ module Synapse
         # @yield [MessageReceipt] Receipt of the message taken off the queue
         # @return [undefined]
         def subscribe(&handler)
-          @queue.subscribe do |headers, packed|
+          @queue.subscribe(ack: true) do |headers, packed|
             receipt = MessageReceipt.new headers.delivery_tag, packed, @queue.name
             handler.call receipt
           end

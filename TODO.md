@@ -8,6 +8,7 @@
 + Disruptor (??) JRuby and pure Ruby?
 + Distributed locking (sharding should always be preferred, but just in case)
   + Redis, Officer, Mongo, ZK?
++ Aliases for common mixins (??)
 
 == AxonFramework functionality
 
@@ -39,8 +40,8 @@
   + Sequel event store
   + Management
 + Repository
-  + Optimistic lock manager
-  + Pessimistic lock manager (sorta, needs re-write)
+  + ~~Optimistic lock manager~~
+  + ~~Pessimistic lock manager~~
   + Non-event sourced repository (MongoMapper and ActiveRecord?)
 + Process management
   + Core interfaces (50%)
@@ -49,7 +50,8 @@
   + Asynchronous process management
   + Mongo process repository
 + Serialization
-  + Clean serializer (to hash for Mongo, normal JSON for other; compare to Ox/Oj/Marshal)
+  + ~~Hash serializer~~
+  + Nokogiri serializer
 
 == Lokad.CQRS functionality
 
