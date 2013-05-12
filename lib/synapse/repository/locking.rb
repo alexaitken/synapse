@@ -48,7 +48,7 @@ module Synapse
 
           register_aggregate aggregate
           register_listener LockCleaningUnitOfWorkListener.new aggregate.id, @lock_manager
-        rescue => exception
+        rescue
           @logger.debug 'Exception raised while adding an aggregate, releasing lock'
 
           @lock_manager.release_lock aggregate.id

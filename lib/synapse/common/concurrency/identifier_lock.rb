@@ -1,6 +1,5 @@
 module Synapse
   # @todo Deadlock detection
-  # @todo Disposing of unused locks
   class IdentifierLock
     # @return [undefined]
     def initialize
@@ -26,25 +25,26 @@ module Synapse
 
     # Releases a lock for the given identifier
     #
-    # @raise [ArgumentError] If no lock was ever obtained for the identifier
+    # @raise [ThreadError] If no lock was ever obtained for the identifier
     # @param [Object] identifier
     # @return [undefined]
     def release_lock(identifier)
       unless lock_available? identifier
-        raise ArgumentError, 'No lock for this identifier was ever obtained'
+        raise ThreadError, 'No lock for this identifier was ever obtained'
       end
 
       lock_for(identifier).unlock
+      dispose_if_unused(identifier)
     end
 
   private
 
     def lock_for(identifier)
       @lock.synchronize do
-        if lock_available? identifier
-          @identifiers.fetch identifier
+        if @identifiers.has_key? identifier
+          @identifiers[identifier]
         else
-          @identifiers.store identifier, PublicLock.new
+          @identifiers[identifier] = PublicLock.new
         end
       end
     end
@@ -52,5 +52,20 @@ module Synapse
     def lock_available?(identifier)
       @identifiers.has_key? identifier
     end
-  end
-end
+
+    # Disposes of the lock for the given identifier if it has no threads waiting for it
+    #
+    # @param [String] identifier
+    # @return [undefined]
+    def dispose_if_unused(identifier)
+      lock = lock_for identifier
+      if lock.try_lock
+        @lock.synchronize do
+          @identifiers.delete identifier
+        end
+
+        lock.unlock
+      end
+    end
+  end # IdentifierLock
+end # Synapse

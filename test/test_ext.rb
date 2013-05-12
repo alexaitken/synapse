@@ -4,10 +4,13 @@ class Test::Unit::TestCase
   # @param [Integer] timeout In seconds
   # @param [Float] retry_interval In seconds
   # @return [undefined]
-  def wait_until(timeout = 2, retry_interval = 0.1, &block)
+  def wait_until(timeout = 2, retry_interval = 0.001, &block)
     start = Time.now
     until !!block.call
-      raise if (Time.now - start).to_i >= timeout
+      if (Time.now - start).to_i >= timeout
+        raise 'Operation timed out'
+      end
+
       sleep retry_interval
     end
   end
