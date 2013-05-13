@@ -9,3 +9,5 @@ require 'synapse/process_manager/process_manager'
 require 'synapse/process_manager/process_repository'
 require 'synapse/process_manager/resource_injector'
 require 'synapse/process_manager/simple_process_manager'
+
+require 'synapse/process_manager/repository/in_memory'
