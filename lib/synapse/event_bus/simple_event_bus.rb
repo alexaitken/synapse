@@ -5,7 +5,7 @@ module Synapse
     class SimpleEventBus < EventBus
       def initialize
         @listeners = Set.new
-        @logger = Logging.logger.new self.class
+        @logger = Logging.logger[self.class]
       end
 
       # @param [EventMessage...] events

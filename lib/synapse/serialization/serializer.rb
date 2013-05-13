@@ -4,13 +4,15 @@ module Synapse
     # @abstract
     class Serializer
       # @return [ConverterFactory]
-      attr_accessor :converter_factory
+      attr_reader :converter_factory
 
       # @return [RevisionResolver]
       attr_accessor :revision_resolver
 
-      def initialize
-        @converter_factory = ConverterFactory.new
+      # @param [ConverterFactory] converter_factory
+      # @return [undefined]
+      def initialize(converter_factory)
+        @converter_factory = converter_factory
       end
 
       # @param [Object] object

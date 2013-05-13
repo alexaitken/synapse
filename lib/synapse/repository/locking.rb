@@ -10,7 +10,7 @@ module Synapse
       # @return [undefined]
       def initialize(lock_manager)
         @lock_manager = lock_manager
-        @logger = Logging.logger.new self.class
+        @logger = Logging.logger[self.class]
       end
 
       # @raise [AggregateNotFoundError]

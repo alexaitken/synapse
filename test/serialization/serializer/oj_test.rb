@@ -10,7 +10,7 @@ module Synapse
       end
 
       def test_serialize_deserialize
-        serializer = OjSerializer.new
+        serializer = OjSerializer.new ConverterFactory.new
         event = TestEvent.new 'derp', 'herp'
 
         serialized_obj = serializer.serialize event, String

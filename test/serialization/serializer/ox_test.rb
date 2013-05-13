@@ -8,7 +8,7 @@ module Synapse
       def setup
         skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
 
-        @serializer = OxSerializer.new
+        @serializer = OxSerializer.new ConverterFactory.new
       end
 
       def test_serialize_and_deserialize

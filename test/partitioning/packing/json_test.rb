@@ -5,7 +5,8 @@ module Synapse
 
     class JsonPackingTest < Test::Unit::TestCase
       def setup
-        @serializer = Serialization::MarshalSerializer.new
+        @converter_factory = Serialization::ConverterFactory.new
+        @serializer = Serialization::MarshalSerializer.new @converter_factory
         @packer = JsonMessagePacker.new @serializer
         @unpacker = JsonMessageUnpacker.new @serializer
       end

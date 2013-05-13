@@ -14,7 +14,7 @@ module Synapse
     class UnitOfWorkListenerCollection < UnitOfWorkListener
       def initialize
         @listeners = Array.new
-        @logger = Logging.logger.new self.class
+        @logger = Logging.logger[self.class]
       end
 
       # Pushes a unit of work listener onto the end of this collection

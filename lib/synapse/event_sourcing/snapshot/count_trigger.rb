@@ -24,7 +24,7 @@ module Synapse
       def initialize(snapshot_taker, unit_provider)
         @counters = Hash.new
         @lock = Mutex.new
-        @logger = Logging.logger.new self.class
+        @logger = Logging.logger[self.class]
         @threshold = DEFAULT_THRESHOLD
 
         @snapshot_taker = snapshot_taker

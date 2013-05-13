@@ -7,7 +7,7 @@ module Synapse
       def test_revision
         revision = '123'
 
-        serializer = Serializer.new
+        serializer = Serializer.new ConverterFactory.new
         serializer.revision_resolver = FixedRevisionResolver.new revision
 
         type = serializer.type_for Object

@@ -18,7 +18,7 @@ module Synapse
         @handlers = Hash.new
         @filters = Array.new
         @interceptors = Array.new
-        @logger = Logging.logger.new self.class
+        @logger = Logging.logger[self.class]
         @rollback_policy = RollbackOnAnyExceptionPolicy.new
         @unit_factory = unit_factory
       end

@@ -1,15 +1,17 @@
 require 'bundler/setup'
 require 'active_model'
 require 'synapse'
+require 'synapse-mongo'
 require 'pp'
-require 'mongo'
 
-require_relative 'trade_engine/infrastructure'
 require_relative 'trade_engine/contracts'
 require_relative 'trade_engine/api'
 require_relative 'trade_engine/command'
 require_relative 'trade_engine/order'
 require_relative 'trade_engine/orderbook'
+require_relative 'trade_engine/build'
+
+container = Synapse.container
 
 Logging.logger.root.appenders = Logging.appenders.stdout
 Logging.logger.root.level = :info
@@ -22,25 +24,9 @@ Thread.new do
   EventMachine.run
 end
 
-infrastructure = Infrastructure.configure do |infra|
-  infra.build_bus do |bus|
-    bus.with_validation
-    bus.with_deduplication
-  end
-
-  infra.build_repository do |repo|
-    repo.for_aggregate Orderbook
-    repo.with_attribute
-    # repo.with_ox
-    repo.with_mongo
-    repo.with_pessimistic_locking
-    # repo.with_snapshotting
-  end
-end
-
-gateway = infrastructure.gateway
-ob_handler = OrderbookCommandHandler.new infrastructure.repository
-ob_handler.subscribe infrastructure.command_bus
+command_bus = container.fetch :command_bus
+# TODO Service?
+gateway = Synapse::Command::CommandGateway.new command_bus
 
 # End infrastructure
 
@@ -52,7 +38,7 @@ command_types = [PlaceBuyOrderCommand, PlaceSellOrderCommand]
 x = 1000
 
 # Number of orders to submit
-n = 200
+n = 100
 
 orderbook_ids = Array.new
 

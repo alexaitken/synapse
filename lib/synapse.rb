@@ -34,9 +34,22 @@ module Synapse
 
   # Optional components
   autoload :Auditing
+  autoload :Configuration
   autoload :EventSourcing
   autoload :EventStore
   autoload :Partitioning
   autoload :ProcessManager
   autoload :Upcasting
+
+  # @return [Configuration::Container]
+  mattr_accessor :container
+  # @return [Configuration::ContainerBuilder]
+  mattr_accessor :container_builder
+
+  def self.build(&block)
+    self.container ||= Configuration::Container.new
+    self.container_builder ||= Configuration::ContainerBuilder.new self.container
+
+    self.container_builder.instance_exec(&block)
+  end
 end

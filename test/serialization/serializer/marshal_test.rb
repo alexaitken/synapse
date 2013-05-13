@@ -7,7 +7,7 @@ module Synapse
     class MarshalSerializerTest < Test::Unit::TestCase
 
       def test_serialize_deserialize
-        serializer = MarshalSerializer.new
+        serializer = MarshalSerializer.new ConverterFactory.new
         event = TestEvent.new 'derp', 'herp'
 
         serialized_obj = serializer.serialize event, String

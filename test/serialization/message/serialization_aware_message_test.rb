@@ -32,8 +32,10 @@ module Synapse
 
         aware = SerializationAwareDomainEventMessage.new message
 
-        serializer_a = MarshalSerializer.new
-        serializer_b = MarshalSerializer.new
+        converter_factory = ConverterFactory.new
+
+        serializer_a = MarshalSerializer.new converter_factory
+        serializer_b = MarshalSerializer.new converter_factory
 
         [:serialize_metadata, :serialize_payload].each do |method|
           serialized_a = aware.send method, serializer_a, String

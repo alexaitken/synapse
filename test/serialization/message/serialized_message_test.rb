@@ -23,8 +23,9 @@ module Synapse
 
     class SerializedDomainEventMessageTest < Test::Unit::TestCase
       def setup
-        @serializer_a = MarshalSerializer.new
-        @serializer_b = MarshalSerializer.new
+        converter_factory = ConverterFactory.new
+        @serializer_a = MarshalSerializer.new converter_factory
+        @serializer_b = MarshalSerializer.new converter_factory
       end
 
       def test_serialization

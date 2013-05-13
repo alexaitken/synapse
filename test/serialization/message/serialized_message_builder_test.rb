@@ -7,7 +7,7 @@ module Synapse
       def test_from_data
         builder = SerializedDomainEventMessageBuilder.new
 
-        serializer = MarshalSerializer.new
+        serializer = MarshalSerializer.new ConverterFactory.new
 
         data = StubSerializedDomainEventData.new
         data.id = 0
