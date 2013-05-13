@@ -1,6 +1,6 @@
 module Synapse
   module Configuration
-    # Dependency injection container
+    # Container that holds service definitions used for dependency injection
     #
     # @see [ContainerBuilder]
     # @see [ServiceDefinition]

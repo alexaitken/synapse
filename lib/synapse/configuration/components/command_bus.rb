@@ -1,7 +1,6 @@
 module Synapse
   module Configuration
-    # Extension to the container builder that adds a service definition builder for
-    # SimpleCommandBus
+    # Extension to container builder that adds a simple command bus builder
     class ContainerBuilder
       # @yield [SimpleCommandBusDefinitionBuilder]
       # @return [undefined]
@@ -98,34 +97,53 @@ module Synapse
         @filter_tag = :command_filter
         @handler_tag = :command_handler
 
-        with_factory do |container|
+        with_factory do
           unit_factory = resolve @unit_factory
           command_bus = Command::SimpleCommandBus.new unit_factory
           command_bus.tap do
-            # Register any interceptors tagged for this command bus
-            interceptors = container.fetch_tagged @interceptor_tag
-            interceptors.each do |interceptor|
-              command_bus.interceptors.push interceptor
-            end
-
-            # Register any filters tagged for this command bus
-            filters = container.fetch_tagged @filter_tag
-            filters.each do |filter|
-              command_bus.filters.push filter
-            end
-
-            # Subscribes any handlers tagged for this command bus
-            handlers = container.fetch_tagged @handler_tag
-            handlers.each do |handler|
-              handler.subscribe command_bus
-            end
-
-            # Set the rollback policy, if any was provided
-            rollback_policy = resolve @rollback_policy, true
-            if rollback_policy
-              command_bus.rollback_policy = rollback_policy
-            end
+            register_interceptors command_bus
+            register_filters command_bus
+            subscribe_handlers command_bus
+            set_rollback_policy command_bus
           end
+        end
+      end
+
+    private
+
+      # @param [SimpleCommandBus] command_bus
+      # @return [undefined]
+      def register_interceptors(command_bus)
+        interceptors = @container.fetch_tagged @interceptor_tag
+        interceptors.each do |interceptor|
+          command_bus.interceptors.push interceptor
+        end
+      end
+
+      # @param [SimpleCommandBus] command_bus
+      # @return [undefined]
+      def register_filters(command_bus)
+        filters = @container.fetch_tagged @filter_tag
+        filters.each do |filter|
+          command_bus.filters.push filter
+        end
+      end
+
+      # @param [SimpleCommandBus] command_bus
+      # @return [undefined]
+      def subscribe_handlers(command_bus)
+        handlers = @container.fetch_tagged @handler_tag
+        handlers.each do |handler|
+          handler.subscribe command_bus
+        end
+      end
+
+      # @param [SimpleCommandBus] command_bus
+      # @return [undefined]
+      def set_rollback_policy(command_bus)
+        rollback_policy = resolve @rollback_policy, true
+        if rollback_policy
+          command_bus.rollback_policy = rollback_policy
         end
       end
     end # SimpleCommandBusDefinitionBuilder

@@ -1,5 +1,6 @@
 module Synapse
   module Configuration
+    # Extension to container builder that adds an event sourcing repository builder
     class ContainerBuilder
       # @yield [EventSourcingRepositoryDefintionBuilder]
       # @return [undefined]
@@ -8,6 +9,8 @@ module Synapse
       end
     end
 
+    # Service definition builder that makes it easier to use an event sourcing repository
+    #
     # @todo Add snapshot DSL
     # @todo Add conflict resolution DSL
     #
