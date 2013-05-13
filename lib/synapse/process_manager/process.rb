@@ -1,5 +1,7 @@
 module Synapse
   module ProcessManager
+    # Processes are used to maintain the state of long-running business transactions
+    #
     # The term process is used in Enterprise Integration Patterns to describe a mechanism used to
     # "maintain the state of the sequence and determine the next processing step based on
     # intermediate results" (Hohpe 279). Processes are also called sagas in some CQRS frameworks.
