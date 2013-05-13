@@ -13,6 +13,12 @@ module Synapse
         @manager = WiringProcessManager.new @repository, @factory, @lock_manager, OrderProcess
       end
 
+      def test_support
+        assert_raise ArgumentError do
+          WiringProcessManager.new @repository, @factory, @lock_manager, Process
+        end
+      end
+
       def test_correlation
         event = create_event OrderCreated.new 123
         @manager.notify event
