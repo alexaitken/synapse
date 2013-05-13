@@ -23,15 +23,6 @@ Synapse.build do
     end
   end
 
-  # Setup a simple event bus for aggregate events
-  # TODO Extract this out into its own definition builder
-  service do |service|
-    service.id = :event_bus
-    service.with_factory do
-      Synapse::EventBus::SimpleEventBus.new
-    end
-  end
-
   # Setup the Mongo event store
   # TODO Extract this out to the synapse-mongo gem
   service do |service|
@@ -51,6 +42,9 @@ Synapse.build do
       end
     end
   end
+
+  # Setup a simple event bus for aggregate events using defaults
+  simple_event_bus
 
   # Setup the converter factory using defaults
   converter_factory
