@@ -17,8 +17,8 @@ module Synapse
         repository.add process_a
         repository.add process_b
 
-        assert_equal [process_a], repository.find(Process, correlation_a)
-        assert_equal [process_b], repository.find(Process, correlation_b)
+        assert_equal [process_a.id], repository.find(Process, correlation_a)
+        assert_equal [process_b.id], repository.find(Process, correlation_b)
       end
 
       def test_load

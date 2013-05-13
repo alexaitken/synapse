@@ -2,7 +2,7 @@ module Synapse
   module ProcessManager
     # Process repository that stores all processes in memory
     #
-    # This implementation is thread-safe
+    # This implementation is not thread-safe -- use a lock manager for thread safety
     class InMemoryProcessRepository < ProcessRepository
       def initialize
         @managed_processes = Hash.new
@@ -13,26 +13,22 @@ module Synapse
       # @param [Correlation] correlation
       # @return [Set]
       def find(type, correlation)
-        @lock.synchronize do
-          matching = Array.new
+        matching = Array.new
 
-          @managed_processes.each_value do |process|
-            if process.correlations.include? correlation
-              matching.push process
-            end
+        @managed_processes.each_value do |process|
+          if process.correlations.include? correlation
+            matching.push process.id
           end
-
-          matching
         end
+
+        matching
       end
 
       # @param [String] id
       # @return [Process] Returns nil if process could not be found
       def load(id)
-        @lock.synchronize do
-          if @managed_processes.has_key? id
-            @managed_processes.fetch id
-          end
+        if @managed_processes.has_key? id
+          @managed_processes.fetch id
         end
       end
 

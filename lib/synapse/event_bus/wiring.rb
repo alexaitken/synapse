@@ -6,10 +6,6 @@ module Synapse
       include EventListener
       include Wiring::MessageWiring
 
-      included do
-        self.wire_registry = Wiring::WireRegistry.new true
-      end
-
       # @param [EventMessage] event
       # @return [undefined]
       def notify(event)

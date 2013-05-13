@@ -6,17 +6,17 @@ module Synapse
         @lock = IdentifierLock.new
       end
 
-      # @param [Process] process
+      # @param [String] process_id
       # @return [undefined]
-      def obtain_lock(process)
-        @lock.obtain_lock process.id
+      def obtain_lock(process_id)
+        @lock.obtain_lock process_id
       end
 
       # @raise [ThreadError] If thread didn't previously hold the lock
-      # @param [Process] process
+      # @param [String] process_id
       # @return [undefined]
-      def release_lock(process)
-        @lock.release_lock process.id
+      def release_lock(process_id)
+        @lock.release_lock process_id
       end
     end
   end

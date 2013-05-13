@@ -20,7 +20,9 @@ module Synapse
           Array.new
         end
 
+        mock(@lock_manager).obtain_lock(is_a(String))
         mock(@repository).add(is_a(TestProcess))
+        mock(@lock_manager).release_lock(is_a(String))
 
         event = create_domain_event 123, CauseProcessCreationEvent.new
         @manager.notify event
@@ -33,11 +35,14 @@ module Synapse
         process.correlations.add correlation
 
         mock(@repository).find(TestProcess, correlation) do
-          [process]
+          [process.id]
         end
-        mock(@lock_manager).obtain_lock(process).ordered
-        mock(@repository).commit(process).ordered
-        mock(@lock_manager).release_lock(process).ordered
+        mock(@repository).load(process.id) do
+          process
+        end
+        mock(@lock_manager).obtain_lock(process.id)
+        mock(@repository).commit(process)
+        mock(@lock_manager).release_lock(process.id)
 
         event = create_domain_event 123, CauseProcessNotificationEvent.new
         @manager.notify event
@@ -52,11 +57,14 @@ module Synapse
         process.correlations.add correlation
 
         mock(@repository).find(TestProcess, correlation) do
-          [process]
+          [process.id]
         end
-        mock(@lock_manager).obtain_lock(process).ordered
-        mock(@repository).commit(process).ordered
-        mock(@lock_manager).release_lock(process).ordered
+        mock(@repository).load(process.id) do
+          process
+        end
+        mock(@lock_manager).obtain_lock(process.id)
+        mock(@repository).commit(process)
+        mock(@lock_manager).release_lock(process.id)
 
         event = create_domain_event 123, CauseProcessRaiseExceptionEvent.new
         @manager.notify event
@@ -71,11 +79,14 @@ module Synapse
         process.correlations.add correlation
 
         mock(@repository).find(TestProcess, correlation) do
-          [process]
+          [process.id]
         end
-        mock(@lock_manager).obtain_lock(process).ordered
-        mock(@repository).commit(process).ordered
-        mock(@lock_manager).release_lock(process).ordered
+        mock(@repository).load(process.id) do
+          process
+        end
+        mock(@lock_manager).obtain_lock(process.id)
+        mock(@repository).commit(process)
+        mock(@lock_manager).release_lock(process.id)
 
         event = create_domain_event 123, CauseProcessRaiseExceptionEvent.new
 
@@ -95,7 +106,15 @@ module Synapse
 
         # Each time, the manager will check for existing processes
         mock(@repository).find(TestProcess, correlation).twice do
-          processes
+          processes.map do |process|
+            process.id
+          end
+        end
+
+        mock(@repository).load(is_a(String)) do |process_id|
+          processes.find do |process|
+            process.id == process_id
+          end
         end
 
         # Each time, the manager will add a new process to the repository
@@ -105,9 +124,11 @@ module Synapse
 
         # On the second time, the manager will load the existing process, notify it of the
         # event, commit it, and then create a new process
-        mock(@lock_manager).obtain_lock(is_a(TestProcess)).ordered
-        mock(@repository).commit(is_a(TestProcess)).ordered
-        mock(@lock_manager).release_lock(is_a(TestProcess)).ordered
+        mock(@repository).commit(is_a(TestProcess))
+
+        # Lock is obtain/released for the 2 being created and once for the first being changed
+        mock(@lock_manager).obtain_lock(is_a(String)).times(3)
+        mock(@lock_manager).release_lock(is_a(String)).times(3)
 
         event = create_domain_event 123, CauseProcessCreationEvent.new
         @manager.notify event

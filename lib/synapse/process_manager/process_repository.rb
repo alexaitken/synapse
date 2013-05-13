@@ -3,8 +3,8 @@ module Synapse
     # Represents a mechanism for storing and loading process instances
     # @abstract
     class ProcessRepository
-      # Finds process instances of the given type that have been correlated with the given
-      # key value pair
+      # Returns a set of process identifiers for processes of the given type that have been
+      # correlated with the given key value pair
       #
       # Processes that have been changed must be committed for changes to take effect
       #

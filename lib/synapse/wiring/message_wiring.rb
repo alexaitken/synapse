@@ -8,6 +8,9 @@ module Synapse
       included do
         # @return [WireRegistry]
         class_attribute :wire_registry
+
+        # By default, the wire registry allows duplicates
+        self.wire_registry = Wiring::WireRegistry.new true
       end
 
       module ClassMethods

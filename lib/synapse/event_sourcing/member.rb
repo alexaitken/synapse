@@ -6,10 +6,6 @@ module Synapse
       extend ActiveSupport::Concern
       include Wiring::MessageWiring
 
-      included do
-        self.wire_registry = Wiring::WireRegistry.new true
-      end
-
       module ClassMethods
         # Registers an instance variable as a child entity
         #

@@ -5,18 +5,18 @@ module Synapse
     # This base implementation does no locking; it can be used if processes are thread safe
     # and don't need any additional synchronization.
     class LockManager
-      # Obtains a lock for the given process, blocking if necessary
+      # Obtains a lock for a process with the given identifier, blocking if necessary
       #
-      # @param [Process] process
+      # @param [String] process_id
       # @return [undefined]
-      def obtain_lock(process); end
+      def obtain_lock(process_id); end
 
-      # Releases the lock for the given process
+      # Releases the lock for a process with the given identifier
       #
       # @raise [ThreadError] If thread didn't previously hold the lock
-      # @param [Process] process
+      # @param [String] process_id
       # @return [undefined]
-      def release_lock(process); end
+      def release_lock(process_id); end
     end
   end
 end

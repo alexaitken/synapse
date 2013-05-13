@@ -79,33 +79,44 @@ module Synapse
       def notify_current_processes(process_type, event, correlation)
         processes = @repository.find process_type, correlation
 
-        if processes.empty?
-          false
-        else
-          processes.each do |process|
-            notify_current_process process, event
+        process_invoked = false
+        processes.each do |process_id|
+          @lock_manager.obtain_lock process_id
+          begin
+            loaded_process = notify_current_process process_id, event, correlation
+            if loaded_process
+              process_invoked = true
+            end
+          ensure
+            @lock_manager.release_lock process_id
           end
-
-          true
         end
+
+        process_invoked
       end
 
-      # Notifies the given process of the given event, managing the locks for the process
+      # Loads and notifies the process with the given identifier of the given event
       #
-      # @param [Process] process
+      # @param [String] process_id
       # @param [EventMessage] event
-      def notify_current_process(process, event)
-        @lock_manager.obtain_lock process
+      # @param [Correlation] correlation
+      # @return [Process]
+      def notify_current_process(process_id, event, correlation)
+        process = @repository.load process_id
+
+        unless process and process.active and process.correlations.include? correlation
+          # Process has changed or was deleted between the time of the selection query and the
+          # actual loading and locking of the process
+          return
+        end
 
         begin
           notify_process process, event
         ensure
-          begin
-            @repository.commit process
-          ensure
-            @lock_manager.release_lock process
-          end
+          @repository.commit process
         end
+
+        process
       end
 
       # Creates a new process of the given type with the given correlation
@@ -121,9 +132,17 @@ module Synapse
         process = @factory.create process_type
         process.correlations.add correlation
 
-        notify_process process, event
+        @lock_manager.obtain_lock process.id
 
-        @repository.add process
+        begin
+          notify_process process, event
+        ensure
+          begin
+            @repository.add process
+          ensure
+            @lock_manager.release_lock process.id
+          end
+        end
       end
 
       # Notifies the given process with of the given event
