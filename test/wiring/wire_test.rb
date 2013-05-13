@@ -10,7 +10,7 @@ module Synapse
         target = Object.new
         mock(target).test(payload)
 
-        wire = Wire.new TestEvent, :test
+        wire = Wire.new TestEvent, Hash.new, :test
         wire.invoke target, payload
       end
 
@@ -28,14 +28,14 @@ module Synapse
           raise 'Oh noes' unless @secret == 5
         end
 
-        wire = Wire.new TestEvent, handler
+        wire = Wire.new TestEvent, Hash.new, handler
         wire.invoke target, payload
       end
 
       def test_comparison_and_equality
-        wire_a = Wire.new TestEvent, :test
-        wire_b = Wire.new TestEvent, :test
-        wire_c = Wire.new TestSubEvent, :test
+        wire_a = Wire.new TestEvent, Hash.new, :test
+        wire_b = Wire.new TestEvent, Hash.new, :test
+        wire_c = Wire.new TestSubEvent, Hash.new, :test
 
         assert wire_a == wire_b
         assert wire_b == wire_a

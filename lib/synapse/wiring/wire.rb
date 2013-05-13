@@ -11,11 +11,16 @@ module Synapse
       # @return [Object] Either a method symbol or block
       attr_reader :handler
 
+      # @return [Hash] Options specific to the component being wired
+      attr_reader :options
+
       # @param [Class] type
+      # @param [Hash] options
       # @param [Object] handler Either a method symbol or block
-      # @return [undefined]]
-      def initialize(type, handler)
+      # @return [undefined]
+      def initialize(type, options, handler)
         @type = type
+        @options = options
         @handler = handler
       end
 

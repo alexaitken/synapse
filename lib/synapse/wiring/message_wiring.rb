@@ -14,15 +14,16 @@ module Synapse
         def wire(type, *args, &block)
           options = args.extract_options!
 
-          unless options[:to]
+          to = options.delete :to
+          unless to
             unless block
               raise ArgumentError, 'Expected block or option :to'
             end
 
-            options[:to] = block
+            to = block
           end
 
-          wire = Wire.new type, options[:to]
+          wire = Wire.new type, options, to
 
           self.wire_registry.register wire
         end

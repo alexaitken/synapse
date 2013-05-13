@@ -7,19 +7,19 @@ module Synapse
       def test_duplicates
         registry = WireRegistry.new false
 
-        registry.register Wire.new Object, :test
-        registry.register Wire.new Integer, :test
+        registry.register Wire.new Object, Hash.new, :test
+        registry.register Wire.new Integer, Hash.new, :test
 
         assert_raise DuplicateWireError do
-          registry.register Wire.new Object, :test
+          registry.register Wire.new Object, Hash.new, :test
         end
       end
 
       def test_each_type
         registry = WireRegistry.new false
 
-        registry.register Wire.new Integer, :test
-        registry.register Wire.new Object, :test
+        registry.register Wire.new Integer, Hash.new, :test
+        registry.register Wire.new Object, Hash.new, :test
 
         types = Array.new
         registry.each_type do |type|
@@ -32,8 +32,8 @@ module Synapse
       def test_wire_for
         registry = WireRegistry.new false
 
-        registry.register Wire.new Object, :test
-        registry.register Wire.new Integer, :test
+        registry.register Wire.new Object, Hash.new, :test
+        registry.register Wire.new Integer, Hash.new, :test
 
         wire = registry.wire_for Integer
         assert_equal Integer, wire.type
@@ -45,9 +45,9 @@ module Synapse
       def test_wires_for
         registry = WireRegistry.new false
 
-        registry.register Wire.new String, :test
-        registry.register Wire.new Object, :test
-        registry.register Wire.new Integer, :test
+        registry.register Wire.new String, Hash.new, :test
+        registry.register Wire.new Object, Hash.new, :test
+        registry.register Wire.new Integer, Hash.new, :test
 
         wires = registry.wires_for Integer
 
