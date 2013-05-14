@@ -5,7 +5,7 @@ Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 [![Code Climate](https://codeclimate.com/github/iunruh/synapse.png)](https://codeclimate.com/github/iunruh/synapse)
 [![Coverage Status](https://coveralls.io/repos/iunruh/synapse/badge.png?branch=master)](https://coveralls.io/r/iunruh/synapse)
 [![Build Status](https://travis-ci.org/iunruh/synapse.png?branch=master)](https://travis-ci.org/iunruh/synapse)
-[![Dependency Status](https://gemnasium.com/iunruh/synapse.png)](https://gemnasium.com/iunruh/synapse)
+[![Gem Version](https://badge.fury.io/rb/synapse-core.png)](http://badge.fury.io/rb/synapse-core)
 
 Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.com) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
 
@@ -20,11 +20,11 @@ Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.c
 - Command validation (using ActiveModel)
 - Simple object serialization
 - DSL for easy wiring of event and command handlers
+- Process manager framework (also known as Saga management)
 
 ## Coming soon
-- Process manager framework (also known as Saga management, in CQRS terms)
 - Repository for non-event sourced aggregates (MongoMapper and ActiveRecord)
 - Event store using Sequel
-- Distributed command and event buses (using AMQP)
+- Distributed command and event buses (engine partitioning)
 - Event replay and projection framework
 - Event scheduling
