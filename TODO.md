@@ -44,9 +44,9 @@
   + ~~Pessimistic lock manager~~
   + Non-event sourced repository (MongoMapper and ActiveRecord?)
 + Process management
-  + Core interfaces (50%)
-  + Implementation
-  + Wired processes
+  + ~~Core interfaces~~
+  + ~~Implementation~~
+  + ~~Wired processes~~
   + Asynchronous process management
   + Mongo process repository
 + Serialization
