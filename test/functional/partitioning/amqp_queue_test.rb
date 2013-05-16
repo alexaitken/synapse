@@ -5,8 +5,8 @@ require 'partitioning/amqp/fixtures'
 module Synapse
   module Partitioning
     module AMQP
-      class QueueTest < Test::Unit::TestCase
 
+      class QueueTest < Test::Unit::TestCase
         def test_integration
           Thread.new do
             EventMachine.run
@@ -54,16 +54,8 @@ module Synapse
 
           EventMachine.stop
         end
-
-      private
-
-        def wait_until(interval = 0.01, &block)
-          until !!block.call
-            sleep interval
-          end
-        end
-
       end
+
     end
   end
 end

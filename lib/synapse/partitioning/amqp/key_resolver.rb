@@ -8,7 +8,7 @@ module Synapse
         # @param [Message] message
         # @return [String]
         def resolve_key(message); end
-      end
+      end # RoutingKeyResolver
 
       # Implementation of a routing key resolver that uses the message payload's module name
       class ModuleRoutingKeyResolver
@@ -20,7 +20,7 @@ module Synapse
             key.tr! '/', '.'
           end
         end
-      end
+      end # ModuleRoutingKeyResolver
     end # AMQP
   end # Partitioning
-end # Synapse
+end
