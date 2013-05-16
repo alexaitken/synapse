@@ -6,7 +6,7 @@ module Synapse
       # @param [Serializer] serializer
       # @return [undefined]
       def initialize(serializer)
-        @serializer = serializer
+        @serializer = Serialization::MessageSerializer.new serializer
 
         @serialization_target = String
         # Ideally, we want to serialize the metadata and payload to hashes so that we don't
@@ -21,8 +21,8 @@ module Synapse
       def pack_message(unpacked)
         message_type = type_for unpacked
 
-        metadata = @serializer.serialize unpacked.metadata, @serialization_target
-        payload = @serializer.serialize unpacked.payload, @serialization_target
+        metadata = @serializer.serialize_metadata unpacked, @serialization_target
+        payload = @serializer.serialize_payload unpacked, @serialization_target
 
         packed = {
           message_type: message_type,
