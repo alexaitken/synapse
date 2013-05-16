@@ -3,6 +3,7 @@ module Synapse
     extend ActiveSupport::Autoload
 
     # Optional queues
+    autoload :AMQP
     autoload :MemoryQueueReader
     autoload :MemoryQueueWriter
 

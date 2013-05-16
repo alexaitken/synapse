@@ -18,6 +18,9 @@ group :development do
   gem 'oj', platform: :ruby
   gem 'ox', platform: :ruby
 
+  # Used for the AMQP partitioning queue
+  gem 'amqp'
+
   # Used for documentation
   gem 'yard'
   gem 'redcarpet', platform: :ruby
