@@ -13,6 +13,7 @@ module Synapse
         @logger = Logging.logger[self.class]
       end
 
+      # @api public
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found
       # @raise [ConflictingModificationError]
@@ -37,6 +38,7 @@ module Synapse
         end
       end
 
+      # @api public
       # @raise [ArgumentError] If the version of the aggregate is not null
       # @param [AggregateRoot] aggregate
       # @return [undefined]

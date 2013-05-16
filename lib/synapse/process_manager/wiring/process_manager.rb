@@ -1,7 +1,7 @@
 module Synapse
   module ProcessManager
     # Process manager that is aware of processes that use the wiring DSL
-    # @see [WiringProcess]
+    # @see WiringProcess
     class WiringProcessManager < ProcessManager
       # @raise [ArgumentError] If a process type is given that doesn't support the wiring DSL
       # @param [ProcessRepository] repository

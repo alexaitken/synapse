@@ -1,6 +1,7 @@
 require 'monitor'
 
 module Synapse
+  # Lock that tracks the thread owning the lock and any waiting threads
   class PublicLock
     # @return [Thread] The current owner of the thread, if any
     attr_reader :owner

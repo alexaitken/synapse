@@ -15,7 +15,7 @@ module Synapse
 
         command
       end
-    end
+    end # ActiveModelValidationFilter
 
     # Raised when a command with ActiveModel doesn't pass validation
     class ActiveModelValidationError < CommandValidationError
@@ -27,6 +27,6 @@ module Synapse
       def initialize(errors)
         @errors = errors
       end
-    end
+    end # ActiveModelValidationError
   end
 end

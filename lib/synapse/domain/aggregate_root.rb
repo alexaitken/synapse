@@ -13,17 +13,6 @@ module Synapse
       # @return [Integer] The version of this aggregate
       attr_reader :version
 
-      # Adds a listener that will be notified when this aggregate registers an event to be published
-      #
-      # If an event registration listener is added after events have already been registered, it
-      # will still get a change to process the uncommitted events in this aggregate.
-      #
-      # @param [#call] listener
-      # @return [undefined]
-      def add_registration_listener(&listener)
-        event_container.add_registration_listener listener
-      end
-
       # Marks this aggregate as committed by a repository
       # @return [undefined]
       def mark_committed
@@ -53,19 +42,35 @@ module Synapse
         @event_container.to_stream
       end
 
+      # Adds a listener that will be notified when this aggregate registers an event to be published
+      #
+      # If an event registration listener is added after events have already been registered, it
+      # will still get a change to process the uncommitted events in this aggregate.
+      #
+      # @param [#call] listener
+      # @return [undefined]
+      def add_registration_listener(&listener)
+        event_container.add_registration_listener listener
+      end
+
     protected
 
-      # Publishes a domain event with the given payload and metadata (optional)
+      # Publishes a domain event with the given payload and optional metadata
       #
-      # @param [Object] payload
-      #   Payload of the message; the actual event object
-      #
-      # @param [Hash] metadata
-      #   Metadata associated with the event
-      #
+      # @api public
+      # @param [Object] payload Payload of the message; the actual event object
+      # @param [Hash] metadata Metadata associated with the event
       # @return [DomainEventMessage] The event that will be committed
       def publish_event(payload, metadata = nil)
         event_container.register_event payload, metadata
+      end
+
+      # Marks this aggregate for deletion by its repository
+      #
+      # @api public
+      # @return [undefined]
+      def mark_deleted
+        @deleted = true
       end
 
       # Initializes the event container with the given sequence number
@@ -87,12 +92,6 @@ module Synapse
         end
 
         @event_container.last_committed_sequence_number
-      end
-
-      # Marks this aggregate for deletion by its repository
-      # @return [undefined]
-      def mark_deleted
-        @deleted = true
       end
 
     private

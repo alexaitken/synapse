@@ -1,6 +1,6 @@
 module Synapse
   module ProcessManager
-    # Lock manager that does pessimistic locking for processes
+    # Lock manager that blocks until a lock can be obtained for a process
     class PessimisticLockManager
       def initialize
         @lock = IdentifierLock.new

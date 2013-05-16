@@ -34,11 +34,11 @@ module Synapse
       #
       # @return [DomainEventMessage] The event that will be committed
       def register_event(payload, metadata)
-        event = DomainEventMessage.build do |b|
-          b.aggregate_id = @aggregate_id
-          b.sequence_number = next_sequence_number
-          b.metadata = metadata
-          b.payload = payload
+        event = DomainEventMessage.build do |builder|
+          builder.aggregate_id = @aggregate_id
+          builder.sequence_number = next_sequence_number
+          builder.metadata = metadata
+          builder.payload = payload
         end
 
         @listeners.each do |listener|

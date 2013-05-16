@@ -67,6 +67,7 @@ module Synapse
       # Creates an event with the given metadata and payload, publishes it using the event
       # container, and finally handles it locally and recursively down the aggregate.
       #
+      # @api public
       # @param [Object] payload
       # @param [Hash] metadata
       # @return [undefined]
@@ -76,10 +77,10 @@ module Synapse
           handle_recursively event
         else
           # This is a workaround for aggregates that set the aggregate identifier in an event handler
-          event = Domain::DomainEventMessage.build do |b|
-            b.metadata = metadata
-            b.payload = payload
-            b.sequence_number = 0
+          event = Domain::DomainEventMessage.build do |builder|
+            builder.metadata = metadata
+            builder.payload = payload
+            builder.sequence_number = 0
           end
 
           handle_recursively event
@@ -89,6 +90,7 @@ module Synapse
 
       # Handles the event locally and then cascades to any registered child entities
       #
+      # @api private
       # @param [DomainEventMessage] event
       # @return [undefined]
       def handle_recursively(event)

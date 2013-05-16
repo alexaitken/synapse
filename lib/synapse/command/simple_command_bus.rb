@@ -23,12 +23,14 @@ module Synapse
         @unit_factory = unit_factory
       end
 
+      # @api public
       # @param [CommandMessage] command
       # @return [undefined]
       def dispatch(command)
         dispatch_with_callback command, CommandCallback.new
       end
 
+      # @api public
       # @param [CommandMessage] command
       # @param [CommandCallback] callback
       # @return [undefined]
@@ -45,6 +47,7 @@ module Synapse
         end
       end
 
+      # @api public
       # @param [Class] command_type
       # @param [CommandHandler] handler
       # @return [undefined]
@@ -61,6 +64,7 @@ module Synapse
         @handlers.store command_type, handler
       end
 
+      # @api public
       # @param [Class] command_type
       # @param [CommandHandler] handler
       # @return [undefined]

@@ -1,6 +1,10 @@
 module Synapse
   module Wiring
     # Base mixin that make it easier to wire handlers to their respective types
+    #
+    # It is recommended to use mixins more specific to the component being implemented, like
+    # wiring command handlers, event listeners, event-sourced members, or processes.
+    #
     # @abstract
     module MessageWiring
       extend ActiveSupport::Concern
@@ -14,6 +18,33 @@ module Synapse
       end
 
       module ClassMethods
+        # Wires a message handler to messages with payload of the given type
+        #
+        # @example
+        #   wire CashWithdrawnEvent do |event|
+        #     # do something with the event
+        #   end
+        #
+        # @example
+        #   wire CashWithdrawnEvent :to => :on_withdraw
+        #
+        #   def on_withdraw(event)
+        #     # do something with the event
+        #   end
+        #
+        # Certain components that use message handling have different options that can be set
+        # on wires, like wiring processes.
+        #
+        # @example
+        #   wire SellTransactionStartedEvent, :start => true, :correlate => :transaction_id do
+        #     # do something with the event
+        #   end
+        #
+        # @api public
+        # @param [Class] type
+        # @param [Object...] args
+        # @param [Proc] block
+        # @return [undefined]
         def wire(type, *args, &block)
           options = args.extract_options!
 

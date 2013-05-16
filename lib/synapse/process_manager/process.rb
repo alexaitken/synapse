@@ -6,6 +6,8 @@ module Synapse
     # "maintain the state of the sequence and determine the next processing step based on
     # intermediate results" (Hohpe 279). Processes are also called sagas in some CQRS frameworks.
     #
+    # Consider using the implementation of a process that uses message wiring.
+    #
     # @abstract
     class Process
       # @return [String] The unique identifier of this process
@@ -47,6 +49,7 @@ module Synapse
 
       # Correlates this process instance with the given key and value
       #
+      # @api public
       # @param [Symbol] key
       # @param [String] value
       # @return [undefined]
@@ -56,6 +59,7 @@ module Synapse
 
       # Dissociates this process instance from the given key and value
       #
+      # @api public
       # @param [Symbol] key
       # @param [String] value
       # @return [undefined]

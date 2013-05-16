@@ -16,7 +16,7 @@ module Synapse
         unit.register_listener @listener
         chain.proceed command
       end
-    end
+    end # SerializationOptimizingInterceptor
 
     # @api private
     class SerializationOptimizingListener < UnitOfWork::UnitOfWorkListener
@@ -30,6 +30,6 @@ module Synapse
           Serialization::SerializationAwareEventMessage.decorate event
         end
       end
-    end
+    end # SerializationOptimizingListener
   end
 end

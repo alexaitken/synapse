@@ -1,6 +1,6 @@
 module Synapse
   module Repository
-    # Rough implementation of a pessimistic lock manager using local locks
+    # Implementation of a lock manager that blocks until a lock can be obtained
     class PessimisticLockManager < LockManager
       def initialize
         @aggregates = IdentifierLock.new

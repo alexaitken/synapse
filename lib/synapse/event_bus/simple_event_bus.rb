@@ -8,6 +8,7 @@ module Synapse
         @logger = Logging.logger[self.class]
       end
 
+      # @api public
       # @param [EventMessage...] events
       # @return [undefined]
       def publish(*events)
@@ -18,50 +19,33 @@ module Synapse
         events.flatten!
         events.each do |event|
           @listeners.each do |listener|
-            if @logger.debug?
-              listener_type = actual_type listener
-              @logger.debug 'Dispatching event [%s] to listener [%s]' %
-                [event.payload_type, listener_type]
-            end
+            @logger.debug 'Dispatching event [%s] to listener [%s]' %
+              [event.payload_type, listener.class]
 
             listener.notify event
           end
         end
       end
 
+      # @api public
       # @param [EventListener] listener
       # @return [undefined]
       def subscribe(listener)
-        listener_type = actual_type listener
-
         if @listeners.add? listener
-          @logger.debug 'Event listener [%s] subscribed' % listener_type
+          @logger.debug 'Event listener [%s] subscribed' % listener.class
         else
-          @logger.info 'Event listener [%s] not added, was already subscribed' % listener_type
+          @logger.info 'Event listener [%s] not added, was already subscribed' % listener.class
         end
       end
 
+      # @api public
       # @param [EventListener] listener
       # @return [undefined]
       def unsubscribe(listener)
-        listener_type = actual_type listener
-
         if @listeners.delete? listener
-          @logger.debug 'Event listener [%s] unsubscribed' % listener_type
+          @logger.debug 'Event listener [%s] unsubscribed' % listener.class
         else
-          @logger.info 'Event listener [%s] not removed, was not subscribed' % listener_type
-        end
-      end
-
-    private
-
-      # @param [EventListener] listener
-      # @return [Class]
-      def actual_type(listener)
-        if listener.respond_to? :proxied_type
-          listener.proxied_type
-        else
-          listener.class
+          @logger.info 'Event listener [%s] not removed, was not subscribed' % listener.class
         end
       end
     end

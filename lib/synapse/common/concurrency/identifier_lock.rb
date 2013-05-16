@@ -1,4 +1,5 @@
 module Synapse
+  # Generic implementation of a lock that can be used to lock an identifier for use
   # @todo Deadlock detection
   class IdentifierLock
     # @return [undefined]
@@ -68,4 +69,4 @@ module Synapse
       end
     end
   end # IdentifierLock
-end # Synapse
+end
