@@ -28,4 +28,4 @@ module Synapse
       end # AMQPQueueWriter
     end # AMQP
   end # Partitioning
-end # Synapse
+end

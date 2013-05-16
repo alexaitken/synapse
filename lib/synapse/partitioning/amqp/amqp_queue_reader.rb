@@ -46,4 +46,4 @@ module Synapse
       end # AMQPQueueReader
     end # AMQP
   end # Partitioning
-end # Synapse
+end

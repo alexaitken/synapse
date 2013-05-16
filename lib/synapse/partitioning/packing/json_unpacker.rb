@@ -80,4 +80,4 @@ module Synapse
       end
     end # JsonMessageUnpacker
   end # Partitioning
-end # Synapse
+end

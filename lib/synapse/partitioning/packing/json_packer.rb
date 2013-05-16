@@ -90,4 +90,4 @@ module Synapse
       end
     end # JsonMessagePacker
   end # Partitioning
-end # Synapse
+end
