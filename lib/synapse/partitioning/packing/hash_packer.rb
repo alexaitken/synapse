@@ -1,8 +1,9 @@
 module Synapse
   module Partitioning
     # Implementation of a message packer that serializes the metadata and payload of any
-    # message and then serializes the entire message so it can go onto the wire.
-    class JsonMessagePacker < MessagePacker
+    # message and packs it into a hash so it can be serialized and sent across the wire.
+    # @abstract
+    class HashMessagePacker < MessagePacker
       # @param [Serializer] serializer
       # @return [undefined]
       def initialize(serializer)
@@ -16,9 +17,13 @@ module Synapse
         end
       end
 
+    protected
+
+      # Serializes the metadata and payload of the given message and packs it into a hash
+      #
       # @param [Message] unpacked
-      # @return [String]
-      def pack_message(unpacked)
+      # @return [Hash]
+      def to_hash(unpacked)
         message_type = type_for unpacked
 
         metadata = @serializer.serialize_metadata unpacked, @serialization_target
@@ -41,7 +46,7 @@ module Synapse
           pack_domain_event unpacked, packed
         end
 
-        JSON.dump packed
+        packed
       end
 
     private

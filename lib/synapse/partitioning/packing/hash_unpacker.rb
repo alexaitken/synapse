@@ -1,18 +1,20 @@
 module Synapse
   module Partitioning
     # Implementation of a message unpacker that unpacks messages that come off the wire in the
-    # format described by JsonMessagePacker
-    class JsonMessageUnpacker < MessageUnpacker
+    # format described by HashMessagePacker
+    # @abstract
+    class HashMessageUnpacker < MessageUnpacker
       # @param [Serializer] serializer
       # @return [undefined]
       def initialize(serializer)
         @serializer = serializer
       end
 
-      # @param [String] packed
+    protected
+
+      # @param [Hash] packed
       # @return [Message]
-      def unpack_message(message)
-        packed = JSON.load message
+      def from_hash(packed)
         packed.symbolize_keys!
 
         message_type = packed.fetch(:message_type).to_sym
@@ -43,7 +45,9 @@ module Synapse
       # @return [Hash]
       def deserialize_metadata(packed)
         content = packed.fetch :metadata
-        @serializer.deserialize Serialization::SerializedMetadata.new content, content.class
+        serialized_metadata = Serialization::SerializedMetadata.new content, content.class
+
+        @serializer.deserialize serialized_metadata
       end
 
       # Deserializes the payload of the given packed message

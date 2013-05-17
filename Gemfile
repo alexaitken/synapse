@@ -21,6 +21,9 @@ group :development do
   # Used for the AMQP partitioning queue
   gem 'amqp'
 
+  # Used for partitioning message packing
+  gem 'msgpack'
+
   # Used for documentation
   gem 'yard'
   gem 'redcarpet', platform: :ruby

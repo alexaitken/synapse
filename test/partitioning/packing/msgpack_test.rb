@@ -4,18 +4,18 @@ require 'partitioning/packing/pack_test_base'
 module Synapse
   module Partitioning
 
-    class JsonPackingTest < Test::Unit::TestCase
+    class MessagePackPackingTest < Test::Unit::TestCase
       include PackingTest
 
     protected
 
       def native_pack(unpacked)
-        JSON.dump unpacked
+        MessagePack.pack unpacked
       end
 
       def setup_packing
-        @packer = JsonMessagePacker.new @serializer
-        @unpacker = JsonMessageUnpacker.new @serializer
+        @packer = MessagePackMessagePacker.new @serializer
+        @unpacker = MessagePackMessageUnpacker.new @serializer
       end
     end
 
