@@ -1,6 +1,6 @@
 # TODO
 
-+ Configuration DSL and dependency container
++ ~~Configuration DSL and dependency container~~
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
 + ~~Move Mongo into its own gem~~

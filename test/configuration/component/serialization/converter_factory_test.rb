@@ -1,0 +1,48 @@
+require 'test_helper'
+
+module Synapse
+  module Configuration
+    class ConverterFactoryDefinitionBuilderTest < Test::Unit::TestCase
+      def setup
+        @container = Container.new
+        @builder = ContainerBuilder.new @container
+      end
+
+      def test_simple
+        @builder.converter_factory
+
+        factory = @container.resolve :converter_factory
+        assert factory.is_a? Serialization::ConverterFactory
+      end
+
+      def test_converter_tag
+        @builder.definition :json2object_converter do
+          tag :converter, :alt_converter
+          use_factory do
+            Serialization::JsonToObjectConverter.new
+          end
+        end
+        @builder.definition :json2object_alt_converter do
+          tag :alt_converter
+          use_factory do
+            Serialization::JsonToObjectConverter.new
+          end
+        end
+
+        # Defaults
+        @builder.converter_factory
+
+        factory = @container.resolve :converter_factory
+        factory.converters.at(0).is_a? Serialization::JsonToObjectConverter
+
+        # Customized
+        @builder.converter_factory :alt_factory do
+          use_converter_tag :alt_converter
+        end
+
+        factory = @container.resolve :alt_factory
+        factory.converters.at(0).is_a? Serialization::JsonToObjectConverter
+      end
+    end
+  end
+end

@@ -34,6 +34,7 @@ module Synapse
 
   # Optional components
   autoload :Auditing
+  autoload :Configuration
   autoload :EventSourcing
   autoload :EventStore
   autoload :Partitioning
