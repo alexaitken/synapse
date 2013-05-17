@@ -37,7 +37,6 @@ module Synapse
   autoload :Configuration
   autoload :EventSourcing
   autoload :EventStore
-  autoload :Partitioning
   autoload :ProcessManager
   autoload :Upcasting
 end
