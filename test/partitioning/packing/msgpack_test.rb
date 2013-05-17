@@ -14,6 +14,8 @@ module Synapse
       end
 
       def setup_packing
+        skip 'msgpack not supported on JRuby' if defined? JRUBY_VERSION
+
         @packer = MessagePackMessagePacker.new @serializer
         @unpacker = MessagePackMessageUnpacker.new @serializer
       end

@@ -22,7 +22,7 @@ group :development do
   gem 'amqp'
 
   # Used for partitioning message packing
-  gem 'msgpack'
+  gem 'msgpack', platform: :ruby
 
   # Used for documentation
   gem 'yard'
