@@ -27,6 +27,14 @@ module Synapse
         end
       end
 
+      # Returns true if the given listener is subscribed to this event bus
+      #
+      # @param [EventListener] listener
+      # @return [Boolean]
+      def subscribed?(listener)
+        @listeners.include? listener
+      end
+
       # @api public
       # @param [EventListener] listener
       # @return [undefined]
