@@ -33,9 +33,6 @@ module Synapse
       # @return [undefined]
       def use_ox
         @serializer_type = Serialization::OxSerializer
-        @serialize_options = {
-          circular: true
-        }
       end
 
       # Changes the converter factory
@@ -44,6 +41,24 @@ module Synapse
       # @return [undefined]
       def use_converter_factory(converter_factory)
         @converter_factory = converter_factory
+      end
+
+      # Changes the options to use during serialization; note that these are serializer-specific
+      # and that not all serializers support options.
+      #
+      # @param [Hash] serialize_options
+      # @return [undefined]
+      def use_serialize_options(serialize_options)
+        @serialize_options = serialize_options
+      end
+
+      # Changes the options to use during deserialization; note that these are serializer-specific
+      # and that not all serializers support options.
+      #
+      # @param [Hash] deserialize_options
+      # @return [undefined]
+      def use_deserialize_options(deserialize_options)
+        @deserialize_options = deserialize_options
       end
 
     protected
@@ -61,6 +76,10 @@ module Synapse
 
           if @serialize_options
             serializer.serialize_options = @serialize_options
+          end
+
+          if @deserialize_options
+            serializer.deserialize_options = @deserialize_options
           end
 
           serializer
