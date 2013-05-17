@@ -2,6 +2,18 @@ require 'test_helper'
 
 module Synapse
   module Domain
+    class EventMessageTest < Test::Unit::TestCase
+      def test_as_message
+        event = Object.new
+        event_message = EventMessage.build
+
+        assert_same event_message, EventMessage.as_message(event_message)
+
+        wrapped = EventMessage.as_message(event)
+        assert_same event, wrapped.payload
+      end
+    end
+
     class DomainEventMessageTest < Test::Unit::TestCase
       def setup
         @payload = OpenStruct.new

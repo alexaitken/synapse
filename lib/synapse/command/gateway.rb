@@ -13,21 +13,7 @@ module Synapse
       # @param [Object] command
       # @return [undefined]
       def send(command)
-        @command_bus.dispatch(as_command_message(command))
-      end
-
-    private
-
-      # @param [Object] command
-      # @return [CommandMessage]
-      def as_command_message(command)
-        unless command.is_a? CommandMessage
-          command = CommandMessage.build do |builder|
-            builder.payload = command
-          end
-        end
-
-        command
+        @command_bus.dispatch(CommandMessage.as_message(command))
       end
     end
   end

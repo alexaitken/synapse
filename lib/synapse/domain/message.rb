@@ -23,6 +23,22 @@ module Synapse
         EventMessageBuilder
       end
 
+      # Creates an event message using the given event object
+      #
+      # If the given object is an event message, it will be returned unchanged.
+      #
+      # @param [Object] event
+      # @return [EventMessage]
+      def self.as_message(event)
+        unless event.is_a? EventMessage
+          event = self.build do |builder|
+            builder.payload = event
+          end
+        end
+
+        event
+      end
+
     protected
 
       # @param [EventMessageBuilder] builder
