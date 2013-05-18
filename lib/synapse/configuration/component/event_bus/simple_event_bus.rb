@@ -5,7 +5,7 @@ module Synapse
     # @example The minimum possible effort to build an event bus
     #   simple_event_bus
     #
-    # @example Create an event bus with a alternate identifier and listener tag
+    # @example Create an event bus with an alternate identifier and listener tag
     #   simple_event_bus :alt_event_bus do
     #     use_listener_tag :alt_event_listener
     #   end
