@@ -19,16 +19,20 @@ module Synapse
 
         @bus.subscribe TestCommand, handler
 
-        x = 1000
+        x = 10
 
-        mock(callback).on_success(anything).times(x)
+        called_back = Atomic.new 0
+
+        mock(callback).on_success(anything).any_times do
+          called_back.update { |v| v.next }
+        end
 
         x.times do
           @bus.dispatch_with_callback command, callback
         end
 
         wait_until do
-          handler.count.value == x
+          handler.count.value == x and called_back.value == x
         end
 
         @bus.shutdown

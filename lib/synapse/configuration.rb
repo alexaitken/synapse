@@ -4,10 +4,16 @@ require 'synapse/configuration/definition'
 require 'synapse/configuration/definition_builder'
 require 'synapse/configuration/ext'
 
-# Pull in any configuration components
-lib = File.dirname File.absolute_path __FILE__
-components = File.join lib, 'configuration/component/**/*.rb'
+require 'synapse/configuration/component/command_bus'
+require 'synapse/configuration/component/command_bus/simple_command_bus'
+require 'synapse/configuration/component/command_bus/async_command_bus'
 
-Dir[components].each do |file|
-  require file
-end
+require 'synapse/configuration/component/event_bus'
+require 'synapse/configuration/component/event_bus/simple_event_bus'
+
+require 'synapse/configuration/component/serialization'
+require 'synapse/configuration/component/serialization/converter_factory'
+require 'synapse/configuration/component/serialization/serializer'
+
+require 'synapse/configuration/component/uow'
+require 'synapse/configuration/component/uow/unit_factory'

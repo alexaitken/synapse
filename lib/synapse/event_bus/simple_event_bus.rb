@@ -12,9 +12,7 @@ module Synapse
       # @param [EventMessage...] events
       # @return [undefined]
       def publish(*events)
-        if @listeners.empty?
-          return
-        end
+        return if @listeners.empty?
 
         events.flatten!
         events.each do |event|
@@ -29,6 +27,7 @@ module Synapse
 
       # Returns true if the given listener is subscribed to this event bus
       #
+      # @api public
       # @param [EventListener] listener
       # @return [Boolean]
       def subscribed?(listener)
@@ -56,6 +55,6 @@ module Synapse
           @logger.info 'Event listener [%s] not removed, was not subscribed' % listener.class
         end
       end
-    end
-  end
+    end # SimpleEventBus
+  end # EventBus
 end
