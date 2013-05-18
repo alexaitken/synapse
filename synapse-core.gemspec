@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport'
   s.add_dependency 'atomic'
   s.add_dependency 'logging'
+  s.add_dependency 'thread'
 end

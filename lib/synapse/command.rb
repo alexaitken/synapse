@@ -2,6 +2,8 @@ module Synapse
   module Command
     extend ActiveSupport::Autoload
 
+    autoload :AsynchronousCommandBus, 'synapse/command/async_command_bus'
+
     # Optional filters and interceptors
     autoload_at 'synapse/command/duplication' do
       autoload :DuplicationFilter
