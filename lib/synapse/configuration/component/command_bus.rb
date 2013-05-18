@@ -7,7 +7,7 @@ module Synapse
       # @param [Symbol] identifier
       # @param [Proc] block
       # @return [undefined]
-      def simple_command_bus(identifier = nil, &block)
+      def async_command_bus(identifier = nil, &block)
         with_definition_builder AsynchronousCommandBusDefinitionBuilder, identifier, &block
       end
 
