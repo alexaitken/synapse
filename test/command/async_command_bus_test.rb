@@ -31,7 +31,7 @@ module Synapse
           @bus.dispatch_with_callback command, callback
         end
 
-        wait_until do
+        wait_until 10 do
           handler.count.value == x and called_back.value == x
         end
 
