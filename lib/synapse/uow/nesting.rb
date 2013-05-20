@@ -26,6 +26,7 @@ module Synapse
       # resources it acquired. The effectively means that a rollback is done if the unit of work
       # failed to commit.
       #
+      # @api public
       # @raise [RuntimeError] If unit of work hasn't been started yet
       # @return [undefined]
       def commit
@@ -61,6 +62,7 @@ module Synapse
       # Any buffered events and registered aggregates are discarded and any registered unit of work
       # listeners are notified of the rollback.
       #
+      # @api public
       # @param [Error] cause
       # @return [undefined]
       def rollback(cause = nil)
@@ -79,6 +81,7 @@ module Synapse
 
       # Starts the unit of work, preparing it for aggregate registration
       #
+      # @api public
       # @raise [RuntimeError] If unit of work has already been started
       # @return [undefined]
       def start
@@ -105,6 +108,8 @@ module Synapse
       end
 
       # Returns true if this unit of work has been started
+      #
+      # @api public
       # @return [Boolean]
       def started?
         @started
@@ -224,6 +229,8 @@ module Synapse
 
     # Listener that allows a nested unit of work to properly operate within in a unit of
     # work that is not aware of nesting
+    #
+    # @api private
     class OuterCommitUnitOfWorkListener < UnitOfWorkListener
       # @param [UnitOfWork] inner_unit
       # @param [UnitOfWorkProvider] provider

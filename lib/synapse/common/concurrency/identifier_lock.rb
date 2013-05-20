@@ -35,7 +35,6 @@ module Synapse
       end
 
       lock_for(identifier).unlock
-      dispose_if_unused(identifier)
     end
 
   private
@@ -52,21 +51,6 @@ module Synapse
 
     def lock_available?(identifier)
       @identifiers.has_key? identifier
-    end
-
-    # Disposes of the lock for the given identifier if it has no threads waiting for it
-    #
-    # @param [String] identifier
-    # @return [undefined]
-    def dispose_if_unused(identifier)
-      lock = lock_for identifier
-      if lock.try_lock
-        @lock.synchronize do
-          @identifiers.delete identifier
-        end
-
-        lock.unlock
-      end
     end
   end # IdentifierLock
 end

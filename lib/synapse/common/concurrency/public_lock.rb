@@ -1,5 +1,3 @@
-require 'monitor'
-
 module Synapse
   # Lock that tracks the thread owning the lock and any waiting threads
   class PublicLock
@@ -12,7 +10,6 @@ module Synapse
     # @return [undefined]
     def initialize
       @mutex = Mutex.new
-      @condition = ConditionVariable.new
       @waiting = Array.new
     end
 
@@ -51,9 +48,10 @@ module Synapse
         end
 
         while @owner
+          @waiting.push Thread.current
+
           begin
-            @waiting.push Thread.current
-            @condition.wait @mutex
+            @mutex.sleep
           ensure
             @waiting.delete Thread.current
           end
@@ -69,7 +67,9 @@ module Synapse
       @mutex.synchronize do
         if @owner == Thread.current
           @owner = nil
-          @condition.signal
+
+          first = @waiting.shift
+          first.wakeup if first
         else
           raise ThreadError, 'Lock is not owned by the current thread'
         end

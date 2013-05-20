@@ -13,6 +13,8 @@ module Synapse
       end
 
       # Returns true if this unit of work is bound to a transaction
+      #
+      # @api public
       # @return [Boolean]
       def transactional?
         !!@transaction_manager
@@ -20,6 +22,7 @@ module Synapse
 
       # Registers a listener that is notified of state changes in this unit of work
       #
+      # @api public
       # @param [UnitOfWorkListener] listener
       # @return [undefined]
       def register_listener(listener)
@@ -38,6 +41,7 @@ module Synapse
       # and with the same identifier, that aggregate will be returned instead of the given
       # aggregate.
       #
+      # @api public
       # @param [AggregateRoot] aggregate
       # @param [EventBus] event_bus
       # @param [StorageListener] storage_listener
@@ -60,6 +64,7 @@ module Synapse
       # Buffers an event for publication to the given event bus until this unit of work is
       # committed
       #
+      # @api public
       # @param [EventMessage] event
       # @param [EventBus] event_bus
       # @return [EventMessage] The event that will be published to the event bus
@@ -78,6 +83,7 @@ module Synapse
 
       # Sets the transaction manager that will be used by this unit of work
       #
+      # @api public
       # @raise [RuntimeError] If unit of work has been started
       # @param [TransactionManager] transaction_manager
       # @return [undefined]
@@ -173,6 +179,6 @@ module Synapse
           end
         end
       end
-    end
-  end
+    end # UnitOfWork
+  end # UnitOfWork
 end

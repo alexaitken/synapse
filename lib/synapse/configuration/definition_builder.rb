@@ -2,6 +2,9 @@ module Synapse
   module Configuration
     # DSL for building service definitions
     class DefinitionBuilder
+      # @return [Symbol]
+      attr_reader :id
+
       # @yield [DefinitionBuilder]
       # @param [Container] container
       # @param [Symbol] id
@@ -11,6 +14,8 @@ module Synapse
         builder = self.new container, id
         builder.instance_exec(&block) if block
         builder.register_definition
+
+        builder.id
       end
 
       # @param [Container] container
@@ -30,6 +35,11 @@ module Synapse
       # @return [undefined]
       def identified_by(id)
         @id = id.to_sym
+      end
+
+      # @return [undefined]
+      def anonymous
+        identified_by SecureRandom.hex 8
       end
 
       # @param [Symbol...] tags
@@ -89,7 +99,7 @@ module Synapse
       #
       # @param [Class] builder_type Defaults to DefinitionBuilder
       # @param [Proc] block
-      # @return [undefined]
+      # @return [Symbol] The identifier of the newly created service
       def build_composite(builder_type = DefinitionBuilder, &block)
         builder_type.build @container, &block
       end

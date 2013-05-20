@@ -2,17 +2,6 @@ require 'test_helper'
 
 module Synapse
   class IdentifierLockTest < Test::Unit::TestCase
-    def test_disposal
-      lock = IdentifierLock.new
-      identifier = 'some_id'
-
-      lock.obtain_lock identifier
-      lock.release_lock identifier
-
-      identifiers = lock.instance_variable_get :@identifiers
-      refute identifiers.has_key? identifier
-    end
-
     def test_owned?
       lock = IdentifierLock.new
       identifier = 'some_id'
