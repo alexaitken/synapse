@@ -17,7 +17,7 @@ module Synapse
 
         command = CommandMessage.as_message TestCommand.new
         callback = Object.new
-        handler = TestAsyncHandler.new x
+        handler = TestAsyncHandler.new
 
         @bus.subscribe TestCommand, handler
 
@@ -32,25 +32,17 @@ module Synapse
         end
 
         wait_until 10 do
-          @latch.count == 0 and handler.latch.count == 0
+          @latch.count == 0
         end
 
         @bus.shutdown
       end
     end
 
-    class TestCommand; end
-
     class TestAsyncHandler
-      attr_reader :latch
-
-      def initialize(x)
-        @latch = CountdownLatch.new x
-      end
-
-      def handle(command, unit)
-        @latch.countdown!
-      end
+      def handle(command, unit); end
     end
+
+    class TestCommand; end
   end
 end
