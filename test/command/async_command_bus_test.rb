@@ -31,7 +31,7 @@ module Synapse
           @bus.dispatch_with_callback command, callback
         end
 
-        wait_until 10 do
+        wait_until 30 do
           @latch.count == 0
         end
 
