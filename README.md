@@ -9,6 +9,15 @@ Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 
 Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.com) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
 
+## Compatibility
+
+Synapse is tested and developed on several different runtimes, including:
+
+- MRI 1.9.3
+- MRI 2.0.0
+- JRuby 1.7.3
+- Rubinius 2.0.0-rc1 (rbx-head)
+
 ## Features
 
 - Mixins for aggregate members (root and member entities)

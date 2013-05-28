@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'atomic'
+require 'support/countdown_latch'
 
 module Synapse
   module Command
@@ -13,18 +13,18 @@ module Synapse
       end
 
       def test_dispatch
+        x = 10 # Number of commands to dispatch
+
         command = CommandMessage.as_message TestCommand.new
         callback = Object.new
-        handler = TestAsyncHandler.new
+        handler = TestAsyncHandler.new x
 
         @bus.subscribe TestCommand, handler
 
-        x = 10
-
-        called_back = Atomic.new 0
+        @latch = CountdownLatch.new x
 
         mock(callback).on_success(anything).any_times do
-          called_back.update { |v| v.next }
+          @latch.countdown!
         end
 
         x.times do
@@ -32,7 +32,7 @@ module Synapse
         end
 
         wait_until 10 do
-          handler.count.value == x and called_back.value == x
+          @latch.count == 0 and handler.latch.count == 0
         end
 
         @bus.shutdown
@@ -42,14 +42,14 @@ module Synapse
     class TestCommand; end
 
     class TestAsyncHandler
-      attr_reader :count
+      attr_reader :latch
 
-      def initialize
-        @count = Atomic.new 0
+      def initialize(x)
+        @latch = CountdownLatch.new x
       end
 
       def handle(command, unit)
-        @count.update { |v| v.next }
+        @latch.countdown!
       end
     end
   end
