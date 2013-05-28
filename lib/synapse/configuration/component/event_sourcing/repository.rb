@@ -4,12 +4,15 @@ module Synapse
     #
     # @example The minimum possible effort to build a event sourcing repository
     #   es_repository :orderbook_repository do
-    #     for_aggregate_type TradeEngine::OrderBook
+    #     use_aggregate_type TradeEngine::OrderBook
     #   end
     class EventSourcingRepositoryDefinitionBuilder < LockingRepositoryDefinitionBuilder
+      # Convenience method that defines an aggregate factory capable of creating aggregates 
+      # of the given type
+      #
       # @param [Class] aggregate_type
       # @return [undefined]
-      def for_aggregate(aggregate_type)
+      def use_aggregate_type(aggregate_type)
         @aggregate_factory = build_composite do
           anonymous
           tag :aggregate_factory

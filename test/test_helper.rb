@@ -16,8 +16,10 @@ require 'synapse'
 
 require 'test_ext'
 
-class Test::Unit::TestCase
-  include RR::Adapters::TestUnit
+# I guess RR broke
+# http://stackoverflow.com/questions/3657972
+unless defined? Test::Unit::AssertionFailedError
+  Test::Unit::AssertionFailedError = ActiveSupport::TestCase::Assertion
 end
 
 ActiveSupport::Autoload.eager_autoload!

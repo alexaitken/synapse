@@ -21,9 +21,9 @@ Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.c
 - Simple object serialization
 - DSL for easy wiring of event and command handlers
 - Process manager framework (also known as Saga management)
+- Repository for non-event sourced aggregates (MongoMapper and ActiveRecord)
 
 ## Coming soon
-- Repository for non-event sourced aggregates (MongoMapper and ActiveRecord)
 - Event store using Sequel
 - Distributed command and event buses (engine partitioning)
 - Event replay and projection framework

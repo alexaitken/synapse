@@ -68,8 +68,8 @@ module Synapse
         if @owner == Thread.current
           @owner = nil
 
-          first = @waiting.shift
-          first.wakeup if first
+          first_waiter = @waiting.first
+          first_waiter.wakeup if first_waiter
         else
           raise ThreadError, 'Lock is not owned by the current thread'
         end
