@@ -4,7 +4,7 @@ module Synapse
   module ProcessManager
 
     class ProcessTest < Test::Unit::TestCase
-      def test_initialize
+      should 'initialize with sensible defaults' do
         process = StubProcess.new
         correlation = Correlation.new :process_id, process.id
 
@@ -14,7 +14,7 @@ module Synapse
         assert process.active?
       end
 
-      def test_dissociate_from
+      should 'support deletion of a correlation' do
         process = StubProcess.new
 
         key = :order_id
@@ -27,7 +27,7 @@ module Synapse
         refute process.correlations.include? Correlation.new(key, value)
       end
 
-      def test_finish
+      should 'be able to be marked as finished' do
         process = StubProcess.new
         process.cause_finish
 

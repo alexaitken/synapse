@@ -19,7 +19,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      def test_add
+      should 'handling locking when an aggregate is added' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
@@ -31,7 +31,7 @@ module Synapse
         @unit.commit
       end
 
-      def test_add_incompatible_aggregate
+      should 'raise an exception if an incompatible aggregate is added' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
@@ -43,7 +43,7 @@ module Synapse
         end
       end
 
-      def test_add_versioned
+      should 'raise an exception if an aggregate is added that already has a version' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
@@ -54,7 +54,7 @@ module Synapse
         end
       end
 
-      def test_load_version_ahead
+      should 'raise an exception if a loaded aggregate has an unexpected version' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 

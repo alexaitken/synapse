@@ -4,7 +4,7 @@ require 'domain/fixtures'
 module Synapse
   module Repository
     class PessimisticLockManagerTest < Test::Unit::TestCase
-      def test_lifecycle
+      should 'support obtaining and releasing a lock for an aggregate' do
         @manager = PessimisticLockManager.new
 
         aggregate = Domain::Person.new SecureRandom.uuid, 'Bender'

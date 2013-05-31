@@ -4,7 +4,7 @@ module Synapse
   module EventSourcing
 
     class EventSourcedStorageListenerTest < Test::Unit::TestCase
-      def test_store
+      should 'append uncommitted aggregate events to the event store' do
         event_store = Object.new
         lock_manager = Repository::NullLockManager.new
         decorators = Array.new
@@ -33,9 +33,9 @@ module Synapse
         listener.store aggregate
       end
 
-      def test_store_locking
+      should 'validate lock if the aggregate is not new' do
         event_store = Object.new
-        lock_manager = Repository::NullLockManager.new
+        lock_manager = Object.new
         decorators = Array.new
         type_identifier = StubAggregate.to_s.demodulize
         aggregate = StubAggregate.new 123
@@ -44,13 +44,17 @@ module Synapse
           123
         end
 
+        mock(lock_manager).validate_lock(aggregate) do
+          true
+        end
+
         mock(event_store).append_events(type_identifier, anything)
 
         listener = EventSourcedStorageListener.new event_store, lock_manager, decorators, type_identifier
         listener.store aggregate
       end
 
-      def test_store_lock_failed
+      should 'raise an exception if the aggregate is not new and the lock is invalid' do
         event_store = Object.new
         lock_manager = Object.new
         decorators = Array.new

@@ -11,7 +11,7 @@ module Synapse
         @manager = SimpleProcessManager.new @repository, @factory, @lock_manager, @resolver, TestProcess
       end
 
-      def test_notify_new_process
+      should 'create a new process and notify it if one could not be found' do
         @manager.optionally_create_events << CauseProcessCreationEvent
 
         correlation = Correlation.new :order_id, 123
@@ -24,7 +24,7 @@ module Synapse
         assert_equal 1, @repository.count
       end
 
-      def test_notify_existing_process
+      should 'load and notify an existing process correlated with an event' do
         process = TestProcess.new
         process.correlations.add Correlation.new :order_id, 123
 
@@ -38,7 +38,7 @@ module Synapse
         assert_equal 1, @repository.count
       end
 
-      def test_notify_process_raises_but_suppressed
+      should 'suppress exceptions raised by a process while handling an event' do
         process = TestProcess.new
         process.correlations.add Correlation.new :order_id, 123
 
@@ -52,7 +52,7 @@ module Synapse
         assert_equal 1, @repository.count
       end
 
-      def test_notify_process_raises
+      should 'release its lock before raising an exception caused by a process' do
         process = TestProcess.new
         process.correlations.add Correlation.new :order_id, 123
 
@@ -68,7 +68,7 @@ module Synapse
         end
       end
 
-      def test_always_create
+      should 'always create a process if specified by the creation policy' do
         @manager.always_create_events << CauseProcessCreationEvent
 
         correlation = Correlation.new :order_id, 123

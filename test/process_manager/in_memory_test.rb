@@ -4,7 +4,7 @@ module Synapse
   module ProcessManager
 
     class InMemoryProcessRepositoryTest < Test::Unit::TestCase
-      def test_find
+      should 'support finding processes by correlations' do
         correlation_a = Correlation.new :order_id, 1
         correlation_b = Correlation.new :order_id, 2
 
@@ -21,7 +21,7 @@ module Synapse
         assert_equal [process_b.id], repository.find(Process, correlation_b)
       end
 
-      def test_load
+      should 'support loading processes by identifier' do
         repository = InMemoryProcessRepository.new
 
         process_a = Process.new
@@ -34,7 +34,7 @@ module Synapse
         assert_equal process_b, repository.load(process_b.id)
       end
 
-      def test_commit
+      should 'mark processes as committed' do
         repository = InMemoryProcessRepository.new
 
         process = Process.new

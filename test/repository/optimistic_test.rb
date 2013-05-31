@@ -4,7 +4,7 @@ require 'domain/fixtures'
 module Synapse
   module Repository
     class OptimisticLockManagerTest < Test::Unit::TestCase
-      def test_fails_on_concurrent_modification
+      should 'fail to validate on concurrent modification' do
         manager = OptimisticLockManager.new
 
         id = SecureRandom.uuid
@@ -23,7 +23,7 @@ module Synapse
         refute manager.validate_lock aggregate2
       end
 
-      def test_lock_cleanup
+      should 'cleanup unused locks' do
         manager = OptimisticLockManager.new
 
         id = SecureRandom.uuid

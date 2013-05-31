@@ -5,7 +5,7 @@ module Synapse
   module EventSourcing
 
     class AggregateRootTest < Test::Unit::TestCase
-      def test_apply
+      should 'track published events' do
         stub = StubAggregate.new 123
         stub.change_something
         stub.change_something
@@ -20,7 +20,7 @@ module Synapse
         assert_equal 2, stub.version
       end
 
-      def test_new_from_stream
+      should 'support initializing state from an event stream' do
         events = Array.new
         events.push create_event(123, 0, StubCreatedEvent.new(123))
         events.push create_event(123, 1, StubChangedEvent.new)
@@ -34,7 +34,7 @@ module Synapse
         assert_equal 2, aggregate.version
       end
 
-      def test_initialize_fails_after_initialization
+      should 'raise an exception if initialization is attempted when the aggregate has state' do
         aggregate = StubAggregate.new 123
 
         assert_raise RuntimeError do
@@ -42,7 +42,7 @@ module Synapse
         end
       end
 
-      def test_child_entities
+      should 'notify child entities of aggregate events' do
         stub_entity_a = StubEntity.new
         stub_entity_b = StubEntity.new
 

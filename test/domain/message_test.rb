@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Domain
     class EventMessageTest < Test::Unit::TestCase
-      def test_as_message
+      should 'wrap event objects into event messages' do
         event = Object.new
         event_message = EventMessage.build
 
@@ -27,7 +27,7 @@ module Synapse
         end
       end
 
-      def test_initialize
+      should 'populate fields with sensible defaults' do
         # ensure empty fields were populated with default values
         assert @message.id
         assert @message.metadata
@@ -40,7 +40,7 @@ module Synapse
         assert_equal @sequence_number, @message.sequence_number
       end
 
-      def test_and_metadata
+      should 'create a complete copy of itself when merging metadata' do
         additional_metadata_a = { foo: 'bar' }
         additional_metadata_b = { baz: 'qux' }
 
@@ -58,7 +58,7 @@ module Synapse
         assert_equal additional_metadata_a.merge(additional_metadata_b), merged.metadata
       end
 
-      def test_with_metadata
+      should 'create a complete copy of itself when replacing metadata' do
         additional_metadata_a = { foo: 'bar' }
         additional_metadata_b = { baz: 'qux' }
 

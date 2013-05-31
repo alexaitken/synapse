@@ -12,12 +12,12 @@ module Synapse
         @stream = SimpleDomainEventStream.new @events
       end
 
-      def test_peek
+      should 'support peeking without moving the pointer forward' do
         assert_same @events.at(0), @stream.peek
         assert_same @events.at(0), @stream.peek
       end
 
-      def test_end_of_stream
+      should 'raise an exception when the end of the stream is reached' do
         @stream.next_event
         @stream.next_event
 

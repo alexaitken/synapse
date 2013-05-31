@@ -13,13 +13,13 @@ module Synapse
         @manager = WiringProcessManager.new @repository, @factory, @lock_manager, OrderProcess
       end
 
-      def test_support
+      should 'raise an exception if used with a process that does not support wiring' do
         assert_raise ArgumentError do
           WiringProcessManager.new @repository, @factory, @lock_manager, Process
         end
       end
 
-      def test_correlation
+      should 'use wiring attributes to determine correlation keys' do
         event = create_event OrderCreated.new 123
         @manager.notify event
 
@@ -29,7 +29,7 @@ module Synapse
         assert_equal 1, processes.count
       end
 
-      def test_creation_policy
+      should 'use wiring attributes to determine creation policy' do
         event = create_event OrderCreated.new 123
 
         @manager.notify event
@@ -52,7 +52,7 @@ module Synapse
         assert_equal 3, @repository.count
       end
 
-      def test_correlation_fails
+     should 'raise an exception if the correlation key does not exist on the event' do
         event = create_event OrderDerped.new
 
         assert_raise RuntimeError do

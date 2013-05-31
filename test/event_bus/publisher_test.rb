@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module EventBus
     class EventPublisherTest < Test::Unit::TestCase
-      def test_publish_event
+      should 'wrap event objects in messages before they are published' do
         event_bus = Object.new
 
         mock(event_bus).publish(is_a(Domain::EventMessage)) do |message|

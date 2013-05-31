@@ -4,7 +4,7 @@ module Synapse
   module ProcessManager
     class CorrelationSetTest < Test::Unit::TestCase
 
-      def test_add
+      should 'track correlation additions' do
         correlation = Correlation.new :order_id, '512d5467-d319-481e-ab5e-4d6f7445bcff'
 
         set = CorrelationSet.new
@@ -25,7 +25,7 @@ module Synapse
         assert_equal 0, set.deletions.count
       end
 
-      def test_delete
+      should 'track correlation deletions' do
         correlation = Correlation.new :order_id, '512d5467-d319-481e-ab5e-4d6f7445bcff'
 
         set = CorrelationSet.new

@@ -17,7 +17,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      def test_add_compatibility
+      should 'raise an exception if an incompatible aggregate is added' do
         aggregate = Domain::Person.new 123, 'Polandball'
 
         assert_raise ArgumentError do
@@ -25,7 +25,7 @@ module Synapse
         end
       end
 
-      def test_load
+      should 'load an aggregate from an event stream' do
         event = create_event(123, 0, StubCreatedEvent.new(123))
 
         mock(@event_store).read_events(@factory.type_identifier, 123) do
@@ -35,7 +35,7 @@ module Synapse
         aggregate = @repository.load 123
       end
 
-      def test_load_incorrect_version
+      should 'raise an exception if an unexpected aggregate version is loaded' do
         event = create_event(123, 1, StubCreatedEvent.new(123))
 
         mock(@event_store).read_events(@factory.type_identifier, 123) do
@@ -47,7 +47,7 @@ module Synapse
         end
       end
 
-      def test_load_not_found
+      should 'raise an exception if an event stream could not be found for the aggregate id' do
         mock(@event_store).read_events(@factory.type_identifier, 123) do
           raise EventStore::StreamNotFoundError.new @factory.type_identifier, 123
         end
@@ -57,7 +57,7 @@ module Synapse
         end
       end
 
-      def test_load_deleted
+      should 'raise an exception if the loaded aggregate has been marked for deletion' do
         event_a = create_event(123, 0, StubCreatedEvent.new(123))
         event_b = create_event(123, 1, StubDeletedEvent.new)
 
@@ -70,7 +70,7 @@ module Synapse
         end
       end
 
-      def test_conflict_resolution
+      should 'defer version checking to a conflict resolver if one is set' do
         @repository.conflict_resolver = ConflictResolver.new
 
         event_a = create_event(123, 0, StubCreatedEvent.new(123))

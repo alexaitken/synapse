@@ -4,7 +4,7 @@ module Synapse
   module EventBus
 
     class WiringEventListenerTest < Test::Unit::TestCase
-      def test_notify
+      should 'use the correct handler when notified of an events' do
         listener = ExampleWiringEventListener.new
 
         event = Domain::EventMessage.build do |builder|

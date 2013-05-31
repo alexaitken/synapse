@@ -12,7 +12,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      def test_load
+      should 'load an aggregate using its finder' do
         unit = @unit_factory.create
 
         aggregate = TestMappedAggregate.new '5677b4f7'
@@ -25,7 +25,7 @@ module Synapse
         assert_same loaded, aggregate
       end
 
-      def test_load_not_found
+      should 'raise an exception if the aggregate could not be found' do
         mock(TestMappedAggregate).find('5677b4f7')
 
         assert_raise AggregateNotFoundError do
@@ -33,7 +33,7 @@ module Synapse
         end
       end
 
-      def test_load_unexpected
+      should 'raise an exception if the loaded aggregate has an unexpected version' do
         unit = @unit_factory.create
 
         aggregate = TestMappedAggregate.new '5677b4f7'
@@ -48,7 +48,7 @@ module Synapse
         end
       end
 
-      def test_delete
+      should 'delete the aggregate if it has been marked for deletion' do
         unit = @unit_factory.create
 
         aggregate = TestMappedAggregate.new '5677b4f7'

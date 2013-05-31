@@ -9,7 +9,7 @@ module Synapse
         @process = OrderProcess.new
       end
 
-      def test_handle
+      should 'use the correct handler when notified of an event' do
         event = Domain::EventMessage.build do |builder|
           builder.payload = OrderCreated.new 123
         end
@@ -19,7 +19,7 @@ module Synapse
         assert_equal 1, @process.handled
       end
 
-      def test_handle_finish
+      should 'use wiring attributes to determine when to mark itself as finished' do
         event = Domain::EventMessage.build do |builder|
           builder.payload = OrderCanceled.new 123
         end

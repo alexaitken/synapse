@@ -4,23 +4,29 @@ module Synapse
   module EventSourcing
 
     class GenericAggregateFactoryTest < Test::Unit::TestCase
-      def test_create_aggregate
-        factory = GenericAggregateFactory.new StubAggregate
+      def setup
+        @factory = GenericAggregateFactory.new StubAggregate
+      end
 
+      should 'create an aggregate from a normal event' do
         event = Domain::DomainEventMessage.build do |m|
           m.payload = StubCreatedEvent.new 123
         end
 
+        aggregate = @factory.create_aggregate 123, event
+
+        assert aggregate.is_a? StubAggregate
+      end
+
+      should 'use an aggregate snapshot if available' do
         snapshot = StubAggregate.new 123
         snapshot_event = Domain::DomainEventMessage.build do |m|
           m.payload = snapshot
         end
 
-        aggregate_a = factory.create_aggregate(123, snapshot_event)
-        aggregate_b = factory.create_aggregate(123, event)
+        aggregate = @factory.create_aggregate 123, snapshot_event
 
-        assert aggregate_a.equal? snapshot
-        assert aggregate_b.is_a? StubAggregate
+        assert aggregate.equal? snapshot
       end
     end
 

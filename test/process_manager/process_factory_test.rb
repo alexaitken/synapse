@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module ProcessManager
     class GenericProcessFactoryTest < Test::Unit::TestCase
-      def test_create
+      should 'be able to create processes' do
         injector = Object.new
 
         mock(injector).inject_resources(is_a(Process))
@@ -16,7 +16,7 @@ module Synapse
         assert process.is_a? Process
       end
 
-      def test_supports
+      should 'be able to determine if a process implementation is supported' do
         factory = GenericProcessFactory.new
 
         assert factory.supports Process

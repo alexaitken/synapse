@@ -9,7 +9,7 @@ module Synapse
         @person = Person.new 123, 'Fry'
       end
 
-      def test_publish_events
+      should 'track published events' do
         assert_equal 0, @person.uncommitted_event_count
 
         @person.change_name 'Leela'
@@ -27,20 +27,20 @@ module Synapse
         assert_equal events, @person.uncommitted_events.to_a
       end
 
-      def test_mark_committed
+      should 'handle being marked committed' do
         @person.change_name 'Bender'
         @person.mark_committed
 
         assert_equal 0, @person.uncommitted_event_count
       end
 
-      def test_mark_deleted
+      should 'handle being marked for deletion' do
         @person.delete
 
         assert @person.deleted?
       end
 
-      def test_identifier_not_initialized
+      should 'raise an exception if identifier not initialized, but events are applied' do
         p = Person.new nil, nil
 
         assert_raise AggregateIdentifierNotInitializedError do
@@ -48,7 +48,7 @@ module Synapse
         end
       end
 
-      def test_empty_uncommitted_events
+      should 'return an empty domain event stream if no events have been published' do
         assert @person.uncommitted_events.end?
       end
 
