@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
   s.files = Dir.glob '{lib,test}/**/*'
   s.require_path = 'lib'
 
-  s.add_dependency 'activesupport'
-  s.add_dependency 'atomic'
-  s.add_dependency 'logging'
+  s.add_dependency 'activesupport', '~> 3.2'
+  s.add_dependency 'atomic', '~> 1.1'
+  s.add_dependency 'logging', '~> 1.8'
   s.add_dependency 'thread'
 end

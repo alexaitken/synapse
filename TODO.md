@@ -1,7 +1,7 @@
 # TODO
 
 + ~~Configuration DSL and dependency container~~
-  + Dependency DSL
+  + ~~Dependency DSL~~
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
 + ~~Move Mongo into its own gem~~
@@ -13,8 +13,6 @@
 == Immediate
 
 + Supplement Test::Unit with Shoulda::Context (probably like 50% done)
-+ Implement a CommandGateway definition builder (or finish command gateway first)
-+ Implement a process resource injector using the container and autowiring
 
 == AxonFramework functionality
 
@@ -24,7 +22,7 @@
   + ~~Command validation (ActiveModel)~~
   + ~~Asynchronous command bus~~
   + Instrumentation for command buses
-  + Command gateway
+  + ~~Command gateway~~
   + Abstraction of aggregate load/store (plus aggregate target DSL)
   + ~~Rollback policies~~
 + Event handling
