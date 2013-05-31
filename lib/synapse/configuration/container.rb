@@ -33,7 +33,7 @@ module Synapse
         if @definitions.has_key? id
           @definitions[id].resolve
         elsif not optional
-          raise ArgumentError, 'Definition for service [%s] not found' % id
+          raise ConfigurationError, 'Definition for service [%s] not found' % id
         end
       end
 

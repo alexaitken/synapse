@@ -112,7 +112,7 @@ module Synapse
       # @return [undefined]
       def register_definition
         unless @id
-          raise 'No identifier set for the definition'
+          raise ConfigurationError, 'No identifier set for the definition'
         end
 
         @container.register @id, build_definition

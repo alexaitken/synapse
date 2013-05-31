@@ -68,7 +68,7 @@ module Synapse
         container = Container.new
 
         assert_nil container.resolve :some_service, true
-        assert_raise ArgumentError do
+        assert_raise ConfigurationError do
           container.resolve :some_service
         end
       end

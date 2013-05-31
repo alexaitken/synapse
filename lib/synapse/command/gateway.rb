@@ -47,7 +47,8 @@ module Synapse
         @command_bus.dispatch_with_callback(command, callback)
       end
 
-      #
+      # Sends the given command and blocks indefinitely until the result of the execution is
+      # provided, the timeout is created or the thread is interrupted.
       #
       # If the given command is a bare object, it will be wrapped in a command message before
       # being dispatched on the command bus.

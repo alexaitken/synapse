@@ -6,7 +6,9 @@ module Synapse
     class IntervalRetrySchedulerTest < Test::Unit::TestCase
 
       def setup
-        @scheduler = IntervalRetryScheduler.new 5.0, 3
+        @maxRetries = 3
+
+        @scheduler = IntervalRetryScheduler.new 5.0, @maxRetries
         @command = CommandMessage.as_message Object.new
         @dispatcher = proc {}
       end
@@ -14,11 +16,9 @@ module Synapse
       should 'schedule up until the max number of retries' do
         failures = []
 
-        x = 3
+        mock(EventMachine).add_timer(5.0, &@dispatcher).times(@maxRetries)
 
-        mock(EventMachine).add_timer(5.0, &@dispatcher).times(3)
-
-        x.times do
+        @maxRetries.times do
           failures.push RuntimeError.new
           assert @scheduler.schedule @command, failures, @dispatcher
         end

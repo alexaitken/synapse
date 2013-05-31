@@ -116,7 +116,7 @@ module Synapse
       end
 
       should 'raise an exception if no identifier is set when registering with the container' do
-        assert_raise RuntimeError do
+        assert_raise ConfigurationError do
           DefinitionBuilder.build @container
         end
       end
