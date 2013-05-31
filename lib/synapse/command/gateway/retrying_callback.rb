@@ -1,5 +1,9 @@
 module Synapse
   module Command
+    # Implementation of a callback that will retry the dispatch of a command if execution results
+    # in an exception
+    #
+    # This callback is not meant to be used directly. Use a command gateway implementation instead.
     class RetryingCallback < CommandCallback
       # @param [CommandCallback] delegate
       # @param [CommandMessage] command

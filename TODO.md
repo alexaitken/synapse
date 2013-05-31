@@ -13,7 +13,6 @@
 == Immediate
 
 + Supplement Test::Unit with Shoulda::Context (probably like 50% done)
-+ Implement a UpcasterChain definition builder
 + Implement a CommandGateway definition builder (or finish command gateway first)
 + Implement a process resource injector using the container and autowiring
 

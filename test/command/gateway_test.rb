@@ -13,8 +13,8 @@ module Synapse
           builder.payload = command
         end
 
-        mock(command_bus).dispatch(is_a(CommandMessage)).ordered
-        mock(command_bus).dispatch(command_message).ordered
+        mock(command_bus).dispatch_with_callback(is_a(CommandMessage), anything).ordered
+        mock(command_bus).dispatch_with_callback(command_message, anything).ordered
 
         gateway.send command
         gateway.send command_message
