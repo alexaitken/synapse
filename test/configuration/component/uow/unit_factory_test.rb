@@ -8,7 +8,7 @@ module Synapse
         @builder = ContainerBuilder.new @container
       end
 
-      def test_default
+      should 'build with sensible defaults' do
         @builder.factory :transaction_manager do
           UnitOfWork::TransactionManager.new
         end
@@ -19,7 +19,7 @@ module Synapse
         assert factory.transaction_manager
       end
 
-      def test_tx_manager
+      should 'build with an alternate transaction manager' do
         @builder.factory :alt_tx_manager do
           UnitOfWork::TransactionManager.new
         end
@@ -31,7 +31,7 @@ module Synapse
         assert factory.transaction_manager
       end
 
-      def test_unit_provider
+      should 'build with an alternate unit of work provider' do
         @builder.factory :alt_unit_provider do
           UnitOfWork::UnitOfWorkProvider.new
         end

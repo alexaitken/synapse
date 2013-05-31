@@ -4,28 +4,35 @@ module Synapse
   module Configuration
     class DefinitionTest < Test::Unit::TestCase
 
-      def test_resolve
-        tags = Set[:a, :b]
-        instance = Object.new
+      should 'call the defrred factory every time if prototype' do
         factory_invoked = 0
         factory = proc do
           factory_invoked += 1
         end
 
-        # Prototype service definition
-        definition = Definition.new tags, true, factory, nil
+        definition = Definition.new Set.new, true, factory, nil
         definition.resolve
         definition.resolve
         assert_equal 2, factory_invoked
+      end
 
-        # Singleton service definition
-        definition = Definition.new tags, false, factory, nil
+      should 'call the deferred factory only once if singleton' do
+        factory_invoked = 0
+        factory = proc do
+          factory_invoked += 1
+        end
+
+        definition = Definition.new Set.new, false, factory, nil
         definition.resolve
         definition.resolve
-        assert_equal 3, factory_invoked
+        assert_equal 1, factory_invoked
+      end
+
+      should 'resolve to an instance if one is provided' do
+        instance = Object.new
 
         # Singleton service definition w/ late instance
-        definition = Definition.new tags, false, nil, instance
+        definition = Definition.new Set.new, false, nil, instance
         assert_same instance, definition.resolve
       end
 

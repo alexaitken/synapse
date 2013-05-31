@@ -8,14 +8,14 @@ module Synapse
         @builder = ContainerBuilder.new @container
       end
 
-      def test_simple
+      should 'build with sensible defaults' do
         @builder.converter_factory
 
         factory = @container.resolve :converter_factory
         assert factory.is_a? Serialization::ConverterFactory
       end
 
-      def test_converter_tag
+      should 'build and register tagged converters' do
         @builder.definition :json2object_converter do
           tag :converter, :alt_converter
           use_factory do

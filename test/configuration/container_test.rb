@@ -26,47 +26,45 @@ module Synapse
         assert_same service_b, dependent.some_service
       end
 
-      def test_resolve
-        reference = Object.new
-        definition = Object.new
-        mock(definition).resolve do
-          reference
-        end
-
+      should 'not attempt to inject services into a non-Dependent object' do
         container = Container.new
-        container.register :some_service, definition
+        object = Object.new
+
+        container.inject_into object
+      end
+
+      should 'resolve a service from a definition by its identifier' do
+        reference = Object.new
+        container = Container.new
+
+        DefinitionBuilder.build container, :some_service do
+          use_instance reference
+        end
 
         assert_same reference, container.resolve(:some_service)
       end
 
-      def test_resolve_tagged
-        # First definition
-        reference = Object.new
-        definition = Object.new
-        mock(definition).resolve do
-          reference
-        end
-        mock(definition).tags.any_times do
-          Set.new << :some_tag
-        end
-
-        # Second definition
-        other_definition = Object.new
-        mock(other_definition).tags.any_times do
-          Set.new << :some_other_tag
-        end
-
-        # Register with container
+      should 'resolve a service from a definition by its tag' do
         container = Container.new
-        container.register :some_service, definition
-        container.register :some_other_service, other_definition
+        some_service = Object.new
+        some_other_service = Object.new
+
+        DefinitionBuilder.build container, :some_service do
+          tag :some_tag
+          use_instance some_service
+        end
+
+        DefinitionBuilder.build container, :some_other_service do
+          tag :some_other_tag
+          use_instance some_other_service
+        end
 
         # Do it breh
         tagged = container.resolve_tagged :some_tag
-        assert tagged.include? reference
+        assert tagged.include? some_service
       end
 
-      def test_resolve_optional
+      should 'support optional service resolution' do
         container = Container.new
 
         assert_nil container.resolve :some_service, true
@@ -75,7 +73,7 @@ module Synapse
         end
       end
 
-      def test_double_register
+      should 'log when a definition is replaced' do
         logger = Logging.logger[Container]
 
         mock(logger).info(anything)

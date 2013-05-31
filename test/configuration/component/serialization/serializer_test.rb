@@ -8,7 +8,7 @@ module Synapse
         @builder = ContainerBuilder.new @container
       end
 
-      def test_alt_converter_factory
+      should 'build with an alternate converter factory' do
         @builder.converter_factory :alt_converter_factory
         @builder.serializer do
           use_converter_factory :alt_converter_factory
@@ -19,7 +19,7 @@ module Synapse
         assert_same converter_factory, serializer.converter_factory
       end
 
-      def test_attribute
+      should 'build with AttributeSerializer' do
         @builder.converter_factory
         @builder.serializer do
           use_attribute
@@ -29,7 +29,7 @@ module Synapse
         assert serializer.is_a? Serialization::AttributeSerializer
       end
 
-      def test_marshal
+      should 'build with MarshalSerializer' do
         @builder.converter_factory
         @builder.serializer do
           use_marshal
@@ -39,7 +39,7 @@ module Synapse
         assert serializer.is_a? Serialization::MarshalSerializer
       end
 
-      def test_ox
+      should 'build with OxSerializer' do
         skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
 
         serialize_options = { :circular => true }
@@ -55,7 +55,7 @@ module Synapse
         assert_equal serialize_options, serializer.serialize_options
       end
 
-      def test_oj
+      should 'build with OjSerializer' do
         skip 'Oj not supported on JRuby' if defined? JRUBY_VERSION
 
         serialize_options = { :indent => 2, :circular => true }

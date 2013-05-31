@@ -8,7 +8,7 @@ module Synapse
         @builder = ContainerBuilder.new @container
       end
 
-      def test_simple
+      should 'build with sensible defaults' do
         @builder.unit_factory
         @builder.simple_command_bus
 
@@ -16,7 +16,7 @@ module Synapse
         assert command_bus.is_a? Command::SimpleCommandBus
       end
 
-      def test_alt_unit_factory
+      should 'build with an alternate unit of work factory' do
         @builder.unit_factory :alt_unit_factory
         @builder.simple_command_bus do
           use_unit_factory :alt_unit_factory
@@ -25,7 +25,7 @@ module Synapse
         command_bus = @container.resolve :command_bus
       end
 
-      def test_handler_tag
+      should 'build and register tagged command handlers' do
         handler_a = Object.new
         handler_b = Object.new
 

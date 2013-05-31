@@ -9,7 +9,7 @@ module Synapse
         @builder.unit_factory
       end
 
-      def test_simple
+      should 'build with sensible defaults' do
         @builder.async_command_bus
 
         command_bus = @container.resolve :command_bus
@@ -20,7 +20,7 @@ module Synapse
         assert_equal 4, thread_pool.max
       end
 
-      def test_use_threads
+      should 'build with a custom thread pool size' do
         @builder.async_command_bus do
           use_threads 2, 8
         end

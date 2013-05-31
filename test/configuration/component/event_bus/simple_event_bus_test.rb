@@ -8,20 +8,21 @@ module Synapse
         @builder = ContainerBuilder.new @container
       end
 
-      def test_simple
+      should 'build with sensible defaults' do
         @builder.simple_event_bus
 
         factory = @container.resolve :event_bus
         assert factory.is_a? EventBus::SimpleEventBus
       end
 
-      def test_listener_tag
+      should 'build and subscribe tagged event listeners' do
         @builder.definition :first_listener do
           tag :event_listener
           use_factory do
             TestEventListener.new
           end
         end
+
         @builder.definition :second_listener do
           tag :alt_event_listener
           use_factory do
