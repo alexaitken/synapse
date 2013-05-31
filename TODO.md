@@ -1,7 +1,7 @@
 # TODO
 
 + ~~Configuration DSL and dependency container~~
-  + Autowiring (kernel ext??)
+  + Dependency DSL
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
 + ~~Move Mongo into its own gem~~
@@ -12,9 +12,9 @@
 
 == Immediate
 
-+ Supplement Test::Unit with Shoulda::Context
++ Supplement Test::Unit with Shoulda::Context (probably like 50% done)
 + Implement a UpcasterChain definition builder
-+ Implement a CommandGateway definition builder
++ Implement a CommandGateway definition builder (or finish command gateway first)
 + Implement a process resource injector using the container and autowiring
 
 == AxonFramework functionality
@@ -46,16 +46,13 @@
   + ~~Mongo event store~~
   + Sequel event store
   + Management
-+ Repository
-  + ~~Optimistic lock manager~~
-  + ~~Pessimistic lock manager~~
-  + Non-event sourced repository (MongoMapper and ActiveRecord?)
 + Process management
   + ~~Core interfaces~~
   + ~~Implementation~~
   + ~~Wired processes~~
   + Asynchronous process management
-  + Mongo process repository
+  + ~~Mongo process repository~~
+  + Sequel process repository
 + Serialization
   + ~~Hash serializer~~
   + Nokogiri serializer
@@ -66,9 +63,9 @@
 + Engine processes
 + Message quarantine
 + Partitioning
-  + ~~Queue reader/writer abstraction~~
-  + ~~JSON message packing~~
-  + ~~In-memory queue~~
+  + Queue reader/writer abstraction
+  + JSON message packing
+  + In-memory queue
   + AMQP queue (in-progress)
   + Redis queue
 + Projections
@@ -76,6 +73,6 @@
 + Dashboard
   + Projection management and replay
   + Domain auditing
-    + Command to produced event correlation
+    + Command -> events correlation
     + Command dispatch failures
 + DSL for defining event and command contracts

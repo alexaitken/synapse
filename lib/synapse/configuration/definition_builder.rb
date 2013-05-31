@@ -123,6 +123,16 @@ module Synapse
       # Sets the default values for the definition being built
       # @return [undefined]
       def populate_defaults; end
-    end
-  end
+
+      # Resolves any services with the given tag and yields them
+      #
+      # @yield [Object]
+      # @param [Symbol] tag
+      # @return [undefined]
+      def with_tagged(tag, &block)
+        tagged = resolve_tagged tag
+        tagged.each &block
+      end
+    end # DefinitionBuilder
+  end # Configuration
 end

@@ -42,6 +42,7 @@ module Synapse
 
           unit_factory = UnitOfWork::UnitOfWorkFactory.new unit_provider
           unit_factory.transaction_manager = tx_manager
+          
           unit_factory
         end
       end

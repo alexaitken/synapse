@@ -25,6 +25,8 @@ module Synapse
 
       # Changes the rollback policy to use for the command bus
       #
+      # By default, the command bus will always rollback on an exception
+      #
       # @param [Symbol] rollback_policy
       # @return [undefined]
       def use_rollback_policy(rollback_policy)
@@ -52,10 +54,13 @@ module Synapse
           unit_factory = resolve @unit_factory
 
           command_bus = create_command_bus unit_factory
-          subscribe_handlers command_bus
 
           if @rollback_policy
             command_bus.rollback_policy = resolve @rollback_policy
+          end
+
+          with_tagged @handler_tag do |handler|
+            handler.subscribe command_bus
           end
 
           command_bus
@@ -70,17 +75,6 @@ module Synapse
       # @return [SimpleCommandBus]
       def create_command_bus(unit_factory)
         Command::SimpleCommandBus.new unit_factory
-      end
-
-    private
-
-      # @param [SimpleCommandBus] command_bus
-      # @return [undefined]
-      def subscribe_handlers(command_bus)
-        handlers = resolve_tagged @handler_tag
-        handlers.each do |handler|
-          handler.subscribe command_bus
-        end
       end
     end # SimpleCommandBusDefinitionBuilder
   end # Configuration

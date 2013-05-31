@@ -28,20 +28,12 @@ module Synapse
 
         use_factory do
           event_bus = EventBus::SimpleEventBus.new
-          subscribe_listeners event_bus
+
+          with_tagged @listener_tag do |listener|
+            event_bus.subscribe listener
+          end
 
           event_bus
-        end
-      end
-
-    private
-
-      # @param [SimpleEventBus] event_bus
-      # @return [undefined]
-      def subscribe_listeners(event_bus)
-        listeners = resolve_tagged @listener_tag
-        listeners.each do |listener|
-          event_bus.subscribe listener
         end
       end
     end # SimpleEventBusDefinitionBuilder

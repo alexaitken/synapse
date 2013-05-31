@@ -26,3 +26,6 @@ require 'synapse/configuration/component/serialization/serializer'
 
 require 'synapse/configuration/component/uow'
 require 'synapse/configuration/component/uow/unit_factory'
+
+require 'synapse/configuration/component/upcasting'
+require 'synapse/configuration/component/upcasting/upcaster_chain'

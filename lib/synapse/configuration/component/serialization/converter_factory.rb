@@ -37,20 +37,12 @@ module Synapse
 
         use_factory do
           converter_factory = Serialization::ConverterFactory.new
-          populate_converters converter_factory
+          
+          with_tagged @converter_tag do |converter|
+            converter_factory.register converter
+          end
 
           converter_factory
-        end
-      end
-
-    private
-
-      # @param [ConverterFactory] factory
-      # @return [undefined]
-      def populate_converters(factory)
-        converters = resolve_tagged @converter_tag
-        converters.each do |converter|
-          factory.register converter
         end
       end
     end # ConverterFactoryDefinitionBuilder
