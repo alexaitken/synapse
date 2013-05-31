@@ -42,7 +42,7 @@ module Synapse
         instance_exec(&block)
       end
 
-      # Executes the given build in the context of a new definition builder
+      # Executes the given block in the context of a new definition builder
       #
       # @example
       #   definition :account_projection do

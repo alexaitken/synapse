@@ -23,6 +23,6 @@ module Synapse
           unit.start
         end
       end
-    end
-  end
+    end # UnitOfWorkFactory
+  end # UnitOfWork
 end

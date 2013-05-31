@@ -66,6 +66,6 @@ module Synapse
       rescue KeyError
         @threads.store Thread.current, Array.new
       end
-    end
-  end
+    end # UnitOfWorkProvider
+  end # UnitOfWork
 end

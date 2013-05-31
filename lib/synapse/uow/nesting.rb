@@ -264,6 +264,6 @@ module Synapse
       def on_cleanup(outer_unit)
         @inner_unit.perform_cleanup
       end
-    end
-  end
+    end # NestableUnitOfWork
+  end # UnitOfWork
 end

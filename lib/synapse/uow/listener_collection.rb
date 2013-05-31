@@ -146,6 +146,6 @@ module Synapse
 
         @logger.debug 'Listeners successfully notified'
       end
-    end
-  end
+    end # UnitOfWorkListenerCollection
+  end # UnitOfWork
 end

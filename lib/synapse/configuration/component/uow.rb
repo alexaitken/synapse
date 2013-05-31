@@ -8,6 +8,8 @@ module Synapse
         end
       end
 
+      # Creates and configures a unit of work factory
+      #
       # @see UnitOfWorkFactoryDefinitionBuilder
       # @param [Symbol] identifier
       # @param [Proc] block
