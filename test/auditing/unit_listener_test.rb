@@ -4,7 +4,7 @@ module Synapse
   module Auditing
 
     class AuditingUnitOfWorkListenerTest < Test::Unit::TestCase
-      def test_on_event_registered
+      should 'supplement events with auditing data' do
         data_provider_a = Object.new
         data_provider_b = Object.new
 
@@ -30,7 +30,7 @@ module Synapse
         assert listener.recorded_events.include? event
       end
 
-      def test_after_commit
+      should 'notify the audit logger of success after the unit of work is committed' do
         logger = Object.new
 
         command = Object.new
@@ -48,7 +48,7 @@ module Synapse
         listener.after_commit Object.new
       end
 
-      def test_on_rollback
+      should 'notify the audit logger of failure when a unit of work is rolled back' do
         logger = Object.new
 
         command = Object.new

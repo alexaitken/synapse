@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Command
     class CommandMessageTest < Test::Unit::TestCase
-      def test_as_message
+      should 'not wrap objects that are already command messages' do
         command = Object.new
         command_message = CommandMessage.build
 

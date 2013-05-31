@@ -4,7 +4,7 @@ module Synapse
   module Auditing
 
     class CommandMetadataProviderTest < Test::Unit::TestCase
-      def test_provide_data_for
+      should 'provide the metadata from a command for auditing' do
         data = { foo: 0 }
 
         provider = CommandMetadataProvider.new
@@ -17,7 +17,7 @@ module Synapse
     end
 
     class CorrelationDataProviderTest < Test::Unit::TestCase
-      def test_provide_data_for
+      should 'provide the identifier of a command for auditing' do
         provider = CorrelationDataProvider.new
         command = Command::CommandMessage.build
 

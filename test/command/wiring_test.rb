@@ -4,7 +4,7 @@ module Synapse
   module Command
 
     class WiringCommandHandlerTest < Test::Unit::TestCase
-      def test_handle
+      should 'pass the command to the correct wire' do
         handler = ExampleWiringCommandHandler.new
         unit = Object.new
 
@@ -31,7 +31,7 @@ module Synapse
         end
       end
 
-      def test_subscribe
+      should 'subscribe handler to the command bus for each wired command type' do
         handler = ExampleWiringCommandHandler.new
         bus = Object.new
 
@@ -41,7 +41,7 @@ module Synapse
         handler.subscribe bus
       end
 
-      def test_unsubscribe
+      should 'unsubscribe handler from the command bus for each wired command type' do
         handler = ExampleWiringCommandHandler.new
         bus = Object.new
 

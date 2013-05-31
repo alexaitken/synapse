@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Command
     class DuplicationFilterTest < Test::Unit::TestCase
-      def test_filter
+      should 'record commands so that duplication can be detected' do
         recorder = DuplicationRecorder.new
         filter = DuplicationFilter.new recorder
 
@@ -17,7 +17,7 @@ module Synapse
     end
 
     class DuplicationCleanupInterceptorTest < Test::Unit::TestCase
-      def test_intercept
+      should 'forget recorded commands only if a transient error occurs' do
         recorder = DuplicationRecorder.new
         interceptor = DuplicationCleanupInterceptor.new recorder
 

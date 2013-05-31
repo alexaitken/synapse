@@ -12,6 +12,7 @@ require 'pp'
 require 'test/unit'
 require 'rr'
 require 'timecop'
+require 'shoulda/context'
 require 'synapse'
 
 require 'test_ext'

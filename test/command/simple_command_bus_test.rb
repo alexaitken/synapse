@@ -15,7 +15,7 @@ module Synapse
         end
       end
 
-      def test_dispatch
+      should 'dispatch a command message to its registered handler' do
         handler = Object.new
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
@@ -28,7 +28,7 @@ module Synapse
         @command_bus.dispatch command
       end
 
-      def test_dispatch_result
+      should 'invoke a callback with the return value from a command handler' do
         handler = Object.new
         callback = Object.new
         command = CommandMessage.build do |m|
@@ -47,7 +47,7 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      def test_dispatch_no_handler
+      should 'raise an exception when a dispatched command has no registered handler' do
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
         end
@@ -58,7 +58,7 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      def test_dispatch_rollback_on_exception
+      should 'roll back the current unit of work if the command handler raises an exception' do
         handler = Object.new
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
@@ -81,7 +81,7 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      def test_dispatch_commit_on_exception
+      should 'commit the current unit of work if the command handler raises an exception' do
         handler = Object.new
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
@@ -108,7 +108,7 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      def test_subscribe
+      should 'log when a subscribed handler is replaced' do
         handler = Object.new
 
         mock(@logger).debug(anything).ordered
@@ -118,7 +118,7 @@ module Synapse
         @command_bus.subscribe TestCommand, handler
       end
 
-      def test_unsubscribe
+      should 'log when a handler is unsubscribed' do
         handler_a = Object.new
         handler_b = Object.new
 

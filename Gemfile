@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 group :test do
+  gem 'shoulda-context'
+
   # Code coverage utilities
   gem 'coveralls'
   gem 'simplecov'

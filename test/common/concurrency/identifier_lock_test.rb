@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   class IdentifierLockTest < Test::Unit::TestCase
-    def test_owned?
+    should 'indicate whether the current thread holds a lock' do
       lock = IdentifierLock.new
       identifier = 'some_id'
 
@@ -15,7 +15,7 @@ module Synapse
       refute lock.owned? identifier
     end
 
-    def test_release_lock
+    should 'raise an exception when a thread releases a lock it does not own' do
       lock = IdentifierLock.new
       assert_raise ThreadError do
         lock.release_lock 'derp'

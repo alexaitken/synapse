@@ -5,16 +5,16 @@ module Synapse
   module Command
 
     class ActiveModelValidationFilterTest < Test::Unit::TestCase
-      def test_filter
+      should 'continue if payload of a command message is valid' do
         message = CommandMessage.build do |m|
-          m.payload = CreatePersonCommand.new 'River'
+          m.payload = CreatePersonCommand.new 'River Tam'
         end
 
         filter = ActiveModelValidationFilter.new
         filter.filter message
       end
 
-      def test_filter_fails
+      should 'raise an exception if payload of a command message is invalid' do
         message = CommandMessage.build do |m|
           m.payload = CreatePersonCommand.new nil
         end

@@ -4,7 +4,7 @@ module Synapse
   module Auditing
 
     class AuditingDispatchInterceptorTest < Test::Unit::TestCase
-      def test_intercept
+      should 'register a unit of work listener for auditing' do
         return_value = Object.new
         chain = Object.new
         command = Object.new

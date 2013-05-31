@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   class PublicLockTest < Test::Unit::TestCase
-    def test_lock_raises
+    should 'raise an exception when a thread tries to obtain a lock twice' do
       @lock = PublicLock.new
       @lock.lock
 
@@ -11,7 +11,7 @@ module Synapse
       end
     end
 
-    def test_lock_removes_waiting
+    should 'properly manage its list of waiting threads' do
       @lock = PublicLock.new
       @lock.lock
 
@@ -30,7 +30,7 @@ module Synapse
       end
     end
 
-    def test_synchronize
+    should 'synchronize the execution of a block' do
       @lock = PublicLock.new
 
       refute @lock.owned?
@@ -45,7 +45,7 @@ module Synapse
       refute @lock.owned_by? Thread.current
     end
 
-    def test_unlock_raises
+    should 'raise an exception when a thread releases a lock it does not own' do
       @lock = PublicLock.new
 
       assert_raise ThreadError do
@@ -53,7 +53,7 @@ module Synapse
       end
     end
 
-    def test_try_lock
+    should 'provide a non-blocking lock attempt' do
       @lock = PublicLock.new
 
       t = Thread.new do
@@ -71,7 +71,7 @@ module Synapse
       t.wakeup
     end
 
-    def test_try_lock_raises
+    should 'raise an exception when a thread tries to obtain a non-blocking lock twice' do
       @lock = PublicLock.new
       @lock.try_lock
 

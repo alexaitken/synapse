@@ -12,7 +12,7 @@ module Synapse
         @bus.thread_pool = Thread.pool 2
       end
 
-      def test_dispatch
+      should 'be able to dispatch commands asynchronously using a thread pool' do
         x = 10 # Number of commands to dispatch
 
         command = CommandMessage.as_message TestCommand.new

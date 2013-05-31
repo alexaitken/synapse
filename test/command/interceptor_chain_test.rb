@@ -4,7 +4,7 @@ module Synapse
   module Command
 
     class InterceptorChainTest < Test::Unit::TestCase
-      def test_proceed
+      should 'allow interceptors to control the flow of dispatch' do
         unit = Object.new
         interceptor = Object.new
         interceptors = Array.new << interceptor

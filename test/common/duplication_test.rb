@@ -7,7 +7,7 @@ module Synapse
       @message = Message.build
     end
 
-    def test_record
+    should 'raise an exception when a message is recorded more than once' do
       refute @recorder.recorded? @message
 
       @recorder.record @message
@@ -18,14 +18,14 @@ module Synapse
       end
     end
 
-    def test_forget
+    should 'be able to forget a message' do
       @recorder.record @message
       @recorder.forget @message
 
       refute @recorder.recorded? @message
     end
 
-    def test_forget_older_than
+    should 'be able to forget messages recorded before a certain time' do
       @recorder.record @message
 
       threshold = 60 * 20 # 20 minutes

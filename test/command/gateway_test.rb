@@ -4,7 +4,7 @@ module Synapse
   module Command
 
     class CommandGatewayTest < Test::Unit::TestCase
-      def test_send
+      should 'wrap bare command objects in command messages before dispatch' do
         command_bus = Object.new
         gateway = CommandGateway.new command_bus
 

@@ -4,7 +4,7 @@ module Synapse
   module Command
 
     class SerializationOptimizingInterceptorTest < Test::Unit::TestCase
-      def test_intercept
+      should 'register a serialization optimizing listener to the current unit of work' do
         interceptor = SerializationOptimizingInterceptor.new
 
         command = CommandMessage.build
@@ -19,7 +19,7 @@ module Synapse
     end
 
     class SerializationOptimizingListenerTest < Test::Unit::TestCase
-      def test_on_event_registered
+      should 'wrap event messages with serialization aware event messages' do
         listener = SerializationOptimizingListener.new
         unit = Object.new
 
