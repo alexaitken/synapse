@@ -28,9 +28,9 @@ module Synapse
 
         use_factory do
           event_bus = EventBus::SimpleEventBus.new
-          event_bus.tap do
-            subscribe_listeners event_bus
-          end
+          subscribe_listeners event_bus
+
+          event_bus
         end
       end
 

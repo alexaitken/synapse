@@ -32,9 +32,9 @@ module Synapse
       # @return [AsynchronousCommandBus]
       def create_command_bus(unit_factory)
         command_bus = Command::AsynchronousCommandBus.new unit_factory
-        command_bus.tap do
-          command_bus.thread_pool = Thread.pool @min_threads, @max_threads
-        end
+        command_bus.thread_pool = Thread.pool @min_threads, @max_threads
+
+        command_bus
       end
     end # AsynchronousCommandBusDefinitionBuilder
   end # Configuration

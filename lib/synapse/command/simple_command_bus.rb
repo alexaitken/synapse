@@ -137,6 +137,6 @@ module Synapse
           raise NoHandlerError, 'No handler subscribed for command [%s]' % type
         end
       end
-    end
-  end
+    end # SimpleCommandBus
+  end # Command
 end

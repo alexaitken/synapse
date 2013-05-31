@@ -74,10 +74,10 @@ module Synapse
       # @param [Repository] repository
       # @return [Repository]
       def inject_base_dependencies(repository)
-        repository.tap do
-          repository.event_bus = resolve @event_bus
-          repository.unit_provider = resolve @unit_provider
-        end
+        repository.event_bus = resolve @event_bus
+        repository.unit_provider = resolve @unit_provider
+
+        repository
       end
     end # LockingRepositoryDefinitionBuilder
   end # Configuration

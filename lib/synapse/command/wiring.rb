@@ -42,6 +42,6 @@ module Synapse
           command_bus.unsubscribe type, self
         end
       end
-    end
-  end
+    end # WiringCommandHandler
+  end # Command
 end

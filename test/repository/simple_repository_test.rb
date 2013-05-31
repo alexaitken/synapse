@@ -60,18 +60,6 @@ module Synapse
 
         unit.commit
       end
-
-      def test_bump_version
-        unit = @unit_factory.create
-
-        aggregate = TestMappedAggregate.new '5677b4f7'
-        mock(aggregate).save
-
-        @repository.add aggregate
-        unit.commit
-
-        assert_equal 1, aggregate.version
-      end
     end
 
     class TestMappedAggregate

@@ -37,9 +37,9 @@ module Synapse
 
         use_factory do
           converter_factory = Serialization::ConverterFactory.new
-          converter_factory.tap do
-            populate_converters converter_factory
-          end
+          populate_converters converter_factory
+
+          converter_factory
         end
       end
 

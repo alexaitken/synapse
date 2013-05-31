@@ -7,7 +7,7 @@ module Synapse
     # - Mongoid
     # - MongoMapper
     #
-    # The only requirement of the model is that it expose the version field.
+    # The only requirement of the model is that it properly increment the version field upon save
     class SimpleRepository < LockingRepository
       # @param [LockManager] lock_manager
       # @param [Class] aggregate_type
@@ -29,6 +29,8 @@ module Synapse
       # @param [Integer] expected_version
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version)
+        # Most ORMs that I can think of use #find like this -- no need for orm_adapter or anything 
+        # crazy like that
         aggregate = @aggregate_type.find aggregate_id
         aggregate.tap do
           unless aggregate
@@ -50,6 +52,8 @@ module Synapse
       end
     end # SimpleRepository
 
+    # Storage listener that simply calls #save on the aggregate, unless it has been marked for 
+    # deletion. In that case, then the #destroy method is called instead.
     class SimpleStorageListener < UnitOfWork::StorageListener
       # @param [AggregateRoot] aggregate
       # @return [undefined]
@@ -57,7 +61,6 @@ module Synapse
         if aggregate.deleted?
           aggregate.destroy
         else
-          aggregate.version = (aggregate.version or 0).next
           aggregate.save
         end
       end

@@ -52,13 +52,13 @@ module Synapse
           unit_factory = resolve @unit_factory
 
           command_bus = create_command_bus unit_factory
-          command_bus.tap do
-            if @rollback_policy
-              command_bus.rollback_policy = resolve @rollback_policy
-            end
+          subscribe_handlers command_bus
 
-            subscribe_handlers command_bus
+          if @rollback_policy
+            command_bus.rollback_policy = resolve @rollback_policy
           end
+
+          command_bus
         end
       end
 

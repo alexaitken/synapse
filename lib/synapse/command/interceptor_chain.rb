@@ -26,6 +26,6 @@ module Synapse
           @handler.handle command, @unit
         end
       end
-    end
-  end
+    end # InterceptorChain
+  end # Command
 end
