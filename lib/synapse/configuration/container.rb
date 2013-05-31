@@ -8,6 +8,20 @@ module Synapse
         @logger = Logging.logger[self.class]
       end
 
+      # Injects any configured dependencies into the given object
+      #
+      # @param [Dependent] object
+      # @return [undefined]
+      def inject_into(object)
+        return unless object.is_a? Dependent
+
+        dependencies = object.class.dependencies
+        dependencies.each_pair do |id, attribute|
+          resolved = resolve id
+          object.public_send "#{attribute}=", resolved
+        end
+      end
+
       # Locates the definition for a service with the given identifier and resolves it to the
       # object being provided
       #

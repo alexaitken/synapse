@@ -14,7 +14,7 @@ module Synapse
       # @param [UnitOfWork] current_unit Current unit of work
       # @return [Object] The result of handling the given command
       def handle(command, current_unit)
-        wire = self.wire_registry.wire_for command.payload_type
+        wire = wire_registry.wire_for command.payload_type
 
         unless wire
           raise ArgumentError, 'Not capable of handling [%s] commands' % command.payload_type

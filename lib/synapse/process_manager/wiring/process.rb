@@ -15,7 +15,7 @@ module Synapse
       def handle(event)
         return unless @active
 
-        wire = self.wire_registry.wire_for event.payload_type
+        wire = wire_registry.wire_for event.payload_type
 
         return unless wire
 

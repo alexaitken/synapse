@@ -1,8 +1,30 @@
 require 'test_helper'
+require 'configuration/fixtures/dependent'
 
 module Synapse
   module Configuration
     class ContainerTest < Test::Unit::TestCase
+
+      should 'inject services into a Dependent object' do
+        container = Container.new
+
+        service_a = Object.new
+        service_b = Object.new
+
+        DefinitionBuilder.build container, :service_a do
+          use_instance service_a
+        end
+
+        DefinitionBuilder.build container, :service_b do
+          use_instance service_b
+        end
+
+        dependent = ExampleDependent.new
+        container.inject_into dependent
+
+        assert_same service_a, dependent.service_a
+        assert_same service_b, dependent.some_service
+      end
 
       def test_resolve
         reference = Object.new

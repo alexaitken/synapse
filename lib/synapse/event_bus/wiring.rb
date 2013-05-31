@@ -9,10 +9,11 @@ module Synapse
       # @param [EventMessage] event
       # @return [undefined]
       def notify(event)
-        wire = self.wire_registry.wire_for event.payload_type
-        if wire
-          invoke_wire event, wire
-        end
+        wire = wire_registry.wire_for event.payload_type
+
+        return unless wire
+
+        invoke_wire event, wire
       end
     end
   end
