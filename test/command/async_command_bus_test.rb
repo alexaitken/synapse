@@ -13,26 +13,19 @@ module Synapse
       end
 
       should 'be able to dispatch commands asynchronously using a thread pool' do
-        x = 10 # Number of commands to dispatch
+        x = 5 # Number of commands to dispatch
 
         command = CommandMessage.as_message TestCommand.new
-        callback = Object.new
-        handler = TestAsyncHandler.new
+        handler = TestAsyncHandler.new x
 
         @bus.subscribe TestCommand, handler
 
-        @latch = CountdownLatch.new x
-
-        mock(callback).on_success(anything).any_times do
-          @latch.countdown!
-        end
-
         x.times do
-          @bus.dispatch_with_callback command, callback
+          @bus.dispatch command
         end
 
-        wait_until 30 do
-          @latch.count == 0
+        wait_until do
+          handler.latch.count == 0
         end
 
         @bus.shutdown
@@ -40,7 +33,15 @@ module Synapse
     end
 
     class TestAsyncHandler
-      def handle(command, unit); end
+      attr_reader :latch
+
+      def initialize(x)
+        @latch = CountdownLatch.new x
+      end
+
+      def handle(command, unit)
+        @latch.countdown!
+      end
     end
 
     class TestCommand; end

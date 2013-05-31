@@ -5,6 +5,7 @@ module Synapse
     #
     # @abstract
     # @see EventSourcingRepositoryDefinitionBuilder
+    # @see SimpleRepositoryDefinitionBuilder
     class LockingRepositoryDefinitionBuilder < DefinitionBuilder
       # Changes the event bus used to publish aggregate events to
       #

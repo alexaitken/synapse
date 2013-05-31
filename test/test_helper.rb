@@ -9,11 +9,11 @@ else
 end
 
 require 'pp'
+require 'synapse'
 require 'test/unit'
+require 'shoulda/context'
 require 'rr'
 require 'timecop'
-require 'shoulda/context'
-require 'synapse'
 
 require 'test_ext'
 
