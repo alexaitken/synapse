@@ -22,7 +22,7 @@ module Synapse
         use_factory do
           lock_manager = build_lock_manager
 
-          repository = Repository::SimpleRepository.new lock_manager, aggregate_factory
+          repository = Repository::SimpleRepository.new lock_manager, @aggregate_type
           inject_base_dependencies repository
         end
       end

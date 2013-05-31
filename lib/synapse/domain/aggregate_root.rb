@@ -102,11 +102,11 @@ module Synapse
       # @return [EventContainer]
       def event_container
         unless @event_container
-          unless @id
+          unless id
             raise AggregateIdentifierNotInitializedError
           end
 
-          @event_container = EventContainer.new @id
+          @event_container = EventContainer.new id
           @event_container.initialize_sequence_number @last_sequence_number
         end
 
