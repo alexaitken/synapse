@@ -20,6 +20,16 @@ module Synapse
       def simple_command_bus(identifier = nil, &block)
         with_definition_builder SimpleCommandBusDefinitionBuilder, identifier, &block
       end
+
+      # Creates and configures a command gateway
+      #
+      # @see CommandGatewayBusDefinitionBuilder
+      # @param [Symbol] identifier
+      # @param [Proc] block
+      # @return [undefined]
+      def gateway(identifier = nil, &block)
+        with_definition_builder CommandGatewayBusDefinitionBuilder, identifier, &block
+      end
     end # ContainerBuilder
   end # Configuration
 end

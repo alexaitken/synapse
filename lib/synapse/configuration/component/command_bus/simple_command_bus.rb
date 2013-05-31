@@ -10,7 +10,7 @@ module Synapse
     #     use_handler_tag :alt_command_handler
     #   end
     #
-    # @todo Add interceptor and filter support
+    # @todo Support for interceptors and filters
     class SimpleCommandBusDefinitionBuilder < DefinitionBuilder
       # Changes the tag to use to automatically subscribe command handlers
       #
