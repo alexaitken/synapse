@@ -71,7 +71,7 @@ module Synapse
       # @param [Integer] expected_version
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version); end
-    end
+    end # LockingRepository
 
     # Unit of work listener that releases the lock on an aggregate when the unit of work
     # is cleaning up
@@ -89,6 +89,6 @@ module Synapse
       def on_cleanup(unit)
         @lock_manager.release_lock @aggregate_id
       end
-    end
-  end
+    end # LockCleaningUnitOfWorkListener
+  end # Repository
 end

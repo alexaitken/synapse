@@ -29,6 +29,6 @@ module Synapse
       def native_content_type
         String
       end
-    end
-  end
+    end # OjSerializer
+  end # Serialization
 end

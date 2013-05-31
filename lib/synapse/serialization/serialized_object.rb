@@ -32,6 +32,6 @@ module Synapse
       def hash
         @content.hash ^ @content_type.hash ^ @type.hash
       end
-    end
-  end
+    end # SerializedObject
+  end # Serialization
 end

@@ -27,6 +27,6 @@ module Synapse
       def native_content_type
         String
       end
-    end
-  end
+    end # MarshalSerializer
+  end # Serialization
 end

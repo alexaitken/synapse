@@ -17,11 +17,11 @@ module Synapse
 
         wire = self.wire_registry.wire_for event.payload_type
 
-        if wire
-          invoke_wire event, wire
-          finish if wire.options[:finish]
-        end
+        return unless wire
+
+        invoke_wire event, wire
+        finish if wire.options[:finish]
       end
     end # WiringProcess
-  end
+  end # ProcessManager
 end

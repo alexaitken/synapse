@@ -65,7 +65,7 @@ module Synapse
           end
         end
       end
-    end
+    end # OptimisticLockManager
 
     # Lock that keeps track of an aggregate's version
     # @api private
@@ -88,12 +88,7 @@ module Synapse
       def validate(aggregate)
         last_committed = aggregate.version
         if @version.nil? or @version.eql? last_committed
-          if last_committed.nil?
-            last_committed = 0
-          end
-
-          @version = last_committed + aggregate.uncommitted_event_count
-
+          @version = (last_committed or 0) + aggregate.uncommitted_event_count
           true
         else
           false

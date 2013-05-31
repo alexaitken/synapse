@@ -9,7 +9,7 @@ module Synapse
       # @param [Class] payload_type
       # @return [String] The revision of the given payload type
       def revision_of(payload_type); end
-    end
+    end # RevisionResolver
 
     # Implementation of a revision resolver that returns a fixed value. This could be an
     # application version number, for example
@@ -25,6 +25,6 @@ module Synapse
       def revision_of(payload_type)
         @revision.to_s
       end
-    end
-  end
+    end # FixedRevisionResolver
+  end # Serialization
 end

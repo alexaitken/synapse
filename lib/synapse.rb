@@ -3,23 +3,11 @@ require 'active_support/core_ext'
 require 'logging'
 require 'set'
 
+require 'synapse/common'
 require 'synapse/version'
-
-require 'synapse/common/errors'
-require 'synapse/common/identifier'
-require 'synapse/common/message'
-require 'synapse/common/message_builder'
-
-require 'synapse/common/concurrency/identifier_lock'
-require 'synapse/common/concurrency/public_lock'
 
 module Synapse
   extend ActiveSupport::Autoload
-
-  autoload_at 'synapse/common/duplication' do
-    autoload :DuplicationError
-    autoload :DuplicationRecorder
-  end
 
   eager_autoload do
     # Common components

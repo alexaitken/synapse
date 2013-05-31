@@ -43,6 +43,6 @@ module Synapse
       def native_content_type
         Hash
       end
-    end
-  end
+    end # AttributeSerializer
+  end # Serialization
 end

@@ -44,9 +44,7 @@ module Synapse
       # @param [Hash] additional_metadata
       # @return [SerializedMessage]
       def and_metadata(additional_metadata)
-        if additional_metadata.empty?
-          return self
-        end
+        return self if additional_metadata.empty?
 
         self.class.build do |builder|
           build_duplicate builder, metadata.merge(additional_metadata)
@@ -59,9 +57,7 @@ module Synapse
       # @param [Hash] replacement_metadata
       # @return [SerializedMessage]
       def with_metadata(replacement_metadata)
-        if @serialized_metadata.deserialized == replacement_metadata
-          return self
-        end
+        return self if @serialized_metadata.deserialized == replacement_metadata
 
         self.class.build do |builder|
           build_duplicate builder, replacement_metadata
@@ -126,7 +122,7 @@ module Synapse
           serializer.serialize object.deserialized, expected_type
         end
       end
-    end
+    end # SerializedMessage
 
     # Serialized representation of an event message
     class SerializedEventMessage < SerializedMessage
@@ -157,7 +153,7 @@ module Synapse
         super
         builder.timestamp = @timestamp
       end
-    end
+    end # SerializedEventMessage
 
     # Serialized representation of a domain event message
     class SerializedDomainEventMessage < SerializedEventMessage
@@ -196,6 +192,6 @@ module Synapse
         builder.aggregate_id = @aggregate_id
         builder.sequence_number = @sequence_number
       end
-    end
-  end
+    end # SerializedDomainEventMessage
+  end # Serialization
 end

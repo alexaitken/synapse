@@ -55,12 +55,12 @@ module Synapse
 
       # Delegators for message attribute readers
       def_delegators :@message, :id, :metadata, :payload, :payload_type, :timestamp
-    end
+    end # SerializationAwareEventMessage
 
     # Decorator for a domain event message that adds serialization awareness
     class SerializationAwareDomainEventMessage < SerializationAwareEventMessage
       # Delegators for domain event specific attribute readers
       def_delegators :@message, :aggregate_id, :sequence_number
-    end
-  end
+    end # SerializationAwareDomainEventMessage
+  end # Serialization
 end

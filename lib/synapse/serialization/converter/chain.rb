@@ -40,6 +40,6 @@ module Synapse
         end
         intermediate
       end
-    end
-  end
+    end # ConverterChain
+  end # Serialization
 end

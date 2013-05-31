@@ -63,6 +63,6 @@ module Synapse
           converter.source_type == source_type && converter.target_type == target_type
         end
       end
-    end
-  end
+    end # ConverterFactory
+  end # Serialization
 end

@@ -95,6 +95,6 @@ module Synapse
       def convert(original, source_type, target_type)
         converter_factory.converter(source_type, target_type).convert_content(original)
       end
-    end
-  end
+    end # Serializer
+  end # Serialization
 end

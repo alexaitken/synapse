@@ -84,9 +84,7 @@ module Synapse
           raise ThreadError, 'Lock is already owned by the current thread'
         end
 
-        if @owner
-          return false
-        end
+        return false if @owner
 
         @owner = Thread.current
       end

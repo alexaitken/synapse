@@ -62,5 +62,5 @@ module Synapse
         end
       end
     end # SimpleStorageListener
-  end
+  end # Repository
 end

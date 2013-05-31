@@ -26,6 +26,6 @@ module Synapse
       def native_content_type
         String
       end
-    end
-  end
+    end # OxSerializer
+  end # Serialization
 end

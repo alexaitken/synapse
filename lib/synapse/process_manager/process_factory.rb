@@ -19,7 +19,7 @@ module Synapse
       # @param [Class] process_type
       # @return [Boolean]
       def supports(process_type); end
-    end
+    end # ProcessFactory
 
     # Generic implementation of a process factory that supports any process implementations that
     # have a no-argument constructor
@@ -47,6 +47,6 @@ module Synapse
         ctor = process_type.instance_method :initialize
         ctor.arity <= 0
       end
-    end
-  end
+    end # GenericProcessFactory
+  end # ProcessManager
 end

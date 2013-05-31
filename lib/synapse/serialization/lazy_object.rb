@@ -56,6 +56,6 @@ module Synapse
       def deserialized?
         true
       end
-    end
-  end
+    end # LazyObject
+  end # Serialization
 end

@@ -22,7 +22,7 @@ module Synapse
       def build
         SerializedMessage.new @id, @metadata, @payload
       end
-    end
+    end # SerializedMessageBuilder
 
     # Message builder capable of producing SerializedEventMessage instances
     class SerializedEventMessageBuilder < SerializedMessageBuilder
@@ -33,7 +33,7 @@ module Synapse
       def build
         SerializedEventMessage.new @id, @metadata, @payload, @timestamp
       end
-    end
+    end # SerializedEventMessageBuilder
 
     # Message builder capable of producing SerializedDomainEventMessage instances
     class SerializedDomainEventMessageBuilder < SerializedEventMessageBuilder
@@ -59,6 +59,6 @@ module Synapse
       def build
         SerializedDomainEventMessage.new @id, @metadata, @payload, @timestamp, @aggregate_id, @sequence_number
       end
-    end
-  end
+    end # SerializedDomainEventMessageBuilder
+  end # Serialization
 end

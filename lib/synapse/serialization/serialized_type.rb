@@ -26,6 +26,6 @@ module Synapse
       def hash
         @name.hash ^ @revision.hash
       end
-    end
-  end
+    end # SerializedType
+  end # Serialization
 end

@@ -104,6 +104,6 @@ module Synapse
       def current_unit
         @unit_provider.current
       end
-    end
-  end
+    end # Repository
+  end # Repository
 end

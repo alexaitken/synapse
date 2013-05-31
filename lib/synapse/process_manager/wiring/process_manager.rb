@@ -44,11 +44,11 @@ module Synapse
       def extract_correlation(process_type, event)
         wire = process_type.wire_registry.wire_for event.payload_type
 
-        if wire
-          correlation_key = wire.options[:correlate]
-          if correlation_key
-            correlation_value event.payload, correlation_key
-          end
+        return unless wire
+
+        correlation_key = wire.options[:correlate]
+        if correlation_key
+          correlation_value event.payload, correlation_key
         end
       end
 
@@ -67,6 +67,6 @@ module Synapse
           Correlation.new correlation_key, value
         end
       end
-    end
-  end
+    end # WiringProcessManager
+  end # ProcessManager
 end

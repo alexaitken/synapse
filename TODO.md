@@ -1,14 +1,21 @@
 # TODO
 
 + ~~Configuration DSL and dependency container~~
+  + Autowiring (kernel ext??)
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
 + ~~Move Mongo into its own gem~~
-+ ~~Move AMQP into its own gem~~
 + Disruptor (??) JRuby and pure Ruby?
 + Distributed locking (sharding should always be preferred, but just in case)
   + Redis, Officer, Mongo, ZK?
 + Aliases for common mixins (??)
+
+== Immediate
+
++ Supplement Test::Unit with Shoulda::Context
++ Implement a UpcasterChain definition builder
++ Implement a CommandGateway definition builder
++ Implement a process resource injector using the container and autowiring
 
 == AxonFramework functionality
 
@@ -16,7 +23,7 @@
 + Command bus
   + ~~DSL for defining and subscribing command handlers to command types~~
   + ~~Command validation (ActiveModel)~~
-  + Asynchronous command bus
+  + ~~Asynchronous command bus~~
   + Instrumentation for command buses
   + Command gateway
   + Abstraction of aggregate load/store (plus aggregate target DSL)

@@ -59,5 +59,5 @@ module Synapse
         @managed_processes.count
       end
     end # InMemoryProcessRepository
-  end
+  end # ProcessManager
 end

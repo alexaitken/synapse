@@ -47,9 +47,7 @@ module Synapse
     # @param [Hash] additional_metadata
     # @return [Message]
     def and_metadata(additional_metadata)
-      if additional_metadata.empty?
-        return self
-      end
+      return self if additional_metadata.empty?
 
       builder = self.class.builder.new
       build_duplicate builder, @metadata.merge(additional_metadata)
@@ -61,9 +59,7 @@ module Synapse
     # @param [Hash] replacement_metadata
     # @return [Message]
     def with_metadata(replacement_metadata)
-      if @metadata == replacement_metadata
-        return self
-      end
+      return self if @metadata == replacement_metadata
 
       builder = self.class.builder.new
       build_duplicate builder, replacement_metadata

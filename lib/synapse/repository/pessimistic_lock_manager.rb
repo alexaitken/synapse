@@ -23,6 +23,6 @@ module Synapse
       def release_lock(aggregate_id)
         @aggregates.release_lock aggregate_id
       end
-    end
-  end
+    end # PessimisticLockManager
+  end # Repository
 end

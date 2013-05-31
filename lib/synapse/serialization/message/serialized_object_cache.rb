@@ -45,6 +45,6 @@ module Synapse
           end
         end
       end
-    end
-  end
+    end # SerializedObjectCache
+  end # Serialization
 end
