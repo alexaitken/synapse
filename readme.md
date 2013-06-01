@@ -97,7 +97,7 @@ Synapse.build do
   # Register your command handler so it can be subscribed to the command bus and get its own
   # dependencies injected upon creation
   factory :account_command_handler, :tag => :command_handler do
-    AccountCommandHandler.new
+    inject_into AccountCommandHandler.new
   end
 end
 ```

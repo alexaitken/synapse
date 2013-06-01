@@ -36,6 +36,7 @@ module Synapse
 
       # Executes the given block in the context of the container builder
       #
+      # @api public
       # @param [Proc] block
       # @return [undefined]
       def build_with(&block)
@@ -54,6 +55,7 @@ module Synapse
       #
       # @see #factory If the definition being created is simple
       # @see DefinitionBuilder
+      # @api public
       # @param [Symbol] id
       # @param [Proc] block
       # @return [undefined]
@@ -75,6 +77,7 @@ module Synapse
       #   end
       #
       # @see DefinitionBuilder#use_factory
+      # @api public
       # @param [Symbol] id
       # @param [Object...] args
       # @param [Proc] block
@@ -96,6 +99,7 @@ module Synapse
       # executes the block in the context of the definition builder, then finally builds and
       # registers the definition with this builder's associate container.
       #
+      # @api public
       # @param [Class] builder_type
       # @param [Symbol] id
       # @param [Proc] block
@@ -103,6 +107,6 @@ module Synapse
       def with_definition_builder(builder_type, id, &block)
         builder_type.build @container, id, &block
       end
-    end
-  end
+    end # ContainerBuilder
+  end # Configuration
 end

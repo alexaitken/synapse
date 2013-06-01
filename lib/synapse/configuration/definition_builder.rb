@@ -11,8 +11,8 @@ module Synapse
       # @param [Proc] block
       # @return [undefined]
       def self.build(container, id = nil, &block)
-        builder = self.new container, id
-        builder.instance_exec(&block) if block
+        builder = new container, id
+        builder.instance_exec &block if block
         builder.register_definition
 
         builder.id
@@ -31,33 +31,39 @@ module Synapse
         @id = id.to_sym if id
       end
 
+      # @api public
       # @param [Symbol] id
       # @return [undefined]
       def identified_by(id)
         @id = id.to_sym
       end
 
+      # @api public
       # @return [undefined]
       def anonymous
         identified_by SecureRandom.hex 8
       end
 
+      # @api public
       # @param [Symbol...] tags
       # @return [undefined]
       def tag(*tags)
         @tags.merge tags.flatten
       end
 
+      # @api public
       # @return [undefined]
       def as_prototype
         @prototype = true
       end
 
+      # @api public
       # @return [undefined]
       def as_singleton
         @prototype = false
       end
 
+      # @api public
       # @param [Proc] factory
       # @return [undefined]
       def use_factory(&factory)
@@ -66,37 +72,18 @@ module Synapse
         end
       end
 
+      # @api public
       # @param [Object] instance
       # @return [undefined]
       def use_instance(instance)
         @instance = instance
       end
 
-      # If the given value is a symbol, it will be resolved using the container. Otherwise, it
-      # will be passed through
-      #
-      # @param [Object] value
-      # @return [Object]
-      def resolve(value, optional = false)
-        if value.is_a? Symbol
-          @container.resolve value, optional
-        else
-          value
-        end
-      end
-
-      # Resolves all services that have the given tag
-      #
-      # @param [Symbol] tag
-      # @return [Array]
-      def resolve_tagged(tag)
-        @container.resolve_tagged tag
-      end
-
       # Convenience method for building composite services
       #
       # The given block will be executed in the context of the definition builder
       #
+      # @api public
       # @param [Class] builder_type Defaults to DefinitionBuilder
       # @param [Proc] block
       # @return [Symbol] The identifier of the newly created service
@@ -124,8 +111,47 @@ module Synapse
       # @return [undefined]
       def populate_defaults; end
 
+      # Injects any configured dependencies into the given object
+      #
+      # @api public
+      # @param [Dependent] object
+      # @return [Dependent]
+      def inject_into(object)
+        @container.inject_into object
+        object
+      end
+
+      # If the given value is a symbol, it will be resolved using the container. Otherwise, it
+      # will be passed through
+      #
+      # @api public
+      # @raise [ConfigurationError] If value is required but was not set
+      # @param [Object] value
+      # @return [Object]
+      def resolve(value, optional = false)
+        if value.is_a? Symbol
+          return @container.resolve value, optional
+        elsif value
+          return value
+        end
+
+        unless optional
+          raise ConfigurationError, 'Value was not set'
+        end
+      end
+
+      # Resolves all services that have the given tag
+      #
+      # @api public
+      # @param [Symbol] tag
+      # @return [Array]
+      def resolve_tagged(tag)
+        @container.resolve_tagged tag
+      end
+
       # Resolves any services with the given tag and yields them
       #
+      # @api public
       # @yield [Object]
       # @param [Symbol] tag
       # @return [undefined]
