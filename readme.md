@@ -9,32 +9,48 @@ Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 
 Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.com) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
 
+**Warning:** Synapse is still under heavy development; public API is likely to break before a stable release is announced.
+
 ## Getting Started
 
-Define your commands and events using plain old Ruby objects, or POROs
+You know the drill, add it to your `Gemfile`:
+
+```ruby
+gem 'synapse-core'
+```
+
+You can define your commands and events using plain old Ruby objects. To make serialization and validation
+easier, however, you should use some sort of model mixin, like:
+
+- [ActiveAttr](https://github.com/cgriego/active_attr)
+- [ActiveModel](https://github.com/rails/rails/tree/master/activemodel)
+- [Virtus](https://github.com/solnic/virtus)
 
 ```ruby
 class CreateAccount
-  attr_accessor :account_id, :name
+  include Virtus
+  include ActiveModel
 
-  def initialize(account_id, name)
-    # ...
-  end
+  attribute :account_id, String
+  attribute :name, String
 end
 
 class AccountCreated
-  attr_accessor :account_id, :name
+  include Virtus
 
   # ...
 end
 ```
 
-Define the aggregate
+Define the aggregate -- In this case, a non-event sourced aggregate, stored with ActiveRecord.
+
+You can use any ORM to define non-ES aggregates, including MongoMapper, Mongoid and DataMapper.
+To use event sourcing, you have to configure an event store, like the one in [synapse-mongo](https://github.com/ianunruh/synapse-mongo)
 
 ```ruby
 class Account
-  include Synapse::Domain::AggregateRoot
   include ActiveRecord::Base
+  include Synapse::Domain::AggregateRoot
 
   def initialize(id, name)
     self.id = id
@@ -66,11 +82,7 @@ Setup the necessary services
 ```ruby
 Synapse.build do
   converter_factory
-
-  serializer do
-    use_ox
-  end
-
+  serializer
   unit_factory
 
   simple_command_bus
@@ -78,11 +90,13 @@ Synapse.build do
 
   gateway
 
+  # The repository gets cool things injected, like locking and an event bus
   simple_repository :account_repository do
     use_aggregate_type Account
   end
 
-  # Register your command handler so it can be subscribed to the command bus
+  # Register your command handler so it can be subscribed to the command bus and get its own
+  # dependencies injected upon creation
   factory :account_command_handler, :tag => :command_handler do
     AccountCommandHandler.new
   end
@@ -94,6 +108,7 @@ aaaaaand you're done!
 ```ruby
 command = CreateAccount.new 123, 'Checking'
 
+# This could be done in a Rails controller or Sinatra
 gateway = Synapse.container[:gateway]
 gateway.send command
 ```
