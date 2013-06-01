@@ -9,14 +9,84 @@ Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 
 Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.com) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
 
-## Compatibility
+## Getting Started
 
-Synapse is tested and developed on several different runtimes, including:
+Define your commands and events using plain old Ruby objects, or POROs
 
-- MRI 1.9.3
-- MRI 2.0.0
-- JRuby 1.7.3
-- Rubinius 2.0.0-rc1 (rbx-head)
+    class CreateAccount
+      attr_accessor :account_id, :name
+
+      def initialize(account_id, name)
+        # ...
+      end
+    end
+
+    class AccountCreated
+      attr_accessor :account_id, :name
+
+      # ...
+    end
+
+Define the aggregate
+
+    class Account
+      include Synapse::Domain::AggregateRoot
+      include ActiveRecord::Base
+
+      def initialize(id, name)
+        self.id = id
+        self.name = name
+
+        publish_event AccountCreated.new id, name
+      end
+    end
+
+Define the command handler
+
+    class AccountCommandHandler
+      include Synapse::Command::WiringCommandHandler
+      include Synapse::Configuration::Dependent
+
+      depends_on :account_repository
+
+      wire CreateAccount do |command|
+        account = Account.new command.id, command.name
+        @account_repository.add account
+      end
+    end
+
+Setup the necessary services
+
+    Synapse.build do
+      converter_factory
+
+      serializer do
+        use_ox
+      end
+
+      unit_factory
+
+      simple_command_bus
+      simple_event_bus
+
+      gateway
+
+      simple_repository :account_repository do
+        use_aggregate_type Account
+      end
+
+      # Register your command handler so it can be subscribed to the command bus
+      factory :account_command_handler, :tag => :command_handler do
+        AccountCommandHandler.new
+      end
+    end
+
+aaaaaand you're done!
+
+    command = CreateAccount.new 123, 'Checking'
+
+    gateway = Synapse.container[:gateway]
+    gateway.send command
 
 ## Features
 
@@ -31,6 +101,15 @@ Synapse is tested and developed on several different runtimes, including:
 - DSL for easy wiring of event and command handlers
 - Process manager framework (also known as Saga management)
 - Repository for non-event sourced aggregates (MongoMapper and ActiveRecord)
+
+## Compatibility
+
+Synapse is tested and developed on several different runtimes, including:
+
+- MRI 1.9.3
+- MRI 2.0.0
+- JRuby 1.7.3
+- Rubinius 2.0.0-rc1 (rbx-head)
 
 ## Coming soon
 - Event store using Sequel
