@@ -13,80 +13,90 @@ Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.c
 
 Define your commands and events using plain old Ruby objects, or POROs
 
-    class CreateAccount
-      attr_accessor :account_id, :name
+```ruby
+class CreateAccount
+  attr_accessor :account_id, :name
 
-      def initialize(account_id, name)
-        # ...
-      end
-    end
+  def initialize(account_id, name)
+    # ...
+  end
+end
 
-    class AccountCreated
-      attr_accessor :account_id, :name
+class AccountCreated
+  attr_accessor :account_id, :name
 
-      # ...
-    end
+  # ...
+end
+```
 
 Define the aggregate
 
-    class Account
-      include Synapse::Domain::AggregateRoot
-      include ActiveRecord::Base
+```ruby
+class Account
+  include Synapse::Domain::AggregateRoot
+  include ActiveRecord::Base
 
-      def initialize(id, name)
-        self.id = id
-        self.name = name
+  def initialize(id, name)
+    self.id = id
+    self.name = name
 
-        publish_event AccountCreated.new id, name
-      end
-    end
+    publish_event AccountCreated.new id, name
+  end
+end
+```
 
 Define the command handler
 
-    class AccountCommandHandler
-      include Synapse::Command::WiringCommandHandler
-      include Synapse::Configuration::Dependent
+```ruby
+class AccountCommandHandler
+  include Synapse::Command::WiringCommandHandler
+  include Synapse::Configuration::Dependent
 
-      depends_on :account_repository
+  depends_on :account_repository
 
-      wire CreateAccount do |command|
-        account = Account.new command.id, command.name
-        @account_repository.add account
-      end
-    end
+  wire CreateAccount do |command|
+    account = Account.new command.id, command.name
+    @account_repository.add account
+  end
+end
+```
 
 Setup the necessary services
 
-    Synapse.build do
-      converter_factory
+```ruby
+Synapse.build do
+  converter_factory
 
-      serializer do
-        use_ox
-      end
+  serializer do
+    use_ox
+  end
 
-      unit_factory
+  unit_factory
 
-      simple_command_bus
-      simple_event_bus
+  simple_command_bus
+  simple_event_bus
 
-      gateway
+  gateway
 
-      simple_repository :account_repository do
-        use_aggregate_type Account
-      end
+  simple_repository :account_repository do
+    use_aggregate_type Account
+  end
 
-      # Register your command handler so it can be subscribed to the command bus
-      factory :account_command_handler, :tag => :command_handler do
-        AccountCommandHandler.new
-      end
-    end
+  # Register your command handler so it can be subscribed to the command bus
+  factory :account_command_handler, :tag => :command_handler do
+    AccountCommandHandler.new
+  end
+end
+```
 
 aaaaaand you're done!
 
-    command = CreateAccount.new 123, 'Checking'
+```ruby
+command = CreateAccount.new 123, 'Checking'
 
-    gateway = Synapse.container[:gateway]
-    gateway.send command
+gateway = Synapse.container[:gateway]
+gateway.send command
+```
 
 ## Features
 
