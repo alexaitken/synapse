@@ -5,7 +5,7 @@ module Synapse
   module EventSourcing
 
     class AggregateSnapshotTakerTest < Test::Unit::TestCase
-      def test_schedule_snapshot
+      should 'store a snapshot by serializing the aggregate itself' do
         event_store = Object.new
         aggregate_factory = GenericAggregateFactory.new StubAggregate
 

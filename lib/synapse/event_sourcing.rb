@@ -8,6 +8,5 @@ require 'synapse/event_sourcing/member'
 require 'synapse/event_sourcing/aggregate_root'
 require 'synapse/event_sourcing/entity'
 
-require 'synapse/event_sourcing/snapshot/count_stream'
-require 'synapse/event_sourcing/snapshot/count_trigger'
 require 'synapse/event_sourcing/snapshot/taker'
+require 'synapse/event_sourcing/snapshot/aggregate_taker'

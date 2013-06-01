@@ -4,7 +4,8 @@ require 'ostruct'
 module Synapse
   module Upcasting
     class UpcastSerializedDomainEventDataTest < Test::Unit::TestCase
-      def test_delegation
+
+      should 'delegate properties correctly' do
         delegate = OpenStruct.new
         delegate.id = SecureRandom.uuid
         delegate.metadata = Object.new
@@ -26,6 +27,7 @@ module Synapse
         assert_same aggregate_id, upcast.aggregate_id
         assert_same delegate.sequence_number, upcast.sequence_number
       end
+
     end
   end
 end

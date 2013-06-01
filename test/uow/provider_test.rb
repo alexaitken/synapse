@@ -7,7 +7,7 @@ module Synapse
         @provider = UnitOfWorkProvider.new
       end
 
-      def test_clear
+      should 'clear the current unit of work if it matches the given unit of work' do
         uow = UnitOfWork.new @provider
         uow.start
 
@@ -16,7 +16,7 @@ module Synapse
         refute @provider.started?
       end
 
-      def test_clear_raises_mismatch
+      should 'raise an exception if the given unit of work to be cleared does not match the current unit of work' do
         outer = UnitOfWork.new @provider
         inner = UnitOfWork.new @provider
 
@@ -28,7 +28,7 @@ module Synapse
         end
       end
 
-      def test_commit
+      should 'commit the current unit of work and clear it from the provider' do
         uow = UnitOfWork.new @provider
         uow.start
 
@@ -38,7 +38,7 @@ module Synapse
         refute uow.started?
       end
 
-      def test_current
+      should 'return the current unit of work, if one is in the stack' do
         uow = UnitOfWork.new @provider
 
         assert_raises RuntimeError do
@@ -50,7 +50,7 @@ module Synapse
         assert_same uow, @provider.current
       end
 
-      def test_threading
+      should 'keep unit of work stacks separate for each thread' do
         t1 = Thread.new {
           uow = UnitOfWork.new @provider
           uow.start

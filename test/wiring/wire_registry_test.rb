@@ -2,9 +2,9 @@ require 'test_helper'
 
 module Synapse
   module Wiring
-
     class WireRegistryTest < Test::Unit::TestCase
-      def test_duplicates
+
+      should 'raise an exception if two wires are registered for the same payload type' do
         registry = WireRegistry.new false
 
         registry.register Wire.new Object, Hash.new, :test
@@ -15,7 +15,7 @@ module Synapse
         end
       end
 
-      def test_each_type
+      should 'return the payload types of types being registered' do
         registry = WireRegistry.new false
 
         registry.register Wire.new Integer, Hash.new, :test
@@ -29,7 +29,7 @@ module Synapse
         assert_equal [Integer, Object], types
       end
 
-      def test_wire_for
+      should 'return a wire registered for a given payload type' do
         registry = WireRegistry.new false
 
         registry.register Wire.new Object, Hash.new, :test
@@ -42,7 +42,7 @@ module Synapse
         assert_equal nil, wire
       end
 
-      def test_wires_for
+      should 'return all the wires registered for a given payload type' do
         registry = WireRegistry.new false
 
         registry.register Wire.new String, Hash.new, :test
@@ -54,7 +54,7 @@ module Synapse
         assert_equal Integer, wires[0].type
         assert_equal Object, wires[1].type
       end
-    end
 
+    end
   end
 end

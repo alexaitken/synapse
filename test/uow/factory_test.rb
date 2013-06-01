@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module UnitOfWork
     class UnitOfWorkFactoryTest < Test::Unit::TestCase
-      def test_create
+      should 'create a unit of work, set the transaction manager and start it' do
         provider = UnitOfWorkProvider.new
         txm = Object.new
         factory = UnitOfWorkFactory.new provider

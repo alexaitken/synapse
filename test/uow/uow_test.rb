@@ -14,7 +14,7 @@ module Synapse
         end
       end
 
-      def test_start_raises
+      should 'raise an exception if the unit is started twice' do
         @uow.start
 
         assert_raises RuntimeError do
@@ -24,13 +24,13 @@ module Synapse
         @uow.rollback
       end
 
-      def test_commit_raises_if_not_started
+      should 'raise an exception if a commit is requested but the unit is not started' do
         assert_raises RuntimeError do
           @uow.commit
         end
       end
 
-      def test_similar_aggregates
+      should 'keep an identity map for aggregates of the same type and identifier' do
         aggregate_a = TestAggregateA.new 1
         aggregate_b = TestAggregateB.new 2
         aggregate_c = TestAggregateB.new 3
@@ -45,7 +45,7 @@ module Synapse
         assert_same aggregate_c, @uow.register_aggregate(aggregate_d, event_bus, storage_listener)
       end
 
-      def test_tx_bound_uow_lifecycle
+      should 'interact with a transaction manager on commit' do
         listener = UnitOfWorkListener.new
 
         tx = Object.new
@@ -68,7 +68,7 @@ module Synapse
         @uow.commit
       end
 
-      def test_tx_bound_uow_rollback_lifecycle
+      should 'interact with a transaction manager on rollback' do
         listener = UnitOfWorkListener.new
 
         tx = Object.new
@@ -89,7 +89,7 @@ module Synapse
         @uow.rollback
       end
 
-      def test_uow_registers_listener_with_parent
+      should 'register a listener with the current unit of work if it is unaware of nesting' do
         outer_unit = Object.new
         mock(outer_unit).register_listener(is_a(OuterCommitUnitOfWorkListener))
         mock(outer_unit).rollback
@@ -104,7 +104,7 @@ module Synapse
         @provider.clear outer_unit
       end
 
-      def test_inner_rolled_back_with_outer
+      should 'roll back inner units if the outer unit is rolled back' do
         outer_unit = create_uow
         inner_unit = create_uow
 
@@ -117,7 +117,7 @@ module Synapse
         outer_unit.rollback
       end
 
-      def test_inner_committed_with_outer
+      should 'commit inner units after the outer unit is committed' do
         outer_unit = create_uow
         inner_unit = create_uow
 
@@ -138,7 +138,7 @@ module Synapse
         assert committed, 'Inner unit should have been committed'
       end
 
-      def test_unit_rollback_on_prepare_commit_error
+      should 'rollback if a listener raises an exception while preparing to commit' do
         cause = TestError.new
         listener = UnitOfWorkListener.new
 
@@ -157,7 +157,7 @@ module Synapse
         end
       end
 
-      def test_unit_rollback_on_store_aggregate_error
+      should 'rollback if an aggregate storage listener raises an exception' do
         aggregate_root = Object.new
         mock(aggregate_root).add_registration_listener
         mock(aggregate_root).id
@@ -185,7 +185,7 @@ module Synapse
         end
       end
 
-      def test_unit_rollback_on_publish_error
+      should 'rollback if the event bus raises an exception when publishing events' do
         cause = TestError.new
         event = Object.new
 
@@ -209,7 +209,7 @@ module Synapse
         end
       end
 
-      def test_inner_cleanup_delayed_until_outer_cleanup_inner_commit
+      should 'delay cleanup of inner unit after commit until outer unit is committed' do
         outer_listener = UnitOfWorkListener.new
         inner_listener = UnitOfWorkListener.new
 
@@ -228,7 +228,7 @@ module Synapse
         outer_unit.commit
       end
 
-      def test_inner_cleanup_delayed_until_outer_cleanup_inner_rollback
+      should 'delay cleanup of inner unit after rollback until outer unit is committed' do
         outer_listener = UnitOfWorkListener.new
         inner_listener = UnitOfWorkListener.new
 
@@ -247,7 +247,7 @@ module Synapse
         outer_unit.commit
       end
 
-      def test_inner_cleanup_delayed_until_outer_cleanup_inner_commit_outer_rollback
+      should 'delay cleanup of inner unit after commit until outer unit is rolled back' do
         outer_listener = UnitOfWorkListener.new
         inner_listener = UnitOfWorkListener.new
 
@@ -267,7 +267,7 @@ module Synapse
         outer_unit.rollback
       end
 
-      def test_set_txm_throws_if_started
+      should 'raise an exception if a transaction manager is set after the unit has been started' do
         @uow.start
 
         assert_raises RuntimeError do
@@ -277,7 +277,7 @@ module Synapse
         @uow.commit
       end
 
-      def test_provider_not_changed_if_start_fails
+      should 'not put the unit of work provider into a bad state if the unit of work fails during start' do
         txm = Object.new
         mock(txm).start {
           raise 'Something bad happened'
@@ -292,7 +292,7 @@ module Synapse
         refute @provider.started?
       end
 
-      def test_events_continually_publish
+      should 'continually publish events as events are published' do
         @uow.start
 
         event_bus = EventBus::SimpleEventBus.new
@@ -311,6 +311,8 @@ module Synapse
         @uow.publish_event event_a, event_bus
         @uow.commit
       end
+
+    private
 
       def create_uow
         uow = UnitOfWork.new @provider

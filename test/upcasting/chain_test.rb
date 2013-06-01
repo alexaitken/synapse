@@ -5,7 +5,7 @@ module Synapse
   module Upcasting
     class UpcasterChainTest < Test::Unit::TestCase
 
-      def test_multiple_upcasters
+      should 'support multiple upcasters' do
         factory = Serialization::ConverterFactory.new
 
         chain = UpcasterChain.new factory

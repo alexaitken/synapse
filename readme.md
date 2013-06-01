@@ -29,7 +29,6 @@ easier, however, you should use some sort of model mixin, like:
 ```ruby
 class CreateAccount
   include Virtus
-  include ActiveModel
 
   attribute :account_id, String
   attribute :name, String

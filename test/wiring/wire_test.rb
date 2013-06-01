@@ -4,7 +4,7 @@ module Synapse
   module Wiring
 
     class WireTest < Test::Unit::TestCase
-      def test_invoke_method
+      should 'support invoking instance methods' do
         payload = TestEvent.new
 
         target = Object.new
@@ -14,7 +14,7 @@ module Synapse
         wire.invoke target, payload
       end
 
-      def test_invoke_block
+      should 'support invoking procs' do
         payload = TestEvent.new
 
         target_class = Class.new do
@@ -32,7 +32,7 @@ module Synapse
         wire.invoke target, payload
       end
 
-      def test_comparison_and_equality
+      should 'determine equality and order with other wires' do
         wire_a = Wire.new TestEvent, Hash.new, :test
         wire_b = Wire.new TestEvent, Hash.new, :test
         wire_c = Wire.new TestSubEvent, Hash.new, :test

@@ -10,12 +10,12 @@ module Synapse
         @listener = OuterCommitUnitOfWorkListener.new @inner_unit, @provider
       end
 
-      def test_after_commit
+      should 'commit the inner unit if the outer unit is committed' do
         mock(@inner_unit).perform_inner_commit
         @listener.after_commit @outer_unit
       end
 
-      def test_on_rollback
+      should 'rollback the inner unit if the outer unit is rolled back' do
         cause = TestError.new
 
         mock(@provider).push(@inner_unit)
@@ -25,7 +25,7 @@ module Synapse
         @listener.on_rollback @outer_unit, cause
       end
 
-      def test_on_rollback_handles_exception
+      should 'ensure the inner unit is rolled back if the outer unit is rolled back' do
         cause = TestError.new
 
         mock(@provider).push(@inner_unit)
@@ -39,7 +39,7 @@ module Synapse
         end
       end
 
-      def test_on_cleanup
+      should 'cleanup the inner unit if the outer unit is cleaned up' do
         mock(@inner_unit).perform_cleanup
         @listener.on_cleanup @outer_unit
       end
