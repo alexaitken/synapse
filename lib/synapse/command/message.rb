@@ -6,22 +6,6 @@ module Synapse
       def self.builder
         CommandMessageBuilder
       end
-
-      # Creates a command message using the given command object
-      #
-      # If the given object is an command message, it will be returned unchanged.
-      #
-      # @param [Object] command
-      # @return [CommandMessage]
-      def self.as_message(command)
-        unless command.is_a? CommandMessage
-          command = self.build do |builder|
-            builder.payload = command
-          end
-        end
-
-        command
-      end
     end
 
     # Message builder capable of producing CommandMessage instances

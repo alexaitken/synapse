@@ -66,6 +66,22 @@ module Synapse
       builder.build
     end
 
+    # Wraps an object into a message as its payload
+    #
+    # If the given object is an message, it will be returned unchanged.
+    #
+    # @param [Object] object
+    # @return [Message]
+    def self.as_message(object)
+      unless object.is_a? Message
+        object = self.build do |builder|
+          builder.payload = object
+        end
+      end
+
+      object
+    end
+
     # Yields a message builder that can be used to produce a message
     #
     # @see MessageBuilder#build
