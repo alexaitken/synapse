@@ -15,12 +15,15 @@ module Synapse
       # @param [UnitOfWorkFactory] unit_factory
       # @return [undefined]
       def initialize(unit_factory)
+        @unit_factory = unit_factory
+
         @handlers = Hash.new
         @filters = Array.new
         @interceptors = Array.new
-        @logger = Logging.logger[self.class]
+
         @rollback_policy = RollbackOnAnyExceptionPolicy.new
-        @unit_factory = unit_factory
+
+        @logger = Logging.logger[self.class]
       end
 
       # @api public

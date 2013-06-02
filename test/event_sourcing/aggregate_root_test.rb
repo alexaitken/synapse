@@ -32,6 +32,7 @@ module Synapse
 
         assert_equal 123, aggregate.id
         assert_equal 2, aggregate.version
+        assert_equal 0, aggregate.initial_version
       end
 
       should 'raise an exception if initialization is attempted when the aggregate has state' do

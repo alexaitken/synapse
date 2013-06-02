@@ -19,9 +19,24 @@ module Synapse
         end
       end
 
+      # The sequence number of the first event that the aggregate was initialized from
+      #
+      # If the aggregate was initialized from a snapshot, this should be reset to the sequence
+      # number of the last event in the snapshot. Otherwise, this will be the sequence number
+      # of the first event contained in the event stream used to initialize the aggregate.
+      #
+      # @return [Integer]
+      attr_reader :initial_version
+
       # @return [Integer] The sequence number of the last committed event
       def version
         last_committed_sequence_number
+      end
+
+      # Resets the initial version to the current version of the aggregate
+      # @return [undefined]
+      def reset_initial_version
+        @initial_version = last_committed_sequence_number
       end
 
       # Initializes the state of this aggregate from the given domain event stream
@@ -35,6 +50,8 @@ module Synapse
         end
 
         pre_initialize
+
+        @initial_version = stream.peek.sequence_number
 
         last_sequence_number = nil
 

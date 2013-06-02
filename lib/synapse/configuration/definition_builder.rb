@@ -130,13 +130,11 @@ module Synapse
       # @return [Object]
       def resolve(value, optional = false)
         if value.is_a? Symbol
-          return @container.resolve value, optional
-        elsif value
-          return value
-        end
-
-        unless optional
+          @container.resolve value, optional
+        elsif value.nil? and not optional
           raise ConfigurationError, 'Value was not set'
+        else
+          value
         end
       end
 

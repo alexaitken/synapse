@@ -21,7 +21,7 @@ module Synapse
       # @abstract
       # @return [String] Type identifier used to store the aggregate in the event store
       def type_identifier; end
-    end
+    end # AggregateFactory
 
     # Aggregate factory that uses a convention to create instances of aggregates
     class GenericAggregateFactory < AggregateFactory
@@ -46,6 +46,7 @@ module Synapse
 
         if payload.is_a? AggregateRoot
           aggregate = payload
+          aggregate.reset_initial_version
         else
           aggregate = @aggregate_type.allocate
         end
@@ -64,6 +65,6 @@ module Synapse
       def post_process(aggregate)
         aggregate
       end
-    end
-  end
+    end # GenericAggregateFactory
+  end # EventSourcing
 end

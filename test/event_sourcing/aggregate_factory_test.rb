@@ -20,13 +20,17 @@ module Synapse
 
       should 'use an aggregate snapshot if available' do
         snapshot = StubAggregate.new 123
+        snapshot.change_something
+        snapshot.mark_committed
+
         snapshot_event = Domain::DomainEventMessage.build do |m|
           m.payload = snapshot
         end
 
         aggregate = @factory.create_aggregate 123, snapshot_event
 
-        assert aggregate.equal? snapshot
+        assert_same snapshot, aggregate
+        assert_equal snapshot.version, aggregate.initial_version
       end
     end
 
