@@ -6,16 +6,16 @@ module TradeEngine
 
     def initialize(id)
       pre_initialize
-      apply OrderBookCreatedEvent.create id
+      apply OrderBookCreatedEvent.new id
     end
 
     def add_buy_order(order_id, trade_count, item_price)
-      apply BuyOrderPlacedEvent.create @id, order_id, trade_count, item_price
+      apply BuyOrderPlacedEvent.new @id, order_id, trade_count, item_price
       execute_trades
     end
 
     def add_sell_order(order_id, trade_count, item_price)
-      apply SellOrderPlacedEvent.create @id, order_id, trade_count, item_price
+      apply SellOrderPlacedEvent.new @id, order_id, trade_count, item_price
       execute_trades
     end
 
@@ -61,7 +61,7 @@ module TradeEngine
           matched_trade_count = [highest_buyer.items_remaining, lowest_seller.items_remaining].min
           matched_trade_price = (highest_buyer.item_price + lowest_seller.item_price) / 2
 
-          apply TradeExecutedEvent.create @id, highest_buyer.id, lowest_seller.id, matched_trade_count, matched_trade_price
+          apply TradeExecutedEvent.new @id, highest_buyer.id, lowest_seller.id, matched_trade_count, matched_trade_price
         else
           done = true
         end

@@ -2,6 +2,7 @@ $:.push File.expand_path '../lib', __FILE__
 
 require 'bundler/setup'
 require 'trade_engine'
+require 'pp'
 
 require_relative 'build'
 
