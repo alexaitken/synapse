@@ -21,6 +21,7 @@ gem 'synapse-mongo'
 ```
 
 You can define your commands and events using plain old Ruby objects.
+
 ```ruby
 class CreateAccount
   attr_reader :id, :name
