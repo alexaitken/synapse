@@ -1,6 +1,6 @@
 # TODO
 
-== Immediate
+## Immediate
 
 + Configuration DSL for process management
   + `MappingProcessManager`
@@ -8,7 +8,7 @@
 + Base64 encoding for `MarshalSerializer`
 + Deferred snapshot taker (using `Thread::Pool` or similar)
 
-== Odds and ends
+## Odds and ends
 
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
@@ -17,7 +17,7 @@
   + Redis, Officer, Mongo, ZK?
 + Aliases for common mixins (command handler, event listener, aggregate, processes)
 
-== AxonFramework functionality
+## AxonFramework functionality
 
 + ~~Auditing component~~
 + Command bus
@@ -52,7 +52,7 @@
   + ~~Hash serializer~~
   + Nokogiri serializer
 
-== Integration
+## Integration
 
 + Mongo
   + ~~Event store~~
@@ -61,7 +61,7 @@
   + Event store
   + Process repository
 
-== Lokad.CQRS functionality
+## Lokad.CQRS functionality
 
 + ~~Message de-duplication~~
 + Engine processes
