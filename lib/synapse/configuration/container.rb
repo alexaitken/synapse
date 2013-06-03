@@ -17,6 +17,9 @@ module Synapse
 
         dependencies = object.class.dependencies
         dependencies.each_pair do |id, attribute|
+          # Don't replace existing attributes
+          next if object.public_send attribute
+
           resolved = resolve id
           object.public_send "#{attribute}=", resolved
         end

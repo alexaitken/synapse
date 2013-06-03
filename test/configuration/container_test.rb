@@ -33,6 +33,30 @@ module Synapse
         container.inject_into object
       end
 
+      should 'not overwrite existing attributes when injecting into a Dependent object' do
+        container = Container.new
+
+        service_a = Object.new
+        service_b = Object.new
+
+        DefinitionBuilder.build container, :service_a do
+          use_instance service_a
+        end
+
+        DefinitionBuilder.build container, :service_b do
+          use_instance service_b
+        end
+
+        other_service_a = Object.new
+
+        dependent = ExampleDependent.new
+        dependent.service_a = other_service_a
+        container.inject_into dependent
+
+        assert_same other_service_a, dependent.service_a
+        assert_same service_b, dependent.some_service
+      end
+
       should 'resolve a service from a definition by its identifier' do
         reference = Object.new
         container = Container.new
