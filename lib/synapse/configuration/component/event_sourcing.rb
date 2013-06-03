@@ -1,35 +1,18 @@
+require 'synapse/configuration/component/event_sourcing/aggregate_snapshot_taker'
+require 'synapse/configuration/component/event_sourcing/interval_snapshot_policy'
+require 'synapse/configuration/component/event_sourcing/repository'
+
 module Synapse
   module Configuration
     class ContainerBuilder
       # Creates and configures an event sourcing repository
-      #
-      # @see EventSourcingRepositoryDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def es_repository(identifier = nil, &block)
-        with_definition_builder EventSourcingRepositoryDefinitionBuilder, identifier, &block
-      end
+      builder :es_repository, EventSourcingRepositoryDefinitionBuilder
 
       # Creates and configures an aggregate snapshot taker
-      #
-      # @see AggregateSnapshotTakerDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def aggregate_snapshot_taker(identifier = nil, &block)
-        with_definition_builder AggregateSnapshotTakerDefinitionBuilder, identifier, &block
-      end
+      builder :aggregate_snapshot_taker, AggregateSnapshotTakerDefinitionBuilder
 
       # Creates and configures an interval-based snapshot policy
-      #
-      # @see IntervalSnapshotPolicyDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def interval_snapshot_policy(identifier = nil, &block)
-        with_definition_builder IntervalSnapshotPolicyDefinitionBuilder, identifier, &block
-      end
+      builder :interval_snapshot_policy, IntervalSnapshotPolicyDefinitionBuilder
     end # ContainerBuilder
   end # Configuration
 end

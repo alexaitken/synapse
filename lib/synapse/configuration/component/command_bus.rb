@@ -1,35 +1,18 @@
+require 'synapse/configuration/component/command_bus/simple_command_bus'
+require 'synapse/configuration/component/command_bus/async_command_bus'
+require 'synapse/configuration/component/command_bus/gateway'
+
 module Synapse
   module Configuration
     class ContainerBuilder
       # Creates and configures an asynchronous command bus
-      #
-      # @see AsynchronousCommandBusDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def async_command_bus(identifier = nil, &block)
-        with_definition_builder AsynchronousCommandBusDefinitionBuilder, identifier, &block
-      end
+      builder :async_command_bus, AsynchronousCommandBusDefinitionBuilder
 
       # Creates and configures a simple command bus
-      #
-      # @see SimpleCommandBusDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def simple_command_bus(identifier = nil, &block)
-        with_definition_builder SimpleCommandBusDefinitionBuilder, identifier, &block
-      end
+      builder :simple_command_bus, SimpleCommandBusDefinitionBuilder
 
       # Creates and configures a command gateway
-      #
-      # @see CommandGatewayBusDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def gateway(identifier = nil, &block)
-        with_definition_builder CommandGatewayBusDefinitionBuilder, identifier, &block
-      end
+      builder :gateway, CommandGatewayDefinitionBuilder
     end # ContainerBuilder
   end # Configuration
 end

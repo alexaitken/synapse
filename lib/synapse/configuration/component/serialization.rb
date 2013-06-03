@@ -1,25 +1,14 @@
+require 'synapse/configuration/component/serialization/converter_factory'
+require 'synapse/configuration/component/serialization/serializer'
+
 module Synapse
   module Configuration
     class ContainerBuilder
       # Creates and configures a converter factory for serialization
-      #
-      # @see ConverterFactoryDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def converter_factory(identifier = nil, &block)
-        with_definition_builder ConverterFactoryDefinitionBuilder, identifier, &block
-      end
+      builder :converter_factory, ConverterFactoryDefinitionBuilder
 
       # Creates and configures a serializer for partitioning, event storage, etc.
-      #
-      # @see SerializerDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def serializer(identifier = nil, &block)
-        with_definition_builder SerializerDefinitionBuilder, identifier, &block
-      end
+      builder :serializer, SerializerDefinitionBuilder
     end # ContainerBuilder
   end # Configuration
 end

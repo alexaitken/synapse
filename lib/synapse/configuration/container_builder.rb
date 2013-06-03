@@ -19,6 +19,29 @@ module Synapse
         self.initializers.push initializer
       end
 
+      # Registers a definition builder that can be used as a shortcut for configuration
+      #
+      # @example
+      #   class ContainerBuilder
+      #     builder :simple_event_bus, SimpleEventBusDefinitionBuilder
+      #   end
+      #
+      # @!macro attach
+      #   @!method $1(identifier = nil, &block)
+      #   @see $2
+      #   @param [Symbol] identifier Identifier of the definition
+      #   @param [Proc] block Executed in the context of the definition builder
+      #   @return [undefined]
+      #
+      # @param [Symbol] name
+      # @param [Class] builder_class
+      # @return [undefined]
+      def self.builder(name, builder_class)
+        define_method name do |identifier = nil, &block|
+          with_definition_builder builder_class, identifier, &block
+        end
+      end
+
       # @return [Container]
       attr_reader :container
 

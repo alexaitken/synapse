@@ -20,7 +20,9 @@ module Synapse
 
       # @raise [DuplicateMappingError] If duplicates aren't allowed and another mapping exists that
       #   maps the exact same type as the given mapping
-      # @param [Mapping] mapping
+      # @param [Class] type
+      # @param [Object...] args
+      # @param [Proc] block
       # @return [undefined]
       def map(type, *args, &block)
         options = args.extract_options!

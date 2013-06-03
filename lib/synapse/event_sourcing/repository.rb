@@ -1,3 +1,7 @@
+# Has to be loaded before event sourcing or simple repository definition builders
+require 'synapse/configuration/component/repository/locking_repository'
+require 'synapse/configuration/component/repository/simple_repository'
+
 module Synapse
   module EventSourcing
     # Repository that initializes the state of aggregates using events read from an event

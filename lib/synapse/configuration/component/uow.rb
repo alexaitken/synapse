@@ -1,3 +1,5 @@
+require 'synapse/configuration/component/uow/unit_factory'
+
 module Synapse
   module Configuration
     class ContainerBuilder
@@ -9,14 +11,7 @@ module Synapse
       end
 
       # Creates and configures a unit of work factory
-      #
-      # @see UnitOfWorkFactoryDefinitionBuilder
-      # @param [Symbol] identifier
-      # @param [Proc] block
-      # @return [undefined]
-      def unit_factory(identifier = nil, &block)
-        with_definition_builder UnitOfWorkFactoryDefinitionBuilder, identifier, &block
-      end
+      builder :unit_factory, UnitOfWorkFactoryDefinitionBuilder
     end # ContainerBuilder
   end # Configuration
 end
