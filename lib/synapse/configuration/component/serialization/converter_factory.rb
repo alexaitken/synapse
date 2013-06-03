@@ -21,6 +21,7 @@ module Synapse
     class ConverterFactoryDefinitionBuilder < DefinitionBuilder
       # Changes the tag to use to automatically register converters
       #
+      # @see Serialization::Converter
       # @param [Symbol] converter_tag
       # @return [undefined]
       def use_converter_tag(converter_tag)
@@ -37,7 +38,7 @@ module Synapse
 
         use_factory do
           converter_factory = Serialization::ConverterFactory.new
-          
+
           with_tagged @converter_tag do |converter|
             converter_factory.register converter
           end

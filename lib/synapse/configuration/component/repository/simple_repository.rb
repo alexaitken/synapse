@@ -7,6 +7,7 @@ module Synapse
     #     use_aggregate_type User
     #   end
     class SimpleRepositoryDefinitionBuilder < LockingRepositoryDefinitionBuilder
+      # @see Domain::AggregateRoot
       # @param [Class] aggregate_type
       # @return [undefined]
       def use_aggregate_type(aggregate_type)

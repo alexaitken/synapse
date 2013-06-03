@@ -10,6 +10,7 @@ require 'synapse/configuration/component/event_bus'
 # Has to be loaded before event sourcing
 require 'synapse/configuration/component/repository'
 require 'synapse/configuration/component/event_sourcing'
+require 'synapse/configuration/component/process_manager'
 require 'synapse/configuration/component/serialization'
 require 'synapse/configuration/component/uow'
 require 'synapse/configuration/component/upcasting'

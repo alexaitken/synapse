@@ -14,6 +14,7 @@ module Synapse
     class CommandGatewayDefinitionBuilder < DefinitionBuilder
       # Changes the command bus that commands are sent from the gateway
       #
+      # @see Command::CommandBus
       # @param [Symbol] command_bus
       # @return [undefined]
       def use_command_bus(command_bus)

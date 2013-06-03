@@ -13,6 +13,7 @@ module Synapse
     class UnitOfWorkFactoryDefinitionBuilder < DefinitionBuilder
       # Changes the transaction manager to use when creating units of work
       #
+      # @see UnitOfWork::TransactionManager
       # @param [Symbol] tx_manager
       # @return [undefined]
       def use_transaction_manager(tx_manager)
@@ -21,6 +22,7 @@ module Synapse
 
       # Changes the unit of work provider to use when creating units of work
       #
+      # @see UnitOfWork::UnitOfWorkProvider
       # @param [Symbol] unit_provider
       # @return [undefined]
       def use_unit_provider(unit_provider)
@@ -42,7 +44,7 @@ module Synapse
 
           unit_factory = UnitOfWork::UnitOfWorkFactory.new unit_provider
           unit_factory.transaction_manager = tx_manager
-          
+
           unit_factory
         end
       end

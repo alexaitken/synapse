@@ -36,30 +36,38 @@ module Synapse
         end
       end
 
+      # Changes the aggregate factory used to create aggregates that will have their state
+      # initialized from an event stream
+      #
+      # @see EventSourcing::AggregateFactory
       # @param [Symbol] aggregate_factory
       # @return [undefined]
       def use_aggregate_factory(aggregate_factory)
         @aggregate_factory = aggregate_factory
       end
 
+      # @see EventSourcing::ConflictResolver
       # @param [Symbol] conflict_resolver
       # @return [undefined]
       def use_conflict_resolver(conflict_resolver)
         @conflict_resolver = conflict_resolver
       end
 
+      # @see EventStore::EventStore
       # @param [Symbol] event_store
       # @return [undefined]
       def use_event_store(event_store)
         @event_store = event_store
       end
 
+      # @see EventSourcing::SnapshotPolicy
       # @param [Symbol] snapshot_policy
       # @return [undefined]
       def use_snapshot_policy(snapshot_policy)
         @snapshot_policy = snapshot_policy
       end
 
+      # @see EventSourcing::SnapshotTaker
       # @param [Symbol] snapshot_taker
       # @return [undefined]
       def use_snapshot_taker(snapshot_taker)

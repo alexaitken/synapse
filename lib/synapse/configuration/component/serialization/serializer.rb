@@ -12,24 +12,32 @@ module Synapse
     #   end
     class SerializerDefinitionBuilder < DefinitionBuilder
       # Selects a serializer that uses attributes (ActiveModel, Virtus, etc.)
+      #
+      # @see Serialization::AttributeSerializer
       # @return [undefined]
       def use_attribute
         @serializer_type = Serialization::AttributeSerializer
       end
 
       # Selects a serializer that uses the Ruby marshaling library
+      #
+      # @see Serialization::MarshalSerializer
       # @return [undefined]
       def use_marshal
         @serializer_type = Serialization::MarshalSerializer
       end
 
       # Selects a serializer that uses the Optimized JSON (Oj) serialization library
+      #
+      # @see Serialization::OjSerializer
       # @return [undefined]
       def use_oj
         @serializer_type = Serialization::OjSerializer
       end
 
       # Selects a serializer that uses the Optimized XML (Ox) serialization library
+      #
+      # @see Serialization::OxSerializer
       # @return [undefined]
       def use_ox
         @serializer_type = Serialization::OxSerializer
@@ -37,6 +45,7 @@ module Synapse
 
       # Changes the converter factory
       #
+      # @see Serialization::ConverterFactory
       # @param [Symbol] converter_factory
       # @return [undefined]
       def use_converter_factory(converter_factory)

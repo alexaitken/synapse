@@ -21,6 +21,7 @@ module Synapse
     class UpcasterChainDefinitionBuilder < DefinitionBuilder
       # Changes the converter factory
       #
+      # @see Serialization::ConverterFactory
       # @param [Symbol] converter_factory
       # @return [undefined]
       def use_converter_factory(converter_factory)
@@ -29,6 +30,7 @@ module Synapse
 
       # Changes the tag to use to automatically register upcasters
       #
+      # @see Upcasting::Upcaster
       # @param [Symbol] upcaster_tag
       # @return [undefined]
       def use_upcaster_tag(upcaster_tag)
@@ -48,7 +50,7 @@ module Synapse
           converter_factory = resolve @converter_factory
 
           upcaster_chain = Upcasting::UpcasterChain.new converter_factory
-          
+
           with_tagged @upcaster_tag do |upcaster|
             upcaster_chain.push upcaster
           end

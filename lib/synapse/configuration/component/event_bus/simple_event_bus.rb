@@ -12,6 +12,7 @@ module Synapse
     class SimpleEventBusDefinitionBuilder < DefinitionBuilder
       # Changes the tag to use to automatically subscribe event listeners
       #
+      # @see EventBus::EventListener
       # @param [Symbol] listener_tag
       # @return [undefined]
       def use_listener_tag(listener_tag)

@@ -45,6 +45,20 @@ module Synapse
       end
 
       # @api public
+      # @return [undefined]
+      def clear_tags
+        @tags = Set.new
+      end
+
+      # @api public
+      # @param [Symbol...] tags
+      # @return [undefined]
+      def replace_tags(*tags)
+        clear_tags
+        tag *tags
+      end
+
+      # @api public
       # @param [Symbol...] tags
       # @return [undefined]
       def tag(*tags)

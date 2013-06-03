@@ -11,12 +11,19 @@ module Synapse
     #     use_event_store :alt_event_store
     #   end
     class AggregateSnapshotTakerDefinitionBuilder < DefinitionBuilder
+      # Changes the tag used to find aggregate factories necessary for creating aggregates so that
+      # a snapshot can be taken of their current state
+      #
+      # @see EventSourcing::AggregateFactory
       # @param [Symbol] aggregate_factory_tag
       # @return [undefined]
       def use_aggregate_factory_tag(aggregate_factory_tag)
         @aggregate_factory_tag = aggregate_factory_tag
       end
 
+      # Changes the event store used to load and store aggregates
+      #
+      # @see EventStore::SnapshotEventStore
       # @param [Symbol] event_store
       # @return [undefined]
       def use_event_store(event_store)

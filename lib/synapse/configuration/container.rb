@@ -78,6 +78,18 @@ module Synapse
       def registered?(id)
         @definitions.has_key? id
       end
-    end
-  end
+
+      # @return [String]
+      def inspect
+        result = "#<#{self.class}\n"
+        @definitions.keys.sort.each do |key|
+          definition = @definitions[key]
+          result << "\t#{key} => #{definition.tags.inspect}\n"
+        end
+        result << ">"
+
+        result
+      end
+    end # Container
+  end # Configuration
 end

@@ -17,6 +17,7 @@ module Synapse
       # Note that command handlers that are tagged must support self-subscription to the
       # command bus. An example of a handler capable of doing so is the wiring command handler.
       #
+      # @see Command::MappingCommandHandler
       # @param [Symbol] handler_tag
       # @return [undefined]
       def use_handler_tag(handler_tag)
@@ -25,6 +26,7 @@ module Synapse
 
       # Changes the tag to use to automatically register command filters
       #
+      # @see Command::CommandFilter
       # @param [Symbol] filter_tag
       # @return [undefined]
       def use_filter_tag(filter_tag)
@@ -33,6 +35,7 @@ module Synapse
 
       # Changes the tag to use to automatically register command filters
       #
+      # @see Command::DispatchInterceptor
       # @param [Symbol] interceptor_tag
       # @return [undefined]
       def use_interceptor_tag(interceptor_tag)
@@ -43,6 +46,7 @@ module Synapse
       #
       # By default, the command bus will always rollback on an exception
       #
+      # @see Command::RollbackPolicy
       # @param [Symbol] rollback_policy
       # @return [undefined]
       def use_rollback_policy(rollback_policy)
@@ -51,6 +55,7 @@ module Synapse
 
       # Changes the unit of work factory to use with this command bus
       #
+      # @see UnitOfWork::UnitOfWorkFactory
       # @param [Symbol] unit_factory
       # @return [undefined]
       def use_unit_factory(unit_factory)
