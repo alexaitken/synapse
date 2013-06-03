@@ -1,5 +1,6 @@
 require 'active_support'
 require 'active_support/core_ext'
+require 'forwardable'
 require 'logging'
 require 'set'
 
