@@ -3,9 +3,9 @@ require 'test_helper'
 module Synapse
   module Command
 
-    class WiringCommandHandlerTest < Test::Unit::TestCase
-      should 'pass the command to the correct wire' do
-        handler = ExampleWiringCommandHandler.new
+    class MappingCommandHandlerTest < Test::Unit::TestCase
+      should 'pass the command to the correct mapped handler' do
+        handler = ExampleMappingCommandHandler.new
         unit = Object.new
 
         command = CommandMessage.build do |builder|
@@ -31,8 +31,8 @@ module Synapse
         end
       end
 
-      should 'subscribe handler to the command bus for each wired command type' do
-        handler = ExampleWiringCommandHandler.new
+      should 'subscribe handler to the command bus for each mapped command type' do
+        handler = ExampleMappingCommandHandler.new
         bus = Object.new
 
         mock(bus).subscribe(TestSubCommand, handler)
@@ -41,8 +41,8 @@ module Synapse
         handler.subscribe bus
       end
 
-      should 'unsubscribe handler from the command bus for each wired command type' do
-        handler = ExampleWiringCommandHandler.new
+      should 'unsubscribe handler from the command bus for each mapped command type' do
+        handler = ExampleMappingCommandHandler.new
         bus = Object.new
 
         mock(bus).unsubscribe(TestSubCommand, handler)
@@ -55,16 +55,16 @@ module Synapse
     class TestCommand; end
     class TestSubCommand; end
 
-    class ExampleWiringCommandHandler
-      include WiringCommandHandler
+    class ExampleMappingCommandHandler
+      include MappingCommandHandler
 
       attr_accessor :handled, :sub_handled
 
-      wire TestCommand do |command|
+      map_command TestCommand do |command|
         @handled = true
       end
 
-      wire TestSubCommand do |command|
+      map_command TestSubCommand do |command|
         @sub_handled = true
       end
     end

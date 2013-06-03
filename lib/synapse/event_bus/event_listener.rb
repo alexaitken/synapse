@@ -3,7 +3,7 @@ module Synapse
     # Represents a listener that can be notified of events from an event bus. Implementations are
     # highly discouraged from throwing exceptions.
     #
-    # Consider using the event listener mixin that uses message wiring.
+    # Consider using the event listener mixin that uses the mapping DSL.
     #
     # @abstract
     module EventListener

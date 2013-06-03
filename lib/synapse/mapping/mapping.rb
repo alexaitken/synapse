@@ -1,17 +1,17 @@
 module Synapse
-  module Wiring
+  module Mapping
     # Represents a mapping between a payload type and a handler method or block
     #
-    # Wires are ordered by the depth of the payload type that they handle. Wires that are
-    # for a more specific class are preferred over wires for an abstract class.
-    class Wire
-      # @return [Class] The type of payload that a handler is being wired to
+    # Mappings are ordered by the depth of the payload type that they handle. Mappings that are
+    # for a more specific class are preferred over mappings for an abstract class.
+    class Mapping
+      # @return [Class] The type of payload that a handler is being mapped to
       attr_reader :type
 
       # @return [Object] Either a method symbol or block
       attr_reader :handler
 
-      # @return [Hash] Options specific to the component being wired
+      # @return [Hash] Options specific to the component being mapped
       attr_reader :options
 
       # @param [Class] type
@@ -35,13 +35,13 @@ module Synapse
         end
       end
 
-      # @param [Wire] other
+      # @param [Mapping] other
       # @return [Integer]
       def <=>(other)
         (@type <=> other.type) or 0
       end
 
-      # @param [Wire] other
+      # @param [Mapping] other
       # @return [Boolean]
       def ==(other)
         self.class === other and

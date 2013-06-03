@@ -2,7 +2,7 @@ module Synapse
   module Command
     # Mixin for an object capable of handling commands
     #
-    # Consider using the command handler mixin that uses message wiring.
+    # Consider using the command handler mixin that uses the mapping DSL.
     module CommandHandler
       # Handles the given command
       #

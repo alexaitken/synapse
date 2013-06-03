@@ -49,10 +49,10 @@ module Synapse
     end
 
     class TestEventListener
-      include EventBus::WiringEventListener
+      include EventBus::MappingEventListener
     end
     class TestAltEventListener
-      include EventBus::WiringEventListener
+      include EventBus::MappingEventListener
     end
   end
 end

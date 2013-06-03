@@ -1,9 +1,9 @@
 module Synapse
   module ProcessManager
-    # Process manager that is aware of processes that use the wiring DSL
-    # @see WiringProcess
-    class WiringProcessManager < ProcessManager
-      # @raise [ArgumentError] If a process type is given that doesn't support the wiring DSL
+    # Process manager that is aware of processes that use the mapping DSL
+    # @see MappingProcess
+    class MappingProcessManager < ProcessManager
+      # @raise [ArgumentError] If a process type is given that doesn't support the mapping DSL
       # @param [ProcessRepository] repository
       # @param [ProcessFactory] factory
       # @param [LockManager] lock_manager
@@ -13,7 +13,7 @@ module Synapse
         super
 
         @process_types.each do |process_type|
-          unless process_type.respond_to? :wire_registry
+          unless process_type.respond_to? :event_mapper
             raise ArgumentError, 'Incompatible process type %s' % process_type
           end
         end
@@ -25,12 +25,12 @@ module Synapse
       # @param [EventMessage] event
       # @return [Symbol]
       def creation_policy_for(process_type, event)
-        wire = process_type.wire_registry.wire_for event.payload_type
+        mapping = process_type.event_mapper.mapping_for event.payload_type
 
-        if wire
-          if !wire.options[:start]
+        if mapping
+          if !mapping.options[:start]
             :none
-          elsif wire.options[:force_new]
+          elsif mapping.options[:force_new]
             :always
           else
             :if_none_found
@@ -42,11 +42,11 @@ module Synapse
       # @param [EventMessage] event
       # @return [Correlation] Returns nil if no correlation could be extracted
       def extract_correlation(process_type, event)
-        wire = process_type.wire_registry.wire_for event.payload_type
+        mapping = process_type.event_mapper.mapping_for event.payload_type
 
-        return unless wire
+        return unless mapping
 
-        correlation_key = wire.options[:correlate]
+        correlation_key = mapping.options[:correlate]
         if correlation_key
           correlation_value event.payload, correlation_key
         end
@@ -67,6 +67,6 @@ module Synapse
           Correlation.new correlation_key, value
         end
       end
-    end # WiringProcessManager
+    end # MappingProcessManager
   end # ProcessManager
 end

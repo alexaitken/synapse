@@ -11,6 +11,6 @@ module Synapse
       def initialize(type_identifier, aggregate_id)
         super 'Stream not found for [%s] [%s]' % [type_identifier, aggregate_id]
       end
-    end
-  end
+    end # StreamNotFoundError
+  end # EventStore
 end

@@ -6,7 +6,7 @@ module Synapse
     # "maintain the state of the sequence and determine the next processing step based on
     # intermediate results" (Hohpe 279). Processes are also called sagas in some CQRS frameworks.
     #
-    # Consider using the implementation of a process that uses message wiring.
+    # Consider using the implementation of a process that uses the mapping DSL.
     #
     # @abstract
     class Process
@@ -72,6 +72,6 @@ module Synapse
       def finish
         @active = false
       end
-    end
-  end
+    end # Process
+  end # ProcessManager
 end

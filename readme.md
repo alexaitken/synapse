@@ -64,12 +64,12 @@ Define the command handler
 
 ```ruby
 class AccountCommandHandler
-  include Synapse::Command::WiringCommandHandler
+  include Synapse::Command::MappingCommandHandler
   include Synapse::Configuration::Dependent
 
   depends_on :account_repository
 
-  wire CreateAccount do |command|
+  map_command CreateAccount do |command|
     account = Account.new command.id, command.name
     @account_repository.add account
   end
@@ -122,7 +122,7 @@ gateway.send command
 - Event upcasting
 - Command validation (using ActiveModel)
 - Simple object serialization
-- DSL for easy wiring of event and command handlers
+- DSL for easy mapping of event and command handlers
 - Process manager framework (also known as Saga management)
 - Repository for non-event sourced aggregates (MongoMapper and ActiveRecord)
 

@@ -1,10 +1,10 @@
 require 'test_helper'
-require 'process_manager/wiring/fixtures'
+require 'process_manager/mapping/fixtures'
 
 module Synapse
   module ProcessManager
 
-    class WiringProcessTest < Test::Unit::TestCase
+    class MappingProcessTest < Test::Unit::TestCase
       def setup
         @process = OrderProcess.new
       end
@@ -19,7 +19,7 @@ module Synapse
         assert_equal 1, @process.handled
       end
 
-      should 'use wiring attributes to determine when to mark itself as finished' do
+      should 'use mapping attributes to determine when to mark itself as finished' do
         event = Domain::EventMessage.build do |builder|
           builder.payload = OrderCanceled.new 123
         end

@@ -1,25 +1,25 @@
 require 'test_helper'
-require 'process_manager/wiring/fixtures'
+require 'process_manager/mapping/fixtures'
 
 module Synapse
   module ProcessManager
 
-    class WiringProcessManagerTest < Test::Unit::TestCase
+    class MappingProcessManagerTest < Test::Unit::TestCase
       def setup
         @repository = InMemoryProcessRepository.new
         @factory = GenericProcessFactory.new
         @lock_manager = LockManager.new
 
-        @manager = WiringProcessManager.new @repository, @factory, @lock_manager, OrderProcess
+        @manager = MappingProcessManager.new @repository, @factory, @lock_manager, OrderProcess
       end
 
       should 'raise an exception if used with a process that does not support wiring' do
         assert_raise ArgumentError do
-          WiringProcessManager.new @repository, @factory, @lock_manager, Process
+          MappingProcessManager.new @repository, @factory, @lock_manager, Process
         end
       end
 
-      should 'use wiring attributes to determine correlation keys' do
+      should 'use mapping attributes to determine correlation keys' do
         event = create_event OrderCreated.new 123
         @manager.notify event
 
@@ -29,7 +29,7 @@ module Synapse
         assert_equal 1, processes.count
       end
 
-      should 'use wiring attributes to determine creation policy' do
+      should 'use mapping attributes to determine creation policy' do
         event = create_event OrderCreated.new 123
 
         @manager.notify event

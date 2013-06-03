@@ -4,7 +4,14 @@ module Synapse
     # applied to the aggregate
     module Member
       extend ActiveSupport::Concern
-      include Wiring::MessageWiring
+
+      included do
+        class_attribute :command_mapper
+        class_attribute :event_mapper
+
+        self.command_mapper = Mapping::Mapper.new false
+        self.event_mapper = Mapping::Mapper.new true
+      end
 
       module ClassMethods
         # Registers an instance variable as a child entity
@@ -21,6 +28,14 @@ module Synapse
         # @return [Set]
         def child_entities
           @child_entities ||= Set.new
+        end
+
+        def map_command(type, *args, &block)
+          commnad_mapper.map type, *args, &block
+        end
+
+        def map_event(type, *args, &block)
+          event_mapper.map type, *args, &block
         end
       end
 
@@ -57,9 +72,9 @@ module Synapse
       # @param [EventMessage] event
       # @return [undefined]
       def handle_event(event)
-        wire = self.wire_registry.wire_for event.payload_type
-        if wire
-          invoke_wire event, wire
+        mapping = self.event_mapper.mapping_for event.payload_type
+        if mapping
+          mapping.invoke self, event.payload
         end
       end
 
@@ -72,6 +87,6 @@ module Synapse
           entity.is_a? Member
         end
       end
-    end
-  end
+    end # Member
+  end # EventSourcing
 end

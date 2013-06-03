@@ -14,10 +14,10 @@ module Synapse
     autoload :Command
     autoload :Domain
     autoload :EventBus
+    autoload :Mapping
     autoload :Repository
     autoload :Serialization
     autoload :UnitOfWork, 'synapse/uow'
-    autoload :Wiring
   end
 
   # Optional components

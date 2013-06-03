@@ -12,7 +12,7 @@ require 'synapse/process_manager/resource_injector'
 require 'synapse/process_manager/container_resource_injector'
 require 'synapse/process_manager/simple_process_manager'
 
-require 'synapse/process_manager/wiring/process'
-require 'synapse/process_manager/wiring/process_manager'
+require 'synapse/process_manager/mapping/process'
+require 'synapse/process_manager/mapping/process_manager'
 
 require 'synapse/process_manager/repository/in_memory'

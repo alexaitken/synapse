@@ -9,6 +9,18 @@ module Synapse
       end
     end
 
+    class StubCreatedEvent
+      attr_reader :id
+
+      def initialize(id)
+        @id = id
+      end
+    end
+
+    class StubDeletedEvent; end
+
+    class StubChangedEvent; end
+
     class StubAggregate
       include AggregateRoot
 
@@ -35,16 +47,16 @@ module Synapse
         @stub_entities = Array.new
       end
 
+      map_event StubCreatedEvent do |event|
+        @id = event.id
+      end
+
+      map_event StubDeletedEvent do |event|
+        mark_deleted
+      end
+
       def handle_event(event)
-        payload = event.payload
-        type = event.payload_type
-
-        if type.eql? StubCreatedEvent
-          @id = payload.id
-        elsif type.eql? StubDeletedEvent
-          mark_deleted
-        end
-
+        super
         @event_count = @event_count.next
       end
     end
@@ -68,18 +80,6 @@ module Synapse
         @event_count = @event_count.next
       end
     end
-
-    class StubCreatedEvent
-      attr_reader :id
-
-      def initialize(id)
-        @id = id
-      end
-    end
-
-    class StubDeletedEvent; end
-
-    class StubChangedEvent; end
 
   end
 end

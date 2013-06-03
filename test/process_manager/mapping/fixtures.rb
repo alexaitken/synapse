@@ -4,7 +4,7 @@ module Synapse
   module ProcessManager
 
     class OrderEvent
-      attr_accessor :order_id
+      attr_reader :order_id
       def initialize(order_id)
         @order_id = order_id
       end
@@ -16,27 +16,26 @@ module Synapse
     class OrderCanceled < OrderEvent; end
     class OrderDerped; end
 
-    class OrderProcess < WiringProcess
+    class OrderProcess < MappingProcess
       attr_reader :handled
 
-      wire OrderCreated, correlate: :order_id, start: true do
+      map_event OrderCreated, correlate: :order_id, start: true do
         @handled = (@handled or 0).next
       end
 
-      wire OrderForceCreated, correlate: :order_id, start: true, force_new: true do
+      map_event OrderForceCreated, correlate: :order_id, start: true, force_new: true do
         @handled = (@handled or 0).next
       end
 
-      wire OrderUpdated, correlate: :order_id do
+      map_event OrderUpdated, correlate: :order_id do
         @handled = (@handled or 0).next
       end
 
-      wire OrderCanceled, correlate: :order_id, finish: true do
+      map_event OrderCanceled, correlate: :order_id, finish: true do
         @handled = (@handled or 0).next
       end
 
-      wire OrderDerped, correlate: :derpy_key do; end
+      map_event OrderDerped, correlate: :derpy_key do; end
     end
-
   end
 end

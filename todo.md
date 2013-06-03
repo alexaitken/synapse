@@ -46,7 +46,7 @@
 + Process management
   + ~~Core interfaces~~
   + ~~Implementation~~
-  + ~~Wired processes~~
+  + ~~Mapping processes~~
   + Asynchronous process management
   + ~~Mongo process repository~~
   + Sequel process repository
