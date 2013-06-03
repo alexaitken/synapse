@@ -4,16 +4,25 @@ module Synapse
     #
     # @example
     #   class OrderProcess < MappingProcess
-    #     map_event OrderCreatedEvent, correlate: :order_id, start: true, to: :on_create
+    #     map_event OrderCreatedEvent, correlate: :order_id, start: true do |event|
+    #       # ...
+    #     end
+    #
     #     map_event OrderFinishedEvent, correlate: :order_id, finish: true, to: :on_finish
     #   end
     #
     # @abstract
     class MappingProcess < Process
+      # @return [Mapping::Mapper]
       class_attribute :event_mapper
 
       self.event_mapper = Mapping::Mapper.new true
 
+      # @see Mapper#map
+      # @param [Class] type
+      # @param [Object...] args
+      # @param [Proc] block
+      # @return [undefined]
       def self.map_event(type, *args, &block)
         event_mapper.map type, *args, &block
       end

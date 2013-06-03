@@ -10,7 +10,6 @@ module Synapse
       # @return [undefined]
       def initialize(lock_manager)
         @lock_manager = lock_manager
-        @logger = Logging.logger[self.class]
       end
 
       # @api public
@@ -27,12 +26,11 @@ module Synapse
         begin
           aggregate = perform_load aggregate_id, expected_version
 
-          register_aggregate(aggregate).tap do
-            register_listener LockCleaningUnitOfWorkListener.new aggregate_id, @lock_manager
-          end
-        rescue
-          @logger.debug 'Excepton raised while loading an aggregate, releasing lock'
+          register_aggregate aggregate
+          register_listener LockCleaningUnitOfWorkListener.new aggregate_id, @lock_manager
 
+          aggregate
+        rescue
           @lock_manager.release_lock aggregate_id
           raise
         end
@@ -51,8 +49,6 @@ module Synapse
           register_aggregate aggregate
           register_listener LockCleaningUnitOfWorkListener.new aggregate.id, @lock_manager
         rescue
-          @logger.debug 'Exception raised while adding an aggregate, releasing lock'
-
           @lock_manager.release_lock aggregate.id
           raise
         end

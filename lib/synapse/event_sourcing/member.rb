@@ -6,7 +6,10 @@ module Synapse
       extend ActiveSupport::Concern
 
       included do
+        # @return [Mapper::Mapping]
         class_attribute :command_mapper
+
+        # @return [Mapper::Mapping]
         class_attribute :event_mapper
 
         self.command_mapper = Mapping::Mapper.new false
@@ -30,10 +33,20 @@ module Synapse
           @child_entities ||= Set.new
         end
 
+        # @see Mapper#map
+        # @param [Class] type
+        # @param [Object...] args
+        # @param [Proc] block
+        # @return [undefined]
         def map_command(type, *args, &block)
           commnad_mapper.map type, *args, &block
         end
 
+        # @see Mapper#map
+        # @param [Class] type
+        # @param [Object...] args
+        # @param [Proc] block
+        # @return [undefined]
         def map_event(type, *args, &block)
           event_mapper.map type, *args, &block
         end

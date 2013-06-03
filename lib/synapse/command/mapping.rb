@@ -24,6 +24,11 @@ module Synapse
       end
 
       module ClassMethods
+        # @see Mapper#map
+        # @param [Class] type
+        # @param [Object...] args
+        # @param [Proc] block
+        # @return [undefined]
         def map_command(type, *args, &block)
           command_mapper.map type, *args, &block
         end

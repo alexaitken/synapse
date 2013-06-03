@@ -23,6 +23,11 @@ module Synapse
       end
 
       module ClassMethods
+        # @see Mapper#map
+        # @param [Class] type
+        # @param [Object...] args
+        # @param [Proc] block
+        # @return [undefined]
         def map_event(type, *args, &block)
           event_mapper.map type, *args, &block
         end
