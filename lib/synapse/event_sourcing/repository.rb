@@ -12,6 +12,12 @@ module Synapse
       # @return [EventStore]
       attr_reader :event_store
 
+      # @return [SnapshotPolicy]
+      attr_accessor :snapshot_policy
+
+      # @return [SnapshotTaker]
+      attr_accessor :snapshot_taker
+
       # @return [Array<EventStreamDecorator>]
       attr_reader :stream_decorators
 
@@ -74,6 +80,17 @@ module Synapse
         end
 
         aggregate
+      end
+
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def post_registration(aggregate)
+        if @snapshot_policy and @snapshot_taker
+          listener =
+            SnapshotUnitOfWorkListener.new type_identifier, aggregate, @snapshot_policy, @snapshot_taker
+
+          register_listener listener
+        end
       end
 
       # @return [Class]

@@ -6,9 +6,23 @@ module Synapse
     #   es_repository :orderbook_repository do
     #     use_aggregate_type TradeEngine::OrderBook
     #   end
+    #
+    # @example Use an event sourcing repository with snapshotting capability
+    #   aggregate_snapshot_taker
+    #
+    #   interval_snapshot_policy do
+    #     use_threshold 50
+    #   end
+    #
+    #   es_repository :orderbook_repository do
+    #     use_aggregate_type TradeEngine::OrderBook
+    #   end
     class EventSourcingRepositoryDefinitionBuilder < LockingRepositoryDefinitionBuilder
-      # Convenience method that defines an aggregate factory capable of creating aggregates 
+      # Convenience method that defines an aggregate factory capable of creating aggregates
       # of the given type
+      #
+      # Definitions have to be created by aggregate factories so that aggregate factories can be
+      # registered to an aggregate snapshot taker.
       #
       # @param [Class] aggregate_type
       # @return [undefined]
@@ -40,13 +54,28 @@ module Synapse
         @event_store = event_store
       end
 
+      # @param [Symbol] snapshot_policy
+      # @return [undefined]
+      def use_snapshot_policy(snapshot_policy)
+        @snapshot_policy = snapshot_policy
+      end
+
+      # @param [Symbol] snapshot_taker
+      # @return [undefined]
+      def use_snapshot_taker(snapshot_taker)
+        @snapshot_taker = snapshot_taker
+      end
+
     protected
 
       # @return [undefined]
       def populate_defaults
         super
 
+        use_conflict_resolver :conflict_resolver
         use_event_store :event_store
+        use_snapshot_policy :snapshot_policy
+        use_snapshot_taker :snapshot_taker
 
         use_factory do
           aggregate_factory = resolve @aggregate_factory
@@ -54,6 +83,12 @@ module Synapse
           lock_manager = build_lock_manager
 
           repository = EventSourcing::EventSourcingRepository.new aggregate_factory, event_store, lock_manager
+
+          # Optional dependencies
+          repository.conflict_resolver = resolve @conflict_resolver, true
+          repository.snapshot_policy = resolve @snapshot_policy, true
+          repository.snapshot_taker = resolve @snapshot_taker, true
+
           inject_base_dependencies repository
         end
       end

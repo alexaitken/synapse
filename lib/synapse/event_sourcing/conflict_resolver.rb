@@ -2,11 +2,14 @@ module Synapse
   module EventSourcing
     # Represents a mechanism that is capable of detecting conflicts between applied changes
     # to the aggregate and unseen changes made to the aggregate.
+    #
+    # @abstract
     class ConflictResolver
       # Checks the list of changes applied to the aggregate and compares it to the list of
       # events already applied to the aggregate. If a conflict is detected, this should throw
       # an exception. Otherwise, the changes will be applied.
       #
+      # @abstract
       # @raise [ConflictingModificationException] If any conflicts were detected
       # @param [Array] applied_changes List of changes applied to the aggregate
       # @param [Array] committed_changes List of events that were unexpected by the command handler

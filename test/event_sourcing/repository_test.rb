@@ -88,6 +88,16 @@ module Synapse
         @unit.commit
       end
 
+      should 'register a snapshot listener if a policy and taker are set' do
+        @repository.snapshot_policy = IntervalSnapshotPolicy.new 30
+        @repository.snapshot_taker = AggregateSnapshotTaker.new @event_store
+
+        mock(@unit).register_listener(anything)
+        mock(@unit).register_listener(is_a(SnapshotUnitOfWorkListener))
+
+        @repository.add StubAggregate.new 123
+      end
+
     private
 
       def create_event(aggregate_id, seq, payload)

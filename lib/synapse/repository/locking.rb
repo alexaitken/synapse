@@ -29,6 +29,8 @@ module Synapse
           register_aggregate aggregate
           register_listener LockCleaningUnitOfWorkListener.new aggregate_id, @lock_manager
 
+          post_registration aggregate
+
           aggregate
         rescue
           @lock_manager.release_lock aggregate_id
@@ -48,6 +50,8 @@ module Synapse
 
           register_aggregate aggregate
           register_listener LockCleaningUnitOfWorkListener.new aggregate.id, @lock_manager
+
+          post_registration aggregate
         rescue
           @lock_manager.release_lock aggregate.id
           raise
@@ -67,6 +71,12 @@ module Synapse
       # @param [Integer] expected_version
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version); end
+
+      # Hook that is called after an aggregate is registered to the current unit of work
+      #
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def post_registration(aggregate); end
     end # LockingRepository
 
     # Unit of work listener that releases the lock on an aggregate when the unit of work

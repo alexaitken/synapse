@@ -19,6 +19,8 @@ require 'synapse/configuration/component/repository/locking_repository'
 require 'synapse/configuration/component/repository/simple_repository'
 
 require 'synapse/configuration/component/event_sourcing'
+require 'synapse/configuration/component/event_sourcing/aggregate_snapshot_taker'
+require 'synapse/configuration/component/event_sourcing/interval_snapshot_policy'
 require 'synapse/configuration/component/event_sourcing/repository'
 
 require 'synapse/configuration/component/serialization'
