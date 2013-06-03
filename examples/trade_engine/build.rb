@@ -12,18 +12,8 @@ Synapse.build do
 
   gateway
 
-  factory :event_store do
-    serializer = resolve :serializer
-    upcaster_chain = resolve :upcaster_chain
-
-    client = Mongo::MongoClient.new
-    template = Synapse::EventStore::Mongo::Template.new client
-    strategy = Synapse::EventStore::Mongo::DocumentPerCommitStrategy.new template, serializer, upcaster_chain
-
-    event_store = Synapse::EventStore::Mongo::MongoEventStore.new template, strategy
-    event_store.ensure_indexes
-
-    event_store
+  mongo_event_store do
+    use_client Mongo::MongoClient.new
   end
 
   aggregate_snapshot_taker
