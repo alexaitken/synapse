@@ -57,7 +57,7 @@ module Synapse
         loggers = [logger]
         event = Object.new
 
-        mock(logger).on_success(command, exception, [event])
+        mock(logger).on_failure(command, exception, [event])
 
         listener = AuditingUnitOfWorkListener.new command, data_providers, loggers
         listener.recorded_events.push event

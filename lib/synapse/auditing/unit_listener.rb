@@ -27,9 +27,10 @@ module Synapse
           audit_data.merge! provider.provide_data_for @command
         end
 
-        event.and_metadata(audit_data).tap do |e|
-          @recorded_events.push e
-        end
+        event = event.and_metadata audit_data
+        @recorded_events.push event
+
+        event
       end
 
       # @param [UnitOfWork] unit
@@ -45,9 +46,9 @@ module Synapse
       # @return [undefined]
       def on_rollback(unit, cause = nil)
         @loggers.each do |logger|
-          logger.on_success @command, cause, @recorded_events
+          logger.on_failure @command, cause, @recorded_events
         end
       end
-    end
-  end
+    end # AuditingUnitOfWorkListener
+  end # Auditing
 end

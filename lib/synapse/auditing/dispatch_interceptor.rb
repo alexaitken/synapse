@@ -20,10 +20,11 @@ module Synapse
         audit_listener = AuditingUnitOfWorkListener.new command, @data_providers, @loggers
         unit.register_listener audit_listener
 
-        chain.proceed(command).tap do |result|
-          audit_listener.return_value = result
-        end
+        result = chain.proceed command
+        audit_listener.return_value = result
+
+        result
       end
-    end
-  end
+    end # AuditingDispatchInterceptor
+  end # Auditing
 end
