@@ -17,45 +17,37 @@ You know the drill, add it to your `Gemfile`:
 
 ```ruby
 gem 'synapse-core'
+gem 'synapse-mongo'
 ```
 
-You can define your commands and events using plain old Ruby objects. To make serialization and validation
-easier, however, you should use some sort of model mixin, like:
-
-- [ActiveAttr](https://github.com/cgriego/active_attr)
-- [ActiveModel](https://github.com/rails/rails/tree/master/activemodel)
-- [Virtus](https://github.com/solnic/virtus)
-
+You can define your commands and events using plain old Ruby objects.
 ```ruby
 class CreateAccount
-  include Virtus
-
-  attribute :account_id, String
-  attribute :name, String
+  attr_reader :id, :name
+  def initialize(id, name)
+    @id = id
+    @name = name
+  end
 end
 
 class AccountCreated
-  include Virtus
-
   # ...
 end
 ```
 
-Define the aggregate -- In this case, a non-event sourced aggregate, stored with ActiveRecord.
-
-You can use any ORM to define non-ES aggregates, including MongoMapper, Mongoid and DataMapper.
-To use event sourcing, you have to configure an event store, like the one in [synapse-mongo](https://github.com/ianunruh/synapse-mongo)
+Define the aggregate -- In this case, an event-sourced aggregate.
 
 ```ruby
 class Account
-  include ActiveRecord::Base
-  include Synapse::Domain::AggregateRoot
+  include Synapse::EventSourcing::AggregateRoot
 
   def initialize(id, name)
-    self.id = id
-    self.name = name
+    apply AccountCreated.new id, name
+  end
 
-    publish_event AccountCreated.new id, name
+  map_event AccountCreated do |event|
+    @id = event.id
+    @name = event.name
   end
 end
 ```
@@ -80,17 +72,21 @@ Setup the necessary services
 
 ```ruby
 Synapse.build do
-  converter_factory
-  serializer
-  unit_factory
-
-  simple_command_bus
   simple_event_bus
 
+  unit_factory
+  simple_command_bus
   gateway
 
-  # The repository gets cool things injected, like locking and an event bus
-  simple_repository :account_repository do
+  converter_factory
+  serializer
+
+  mongo_event_store do
+    use_client Mongo::MongoClient.new
+  end
+
+  # The repository gets cool things injected, like locking, an event bus and event store
+  es_repository :account_repository do
     use_aggregate_type Account
   end
 

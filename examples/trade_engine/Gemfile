@@ -19,8 +19,6 @@ end
 custom_gem 'synapse-core', :git => 'git://github.com/ianunruh/synapse.git', :branch => :master
 custom_gem 'synapse-mongo', :git => 'git://github.com/ianunruh/synapse-mongo.git', :branch => :master
 
-
 gem 'activemodel'
 gem 'bson_ext', :platform => :ruby
 gem 'ox', :platform => :ruby
-gem 'virtus'
