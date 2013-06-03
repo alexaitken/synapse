@@ -5,6 +5,7 @@ require 'synapse/configuration/definition_builder'
 require 'synapse/configuration/dependent'
 require 'synapse/configuration/ext'
 
+require 'synapse/configuration/component/mixin/thread_pool'
 require 'synapse/configuration/component/command_bus'
 require 'synapse/configuration/component/event_bus'
 # Has to be loaded before event sourcing
