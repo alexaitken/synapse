@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Serialization
     class SerializedMetadataTest < Test::Unit::TestCase
-      def test_initialize
+      should 'act like a serialized object' do
         content = 'test-metadata'
         content_type = String
 

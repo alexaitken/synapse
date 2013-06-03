@@ -4,7 +4,7 @@ module Synapse
   module Serialization
 
     class SerializedMessageTest < Test::Unit::TestCase
-      def test_build
+      should 'provide a builder for serialized messages' do
         message = SerializedMessage.build do |builder|
           assert builder.is_a? SerializedMessageBuilder
         end
@@ -13,7 +13,7 @@ module Synapse
     end
 
     class SerializedEventMessageTest < Test::Unit::TestCase
-      def test_build
+      should 'provide a builder for serialized event messages' do
         message = SerializedEventMessage.build do |builder|
           assert builder.is_a? SerializedEventMessageBuilder
         end
@@ -28,7 +28,7 @@ module Synapse
         @serializer_b = MarshalSerializer.new converter_factory
       end
 
-      def test_serialization
+      should 'lazily deserialize metadata and payload' do
         metadata = { foo: 0 }
         payload = { bar: 1 }
 
@@ -63,7 +63,7 @@ module Synapse
         assert_equal payload_serialized, payload_serialized_b
       end
 
-      def test_and_metadata
+      should 'populate fields of message duplicated to add metadata' do
         metadata = { foo: 0 }
         payload = { bar: 1 }
 
@@ -95,7 +95,7 @@ module Synapse
         assert_message_content_equal message, new_message
       end
 
-      def test_with_metadata
+      should 'populate fields of message duplicated to replace metadata' do
         metadata = { foo: 0 }
         payload = { bar: 1 }
 

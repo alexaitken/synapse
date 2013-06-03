@@ -4,7 +4,7 @@ module Synapse
   module Serialization
 
     class ConverterChainTest < Test::Unit::TestCase
-      def test_convert
+      should 'convert using a chain of converters' do
         converters = Array.new
         converters << ObjectToJsonConverter.new << JsonToObjectConverter.new
 
@@ -13,7 +13,7 @@ module Synapse
         assert_equal Object, chain.source_type
         assert_equal Object, chain.target_type
 
-        content = { 'foo' => 'bar' }
+        content = { foo: 0 }.stringify_keys
 
         type = SerializedType.new 'TestType', 1
         object = SerializedObject.new content, content.class, type

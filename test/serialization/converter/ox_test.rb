@@ -7,7 +7,7 @@ module Synapse
         skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
       end
 
-      def test_convert
+      should 'convert an Ox document to an XML string' do
         converter = OxDocumentToXmlConverter.new
 
         assert_equal Ox::Document, converter.source_type
@@ -25,7 +25,7 @@ module Synapse
         skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
       end
 
-      def test_convert
+      should 'convert an XML string to an Ox document' do
         converter = XmlToOxDocumentConverter.new
 
         assert_equal String, converter.source_type

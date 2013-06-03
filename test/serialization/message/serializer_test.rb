@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Serialization
     class MessageSerializerTest < Test::Unit::TestCase
-      def test_serialize
+      should 'delegate serialization to serializer if message not serialization aware' do
         delegate = Object.new
         serializer = MessageSerializer.new delegate
 
@@ -29,7 +29,7 @@ module Synapse
         assert_equal serialized_payload, serializer.serialize_payload(m, String)
       end
 
-      def test_serialization_aware
+      should 'delegate serialization to message if serialization aware' do
         delegate = Object.new
         serializer = MessageSerializer.new delegate
 

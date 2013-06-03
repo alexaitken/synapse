@@ -4,7 +4,7 @@ module Synapse
   module Serialization
 
     class SerializedDomainEventMessageBuilderTest < Test::Unit::TestCase
-      def test_from_data
+      should 'build a message from serialized domain event data' do
         builder = SerializedDomainEventMessageBuilder.new
 
         serializer = MarshalSerializer.new ConverterFactory.new

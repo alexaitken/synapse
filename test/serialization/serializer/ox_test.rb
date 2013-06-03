@@ -11,7 +11,7 @@ module Synapse
         @serializer = OxSerializer.new ConverterFactory.new
       end
 
-      def test_serialize_and_deserialize
+      should 'support serializing and deserializing content' do
         event = TestEvent.new 'derp', 'herp'
 
         serialized_obj = @serializer.serialize event, String
@@ -20,7 +20,7 @@ module Synapse
         assert_equal event, deserialized
       end
 
-      def test_type_converison
+      should 'support converting content to/from the native type' do
         type = SerializedType.new 'String', nil
 
         assert_equal String, @serializer.class_for(type)

@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Serialization
     class IdentityConverterTest < Test::Unit::TestCase
-      def test_conversion
+      should 'pass through objects unchanged' do
         converter = IdentityConverter.new Object
         content = Hash.new
 

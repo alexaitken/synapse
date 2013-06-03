@@ -4,7 +4,7 @@ require 'serialization/fixtures'
 module Synapse
   module Serialization
     class LazyObjectTest < Test::Unit::TestCase
-      def test_deserialize_once
+      should 'only deserialize an object once' do
         serializer = MarshalSerializer.new ConverterFactory.new
         event = TestEvent.new 'a', 'b'
 

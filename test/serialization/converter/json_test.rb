@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Serialization
     class JsonToObjectConverterTest < Test::Unit::TestCase
-      def test_convert
+      should 'convert content from a JSON string to a Ruby data structure' do
         converter = JsonToObjectConverter.new
 
         assert_equal String, converter.source_type
@@ -16,7 +16,7 @@ module Synapse
     end
 
     class ObjectToJsonConverterTest < Test::Unit::TestCase
-      def test_convert
+      should 'convert a Ruby data structure to a JSON string' do
         converter = ObjectToJsonConverter.new
 
         assert_equal Object, converter.source_type

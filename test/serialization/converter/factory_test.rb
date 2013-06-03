@@ -9,12 +9,12 @@ module Synapse
         @factory = ConverterFactory.new
       end
 
-      def test_identity
+      should 'return an identity converter if the source/target type are the same' do
         assert @factory.has_converter?(String, String)
         assert @factory.converter(String, String).is_a?(IdentityConverter)
       end
 
-      def test_converter
+      should 'return a converter matching a source/target type' do
         refute @factory.has_converter?(Object, String)
 
         assert_raise ConversionError do

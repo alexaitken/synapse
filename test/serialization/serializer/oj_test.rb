@@ -9,7 +9,7 @@ module Synapse
         skip 'Oj not supported on JRuby' if defined? JRUBY_VERSION
       end
 
-      def test_serialize_deserialize
+      should 'support serializing and deserializing content' do
         serializer = OjSerializer.new ConverterFactory.new
         event = TestEvent.new 'derp', 'herp'
 

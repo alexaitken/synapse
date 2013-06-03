@@ -6,7 +6,7 @@ module Synapse
 
     class MarshalSerializerTest < Test::Unit::TestCase
 
-      def test_serialize_deserialize
+      should 'support serializing and deserializing content' do
         serializer = MarshalSerializer.new ConverterFactory.new
         event = TestEvent.new 'derp', 'herp'
 

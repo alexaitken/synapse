@@ -4,7 +4,7 @@ module Synapse
   module Serialization
     class SerializedObjectTest < Test::Unit::TestCase
 
-      def test_attributes
+      should 'provide initialized fields' do
         content = 'some content'
         type = SerializedType.new 'SomeClass', '1'
 
@@ -15,7 +15,7 @@ module Synapse
         assert_equal type, object.type
       end
 
-      def test_object_equality
+      should 'support object equality and hashing' do
         type_a = SerializedType.new 'SomeClass', '1'
         type_b = SerializedType.new 'SomeClass', '2'
 

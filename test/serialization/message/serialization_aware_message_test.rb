@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Serialization
     class SerializationAwareDomainEventMessageTest < Test::Unit::TestCase
-      def test_delegation
+      should 'delegate fields to the original message' do
         message = Domain::DomainEventMessage.build do |builder|
           builder.payload = Object.new
           builder.aggregate_id = 123
@@ -23,7 +23,7 @@ module Synapse
         assert_same message.sequence_number, aware.sequence_number
       end
 
-      def test_caching
+      should 'cache serialization operations' do
         message = Domain::DomainEventMessage.build do |builder|
           builder.payload = Object.new
           builder.aggregate_id = 123
@@ -47,7 +47,7 @@ module Synapse
         end
       end
 
-      def test_decorate
+      should 'not further wrap messages that are already serialization aware' do
         message = Domain::DomainEventMessage.build
 
         aware = SerializationAwareDomainEventMessage.decorate message
@@ -56,7 +56,7 @@ module Synapse
         assert_same aware, new_aware
       end
 
-      def test_and_metadata
+      should 'wrap messages that are duplicated to add metadata' do
         message = Domain::DomainEventMessage.build do |builder|
           builder.metadata = { foo: 0 }
         end
@@ -71,7 +71,7 @@ module Synapse
         assert new_aware.is_a? SerializationAwareDomainEventMessage
       end
 
-      def test_with_metadata
+      should 'wrap messages that are duplicated to replace metadata' do
         message = Domain::DomainEventMessage.build do |builder|
           builder.metadata = { foo: 0 }
         end

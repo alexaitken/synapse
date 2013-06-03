@@ -17,7 +17,7 @@ module Synapse
         ContainerBuilder.initializers = @initializers
       end
 
-      def test_initializers
+      should 'call initializers upon creation' do
         ContainerBuilder.initializer do
           definition :test_definition do
             tag :derp
@@ -29,12 +29,10 @@ module Synapse
         assert @container.registered? :test_definition
       end
 
-      def test_factory
+      should 'create a simple definition from a factory' do
         builder = ContainerBuilder.new @container
-        builder.build_with do
-          factory :derp_service, :tag => [:first_tag, :nth_tag] do
-            123
-          end
+        builder.factory :derp_service, :tag => [:first_tag, :nth_tag] do
+          123
         end
 
         assert @container.registered? :derp_service

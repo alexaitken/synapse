@@ -4,7 +4,7 @@ module Synapse
   module Serialization
 
     class SerializerTest < Test::Unit::TestCase
-      def test_revision
+      should 'add revisions to serialized objects when a revision resolver is present' do
         revision = '123'
 
         serializer = Serializer.new ConverterFactory.new
