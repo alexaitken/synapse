@@ -23,6 +23,22 @@ module Synapse
         @handler_tag = handler_tag
       end
 
+      # Changes the tag to use to automatically register command filters
+      #
+      # @param [Symbol] filter_tag
+      # @return [undefined]
+      def use_filter_tag(filter_tag)
+        @filter_tag = filter_tag
+      end
+
+      # Changes the tag to use to automatically register command filters
+      #
+      # @param [Symbol] interceptor_tag
+      # @return [undefined]
+      def use_interceptor_tag(interceptor_tag)
+        @interceptor_tag = interceptor_tag
+      end
+
       # Changes the rollback policy to use for the command bus
       #
       # By default, the command bus will always rollback on an exception
@@ -48,19 +64,27 @@ module Synapse
         identified_by :command_bus
 
         use_handler_tag :command_handler
+        use_filter_tag :command_filter
+        use_interceptor_tag :dispatch_interceptor
+
         use_unit_factory :unit_factory
 
         use_factory do
           unit_factory = resolve @unit_factory
 
           command_bus = create_command_bus unit_factory
-
-          if @rollback_policy
-            command_bus.rollback_policy = resolve @rollback_policy
-          end
+          command_bus.rollback_policy = resolve @rollback_policy, true
 
           with_tagged @handler_tag do |handler|
             handler.subscribe command_bus
+          end
+
+          with_tagged @filter_tag do |filter|
+            command_bus.filters.push filter
+          end
+
+          with_tagged @interceptor_tag do |interceptor|
+            command_bus.interceptors.push interceptor
           end
 
           command_bus

@@ -2,10 +2,10 @@ module Synapse
   module Upcasting
     class UpcasterChain
       # @return [ConverterFactory]
-      attr_accessor :converter_factory
+      attr_reader :converter_factory
 
       # @return [Array<Upcaster>]
-      attr_accessor :upcasters
+      attr_reader :upcasters
 
       # @param [ConverterFactory] converter_factory
       # @return [undefined]

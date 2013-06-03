@@ -3,6 +3,7 @@ require 'test_helper'
 module Synapse
   module Configuration
     class SimpleCommandBusDefinitionFactoryTest < Test::Unit::TestCase
+
       def setup
         @container = Container.new
         @builder = ContainerBuilder.new @container
@@ -52,6 +53,35 @@ module Synapse
         mock(handler_b).subscribe(is_a(Command::SimpleCommandBus))
         command_bus = @container.resolve :alt_command_bus
       end
+
+      should 'build and register tagged command interceptors' do
+        @builder.factory :serialization_interceptor, :tag => :dispatch_interceptor do
+          Command::SerializationOptimizingInterceptor.new
+        end
+
+        @builder.unit_factory
+        @builder.simple_command_bus
+
+        command_bus = @container.resolve :command_bus
+        serialization_interceptor = @container.resolve :serialization_interceptor
+
+        assert_include command_bus.interceptors, serialization_interceptor
+      end
+
+      should 'build and register tagged command filters' do
+        @builder.factory :validation_filter, :tag => :command_filter do
+          Command::ActiveModelValidationFilter.new
+        end
+
+        @builder.unit_factory
+        @builder.simple_command_bus
+
+        command_bus = @container.resolve :command_bus
+        validation_filter = @container.resolve :validation_filter
+
+        assert_include command_bus.filters, validation_filter
+      end
+
     end
   end
 end
