@@ -15,7 +15,7 @@ module Synapse
 
         mock(delegate).schedule_snapshot(type_identifier, aggregate_id)
 
-        mock(thread_pool).push.twice do |block|
+        mock(thread_pool).process.twice do |block|
           deferred_block = block
         end
 

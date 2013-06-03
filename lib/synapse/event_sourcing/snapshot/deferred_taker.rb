@@ -14,6 +14,7 @@ module Synapse
 
         @deferred = Set.new
         @mutex = Mutex.new
+        @logger = Logging.logger[self.class]
       end
 
       # @param [String] type_identifier
@@ -25,9 +26,13 @@ module Synapse
           @deferred.add aggregate_id
         end
 
-        @thread_pool.push do
+        @logger.info 'Deferring snapshot for [%s] [%s]' % [type_identifier, aggregate_id]
+
+        @thread_pool.process do
           @delegate.schedule_snapshot type_identifier, aggregate_id
           @deferred.delete aggregate_id
+
+          @logger.debug 'Snapshot taken for [%s] [%s]' % [type_identifier, aggregate_id]
         end
       end
 

@@ -49,7 +49,8 @@ module Synapse
           raise 'Aggregate has already been initialized'
         end
 
-        pre_initialize
+        # If this is loaded from a snapshot, don't pre-initialize
+        pre_initialize unless @initial_version
 
         @initial_version = stream.peek.sequence_number
 
