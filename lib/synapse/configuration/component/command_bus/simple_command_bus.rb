@@ -5,12 +5,12 @@ module Synapse
     # @example The minimum possible effort to build a command bus
     #   simple_command_bus
     #
-    # @example Create a command bus with an alternate identifier and handler tag
+    # @example Create a command bus with an alternate identifier and tags
     #   simple_command_bus :alt_command_bus do
     #     use_handler_tag :alt_command_handler
+    #     use_filter_tag :alt_command_filter
+    #     use_interceptor_tag :alt_dispatch_interceptor
     #   end
-    #
-    # @todo Support for interceptors and filters
     class SimpleCommandBusDefinitionBuilder < DefinitionBuilder
       # Changes the tag to use to automatically subscribe command handlers
       #
