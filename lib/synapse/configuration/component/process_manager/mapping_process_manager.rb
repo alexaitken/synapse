@@ -62,7 +62,7 @@ module Synapse
       # @param [Class...] process_types
       # @return [undefined]
       def use_process_types(*process_types)
-        @process_types = process_types.flatten!
+        @process_types = process_types.flatten
       end
 
     protected

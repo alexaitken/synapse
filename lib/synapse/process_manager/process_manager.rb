@@ -5,6 +5,15 @@ module Synapse
     class ProcessManager
       include EventBus::EventListener
 
+      # @return [LockManager]
+      attr_reader :lock_manager
+
+      # @return [ProcessFactory]
+      attr_reader :factory
+
+      # @return [ProcessRepository]
+      attr_reader :repository
+
       # @return [Boolean] Returns true if exceptions will be logged silently
       attr_accessor :suppress_exceptions
 
