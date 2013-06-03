@@ -73,7 +73,10 @@ module Synapse
           unit_factory = resolve @unit_factory
 
           command_bus = create_command_bus unit_factory
-          command_bus.rollback_policy = resolve @rollback_policy, true
+
+          if @rollback_policy
+            command_bus.rollback_policy = resolve @rollback_policy
+          end
 
           with_tagged @handler_tag do |handler|
             handler.subscribe command_bus

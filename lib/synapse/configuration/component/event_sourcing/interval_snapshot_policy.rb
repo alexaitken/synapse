@@ -25,7 +25,7 @@ module Synapse
         use_threshold 30
 
         use_factory do
-          EventSourcing::AggregateSnapshotTaker.new @threshold
+          EventSourcing::IntervalSnapshotPolicy.new @threshold
         end
       end
     end # IntervalSnapshotPolicyDefinitionBuilder
