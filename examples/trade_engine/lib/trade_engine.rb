@@ -1,7 +1,6 @@
 require 'active_model'
 require 'synapse'
 require 'synapse-mongo'
-require 'virtus'
 
 require 'trade_engine/commands'
 require 'trade_engine/events'

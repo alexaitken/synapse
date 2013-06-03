@@ -9,10 +9,11 @@ require_relative 'build'
 Logging.logger.root.appenders = Logging.appenders.stdout
 Logging.logger.root.level = :info
 
+command_bus = Synapse.container[:command_bus]
 gateway = Synapse.container[:gateway]
 
-x = 100 # Number of order books to create
-n = 1000 # Number of orders to place
+x = 1000 # Number of order books to create
+n = 10000 # Number of orders to place
 
 orderbook_identifiers = Array.new
 order_types = [
@@ -38,8 +39,10 @@ time = Benchmark.realtime do
     order_type = order_types.sample
 
     command = order_type.new orderbook_id, order_id, trade_count, item_price
-    gateway.send_and_wait command
+    gateway.send command
   end
+
+  command_bus.shutdown
 end
 
 t = x + n

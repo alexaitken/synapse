@@ -1,13 +1,12 @@
 Synapse.build do
   converter_factory
-  serializer do
-    use_ox
-    use_serialize_options circular: true
-  end
+  serializer
   upcaster_chain
 
   unit_factory
-  simple_command_bus
+  async_command_bus do
+    use_threads 4
+  end
   simple_event_bus
 
   gateway
@@ -16,9 +15,12 @@ Synapse.build do
     use_client Mongo::MongoClient.new
   end
 
-  aggregate_snapshot_taker
+  aggregate_snapshot_taker :delegate_snapshot_taker
+  deferred_snapshot_taker do
+    use_snapshot_taker :delegate_snapshot_taker
+  end
   interval_snapshot_policy do
-    use_threshold 10
+    use_threshold 50
   end
 
   es_repository :orderbook_repository do
