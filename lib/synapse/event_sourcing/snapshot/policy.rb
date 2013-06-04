@@ -12,6 +12,7 @@ module Synapse
     # Snapshot policy that takes a snapshot if the number of events committed in an aggregate since
     # the last snapshot goes over the configured threshold
     class IntervalSnapshotPolicy < SnapshotPolicy
+      # @param [Integer] threshold
       # @return [undefined]
       def initialize(threshold)
         @threshold = threshold

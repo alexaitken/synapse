@@ -9,7 +9,7 @@ Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 
 Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.com) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
 
-**Warning:** Synapse is still under heavy development; public API is likely to break before a stable release is announced.
+**Warning:** Synapse is still under heavy development; public API can change at any time.
 
 ## Getting Started
 
@@ -18,6 +18,10 @@ You know the drill, add it to your `Gemfile`:
 ```ruby
 gem 'synapse-core'
 gem 'synapse-mongo'
+
+# Or if you're feeling edgy
+gem 'synapse-core', :git => 'git://github.com/ianunruh/synapse.git', :branch => :master
+gem 'synapse-mongo', :git => 'git://github.com/ianunruh/synapse-mongo.git', :branch => :master
 ```
 
 You can define your commands and events using plain old Ruby objects.

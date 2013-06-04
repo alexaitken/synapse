@@ -2,20 +2,7 @@
 
 ## Immediate
 
-+ Configuration DSL for process management
-  + `MappingProcessManager`
-  + `MongoProcessRepository`
-+ Base64 encoding for `MarshalSerializer`
-+ Deferred snapshot taker (using `Thread::Pool` or similar)
-
-## Odds and ends
-
-+ Simplified mixins for domain commands and events
-  + For serialization, validation, building, etc.
-+ Disruptor for command bus (??) JRuby and pure Ruby?
-+ Distributed locking (sharding should always be preferred, but just in case)
-  + Redis, Officer, Mongo, ZK?
-+ Aliases for common mixins (command handler, event listener, aggregate, processes)
++ Issues on GitHub
 
 ## AxonFramework functionality
 
@@ -32,24 +19,17 @@
   + Listener groups and group bus
   + Asynchronous event bus
   + Distributed event bus (AMQP)
-  + ~~DSL for defining and mapping event handlers to event types~~
   + Instrumentation for event buses (Graphite, Ganglia, etc.)
   + Event replay framework
   + Event scheduling framework (Quartz-like)
 + Event sourcing
-  + ~~Snapshot support~~
-  + ~~Conflict resolution support~~
   + Caching repository
   + Hybrid ES repository
 + Event store
   + Management
 + Process management
-  + ~~Core interfaces~~
-  + ~~Implementation~~
-  + ~~Mapping processes~~
   + Asynchronous process management
 + Serialization
-  + ~~Hash serializer~~
   + Nokogiri serializer
 
 ## Integration
@@ -80,3 +60,12 @@
     + Command -> events correlation
     + Command dispatch failures
 + DSL for defining event and command contracts
+
+## Odds and ends
+
++ Simplified mixins for domain commands and events
+  + For serialization, validation, building, etc.
++ Disruptor for command bus (??) JRuby and pure Ruby?
++ Distributed locking (sharding should always be preferred, but just in case)
+  + Redis, Officer, Mongo, ZK?
++ Aliases for common mixins (command handler, event listener, aggregate, processes)
