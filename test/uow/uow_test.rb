@@ -37,12 +37,12 @@ module Synapse
         aggregate_d = TestAggregateB.new 3
 
         event_bus = Object.new
-        storage_listener = Object.new
+        storage_callback = lambda {}
 
-        assert_same aggregate_a, @uow.register_aggregate(aggregate_a, event_bus, storage_listener)
-        assert_same aggregate_b, @uow.register_aggregate(aggregate_b, event_bus, storage_listener)
-        assert_same aggregate_c, @uow.register_aggregate(aggregate_c, event_bus, storage_listener)
-        assert_same aggregate_c, @uow.register_aggregate(aggregate_d, event_bus, storage_listener)
+        assert_same aggregate_a, @uow.register_aggregate(aggregate_a, event_bus, &storage_callback)
+        assert_same aggregate_b, @uow.register_aggregate(aggregate_b, event_bus, &storage_callback)
+        assert_same aggregate_c, @uow.register_aggregate(aggregate_c, event_bus, &storage_callback)
+        assert_same aggregate_c, @uow.register_aggregate(aggregate_d, event_bus, &storage_callback)
       end
 
       should 'interact with a transaction manager on commit' do
@@ -157,18 +157,13 @@ module Synapse
         end
       end
 
-      should 'rollback if an aggregate storage listener raises an exception' do
+      should 'rollback if an aggregate storage callback raises an exception' do
         aggregate_root = Object.new
         mock(aggregate_root).add_registration_listener
         mock(aggregate_root).id
 
         event_bus = Object.new
         cause = TestError.new
-
-        storage_listener = Object.new
-        mock(storage_listener).store(aggregate_root) {
-          raise cause
-        }
 
         listener = UnitOfWorkListener.new
         mock(listener).on_prepare_commit(@uow, anything, anything)
@@ -178,7 +173,9 @@ module Synapse
 
         @uow.start
         @uow.register_listener listener
-        @uow.register_aggregate aggregate_root, event_bus, storage_listener
+        @uow.register_aggregate aggregate_root, event_bus do |aggregate|
+          raise cause
+        end
 
         assert_raises TestError do
           @uow.commit

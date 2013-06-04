@@ -31,8 +31,6 @@ module Synapse
         @aggregate_factory = aggregate_factory
         @event_store = event_store
         @stream_decorators = Array.new
-        @storage_listener =
-          EventSourcedStorageListener.new @event_store, @lock_manager, @stream_decorators, type_identifier
       end
 
       # Appends a stream decorator onto the end of the list of stream decorators
@@ -98,9 +96,26 @@ module Synapse
         @aggregate_factory.aggregate_type
       end
 
-      # @return [StorageListener]
-      def storage_listener
-        @storage_listener
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def delete_aggregate(aggregate)
+        save_aggregate aggregate
+      end
+
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def save_aggregate(aggregate)
+        if aggregate.version and !@lock_manager.validate_lock aggregate
+          raise Repository::ConflictingModificationError
+        end
+
+        stream = aggregate.uncommitted_events
+        @stream_decorators.reverse_each do |decorator|
+          stream = decorator.decorate_for_append type_identifier, aggregate, stream
+        end
+
+        @event_store.append_events type_identifier, stream
+        aggregate.mark_committed
       end
 
       # @return [String]

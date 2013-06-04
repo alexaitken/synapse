@@ -34,7 +34,7 @@ module Synapse
       # This unit of work adds an event listener to the aggregate so that any events generated
       # are published to the given event bus when this unit of work is committed.
       #
-      # The provided storage listener is used to commit the aggregate to its respective
+      # The provided storage callback is used to commit the aggregate to its respective
       # underlying storage mechanism.
       #
       # If there is already an aggregate registered with this unit of work of the same type
@@ -42,23 +42,22 @@ module Synapse
       # aggregate.
       #
       # @api public
+      # @yield [AggregateRoot] Deferred until the aggregate is stored
       # @param [AggregateRoot] aggregate
       # @param [EventBus] event_bus
-      # @param [StorageListener] storage_listener
+      # @param [Proc] storage_callback
       # @return [AggregateRoot]
-      def register_aggregate(aggregate, event_bus, storage_listener)
+      def register_aggregate(aggregate, event_bus, &storage_callback)
         similar = find_similar_aggregate aggregate
-        if similar
-          return similar
+        return similar if similar
+
+        aggregate.add_registration_listener do |event|
+          publish_event event, event_bus
         end
 
-        aggregate.tap do
-          aggregate.add_registration_listener do |event|
-            publish_event event, event_bus
-          end
+        @aggregates.store aggregate, storage_callback
 
-          @aggregates.store aggregate, storage_listener
-        end
+        aggregate
       end
 
       # Buffers an event for publication to the given event bus until this unit of work is
@@ -146,8 +145,8 @@ module Synapse
 
       # @return [undefined]
       def store_aggregates
-        @aggregates.each_pair do |aggregate, storage_listener|
-          storage_listener.store aggregate
+        @aggregates.each_pair do |aggregate, storage_callback|
+          storage_callback.call aggregate
         end
         @aggregates.clear
       end

@@ -225,7 +225,7 @@ module Synapse
       def stop
         @started = false
       end
-    end
+    end # NestableUnitOfWork
 
     # Listener that allows a nested unit of work to properly operate within in a unit of
     # work that is not aware of nesting
@@ -264,6 +264,6 @@ module Synapse
       def on_cleanup(outer_unit)
         @inner_unit.perform_cleanup
       end
-    end # NestableUnitOfWork
+    end # OuterCommitUnitOfWorkListener
   end # UnitOfWork
 end

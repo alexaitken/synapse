@@ -6,16 +6,13 @@ module Synapse
       def setup
         @event_bus = Object.new
         @lock_manager = Object.new
-        @storage_listener = Object.new
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
 
         @unit = UnitOfWork::UnitOfWork.new @unit_provider
         @unit.start
 
-        # I herd you like dependencies
         @repository = TestRepository.new @lock_manager
         @repository.event_bus = @event_bus
-        @repository.storage_listener = @storage_listener
         @repository.unit_provider = @unit_provider
       end
 
@@ -24,8 +21,6 @@ module Synapse
         mock(@lock_manager).release_lock(123)
 
         aggregate = TestAggregateRoot.new 123, nil
-
-        mock(@storage_listener).store(aggregate)
 
         @repository.add aggregate
         @unit.commit
@@ -75,7 +70,7 @@ module Synapse
     end
 
     class TestRepository < LockingRepository
-      attr_accessor :aggregate, :storage_listener
+      attr_accessor :aggregate
 
     protected
 
@@ -91,10 +86,6 @@ module Synapse
 
       def aggregate_type
         TestAggregateRoot
-      end
-
-      def storage_listener
-        @storage_listener
       end
     end
   end

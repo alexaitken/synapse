@@ -14,9 +14,7 @@ module Synapse
       # @return [undefined]
       def initialize(lock_manager, aggregate_type)
         super lock_manager
-
         @aggregate_type = aggregate_type
-        @storage_listener = SimpleStorageListener.new
       end
 
     protected
@@ -29,7 +27,7 @@ module Synapse
       # @param [Integer] expected_version
       # @return [AggregateRoot]
       def perform_load(aggregate_id, expected_version)
-        # Most ORMs that I can think of use #find like this -- no need for orm_adapter or anything 
+        # Most ORMs that I can think of use #find like this -- no need for orm_adapter or anything
         # crazy like that
         aggregate = @aggregate_type.find aggregate_id
         aggregate.tap do
@@ -46,24 +44,17 @@ module Synapse
         @aggregate_type
       end
 
-      # @return [StorageListener]
-      def storage_listener
-        @storage_listener
-      end
-    end # SimpleRepository
-
-    # Storage listener that simply calls #save on the aggregate, unless it has been marked for 
-    # deletion. In that case, then the #destroy method is called instead.
-    class SimpleStorageListener < UnitOfWork::StorageListener
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def store(aggregate)
-        if aggregate.deleted?
-          aggregate.destroy
-        else
-          aggregate.save
-        end
+      def delete_aggregate(aggregate)
+        aggregate.destroy
       end
-    end # SimpleStorageListener
+
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def save_aggregate(aggregate)
+        aggregate.save
+      end
+    end # SimpleRepository
   end # Repository
 end

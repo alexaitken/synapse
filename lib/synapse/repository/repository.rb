@@ -48,11 +48,19 @@ module Synapse
       # @return [Class]
       def aggregate_type; end
 
-      # Returns the listener that handles aggregate storage
+      # Deletes the given aggregate from the underlying storage mechanism
       #
       # @abstract
-      # @return [StorageListener]
-      def storage_listener; end
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def delete_aggregate(aggregate); end
+
+      # Saves the given aggregate using the underlying storage mechanism
+      #
+      # @abstract
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def save_aggregate(aggregate); end
 
       # Asserts that an aggregate being added is compatible with this repository and is newly
       # created
@@ -89,7 +97,13 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def register_aggregate(aggregate)
-        current_unit.register_aggregate aggregate, @event_bus, storage_listener
+        current_unit.register_aggregate aggregate, @event_bus do |aggregate|
+          if aggregate.deleted?
+            delete_aggregate aggregate
+          else
+            save_aggregate aggregate
+          end
+        end
       end
 
       # Registers the given unit of work listener with the current unit of work
