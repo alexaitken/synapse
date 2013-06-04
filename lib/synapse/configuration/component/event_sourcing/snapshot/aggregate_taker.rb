@@ -3,10 +3,10 @@ module Synapse
     # Definition builder used to create aggregate snapshot takers
     #
     # @example The minimum possible effort to build an aggregate snapshot taker
-    #   aggregate_snapshot_taker
+    #   snapshot_taker
     #
     # @example Build an aggregate snapshot taker using an alternate event store and factory tag
-    #   aggregate_snapshot_taker :alt_snapshot_taker do
+    #   snapshot_taker :alt_snapshot_taker do
     #     use_aggregate_factory_tag :alt_factory_tag
     #     use_event_store :alt_event_store
     #   end
@@ -40,8 +40,8 @@ module Synapse
         use_event_store :event_store
 
         use_factory do
-          event_store = resolve @event_store
-          snapshot_taker = EventSourcing::AggregateSnapshotTaker.new event_store
+          snapshot_taker = EventSourcing::AggregateSnapshotTaker.new
+          snapshot_taker.event_store = resolve @event_store
 
           with_tagged @aggregate_factory_tag do |factory|
             snapshot_taker.register_factory factory

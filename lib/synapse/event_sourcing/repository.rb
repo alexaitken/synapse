@@ -33,14 +33,6 @@ module Synapse
         @stream_decorators = Array.new
       end
 
-      # Appends a stream decorator onto the end of the list of stream decorators
-      #
-      # @param [EventStreamDecorator] stream_decorator
-      # @return [undefined]
-      def add_stream_decorator(stream_decorator)
-        @stream_decorators.push stream_decorator
-      end
-
     protected
 
       # @raise [AggregateNotFoundError]

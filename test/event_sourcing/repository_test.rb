@@ -90,7 +90,8 @@ module Synapse
 
       should 'register a snapshot listener if a policy and taker are set' do
         @repository.snapshot_policy = IntervalSnapshotPolicy.new 30
-        @repository.snapshot_taker = AggregateSnapshotTaker.new @event_store
+        @repository.snapshot_taker = AggregateSnapshotTaker.new
+        @repository.snapshot_taker.event_store = @event_store
 
         mock(@unit).register_listener(anything)
         mock(@unit).register_listener(is_a(SnapshotUnitOfWorkListener))

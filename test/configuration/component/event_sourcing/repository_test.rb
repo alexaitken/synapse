@@ -44,7 +44,7 @@ module Synapse
           Object.new
         end
 
-        @builder.aggregate_snapshot_taker
+        @builder.snapshot_taker
         @builder.interval_snapshot_policy
 
         @builder.factory :conflict_resolver do
