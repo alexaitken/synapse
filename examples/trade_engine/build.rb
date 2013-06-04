@@ -15,10 +15,7 @@ Synapse.build do
     use_client Mongo::MongoClient.new
   end
 
-  aggregate_snapshot_taker :delegate_snapshot_taker
-  deferred_snapshot_taker do
-    use_snapshot_taker :delegate_snapshot_taker
-  end
+  snapshot_taker
   interval_snapshot_policy do
     use_threshold 50
   end
