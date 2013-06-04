@@ -27,7 +27,11 @@ time = Benchmark.realtime do
     orderbook_identifiers.push orderbook_id
 
     command = TradeEngine::CreateOrderBookCommand.new orderbook_id
-    gateway.send_and_wait command
+    gateway.send command
+  end
+
+  until command_bus.thread_pool.backlog == 0
+    sleep 1
   end
 
   n.times do

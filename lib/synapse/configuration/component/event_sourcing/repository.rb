@@ -46,6 +46,18 @@ module Synapse
         @aggregate_factory = aggregate_factory
       end
 
+      # Changes the cache store that will be used to cache aggregates
+      #
+      # Note that if this is set, a caching implementation of the repository will be used in place
+      # of the non-caching implementation
+      #
+      # @see ActiveSupport::Cache::Store
+      # @param [Symbol] cache
+      # @return [undefined]
+      def use_cache(cache)
+        @cache = cache
+      end
+
       # @see EventSourcing::ConflictResolver
       # @param [Symbol] conflict_resolver
       # @return [undefined]
@@ -86,11 +98,16 @@ module Synapse
         use_snapshot_taker :snapshot_taker
 
         use_factory do
-          aggregate_factory = resolve @aggregate_factory
+          factory = resolve @aggregate_factory
           event_store = resolve @event_store
           lock_manager = build_lock_manager
 
-          repository = EventSourcing::EventSourcingRepository.new aggregate_factory, event_store, lock_manager
+          if @cache
+            repository = EventSourcing::CachingEventSourcingRepository.new factory, event_store, lock_manager
+            repository.cache = resolve @cache
+          else
+            repository = EventSourcing::EventSourcingRepository.new factory, event_store, lock_manager
+          end
 
           # Optional dependencies
           repository.conflict_resolver = resolve @conflict_resolver, true

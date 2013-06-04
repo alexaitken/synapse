@@ -20,8 +20,13 @@ Synapse.build do
     use_threshold 50
   end
 
+  factory :es_cache do
+    ActiveSupport::Cache::MemoryStore.new
+  end
+
   es_repository :orderbook_repository do
     use_aggregate_type TradeEngine::OrderBook
+    use_cache :es_cache
   end
 
   factory :orderbook_command_handler, :tag => :command_handler do

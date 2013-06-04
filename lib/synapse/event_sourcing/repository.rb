@@ -83,11 +83,6 @@ module Synapse
         end
       end
 
-      # @return [Class]
-      def aggregate_type
-        @aggregate_factory.aggregate_type
-      end
-
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def delete_aggregate(aggregate)
@@ -108,6 +103,11 @@ module Synapse
 
         @event_store.append_events type_identifier, stream
         aggregate.mark_committed
+      end
+
+      # @return [Class]
+      def aggregate_type
+        @aggregate_factory.aggregate_type
       end
 
       # @return [String]
