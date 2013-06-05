@@ -13,7 +13,7 @@ module Synapse
       def convert_content(original)
         JSON.parse original, @options
       end
-    end
+    end # JsonToObjectConverter
 
     # Converter that converts a Ruby data structure into a JSON string
     class ObjectToJsonConverter
@@ -26,6 +26,6 @@ module Synapse
       def convert_content(original)
         JSON.generate original, @options
       end
-    end
-  end
+    end # ObjectToJsonConverter
+  end # Serialization
 end

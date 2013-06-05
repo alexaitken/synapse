@@ -12,7 +12,7 @@ module Synapse
     class CommandMessageBuilder < MessageBuilder
       # @return [CommandMessage]
       def build
-        CommandMessage.new @id, @metadata, @payload
+        CommandMessage.new @id, @metadata, @payload, @timestamp
       end
     end
   end

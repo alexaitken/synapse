@@ -8,6 +8,6 @@ module Synapse
       def initialize(content, content_type)
         super(content, content_type, SerializedType.new(Hash.to_s, nil))
       end
-    end
-  end
+    end # SerializedMetadata
+  end # Serialization
 end

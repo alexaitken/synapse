@@ -13,14 +13,19 @@ module Synapse
       # @return [LazyObject]
       attr_reader :serialized_payload
 
+      # @return [Time]
+      attr_reader :timestamp
+
       # @param [String] id
       # @param [LazyObject] metadata
       # @param [LazyObject] payload
+      # @param [Time] timestamp
       # @return [undefined]
-      def initialize(id, metadata, payload)
+      def initialize(id, metadata, payload, timestamp)
         @id = id
         @serialized_metadata = metadata
         @serialized_payload = payload
+        @timestamp = timestamp
       end
 
       # @return [Hash] The deserialized metadata for this message
@@ -106,6 +111,7 @@ module Synapse
         builder.id = @id
         builder.metadata = DeserializedObject.new metadata
         builder.payload = @serialized_payload
+        builder.timestamp = @timestamp
       end
 
     private
@@ -126,32 +132,9 @@ module Synapse
 
     # Serialized representation of an event message
     class SerializedEventMessage < SerializedMessage
-      # @return [Time]
-      attr_reader :timestamp
-
-      # @param [String] id
-      # @param [LazyObject] metadata
-      # @param [LazyObject] payload
-      # @param [Time] timestamp
-      # @return [undefined]
-      def initialize(id, metadata, payload, timestamp)
-        super id, metadata, payload
-        @timestamp = timestamp
-      end
-
       # @return [Class]
       def self.builder
         SerializedEventMessageBuilder
-      end
-
-    protected
-
-      # @param [SerializedEventMessageBuilder] builder
-      # @param [Hash] metadata
-      # @return [undefined]
-      def build_duplicate(builder, metadata)
-        super
-        builder.timestamp = @timestamp
       end
     end # SerializedEventMessage
 

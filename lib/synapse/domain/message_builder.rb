@@ -2,18 +2,9 @@ module Synapse
   module Domain
     # Message builder capable of producing EventMessage instances
     class EventMessageBuilder < MessageBuilder
-      # @return [Time]
-      attr_accessor :timestamp
-
       # @return [EventMessage]
       def build
         EventMessage.new @id, @metadata, @payload, @timestamp
-      end
-
-      # @return [undefined]
-      def populate_defaults
-        super
-        @timestamp ||= Time.now
       end
     end
 

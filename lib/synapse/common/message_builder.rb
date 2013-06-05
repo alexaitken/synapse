@@ -10,6 +10,9 @@ module Synapse
     # @return [Object]
     attr_accessor :payload
 
+    # @return [Time]
+    attr_accessor :timestamp
+
     # Convenience method that yields a new builder, populates defaults and returns the newly
     # built message instance
     #
@@ -26,13 +29,14 @@ module Synapse
 
     # @return [Message]
     def build
-      Message.new @id, @metadata, @payload
+      Message.new @id, @metadata, @payload, @timestamp
     end
 
     # @return [undefined]
     def populate_defaults
       @id ||= IdentifierFactory.instance.generate
       @metadata ||= Hash.new
+      @timestamp ||= Time.now
     end
   end
 end

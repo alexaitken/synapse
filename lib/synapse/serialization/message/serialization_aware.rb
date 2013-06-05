@@ -12,6 +12,6 @@ module Synapse
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize_payload(serializer, expected_type); end
-    end
-  end
+    end # SerializationAware
+  end # Serialization
 end

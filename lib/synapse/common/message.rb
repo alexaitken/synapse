@@ -22,14 +22,20 @@ module Synapse
     # @return [Object]
     attr_reader :payload
 
+    # Timestamp recorded when the message was created
+    # @return [Time]
+    attr_reader :timestamp
+
     # @param [String] id
     # @param [Hash] metadata
     # @param [Object] payload
+    # @param [Time] timestamp
     # @return [undefined]
-    def initialize(id, metadata, payload)
+    def initialize(id, metadata, payload, timestamp)
       @id = id
       @metadata = metadata
       @payload = payload
+      @timestamp = timestamp
 
       @metadata.freeze
     end
@@ -88,7 +94,7 @@ module Synapse
     # @yield [MessageBuilder]
     # @return [Message]
     def self.build(&block)
-      builder.build(&block)
+      builder.build &block
     end
 
     # Returns the type of builder that can be used to build this type of message
@@ -108,6 +114,7 @@ module Synapse
       builder.id = @id
       builder.metadata = metadata
       builder.payload = @payload
+      builder.timestamp = @timestamp
     end
   end
 end

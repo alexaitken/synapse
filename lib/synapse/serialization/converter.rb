@@ -34,6 +34,6 @@ module Synapse
       # @param [Object] original
       # @return [Object]
       def convert_content(original); end
-    end
-  end
+    end # Converter
+  end # Serialization
 end

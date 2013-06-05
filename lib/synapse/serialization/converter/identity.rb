@@ -24,6 +24,6 @@ module Synapse
       def convert_content(original)
         original
       end
-    end
-  end
+    end # IdentityConverter
+  end # Serialization
 end

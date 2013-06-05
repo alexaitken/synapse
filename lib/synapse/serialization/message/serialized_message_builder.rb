@@ -11,6 +11,9 @@ module Synapse
       # @return [LazyObject]
       attr_accessor :payload
 
+      # @return [Time]
+      attr_accessor :timestamp
+
       def self.build
         builder = self.new
 
@@ -20,15 +23,12 @@ module Synapse
       end
 
       def build
-        SerializedMessage.new @id, @metadata, @payload
+        SerializedMessage.new @id, @metadata, @payload, @timestamp
       end
     end # SerializedMessageBuilder
 
     # Message builder capable of producing SerializedEventMessage instances
     class SerializedEventMessageBuilder < SerializedMessageBuilder
-      # @return [Time]
-      attr_accessor :timestamp
-
       # @return [SerializedEventMessage]
       def build
         SerializedEventMessage.new @id, @metadata, @payload, @timestamp
