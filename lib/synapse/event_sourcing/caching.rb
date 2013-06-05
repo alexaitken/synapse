@@ -38,21 +38,9 @@ module Synapse
 
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def delete_aggregate(aggregate)
-        @cache.delete aggregate.id
-        super aggregate
-      end
-
-      # @param [AggregateRoot] aggregate
-      # @return [undefined]
       def save_aggregate(aggregate)
-        begin
-          super aggregate
-          @cache.write aggregate.id, aggregate
-        rescue
-          @cache.delete aggregate.id
-          raise
-        end
+        super aggregate
+        @cache.write aggregate.id, aggregate
       end
     end # CachingEventSourcingRepository
 
