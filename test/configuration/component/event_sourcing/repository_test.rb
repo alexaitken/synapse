@@ -66,6 +66,29 @@ module Synapse
         assert_same snapshot_taker, repository.snapshot_taker
       end
 
+      should 'build caching repository if cache is set' do
+        @builder.simple_event_bus
+        @builder.factory :event_store do
+          Object.new
+        end
+
+        @builder.factory :cache do
+          Object.new
+        end
+
+        @builder.es_repository :account_repository do
+          use_aggregate_type Object
+          use_cache :cache
+        end
+
+        repository = @container.resolve :account_repository
+
+        cache = @container.resolve :cache
+
+        assert_instance_of EventSourcing::CachingEventSourcingRepository, repository
+        assert_same cache, repository.cache
+      end
+
     end
   end
 end
