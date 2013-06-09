@@ -1,6 +1,6 @@
 module Synapse
   module Configuration
-    # Mixin for an object defines its dependencies so that they can be auto-injected by the 
+    # Mixin for an object defines its dependencies so that they can be auto-injected by the
     # service container after it has been instantiated
     #
     # Note that this only supports setter injection
@@ -20,7 +20,7 @@ module Synapse
         def depends_on(service, *args)
           options = args.extract_options!
 
-          attribute = options[:attribute] || service
+          attribute = options[:as] || service
           attr_accessor attribute
 
           self.dependencies[service] = attribute
