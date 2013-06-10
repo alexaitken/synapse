@@ -10,6 +10,9 @@ group :test do
   # Test doubles
   gem 'rr'
   gem 'timecop'
+
+  # Used for Railtie integration testing
+  gem 'rails', '~> 3.2.13'
 end
 
 group :development do

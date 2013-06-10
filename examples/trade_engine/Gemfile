@@ -1,23 +1,22 @@
 source 'https://rubygems.org'
 
 # Use local clones if possible.
-# If you want to use your local copy, just symlink it to vendor.
-# From https://github.com/ruby-amqp/amqp
+# If you want to use your local copy, just symlink it to vendor
 def custom_gem(name, options = Hash.new)
   local_path = File.expand_path "../vendor/#{name}", __FILE__
 
   if File.exist? local_path
     options = options.merge :path => local_path
     options.delete_if do |key, _|
-      [:git, :branch].include? key
+      [:github, :branch].include? key
     end
   end
 
   gem name, options
 end
 
-custom_gem 'synapse-core', :git => 'git://github.com/ianunruh/synapse.git', :branch => :master
-custom_gem 'synapse-mongo', :git => 'git://github.com/ianunruh/synapse-mongo.git', :branch => :master
+custom_gem 'synapse-core', :github => 'ianunruh/synapse', :branch => :master
+custom_gem 'synapse-mongo', :github => 'ianunruh/synapse-mongo', :branch => :master
 
 gem 'activemodel'
 gem 'bson_ext', :platform => :ruby
