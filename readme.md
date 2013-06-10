@@ -20,22 +20,30 @@ gem 'synapse-core'
 gem 'synapse-mongo'
 
 # Or if you're feeling edgy
-gem 'synapse-core', :git => 'git://github.com/ianunruh/synapse.git', :branch => :master
-gem 'synapse-mongo', :git => 'git://github.com/ianunruh/synapse-mongo.git', :branch => :master
+gem 'synapse-core', :github => 'ianunruh/synapse', :branch => :master
+gem 'synapse-mongo', :github => 'ianunruh/synapse-mongo', :branch => :master
 ```
 
 You can define your commands and events using plain old Ruby objects.
 
 ```ruby
 class CreateAccount
-  attr_reader :id, :name
+  attr_reader :account_id, :name
   def initialize(id, name)
-    @id = id
+    @account_id = id
     @name = name
   end
 end
 
+class RenameAccount
+  # ...
+end
+
 class AccountCreated
+  # ...
+end
+
+class AccountRenamed
   # ...
 end
 ```
@@ -50,9 +58,17 @@ class Account
     apply AccountCreated.new id, name
   end
 
+  def rename(name)
+    apply AccountRenamed.new id, name
+  end
+
   map_event AccountCreated do |event|
     @id = event.id
     @name = event.name
+  end
+
+  map_event AccountRenamed do |event|
+    @name = event.new_name
   end
 end
 ```
@@ -64,11 +80,16 @@ class AccountCommandHandler
   include Synapse::Command::MappingCommandHandler
   include Synapse::Configuration::Dependent
 
-  depends_on :account_repository
+  depends_on :account_repository, :as => :repository
 
   map_command CreateAccount do |command|
     account = Account.new command.id, command.name
-    @account_repository.add account
+    @repository.add account
+  end
+
+  map_command RenameAccount do |command|
+    account = @repository.load command.account_id
+    account.rename command.new_name
   end
 end
 ```
@@ -76,16 +97,7 @@ end
 Setup the necessary services
 
 ```ruby
-Synapse.build do
-  simple_event_bus
-
-  unit_factory
-  simple_command_bus
-  gateway
-
-  converter_factory
-  serializer
-
+Synapse.build_with_defaults do
   mongo_event_store do
     use_client Mongo::MongoClient.new
   end
@@ -106,11 +118,15 @@ end
 aaaaaand you're done!
 
 ```ruby
-command = CreateAccount.new 123, 'Checking'
+class AccountController < ApplicationController
+  # oooo shiny
+  depends_on :gateway
 
-# This could be done in a Rails controller or Sinatra
-gateway = Synapse.container[:gateway]
-gateway.send command
+  def create
+    command = CreateAccount.new 123, 'Checking'
+    @gateway.send command
+  end
+end
 ```
 
 ## Features
