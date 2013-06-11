@@ -8,6 +8,8 @@ else
   end
 end
 
+require 'bundler/setup'
+
 require 'pp'
 require 'synapse'
 require 'test/unit'

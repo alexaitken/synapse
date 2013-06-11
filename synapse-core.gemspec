@@ -1,6 +1,4 @@
-$:.push File.expand_path '../lib', __FILE__
-
-require 'synapse/version'
+require File.expand_path '../lib/synapse/version', __FILE__
 
 Gem::Specification.new do |s|
   s.name = 'synapse-core'
