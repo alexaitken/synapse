@@ -40,7 +40,7 @@ module Synapse
       end
 
       should 'build with OxSerializer' do
-        skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
+        omit 'Ox not supported on JRuby' if defined? JRUBY_VERSION
 
         serialize_options = { :circular => true }
 
@@ -56,7 +56,7 @@ module Synapse
       end
 
       should 'build with OjSerializer' do
-        skip 'Oj not supported on JRuby' if defined? JRUBY_VERSION
+        omit 'Oj not supported on JRuby' if defined? JRUBY_VERSION
 
         serialize_options = { :indent => 2, :circular => true }
         deserialize_options = { :symbol_keys => true }

@@ -6,7 +6,7 @@ module Synapse
 
     class OxSerializerTest < Test::Unit::TestCase
       def setup
-        skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
+        omit 'Ox not supported on JRuby' if defined? JRUBY_VERSION
 
         @serializer = OxSerializer.new ConverterFactory.new
       end

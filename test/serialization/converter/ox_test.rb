@@ -4,7 +4,7 @@ module Synapse
   module Serialization
     class OxDocumentToXmlConverterTest < Test::Unit::TestCase
       def setup
-        skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
+        omit 'Ox not supported on JRuby' if defined? JRUBY_VERSION
       end
 
       should 'convert an Ox document to an XML string' do
@@ -22,7 +22,7 @@ module Synapse
 
     class XmlToOxDocumentConverterTest < Test::Unit::TestCase
       def setup
-        skip 'Ox not supported on JRuby' if defined? JRUBY_VERSION
+        omit 'Ox not supported on JRuby' if defined? JRUBY_VERSION
       end
 
       should 'convert an XML string to an Ox document' do

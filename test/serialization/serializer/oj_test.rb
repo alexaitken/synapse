@@ -6,7 +6,7 @@ module Synapse
 
     class OjSerializerTest < Test::Unit::TestCase
       def setup
-        skip 'Oj not supported on JRuby' if defined? JRUBY_VERSION
+        omit 'Oj not supported on JRuby' if defined? JRUBY_VERSION
       end
 
       should 'support serializing and deserializing content' do
