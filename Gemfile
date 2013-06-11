@@ -3,15 +3,17 @@ source 'https://rubygems.org'
 gem 'contender', :github => 'ianunruh/contender', :branch => :master
 
 group :test do
-  gem 'test-unit-rr'
-  gem 'shoulda-context'
-
   # Code coverage utilities
   gem 'coveralls'
   gem 'simplecov'
 
+  gem 'test-unit'
+  # Temporary fix for lack of MiniTest
+  gem 'shoulda-context', :github => 'thoughtbot/shoulda-context', :branch => :master
+
   # Test doubles
   gem 'rr'
+  gem 'test-unit-rr'
   gem 'timecop'
 
   # Used for Railtie integration testing
