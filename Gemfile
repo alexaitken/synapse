@@ -15,7 +15,8 @@ group :test do
   gem 'timecop'
 
   # Used for Railtie integration testing
-  gem 'rails', '~> 3.2.13'
+  gem 'railties', '~> 3.2'
+  gem 'actionpack', '~> 3.2'
 end
 
 group :development do
