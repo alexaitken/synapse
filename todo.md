@@ -6,15 +6,9 @@
 
 ## AxonFramework functionality
 
-+ ~~Auditing component~~
 + Command bus
-  + ~~DSL for defining and subscribing command handlers to command types~~
-  + ~~Command validation (ActiveModel)~~
-  + ~~Asynchronous command bus~~
-  + Instrumentation for command buses
-  + ~~Command gateway~~
+  + Instrumentation for command buses (Graphite, Ganglia, etc.)
   + Abstraction of aggregate load/store (plus aggregate target DSL)
-  + ~~Rollback policies~~
 + Event handling
   + Listener groups and group bus
   + Asynchronous event bus
@@ -23,7 +17,6 @@
   + Event replay framework
   + Event scheduling framework (Quartz-like)
 + Event sourcing
-  + Caching repository
   + Hybrid ES repository
 + Event store
   + Management
@@ -34,21 +27,17 @@
 
 ## Integration
 
-+ Mongo
-  + ~~Event store~~
-  + ~~Process repository~~
 + Sequel
   + Event store
   + Process repository
 
 ## Lokad.CQRS functionality
 
-+ ~~Message de-duplication~~
 + Engine processes
 + Message quarantine
 + Partitioning
   + Queue reader/writer abstraction
-  + JSON/BSON/MsgPack message packing
+  + JSON, BSON, MsgPack message packing
   + In-memory queue
   + AMQP queue
   + Redis queue
