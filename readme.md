@@ -131,17 +131,20 @@ end
 
 ## Features
 
-- Mixins for aggregate members (root and member entities)
-- Separation of events and commands
-- Event store (backed by MongoDB)
-- Snapshot support
-- Conflict detection support
-- Event upcasting
+- Event sourced aggregates
+  - DSL for specifying event handlers and aggregate members
+  - Event store backed by MongoDB
+  - Aggregate snapshot support
+  - Conflict resolution with optimistic locking
+- Non-event sourced aggregates
+  - Supports persistence using ActiveRecord, MongoMapper, DataMapper, Mongoid, etc.
+- DSL for easy mapping of event and command handlers
 - Command validation (using ActiveModel)
 - Simple object serialization
-- DSL for easy mapping of event and command handlers
+  - Ox, Oj and Marshal
+  - Attribute-based serialization to JSON/XML
+  - Deprecated events can be loaded and upcast into new formats
 - Process manager framework (also known as Saga management)
-- Repository for non-event sourced aggregates (MongoMapper and ActiveRecord)
 
 ## Compatibility
 
@@ -154,6 +157,7 @@ Synapse is tested and developed on several different runtimes, including:
 
 ## Coming soon
 - Event store using Sequel
-- Distributed command and event buses (engine partitioning)
+- Distributed command and event buses (partitioning)
+- Aggregate command handlers
 - Event replay and projection framework
 - Event scheduling
