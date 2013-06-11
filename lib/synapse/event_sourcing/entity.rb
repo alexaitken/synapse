@@ -59,6 +59,6 @@ module Synapse
 
         @aggregate_root.handle_member_event payload, metadata
       end
-    end
-  end
+    end # Entity
+  end # EventSourcing
 end

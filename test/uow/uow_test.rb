@@ -159,8 +159,8 @@ module Synapse
 
       should 'rollback if an aggregate storage callback raises an exception' do
         aggregate_root = Object.new
-        mock(aggregate_root).add_registration_listener
-        mock(aggregate_root).id
+        stub(aggregate_root).add_registration_listener
+        stub(aggregate_root).id
 
         event_bus = Object.new
         cause = TestError.new

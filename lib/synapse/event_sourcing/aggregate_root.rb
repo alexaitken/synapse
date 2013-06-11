@@ -119,6 +119,6 @@ module Synapse
           entity.handle_aggregate_event event
         end
       end
-    end
-  end
+    end # AggregateRoot
+  end # EventSourcing
 end

@@ -10,12 +10,12 @@ module Synapse
       # @return [SnapshotEventStore]
       attr_accessor :event_store
 
-      # @return [Executor]
+      # @return [Contender::Executor]
       attr_accessor :executor
 
       # @return [undefined]
       def initialize
-        @executor = DirectExecutor.new
+        @executor = Contender::DirectExecutor.new
       end
 
       # Schedules a snapshot to be taken for an aggregate of the given type and with the given

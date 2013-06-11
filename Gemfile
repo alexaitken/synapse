@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 
+gem 'contender', :github => 'ianunruh/contender', :branch => :master
+
 group :test do
+  gem 'test-unit-rr'
   gem 'shoulda-context'
 
   # Code coverage utilities
