@@ -8,6 +8,9 @@ else
   end
 end
 
+# Need this for Contender, since we get it from GitHub for now
+require 'bundler/setup'
+
 require 'synapse'
 
 require 'pp'
