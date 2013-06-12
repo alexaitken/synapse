@@ -22,10 +22,7 @@ module Synapse
       # @param [UnitOfWorkListener] listener
       # @return [undefined]
       def push(listener)
-        if @logger.debug?
-          @logger.debug 'Registering listener [%s]' % listener.class
-        end
-
+        @logger.debug 'Registering listener [%s]' % listener.class
         @listeners.push listener
       end
 
@@ -34,17 +31,10 @@ module Synapse
       # @param [UnitOfWork] unit
       # @return [undefined]
       def on_start(unit)
-        @logger.debug 'Notifying listeners that unit of work is starting'
-
         @listeners.each do |listener|
-          if @logger.debug?
-            @logger.debug 'Notifying [%s] of start' % listener.class
-          end
-
+          @logger.debug 'Notifying [%s] of start' % listener.class
           listener.on_start unit
         end
-
-        @logger.debug 'Listeners successfully notified'
       end
 
       # @param [UnitOfWork] unit
@@ -63,78 +53,46 @@ module Synapse
       # @param [Hash<EventBus, Array>] events
       # @return [undefined]
       def on_prepare_commit(unit, aggregates, events)
-        @logger.debug 'Notifying listeners that commit was requested'
-
         @listeners.each do |listener|
-          if @logger.debug?
-            @logger.debug 'Notifying [%s] of commit' % listener.class
-          end
-
+          @logger.debug 'Notifying [%s] of commit' % listener.class
           listener.on_prepare_commit unit, aggregates, events
         end
-
-        @logger.debug 'Listeners successfully notified'
       end
 
       # @param [UnitOfWork] unit
       # @param [Object] transaction
       # @return [undefined]
       def on_prepare_transaction_commit(unit, transaction)
-        @logger.debug 'Notifying listeners that transactional commit was requested'
-
         @listeners.each do |listener|
-          if @logger.debug?
-            @logger.debug 'Notifying [%s] of transactional commit' % listener.class
-          end
-
+          @logger.debug 'Notifying [%s] of transactional commit' % listener.class
           listener.on_prepare_transaction_commit unit, transaction
         end
-
-        @logger.debug 'Listeners successfully notified'
       end
 
       # @param [UnitOfWork] unit
       # @return [undefined]
       def after_commit(unit)
-        @logger.debug 'Notifying listeners that commit has finished'
-
         @listeners.reverse_each do |listener|
-          if @logger.debug?
-            @logger.debug 'Notifying [%s] of finished commit' % listener.class
-          end
-
+          @logger.debug 'Notifying [%s] of finished commit' % listener.class
           listener.after_commit unit
         end
-
-        @logger.debug 'Listeners successfully notified'
       end
 
       # @param [UnitOfWork] unit
       # @param [Error] cause
       # @return [undefined]
       def on_rollback(unit, cause = nil)
-        @logger.debug 'Notifying listeners of rollback'
-
         @listeners.reverse_each do |listener|
-          if @logger.debug?
-            @logger.debug 'Notifying [%s] of rollback' % listener.class
-          end
-
+          @logger.debug 'Notifying [%s] of rollback' % listener.class
           listener.on_rollback unit, cause
         end
-
-        @logger.debug 'Listeners successfully notified'
       end
 
       # @param [UnitOfWork] unit
       # @return [undefined]
       def on_cleanup(unit)
-        @logger.debug 'Notifying listeners of cleanup'
-
         @listeners.reverse_each do |listener|
-          if @logger.debug?
-            @logger.debug 'Notifying [%s] of cleanup' % listener.class
-          end
+          @logger.debug 'Notifying [%s] of cleanup' % listener.class
 
           begin
             listener.on_cleanup unit
@@ -143,8 +101,6 @@ module Synapse
             @logger.warn 'Listener raised an exception during cleanup: %s' % exception.inspect
           end
         end
-
-        @logger.debug 'Listeners successfully notified'
       end
     end # UnitOfWorkListenerCollection
   end # UnitOfWork

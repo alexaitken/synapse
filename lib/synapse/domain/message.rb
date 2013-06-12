@@ -53,6 +53,6 @@ module Synapse
         builder.aggregate_id = @aggregate_id
         builder.sequence_number = @sequence_number
       end
-    end
-  end
+    end # DomainEventMessage
+  end # Domain
 end

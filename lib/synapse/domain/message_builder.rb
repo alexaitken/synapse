@@ -20,6 +20,6 @@ module Synapse
       def build
         DomainEventMessage.new @id, @metadata, @payload, @timestamp, @aggregate_id, @sequence_number
       end
-    end
-  end
+    end # DomainEventMessageBuilder
+  end # Domain
 end

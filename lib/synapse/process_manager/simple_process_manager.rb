@@ -4,6 +4,7 @@ module Synapse
     class SimpleProcessManager < ProcessManager
       # @return [Array] Types of events that will always result in the creation of a process
       attr_accessor :always_create_events
+
       # @return [Array] Types of events that will result in the creation of a process if one
       #   doesn't already exist
       attr_accessor :optionally_create_events

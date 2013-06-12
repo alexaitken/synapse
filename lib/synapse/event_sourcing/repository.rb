@@ -62,7 +62,7 @@ module Synapse
         aggregate.initialize_from_stream stream
 
         if aggregate.deleted?
-          raise AggregateDeletedError
+          raise AggregateDeletedError.new type_identifier, aggregate_id
         end
 
         if expected_version and @conflict_resolver.nil?
@@ -138,6 +138,13 @@ module Synapse
     end
 
     # Raised when an aggregate has been found but it was marked for deletion
-    class AggregateDeletedError < Repository::AggregateNotFoundError; end
+    class AggregateDeletedError < Repository::AggregateNotFoundError
+      # @param [String] type_identifier
+      # @param [Object] aggregate_id
+      # @return [undefined]
+      def initialize(type_identifier, aggregate_id)
+        super 'Aggregate marked for deletion [%s] [%s]' % [type_identifier, aggregate_id]
+      end
+    end
   end
 end

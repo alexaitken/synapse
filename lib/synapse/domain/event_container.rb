@@ -56,7 +56,7 @@ module Synapse
       # If the listener is added after events have already registered with the container, it will
       # be called with a backlog of events to process.
       #
-      # @param [#call] listener
+      # @param [Proc] listener
       # @return [undefined]
       def add_registration_listener(listener)
         @listeners.push listener
@@ -122,6 +122,6 @@ module Synapse
       def next_sequence_number
         last_sequence_number ? last_sequence_number.next : 0
       end
-    end
-  end
+    end # EventContainer
+  end # Domain
 end

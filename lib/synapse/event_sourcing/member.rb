@@ -2,17 +2,16 @@ module Synapse
   module EventSourcing
     # Base mixin for a member of an aggregate which has its state mutated by events that are
     # applied to the aggregate
+    #
+    # @see AggregateRoot
+    # @see Entity
     module Member
       extend ActiveSupport::Concern
 
       included do
         # @return [Mapper::Mapping]
-        class_attribute :command_mapper
-
-        # @return [Mapper::Mapping]
         class_attribute :event_mapper
 
-        self.command_mapper = Mapping::Mapper.new false
         self.event_mapper = Mapping::Mapper.new true
       end
 
@@ -31,15 +30,6 @@ module Synapse
         # @return [Set]
         def child_entities
           @child_entities ||= Set.new
-        end
-
-        # @see Mapper#map
-        # @param [Class] type
-        # @param [Object...] args
-        # @param [Proc] block
-        # @return [undefined]
-        def map_command(type, *args, &block)
-          commnad_mapper.map type, *args, &block
         end
 
         # @see Mapper#map

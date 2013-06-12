@@ -28,7 +28,7 @@ module Synapse
         if aggregate.nil?
           aggregate = super aggregate_id, expected_version
         elsif aggregate.deleted?
-          raise AggregateDeletedError
+          raise AggregateDeletedError.new type_identifier, aggregate_id
         end
 
         register_listener CacheClearingUnitOfWorkListener.new aggregate_id, @cache

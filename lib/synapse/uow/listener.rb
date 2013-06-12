@@ -74,6 +74,6 @@ module Synapse
       # @param [UnitOfWork] unit
       # @return [undefined]
       def on_cleanup(unit); end
-    end
-  end
+    end # UnitOfWorkListener
+  end # UnitOfWork
 end

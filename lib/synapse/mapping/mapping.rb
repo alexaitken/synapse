@@ -55,6 +55,6 @@ module Synapse
       def hash
         @type.hash
       end
-    end
-  end
+    end # Mapping
+  end # Mapping
 end
