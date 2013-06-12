@@ -8,12 +8,12 @@ else
   end
 end
 
-require 'bundler/setup'
+require 'synapse'
 
 require 'pp'
-require 'synapse'
 require 'test/unit'
 require 'test/unit/rr'
+
 require 'timecop'
 require 'shoulda/context'
 

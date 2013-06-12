@@ -1,4 +1,4 @@
-# Synapse
+![Synapse logo](http://i43.tinypic.com/24269sm.png)
 
 Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 
