@@ -16,20 +16,21 @@ module Synapse
         assert command_bus.is_a? Command::AsynchronousCommandBus
 
         thread_pool = command_bus.thread_pool
-        assert_equal 4, thread_pool.min
-        assert_equal 4, thread_pool.max
+        assert_instance_of Contender::Pool::ThreadPoolExecutor, thread_pool
+        assert thread_pool.active?
+        thread_pool.shutdown
       end
 
-      should 'build with a custom thread pool size' do
+      should 'build with a custom thread pool options' do
         @builder.async_command_bus do
-          use_threads 2, 8
+          use_pool_options size: 4, non_block: true
         end
 
         command_bus = @container.resolve :command_bus
 
         thread_pool = command_bus.thread_pool
-        assert_equal 2, thread_pool.min
-        assert_equal 8, thread_pool.max
+        assert thread_pool.active?
+        thread_pool.shutdown
       end
     end
   end

@@ -23,6 +23,8 @@ On my 2010 MacBook Pro (2.66 GHz Intel Core i7, 8GB DDR3 RAM):
 
   I'm also not sure of the performance of Marshal on JRuby (or MRI for that matter).
 
+- JRuby 1.7.4 w/ busy-spin + warmup + JVM tweaks - 777 commands/sec or 1.3 ms/command
+
 - Rubinius 22c5fbca - 326 commands/ec or 3.1 ms/command
 
   I'm not sure what's going on with rbx-head. I get a ton of concurrency errors due to events with a

@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'support/countdown_latch'
 
 module Synapse
   module Command
@@ -9,14 +8,16 @@ module Synapse
         unit_factory = UnitOfWork::UnitOfWorkFactory.new unit_provider
 
         @bus = AsynchronousCommandBus.new unit_factory
-        @bus.thread_pool = Thread.pool 2
+        @bus.thread_pool = Contender::Pool::ThreadPoolExecutor.new
+        @bus.thread_pool.start
       end
 
       should 'be able to dispatch commands asynchronously using a thread pool' do
         x = 5 # Number of commands to dispatch
 
         command = CommandMessage.as_message TestCommand.new
-        handler = TestAsyncHandler.new x
+        latch = Contender::CountdownLatch.new x
+        handler = TestAsyncHandler.new latch
 
         @bus.subscribe TestCommand, handler
 
@@ -24,23 +25,19 @@ module Synapse
           @bus.dispatch command
         end
 
-        wait_until do
-          handler.latch.count == 0
-        end
+        assert latch.await 5
 
         @bus.shutdown
       end
     end
 
     class TestAsyncHandler
-      attr_reader :latch
-
-      def initialize(x)
-        @latch = CountdownLatch.new x
+      def initialize(latch)
+        @latch = latch
       end
 
       def handle(command, unit)
-        @latch.countdown!
+        @latch.countdown
       end
     end
 

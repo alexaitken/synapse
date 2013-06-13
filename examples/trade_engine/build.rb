@@ -1,6 +1,6 @@
 Synapse.build_with_defaults do
   async_command_bus do
-    use_threads 4
+    use_pool_options size: 4, non_block: true
   end
 
   mongo_event_store do
@@ -9,7 +9,7 @@ Synapse.build_with_defaults do
 
   snapshot_taker
   interval_snapshot_policy do
-    use_threshold 50
+    use_threshold 30
   end
 
   factory :es_cache do

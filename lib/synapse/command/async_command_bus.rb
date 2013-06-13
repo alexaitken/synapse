@@ -1,5 +1,3 @@
-require 'thread/pool'
-
 module Synapse
   module Command
     # Command bus that uses a thread pool to asynchronously execute commands, invoking the given
@@ -7,8 +5,8 @@ module Synapse
     #
     # @todo Look into non-blocking circular buffers or LMAX Disruptor
     class AsynchronousCommandBus < SimpleCommandBus
-      # Pool of dispatching threads backed by a queue
-      # @return [Thread::Pool]
+      # Pool of worker threads that dispatch commands from a queue
+      # @return [Contender::Pool::ThreadPoolExecutor]
       attr_accessor :thread_pool
 
       # @api public
@@ -16,7 +14,7 @@ module Synapse
       # @param [CommandCallback] callback
       # @return [undefined]
       def dispatch_with_callback(command, callback)
-        @thread_pool.process do
+        @thread_pool.execute do
           super command, callback
         end
       end

@@ -1,25 +1,27 @@
 module Synapse
   module Configuration
     # Mixin for a definition builder that creates a service that is backed by a thread pool
+    # @see Contender::Pool::ThreadPoolExecutor For pool options
     module ThreadPoolDefinitionBuilder
       extend ActiveSupport::Concern
 
-      # Sets the upper and lower limits of the size of the thread pool
+      # Sets the options for the thread pool
       #
-      # @param [Integer] min_threads
-      # @param [Integer] max_threads
+      # @param [Hash] pool_options
       # @return [undefined]
-      def use_threads(min_threads, max_threads = nil)
-        @min_threads = min_threads
-        @max_threads = max_threads
+      def use_pool_options(pool_options)
+        @pool_options = pool_options
       end
 
     protected
 
       # Creates a thread pool with the configured options
-      # @return [Thread::Pool]
+      # @return [Contender::Pool::ThreadPoolExecutor]
       def create_thread_pool
-        Thread.pool @min_threads, @max_threads
+        pool = Contender::Pool::ThreadPoolExecutor.new @pool_options
+        pool.start
+
+        pool
       end
     end # ThreadPoolDefinitionBuilder
   end # Configuration

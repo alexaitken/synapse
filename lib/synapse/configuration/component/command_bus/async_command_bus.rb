@@ -3,13 +3,14 @@ module Synapse
     # Definition builder used to build an asynchronous command bus
     #
     # @see SimpleCommandBusDefinitionBuilder For additional options
+    # @see Contender::Pool::ThreadPoolExecutor For pool options
     #
     # @example The minimum possible effort to build an asynchronous command bus
     #   async_command_bus
     #
     # @example Create an asynchronous command bus with a custom thread count
     #   async_command_bus do
-    #     use_threads 8, 12
+    #     use_pool_options size: 2
     #   end
     class AsynchronousCommandBusDefinitionBuilder < SimpleCommandBusDefinitionBuilder
       include ThreadPoolDefinitionBuilder
@@ -19,7 +20,7 @@ module Synapse
       # @return [undefined]
       def populate_defaults
         super
-        use_threads 4
+        use_pool_options size: 4
       end
 
       # @param [UnitOfWorkFactory] unit_factory
