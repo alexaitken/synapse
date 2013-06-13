@@ -16,5 +16,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '~> 3.2'
   s.add_dependency 'atomic', '~> 1.1'
   s.add_dependency 'logging', '~> 1.8'
+  s.add_dependency 'contender', '~> 0.1'
   s.add_dependency 'thread'
 end

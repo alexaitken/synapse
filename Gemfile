@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'contender', :github => 'ianunruh/contender', :branch => :master
-
 group :test do
   # Code coverage utilities
   gem 'coveralls'
