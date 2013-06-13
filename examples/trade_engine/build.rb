@@ -1,15 +1,7 @@
-Synapse.build do
-  converter_factory
-  serializer
-  upcaster_chain
-
-  unit_factory
+Synapse.build_with_defaults do
   async_command_bus do
     use_threads 4
   end
-  simple_event_bus
-
-  gateway
 
   mongo_event_store do
     use_client Mongo::MongoClient.new
