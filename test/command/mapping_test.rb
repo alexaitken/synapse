@@ -60,11 +60,17 @@ module Synapse
 
       attr_accessor :handled, :sub_handled
 
-      map_command TestCommand do |command|
+      map_command TestCommand do |command, message, current_unit|
+        raise ArgumentError unless TestCommand === command
+        raise ArgumentError unless CommandMessage === message
+        raise ArgumentError if current_unit.nil?
+
         @handled = true
       end
 
-      map_command TestSubCommand do |command|
+      map_command TestSubCommand, :to => :on_sub
+
+      def on_sub(command)
         @sub_handled = true
       end
     end

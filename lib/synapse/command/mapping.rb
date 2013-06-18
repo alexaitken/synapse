@@ -44,7 +44,7 @@ module Synapse
           raise ArgumentError, 'Not capable of handling [%s] commands' % command.payload_type
         end
 
-        mapping.invoke self, command.payload
+        mapping.invoke self, command.payload, command, current_unit
       end
 
       # Subscribes this handler to the given command bus for any types that have been mapped

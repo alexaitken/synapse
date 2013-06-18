@@ -33,11 +33,16 @@ module Synapse
 
       attr_accessor :handled, :sub_handled
 
-      map_event TestEvent do |event|
+      map_event TestEvent do |event, message|
+        raise ArgumentError unless TestEvent === event
+        raise ArgumentError unless Domain::EventMessage === message
+
         @handled = true
       end
 
-      map_event TestSubEvent do |event|
+      map_event TestSubEvent, :to => :on_sub
+
+      def on_sub(event)
         @sub_handled = true
       end
     end

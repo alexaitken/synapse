@@ -29,9 +29,15 @@ module Synapse
       # @return [Object] The result of the handler invocation
       def invoke(target, *args)
         if @handler.is_a? Symbol
-          target.send(@handler, *args)
+          method = target.method @handler
+
+          if method.arity > args.size || method.arity == 0
+            raise ArgumentError, 'Method signature is invalid'
+          end
+
+          method.call(*args.slice(0, method.arity))
         else
-          target.instance_exec(*args, &@handler)
+          target.instance_exec *args, &@handler
         end
       end
 

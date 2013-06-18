@@ -33,11 +33,10 @@ module Synapse
         return unless @active
 
         mapping = event_mapper.mapping_for event.payload_type
-
-        return unless mapping
-
-        mapping.invoke self, event.payload
-        finish if mapping.options[:finish]
+        if mapping
+          mapping.invoke self, event.payload, event
+          finish if mapping.options[:finish]
+        end
       end
     end # MappingProcess
   end # ProcessManager

@@ -10,6 +10,10 @@ module Synapse
     #       # ...
     #     end
     #
+    #     map_event UserProfileUpdated do |event, message|
+    #       # ...
+    #     end
+    #
     #     map_event UserBanned, :to => :on_banned
     #   end
     module MappingEventListener
@@ -37,10 +41,9 @@ module Synapse
       # @return [undefined]
       def notify(event)
         mapping = event_mapper.mapping_for event.payload_type
-
-        return unless mapping
-
-        mapping.invoke self, event.payload
+        if mapping
+          mapping.invoke self, event.payload, event
+        end
       end
     end # MappingEventListener
   end # EventBus

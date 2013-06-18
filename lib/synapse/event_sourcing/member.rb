@@ -77,7 +77,7 @@ module Synapse
       def handle_event(event)
         mapping = self.event_mapper.mapping_for event.payload_type
         if mapping
-          mapping.invoke self, event.payload
+          mapping.invoke self, event.payload, event
         end
       end
 
