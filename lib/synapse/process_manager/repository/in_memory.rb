@@ -2,11 +2,12 @@ module Synapse
   module ProcessManager
     # Process repository that stores all processes in memory
     #
-    # This implementation is not thread-safe -- use a lock manager for thread safety
+    # While the storage of processes are thread-safe, the processes themselves may not be. Use a
+    # lock manager if the processes are not thread-safe.
     class InMemoryProcessRepository < ProcessRepository
       def initialize
         @managed_processes = Hash.new
-        @lock = Mutex.new
+        @mutex = Mutex.new
       end
 
       # @param [Class] type
@@ -35,7 +36,7 @@ module Synapse
       # @param [Process] process
       # @return [undefined]
       def commit(process)
-        @lock.synchronize do
+        @mutex.synchronize do
           if process.active?
             @managed_processes.store process.id, process
           else

@@ -16,11 +16,14 @@ module Synapse
       # the failure will be interpreted as terminal and the callback will be invoked with the
       # last recorded failure.
       #
+      # @abstract
       # @param [CommandMessage] command
       # @param [Array] failures
       # @param [Proc] dispatcher
       # @return [Boolean]
-      def schedule(command, failures, dispatcher); end
-    end
-  end
+      def schedule(command, failures, dispatcher)
+        raise NotImplementedError
+      end
+    end # RetryScheduler
+  end # Command
 end

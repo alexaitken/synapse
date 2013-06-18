@@ -5,7 +5,7 @@ module Synapse
     # @return [undefined]
     def initialize
       @identifiers = Hash.new
-      @lock = Mutex.new
+      @mutex = Mutex.new
     end
 
     # Returns true if the calling thread holds the lock for the given identifier
@@ -40,7 +40,7 @@ module Synapse
   private
 
     def lock_for(identifier)
-      @lock.synchronize do
+      @mutex.synchronize do
         if @identifiers.has_key? identifier
           @identifiers[identifier]
         else

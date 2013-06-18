@@ -7,7 +7,7 @@ module Synapse
     class OptimisticLockManager < LockManager
       def initialize
         @aggregates = Hash.new
-        @lock = Mutex.new
+        @mutex = Mutex.new
       end
 
       # @param [AggregateRoot] aggregate
@@ -47,7 +47,7 @@ module Synapse
       # @param [OptimisticLock] lock
       # @return [undefined]
       def remove_lock(aggregate_id, lock)
-        @lock.synchronize do
+        @mutex.synchronize do
           if @aggregates.has_key? aggregate_id and @aggregates[aggregate_id].equal? lock
             @aggregates.delete aggregate_id
           end
@@ -57,7 +57,7 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [OptimisticLock]
       def lock_for(aggregate_id)
-        @lock.synchronize do
+        @mutex.synchronize do
           if @aggregates.has_key? aggregate_id
             @aggregates[aggregate_id]
           else
