@@ -10,7 +10,9 @@ module Synapse
       # @param [UnitOfWork] unit The current unit of work for this command dispatch
       # @param [InterceptorChain] chain
       # @return [Object] The result of the execution of the command
-      def intercept(command, unit, chain); end
-    end
-  end
+      def intercept(command, unit, chain)
+        raise NotImplementedError
+      end
+    end # DispatchInterceptor
+  end # Command
 end

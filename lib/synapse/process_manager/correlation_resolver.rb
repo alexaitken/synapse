@@ -8,7 +8,9 @@ module Synapse
       # @abstract
       # @param [EventMessage] event
       # @return [Correlation]
-      def resolve(event); end
-    end
-  end
+      def resolve(event)
+        raise NotImplementedError
+      end
+    end # CorrelationResolver
+  end # ProcessManager
 end

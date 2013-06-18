@@ -15,7 +15,9 @@ module Synapse
       # @abstract
       # @param [EventMessage...] events
       # @return [undefined]
-      def publish(*events); end
+      def publish(*events)
+        raise NotImplementedError
+      end
 
       # Subscribes the given listener to this event bus
       #
@@ -23,14 +25,18 @@ module Synapse
       # @raise [SubscriptionFailedError] If subscription of an event listener failed
       # @param [EventListener] listener
       # @return [undefined]
-      def subscribe(listener); end
+      def subscribe(listener)
+        raise NotImplementedError
+      end
 
       # Unsubscribes the given listener from this event bus
       #
       # @abstract
       # @param [EventListener] listener
       # @return [undefined]
-      def unsubscribe(listener); end
+      def unsubscribe(listener)
+        raise NotImplementedError
+      end
     end
 
     # Raised when the subscription of an event listener has not succeeded. Generally, this means that

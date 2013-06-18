@@ -32,7 +32,7 @@ module Synapse
         serialized_objects.push serialized_object
 
         @upcasters.each do |upcaster|
-          serialized_objects = upcast_objects(upcaster, serialized_objects, upcast_context)
+          serialized_objects = upcast_objects upcaster, serialized_objects, upcast_context
         end
 
         serialized_objects
@@ -46,7 +46,7 @@ module Synapse
       # @param [UpcastingContent] upcast_context
       # @return [Array<SerializedObject>]
       def perform_upcast(upcaster, representation, expected_types, upcast_context)
-        upcaster.upcast(representation, expected_types, upcast_context)
+        upcaster.upcast representation, expected_types, upcast_context
       end
 
     private

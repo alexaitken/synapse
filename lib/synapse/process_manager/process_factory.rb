@@ -11,14 +11,18 @@ module Synapse
       # @abstract
       # @param [Class] process_type
       # @return [Process]
-      def create(process_type); end
+      def create(process_type)
+        raise NotImplementedError
+      end
 
       # Returns true if processes of the given type can be created by this factory
       #
       # @abstract
       # @param [Class] process_type
       # @return [Boolean]
-      def supports(process_type); end
+      def supports(process_type)
+        raise NotImplementedError
+      end
     end # ProcessFactory
 
     # Generic implementation of a process factory that supports any process implementations that

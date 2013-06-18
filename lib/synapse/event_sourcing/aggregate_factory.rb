@@ -16,11 +16,15 @@ module Synapse
 
       # @abstract
       # @return [Class] Type of aggregate being created by this factory
-      def aggregate_type; end
+      def aggregate_type
+        raise NotImplementedError
+      end
 
       # @abstract
       # @return [String] Type identifier used to store the aggregate in the event store
-      def type_identifier; end
+      def type_identifier
+        raise NotImplementedError
+      end
     end # AggregateFactory
 
     # Aggregate factory that uses a convention to create instances of aggregates

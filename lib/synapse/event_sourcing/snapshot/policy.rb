@@ -6,7 +6,9 @@ module Synapse
       #
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
-      def should_snapshot?(aggregate); end
+      def should_snapshot?(aggregate)
+        raise NotImplementedError
+      end
     end # SnapshotPolicy
 
     # Snapshot policy that takes a snapshot if the number of events committed in an aggregate since

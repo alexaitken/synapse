@@ -12,7 +12,9 @@ module Synapse
       # @abstract
       # @param [EventMessage] event
       # @return [undefined]
-      def notify(event); end
-    end
-  end
+      def notify(event)
+        raise NotImplementedError
+      end
+    end # EventListener
+  end # EventBus
 end

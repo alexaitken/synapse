@@ -10,19 +10,16 @@ module Synapse
     #
     # For performance reasons, it is advisable to ensure that all upcasters in the same chain use
     # the same intermediate representation type.
-    module Upcaster
-      extend ActiveSupport::Concern
+    #
+    # @abstract
+    class Upcaster
+      # @return [Class]
+      class_attribute :expected_content_type
 
-      included do
-        class_attribute :expected_content_type
-      end
-
-      module ClassMethods
-        # @param [Class] type
-        # @return [undefined]
-        def expects_content_type(type)
-          self.expected_content_type = type
-        end
+      # @param [Class] type
+      # @return [undefined]
+      def self.expects_content_type(type)
+        self.expected_content_type = type
       end
 
       # Returns true if this upcaster is capable of upcasting the given type
@@ -30,7 +27,9 @@ module Synapse
       # @abstract
       # @param [SerializedType] serialized_type
       # @return [Boolean]
-      def can_upcast?(serialized_type); end
+      def can_upcast?(serialized_type)
+        raise NotImplementedError
+      end
 
       # Upcasts a given serialized object to zero or more upcast objects
       #
@@ -42,14 +41,18 @@ module Synapse
       # @param [Array<SerializedType>] expected_types
       # @param [UpcastingContext] upcast_context
       # @return [Array<SerializedObject>]
-      def upcast(intermediate, expected_types, upcast_context); end
+      def upcast(intermediate, expected_types, upcast_context)
+        raise NotImplementedError
+      end
 
       # Upcasts a given serialized type to zero or more upcast types
       #
       # @abstract
       # @param [SerializedType] serialized_type
       # @return [Array<SerializedType>]
-      def upcast_type(serialized_type); end
-    end
-  end
+      def upcast_type(serialized_type)
+        raise NotImplementedError
+      end
+    end # Upcaster
+  end # Upcasting
 end

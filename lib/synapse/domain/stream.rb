@@ -21,20 +21,24 @@ module Synapse
       # @abstract
       # @return [Boolean]
       def end?
-        true
+        raise NotImplementedError
       end
 
       # Returns the next event in the stream and moves the stream's pointer forward
       #
       # @abstract
       # @return [DomainEventMessage]
-      def next_event; end
+      def next_event
+        raise NotImplementedError
+      end
 
       # Returns the next event in the stream without moving the stream's pointer forward
       #
       # @abstract
       # @return [DomainEventMessage]
-      def peek; end
+      def peek
+        raise NotImplementedError
+      end
 
       # Yields the next domain events in the stream until the end of the stream has been reached
       #
@@ -59,10 +63,10 @@ module Synapse
 
     protected
 
+      # @raise [EndOfStreamError] If at the end of the stream
+      # @return [undefined]
       def assert_valid
-        if end?
-          raise EndOfStreamError
-        end
+        raise EndOfStreamError if end?
       end
     end # DomainEventStream
   end # Domain

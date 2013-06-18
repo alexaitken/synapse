@@ -68,7 +68,9 @@ module Synapse
       # @abstract
       # @param [Object] content The original Ruby object to serialize
       # @return [Object] Should be in the native content type of the serializer
-      def perform_serialize(content); end
+      def perform_serialize(content)
+        raise NotImplementedError
+      end
 
       # Deserializes the given serialized content into the given Ruby type
       #
@@ -76,13 +78,17 @@ module Synapse
       # @param [Object] content Should be in the native content type of the serializer
       # @param [Class] type The class type to be deserialized into
       # @return [Object] The deserialized object
-      def perform_deserialize(content, type); end
+      def perform_deserialize(content, type)
+        raise NotImplementedError
+      end
 
       # Returns the native content type that the serializer works with
       #
       # @abstract
       # @return [Class]
-      def native_content_type; end
+      def native_content_type
+        raise NotImplementedError
+      end
 
     private
 

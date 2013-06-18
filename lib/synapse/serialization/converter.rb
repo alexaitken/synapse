@@ -33,7 +33,9 @@ module Synapse
       # @abstract
       # @param [Object] original
       # @return [Object]
-      def convert_content(original); end
+      def convert_content(original)
+        raise NotImplementedError
+      end
     end # Converter
   end # Serialization
 end

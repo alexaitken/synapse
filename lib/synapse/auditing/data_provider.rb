@@ -8,7 +8,9 @@ module Synapse
       # @abstract
       # @param [CommandMessage] command
       # @return [Hash]
-      def provide_data_for(command); end
+      def provide_data_for(command)
+        raise NotImplementedError
+      end
     end # AuditDataProvider
   end # Auditing
 end

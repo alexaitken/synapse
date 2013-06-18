@@ -14,7 +14,9 @@ module Synapse
       # @abstract
       # @param [CommandMessage] command
       # @return [undefined]
-      def dispatch(command); end
+      def dispatch(command)
+        raise NotImplementedError
+      end
 
       # Dispatches the given command to the handler subscribed to its type and notifies the
       # given callback of the outcome of the dispatch
@@ -23,7 +25,9 @@ module Synapse
       # @param [CommandMessage] command
       # @param [CommandCallback] callback
       # @return [undefined]
-      def dispatch_with_callback(command, callback); end
+      def dispatch_with_callback(command, callback)
+        raise NotImplementedError
+      end
 
       # Subscribes the given handler to the given command type, replacing the currently subscribed
       # handler, if any.
@@ -31,7 +35,9 @@ module Synapse
       # @param [Class] command_type
       # @param [CommandHandler] handler
       # @return [undefined]
-      def subscribe(command_type, handler); end
+      def subscribe(command_type, handler)
+        raise NotImplementedError
+      end
 
       # Unsubscribes the given handler from the given command type, if it is currently subscribed
       # to the given command type.
@@ -39,7 +45,9 @@ module Synapse
       # @param [Class] command_type
       # @param [CommandHandler] handler
       # @return [undefined]
-      def unsubscribe(command_type, handler); end
-    end
-  end
+      def unsubscribe(command_type, handler)
+        raise NotImplementedError
+      end
+    end # CommandBus
+  end # Command
 end

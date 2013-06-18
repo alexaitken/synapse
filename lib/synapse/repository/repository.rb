@@ -26,7 +26,9 @@ module Synapse
       # @param [Object] aggregate_id
       # @param [Integer] expected_version If this is nil, no version validation is performed
       # @return [AggregateRoot]
-      def load(aggregate_id, expected_version = nil); end
+      def load(aggregate_id, expected_version = nil)
+        raise NotImplementedError
+      end
 
       # Adds a new, unmanaged aggregate to the repository
       #
@@ -38,7 +40,9 @@ module Synapse
       # @raise [ArgumentError] If the version of the aggregate is not null
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def add(aggregate); end
+      def add(aggregate)
+        raise NotImplementedError
+      end
 
     protected
 
@@ -46,21 +50,27 @@ module Synapse
       #
       # @abstract
       # @return [Class]
-      def aggregate_type; end
+      def aggregate_type
+        raise NotImplementedError
+      end
 
       # Deletes the given aggregate from the underlying storage mechanism
       #
       # @abstract
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def delete_aggregate(aggregate); end
+      def delete_aggregate(aggregate)
+        raise NotImplementedError
+      end
 
       # Saves the given aggregate using the underlying storage mechanism
       #
       # @abstract
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def save_aggregate(aggregate); end
+      def save_aggregate(aggregate)
+        raise NotImplementedError
+      end
 
       # Asserts that an aggregate being added is compatible with this repository and is newly
       # created

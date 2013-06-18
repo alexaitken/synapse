@@ -10,7 +10,9 @@ module Synapse
       # @param [Object] return_value
       # @param [Array<EventMessage>] events
       # @return [undefined]
-      def on_success(command, return_value, events); end
+      def on_success(command, return_value, events)
+        raise NotImplementedError
+      end
 
       # Called when a command execution results in an exception being raised
       #
@@ -22,7 +24,9 @@ module Synapse
       # @param [Exception] exception
       # @param [Array<EventMessage>] events
       # @return [undefined]
-      def on_failure(command, exception, events); end
-    end
-  end
+      def on_failure(command, exception, events)
+        raise NotImplementedError
+      end
+    end # AuditLogger
+  end # Auditing
 end

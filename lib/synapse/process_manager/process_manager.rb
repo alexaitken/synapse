@@ -52,13 +52,17 @@ module Synapse
       # @param [Class] process_type
       # @param [EventMessage] event
       # @return [Symbol]
-      def creation_policy_for(process_type, event); end
+      def creation_policy_for(process_type, event)
+        raise NotImplementedError
+      end
 
       # @abstract
       # @param [Class] process_type
       # @param [EventMessage] event
       # @return [Correlation] Returns nil if no correlation could be extracted
-      def extract_correlation(process_type, event); end
+      def extract_correlation(process_type, event)
+        raise NotImplementedError
+      end
 
       # Determines whether or not a new process should be started, based off of existing processes
       # and the creation policy for the event and process

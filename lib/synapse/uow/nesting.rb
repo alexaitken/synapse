@@ -121,38 +121,50 @@ module Synapse
       #
       # @abstract
       # @return [undefined]
-      def perform_commit; end
+      def perform_commit
+        raise NotImplementedError
+      end
 
       # Executes logic required to rollback this unit of work
       #
       # @abstract
       # @param [Error] cause
       # @return [undefined]
-      def perform_rollback(cause = nil); end
+      def perform_rollback(cause = nil)
+        raise NotImplementedError
+      end
 
       # Notifies listeners that this unit of work is cleaning up
       #
       # @abstract
       # @return [undefined]
-      def notify_cleanup; end
+      def notify_cleanup
+        raise NotImplementedError
+      end
 
       # Notifies listeners that this unit of work is preparing to be committed
       #
       # @abstract
       # @return [undefined]
-      def notify_prepare_commit; end
+      def notify_prepare_commit
+        raise NotImplementedError
+      end
 
       # Executes logic required when starting this unit of work
       #
       # @abstract
       # @return [undefined]
-      def perform_start; end
+      def perform_start
+        raise NotImplementedError
+      end
 
       # Storages aggregates registered with this unit of work
       #
       # @abstract
       # @return [undefined]
-      def store_aggregates; end
+      def store_aggregates
+        raise NotImplementedError
+      end
 
       # Commits all registered inner units of work. This should be invoked after events have been
       # dispatched and before any listeners are notified of the commit.

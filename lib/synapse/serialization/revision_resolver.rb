@@ -8,7 +8,9 @@ module Synapse
       # @abstract
       # @param [Class] payload_type
       # @return [String] The revision of the given payload type
-      def revision_of(payload_type); end
+      def revision_of(payload_type)
+        raise NotImplementedError
+      end
     end # RevisionResolver
 
     # Implementation of a revision resolver that returns a fixed value. This could be an

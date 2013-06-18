@@ -6,12 +6,16 @@ module Synapse
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
-      def serialize_metadata(serializer, expected_type); end
+      def serialize_metadata(serializer, expected_type)
+        raise NotImplementedError
+      end
 
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
-      def serialize_payload(serializer, expected_type); end
+      def serialize_payload(serializer, expected_type)
+        raise NotImplementedError
+      end
     end # SerializationAware
   end # Serialization
 end

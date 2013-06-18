@@ -15,7 +15,9 @@ module Synapse
       # @param [String] type_identifier Type descriptor of the aggregate to retrieve
       # @param [Object] aggregate_id
       # @return [DomainEventStream]
-      def read_events(type_identifier, aggregate_id); end
+      def read_events(type_identifier, aggregate_id)
+        raise NotImplementedError
+      end
 
       # Appends the domain events in the given stream to the event store
       #
@@ -24,8 +26,10 @@ module Synapse
       # @param [String] type_identifier Type descriptor of the aggregate to append to
       # @param [DomainEventStream] stream
       # @return [undefined]
-      def append_events(type_identifier, stream); end
-    end
+      def append_events(type_identifier, stream)
+        raise NotImplementedError
+      end
+    end # EventStore
 
     # Represents an event store with the capability to manage aggregate snapshots
     # @abstract
@@ -37,7 +41,9 @@ module Synapse
       # @param [String] type_identifier Type descriptor of the aggregate to append to
       # @param [DomainEventMessage] snapshot_event
       # @return [undefined]
-      def append_snapshot_event(type_identifier, snapshot_event); end
-    end
-  end
+      def append_snapshot_event(type_identifier, snapshot_event)
+        raise NotImplementedError
+      end
+    end # SnapshotEventStore
+  end # EventStore
 end

@@ -14,7 +14,7 @@ module Synapse
         @recorder.record command
         command
       end
-    end
+    end # DuplicationFilter
 
     # Interceptor that removes commands from the duplication recorder if their execution results
     # in a transient error (like concurrency error) being raised. This way, the same command can
@@ -38,6 +38,6 @@ module Synapse
           raise
         end
       end
-    end
-  end
+    end # DuplicationCleanupInterceptor
+  end # Command
 end

@@ -43,7 +43,9 @@ module Synapse
       # @param [Object] aggregate_id
       # @param [DomainEventStream] stream
       # @return [DomainEventMessage]
-      def create_snapshot(type_identifier, aggregate_id, stream); end
+      def create_snapshot(type_identifier, aggregate_id, stream)
+        raise NotImplementedError
+      end
     end # SnapshotTaker
   end # EventSourcing
 end

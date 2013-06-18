@@ -1,7 +1,6 @@
 module Synapse
   module Upcasting
-    class TestSplitUpcaster
-      include Upcaster
+    class TestSplitUpcaster < Upcaster
 
       expects_content_type Object
 
@@ -28,9 +27,7 @@ module Synapse
       end
     end
 
-    class TestTypeUpcaster
-      include SingleUpcaster
-
+    class TestTypeUpcaster < SingleUpcaster
       expects_content_type Object
 
       def can_upcast?(serialized_type)
@@ -48,9 +45,7 @@ module Synapse
       end
     end
 
-    class TestPhaseOutUpcaster
-      include SingleUpcaster
-
+    class TestPhaseOutUpcaster < SingleUpcaster
       expects_content_type Object
 
       def can_upcast?(serialized_type)

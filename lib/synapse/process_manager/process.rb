@@ -43,7 +43,9 @@ module Synapse
       # @abstract
       # @param [EventMessage] event
       # @return [undefined]
-      def handle(event); end
+      def handle(event)
+        raise NotImplementedError
+      end
 
     protected
 

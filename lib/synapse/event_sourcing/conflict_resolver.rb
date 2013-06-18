@@ -14,6 +14,17 @@ module Synapse
       # @param [Array] applied_changes List of changes applied to the aggregate
       # @param [Array] committed_changes List of events that were unexpected by the command handler
       # @return [undefined]
+      def resolve_conflicts(applied_changes, committed_changes)
+        raise NotImplementedError
+      end
+    end
+
+    # Conflict resolver that accepts any unseen changes to an aggregate
+    class AcceptAllConflictResolver < ConflictResolver
+      # @raise [ConflictingModificationException] If any conflicts were detected
+      # @param [Array] applied_changes List of changes applied to the aggregate
+      # @param [Array] committed_changes List of events that were unexpected by the command handler
+      # @return [undefined]
       def resolve_conflicts(applied_changes, committed_changes); end
     end
 

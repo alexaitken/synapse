@@ -18,6 +18,6 @@ module Synapse
       def release_lock(process_id)
         @lock.release_lock process_id
       end
-    end
-  end
+    end # PessimisticLockManager
+  end # ProcessManager
 end

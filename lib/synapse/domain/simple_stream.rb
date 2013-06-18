@@ -2,6 +2,8 @@ module Synapse
   module Domain
     # Implementation of a domain event stream that holds a stream of events in memory
     class SimpleDomainEventStream < DomainEventStream
+      # @param [EventMessage...] events
+      # @return [undefined]
       def initialize(*events)
         @events = events.flatten
         @next_index = 0

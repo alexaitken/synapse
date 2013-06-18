@@ -71,7 +71,7 @@ module Synapse
       end
 
       should 'defer version checking to a conflict resolver if one is set' do
-        @repository.conflict_resolver = ConflictResolver.new
+        @repository.conflict_resolver = AcceptAllConflictResolver.new
 
         event_a = create_event(123, 0, StubCreatedEvent.new(123))
         event_b = create_event(123, 1, StubChangedEvent.new)

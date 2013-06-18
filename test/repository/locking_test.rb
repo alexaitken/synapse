@@ -87,6 +87,9 @@ module Synapse
       def aggregate_type
         TestAggregateRoot
       end
+
+      def save_aggregate(aggregate); end
+      def delete_aggregate(aggregate); end
     end
   end
 end

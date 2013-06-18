@@ -70,7 +70,9 @@ module Synapse
       # @param [Object] aggregate_id
       # @param [Integer] expected_version
       # @return [AggregateRoot]
-      def perform_load(aggregate_id, expected_version); end
+      def perform_load(aggregate_id, expected_version)
+        raise NotImplementedError
+      end
 
       # Hook that is called after an aggregate is registered to the current unit of work
       #

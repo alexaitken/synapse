@@ -27,6 +27,6 @@ module Synapse
       def hash
         @key.hash ^ @value.hash
       end
-    end
-  end
+    end # Correlation
+  end # ProcessManager
 end

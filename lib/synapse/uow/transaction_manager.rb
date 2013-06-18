@@ -9,19 +9,25 @@ module Synapse
       #
       # @abstract
       # @return [Object]
-      def start; end
+      def start
+        raise NotImplementedError
+      end
 
       # Commits the given transaction
       #
       # @param [Object] transaction
       # @return [undefined]
-      def commit(transaction); end
+      def commit(transaction)
+        raise NotImplementedError
+      end
 
       # Rolls back the given transaction
       #
       # @param [Object] transaction
       # @return [undefined]
-      def rollback(transaction); end
-    end
-  end
+      def rollback(transaction)
+        raise NotImplementedError
+      end
+    end # TransactionManager
+  end # UnitOfWork
 end

@@ -54,6 +54,6 @@ module Synapse
 
         @streams.store aggregate_id, Array.new
       end
-    end
-  end
+    end # InMemoryEventStore
+  end # EventStore
 end

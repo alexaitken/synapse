@@ -12,7 +12,9 @@ module Synapse
       # @param [Class] type
       # @param [Correlation] correlation
       # @return [Set]
-      def find(type, correlation); end
+      def find(type, correlation)
+        raise NotImplementedError
+      end
 
       # Loads a known process by its unique identifier
       #
@@ -25,7 +27,9 @@ module Synapse
       # @abstract
       # @param [String] id
       # @return [Process] Returns nil if process could not be found
-      def load(id); end
+      def load(id)
+        raise NotImplementedError
+      end
 
       # Commits the changes made to the process instance
       #
@@ -35,7 +39,9 @@ module Synapse
       # @abstract
       # @param [Process] process
       # @return [undefined]
-      def commit(process); end
+      def commit(process)
+        raise NotImplementedError
+      end
 
       # Registers a newly created process with the repository
       #
@@ -47,7 +53,9 @@ module Synapse
       # @abstract
       # @param [Process] process
       # @return [undefined]
-      def add(process); end
-    end
-  end
+      def add(process)
+        raise NotImplementedError
+      end
+    end # ProcessRepository
+  end # ProcessManager
 end
