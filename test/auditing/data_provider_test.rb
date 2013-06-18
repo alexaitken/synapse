@@ -18,10 +18,18 @@ module Synapse
 
     class CorrelationDataProviderTest < Test::Unit::TestCase
       should 'provide the identifier of a command for auditing' do
-        provider = CorrelationDataProvider.new :command_id
+        provider = CorrelationDataProvider.new
         command = Command::CommandMessage.build
 
         expected = { :command_id => command.id }
+        assert_equal expected, provider.provide_data_for(command)
+      end
+
+      should 'provide the identifier of a command for auditing using an alternate key' do
+        provider = CorrelationDataProvider.new :correlation_id
+        command = Command::CommandMessage.build
+
+        expected = { :correlation_id => command.id }
         assert_equal expected, provider.provide_data_for(command)
       end
     end
