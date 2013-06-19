@@ -11,7 +11,7 @@ Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.c
 
 **Warning:** Synapse is still under development; public API can change at any time.
 
-## Getting Started
+## Quickstart
 
 You know the drill, add it to your `Gemfile`:
 
@@ -70,7 +70,7 @@ class InventoryItemCommandHandler
   attr_accessor :repository
 
   map_command CreateInventoryItem do |command|
-    item = Account.new command.id, command.description
+    item = InventoryItem.new command.id, command.description
     @repository.add item
   end
 
@@ -81,7 +81,7 @@ class InventoryItemCommandHandler
 end
 ```
 
-Setup the necessary services
+Wire everything up
 
 ```ruby
 Synapse.build_with_defaults do
