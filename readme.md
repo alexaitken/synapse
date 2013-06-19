@@ -1,4 +1,4 @@
-![Synapse logo](http://i43.tinypic.com/24269sm.png)
+![Synapse logo](http://i.imgur.com/BIwv418.png)
 
 Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 
@@ -9,7 +9,7 @@ Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 
 Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.com) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
 
-**Warning:** Synapse is still under heavy development; public API can change at any time.
+**Warning:** Synapse is still under development; public API can change at any time.
 
 ## Getting Started
 
@@ -27,48 +27,36 @@ gem 'synapse-mongo', :github => 'ianunruh/synapse-mongo', :branch => :master
 You can define your commands and events using plain old Ruby objects.
 
 ```ruby
-class CreateAccount
-  attr_reader :account_id, :name
-  def initialize(id, name)
-    @account_id = id
-    @name = name
+class CreateInventoryItem
+  attr_reader :id, :description
+
+  def initialize(id, description)
+    @id = id
+    @description = description
   end
-end
-
-class RenameAccount
-  # ...
-end
-
-class AccountCreated
-  # ...
-end
-
-class AccountRenamed
-  # ...
 end
 ```
 
 Define the aggregate -- In this case, an event-sourced aggregate.
 
 ```ruby
-class Account
+class InventoryItem
   include Synapse::EventSourcing::AggregateRoot
 
-  def initialize(id, name)
-    apply AccountCreated.new id, name
+  def initialize(id, description)
+    apply InventoryItemCreated.new id, description
   end
 
-  def rename(name)
-    apply AccountRenamed.new id, name
+  def check_in(quantity)
+    apply StockCheckedIn.new id, quantity
   end
 
-  map_event AccountCreated do |event|
+  map_event InventoryItemCreated do |event|
     @id = event.id
-    @name = event.name
   end
 
-  map_event AccountRenamed do |event|
-    @name = event.new_name
+  map_event StockCheckedIn do |event|
+    @stock = @stock + event.quantity
   end
 end
 ```
@@ -76,20 +64,19 @@ end
 Define the command handler
 
 ```ruby
-class AccountCommandHandler
+class InventoryItemCommandHandler
   include Synapse::Command::MappingCommandHandler
-  include Synapse::Configuration::Dependent
 
-  depends_on :account_repository, :as => :repository
+  attr_accessor :repository
 
-  map_command CreateAccount do |command|
-    account = Account.new command.id, command.name
-    @repository.add account
+  map_command CreateInventoryItem do |command|
+    item = Account.new command.id, command.description
+    @repository.add item
   end
 
-  map_command RenameAccount do |command|
-    account = @repository.load command.account_id
-    account.rename command.new_name
+  map_command CheckInStock do |command|
+    item = @repository.load command.id
+    item.check_in command.quantity
   end
 end
 ```
@@ -102,15 +89,17 @@ Synapse.build_with_defaults do
     use_client Mongo::MongoClient.new
   end
 
-  # The repository gets cool things injected, like locking, an event bus and event store
-  es_repository :account_repository do
-    use_aggregate_type Account
+  es_repository :item_repository do
+    use_aggregate_type InventoryItem
   end
 
   # Register your command handler so it can be subscribed to the command bus and get its own
   # dependencies injected upon creation
-  factory :account_command_handler, :tag => :command_handler do
-    inject_into AccountCommandHandler.new
+  factory :item_command_handler, :tag => :command_handler do
+    handler = InventoryItemCommandHandler.new
+    handler.repository = resolve :item_repository
+
+    handler
   end
 end
 ```
@@ -118,13 +107,14 @@ end
 aaaaaand you're done!
 
 ```ruby
-class AccountController < ApplicationController
-  # oooo shiny
-  depends_on :gateway
-
+class InventoryItemController < ApplicationController
   def create
-    command = CreateAccount.new 123, 'Checking'
-    @gateway.send command
+    # ...
+
+    command = CreateInventoryItem.new sku, description
+
+    gateway = Synapse.container.resolve :gateway
+    gateway.send command
   end
 end
 ```
@@ -158,6 +148,6 @@ Synapse is tested and developed on several different runtimes, including:
 ## Coming soon
 - Event store using Sequel
 - Distributed command and event buses (partitioning)
-- Aggregate command handlers
+- Aggregates as command handlers
 - Event replay and projection framework
 - Event scheduling
