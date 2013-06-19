@@ -12,6 +12,7 @@ module Synapse
       # @return [undefined]
       def inject_dependencies
         return if @_dependencies_injected
+        return unless Synapse.container
 
         container = Synapse.container
         container.inject_into self
