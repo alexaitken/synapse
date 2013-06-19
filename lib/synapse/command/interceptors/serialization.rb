@@ -4,6 +4,7 @@ module Synapse
     # serialization-aware message. This provides optimization in cases where storage (in an event
     # store) and publication (on the event bus) use the same serialization mechansim.
     class SerializationOptimizingInterceptor < DispatchInterceptor
+      # @return [undefined]
       def initialize
         @listener = SerializationOptimizingListener.new
       end

@@ -6,7 +6,10 @@ module Synapse
       extend ActiveSupport::Concern
 
       included do
+        # @return [Class]
         class_attribute :source_type
+
+        # @return [Class]
         class_attribute :target_type
       end
 

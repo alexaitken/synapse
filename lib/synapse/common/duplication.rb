@@ -6,7 +6,7 @@ module Synapse
   class DuplicationRecorder
     def initialize
       @recorded = Hash.new
-      @lock = Mutex.new
+      @mutex = Mutex.new
     end
 
     # Records the given message so that duplicates can be ignored
@@ -15,7 +15,7 @@ module Synapse
     # @param [Message] message
     # @return [undefined]
     def record(message)
-      @lock.synchronize do
+      @mutex.synchronize do
         if @recorded.has_key? message.id
           raise DuplicationError
         end
@@ -37,7 +37,7 @@ module Synapse
     # @param [Message] message
     # @return [undefined]
     def forget(message)
-      @lock.synchronize do
+      @mutex.synchronize do
         @recorded.delete message.id
       end
     end
@@ -47,7 +47,7 @@ module Synapse
     # @param [Time] threshold
     # @return [undefined]
     def forget_older_than(threshold)
-      @lock.synchronize do
+      @mutex.synchronize do
         @recorded.delete_if do |message_id, timestamp|
           timestamp <= threshold
         end

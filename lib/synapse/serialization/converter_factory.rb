@@ -3,10 +3,12 @@ module Synapse
     # Represents a mechanism for storing and retrieving converters capable of converting content
     # of one type to another type, for the purpose of serialization and upcasting.
     class ConverterFactory
+      # @return [Set<Converter>]
       attr_reader :converters
 
+      # @return [undefined]
       def initialize
-        @converters = Array.new
+        @converters = Set.new
       end
 
       # Adds the given converter to this converter factory
@@ -14,7 +16,7 @@ module Synapse
       # @param [Converter] converter
       # @return [undefined]
       def register(converter)
-        @converters.push converter
+        @converters.add converter
       end
 
       # Convenience method for converting a given serialized object to the given target type

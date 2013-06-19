@@ -3,7 +3,7 @@ module Synapse
     # Represents a definition for a service being provided by the container
     # @see DefinitionBuilder
     class Definition
-      # @return [Set] Symbols that this definition is tagged with
+      # @return [Set<Symbol>] Symbols that this definition is tagged with
       attr_reader :tags
 
       # @param [Set] tags

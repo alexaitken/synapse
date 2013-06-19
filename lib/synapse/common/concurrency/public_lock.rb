@@ -4,7 +4,7 @@ module Synapse
     # @return [Thread] The current owner of the thread, if any
     attr_reader :owner
 
-    # @return [Array] The list of threads waiting for this lock
+    # @return [Array<Thread>] The list of threads waiting for this lock
     attr_reader :waiting
 
     # @return [undefined]

@@ -24,11 +24,7 @@ module Synapse
       # @param [String] id
       # @return [undefined]
       def initialize(id = nil)
-        unless id
-          id = IdentifierFactory.instance.generate
-        end
-
-        @id = id
+        @id = id ||= IdentifierFactory.instance.generate
         @correlations = CorrelationSet.new
         @active = true
 

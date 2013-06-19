@@ -2,6 +2,7 @@ module Synapse
   module Repository
     # Implementation of a lock manager that blocks until a lock can be obtained
     class PessimisticLockManager < LockManager
+      # @return [undefined]
       def initialize
         @aggregates = IdentifierLock.new
       end

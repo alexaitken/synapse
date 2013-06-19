@@ -8,7 +8,7 @@ module Synapse
     # command message that will be passed on in the chain.
     class InterceptorChain
       # @param [UnitOfWork] unit The current unit of work for this command dispatch
-      # @param [Array] interceptors
+      # @param [Array<DispatchInterceptor>] interceptors
       # @param [CommandHandler] handler
       # @return [undefined]
       def initialize(unit, interceptors, handler)

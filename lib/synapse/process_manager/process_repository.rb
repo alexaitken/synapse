@@ -11,7 +11,7 @@ module Synapse
       # @abstract
       # @param [Class] type
       # @param [Correlation] correlation
-      # @return [Set]
+      # @return [Set<String>]
       def find(type, correlation)
         raise NotImplementedError
       end

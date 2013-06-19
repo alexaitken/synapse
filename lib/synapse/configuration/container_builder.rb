@@ -4,7 +4,7 @@ module Synapse
     # @see Synapse#build
     class ContainerBuilder
       # Registered initializers that will be executed upon instantiation
-      # @return [Array]
+      # @return [Array<Proc>]
       class_attribute :initializers
 
       # Registers a block that will be executed upon instantiation of a container builder

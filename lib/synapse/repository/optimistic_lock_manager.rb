@@ -5,6 +5,7 @@ module Synapse
     # This implementation uses the sequence number of an aggregate's last committed event to
     # detect concurrenct access.
     class OptimisticLockManager < LockManager
+      # @return [undefined]
       def initialize
         @aggregates = Hash.new
         @mutex = Mutex.new

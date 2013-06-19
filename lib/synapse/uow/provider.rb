@@ -3,6 +3,7 @@ module Synapse
     # Entry point for components to access units of work. Components managing transactional
     # boundaries can register and clear unit of work instances.
     class UnitOfWorkProvider
+      # @return [undefined]
       def initialize
         @threads = Hash.new
       end

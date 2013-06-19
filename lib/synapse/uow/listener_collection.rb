@@ -12,6 +12,7 @@ module Synapse
     # before any listeners are allowed to do anything, and log that the commit is finished after
     # all other listeners have finished.
     class UnitOfWorkListenerCollection < UnitOfWorkListener
+      # @return [undefined]
       def initialize
         @listeners = Array.new
         @logger = Logging.logger[self.class]

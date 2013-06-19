@@ -21,6 +21,6 @@ module Synapse
       def initialize(aggregate, expected_version)
         super 'Aggregate [%s] has version %s, expected %s' % [aggregate.id, aggregate.version, expected_version]
       end
-    end
-  end
+    end # ConflictingAggregateVersionError
+  end # Repository
 end

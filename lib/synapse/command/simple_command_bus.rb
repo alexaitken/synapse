@@ -6,10 +6,10 @@ module Synapse
       # @return [RollbackPolicy]
       attr_accessor :rollback_policy
 
-      # @return [Array]
+      # @return [Array<CommandFilter>]
       attr_reader :filters
 
-      # @return [Array]
+      # @return [Array<DispatchInterceptor>]
       attr_reader :interceptors
 
       # @param [UnitOfWorkFactory] unit_factory

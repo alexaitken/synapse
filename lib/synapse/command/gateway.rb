@@ -3,7 +3,7 @@ module Synapse
     # Simplified interface to the command bus
     # @api public
     class CommandGateway
-      # @return [Array]
+      # @return [Array<CommandFilter>]
       attr_reader :filters
 
       # @return [RetryScheduler]
