@@ -7,9 +7,15 @@ Synapse is a CQRS and event sourcing framework for Ruby 1.9.3 and later.
 [![Build Status](https://travis-ci.org/ianunruh/synapse.png?branch=master)](https://travis-ci.org/ianunruh/synapse)
 [![Gem Version](https://badge.fury.io/rb/synapse-core.png)](http://badge.fury.io/rb/synapse-core)
 
-Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.com) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
+Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.org) and [Lokad.CQRS](http://lokad.github.io/lokad-cqrs)
 
 **Warning:** Synapse is still under development; public API can change at any time.
+
+## Resources
+
++ [CQRS Guide](http://cqrsguide.com/guide)
++ [CQRS is too complicated](http://codeofrob.com/entries/cqrs-is-too-complicated.html)
++ [AxonFramework reference guide](http://www.axonframework.org/docs/2.0/)
 
 ## Quickstart
 
@@ -108,12 +114,12 @@ aaaaaand you're done!
 
 ```ruby
 class InventoryItemController < ApplicationController
+  depends_on :gateway
+
   def create
     # ...
 
     command = CreateInventoryItem.new sku, description
-
-    gateway = Synapse.container.resolve :gateway
     gateway.send command
   end
 end

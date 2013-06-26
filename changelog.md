@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.6 (2013-06-18)
+
+- Exposed message context to mapped message handlers (events, commands)
+
 ## 0.5.5 (2013-06-13)
 
 - Changed some of the API for configuration framework
