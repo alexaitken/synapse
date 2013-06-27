@@ -19,7 +19,7 @@ module Synapse
       # @return [Boolean] True if this process is active
       attr_reader :active
 
-      alias active? active
+      alias_method :active?, :active
 
       # @param [String] id
       # @return [undefined]

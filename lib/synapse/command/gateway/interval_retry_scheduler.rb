@@ -8,11 +8,11 @@ module Synapse
     # This implementation uses EventMachine to schedule one-shot timers.
     class IntervalRetryScheduler < RetryScheduler
       # @param [Float] interval
-      # @param [Integer] maxRetries
+      # @param [Integer] max_retries
       # @return [undefined]
-      def initialize(interval, maxRetries)
+      def initialize(interval, max_retries)
         @interval = interval
-        @maxRetries = maxRetries
+        @max_retries = max_retries
 
         @logger = Logging.logger[self.class]
       end
@@ -33,7 +33,7 @@ module Synapse
 
         failureCount = failures.size
 
-        if failureCount > @maxRetries
+        if failureCount > @max_retries
           @logger.info 'Dispatch of command [%s] [%s] resulted in exception [%s] times' %
             [command.payload_type, command.id, failureCount]
 
@@ -42,7 +42,7 @@ module Synapse
 
         if @logger.info?
           @logger.info 'Dispatch of command [%s] [%s] resulted in exception; will retry up to [%s] more times' %
-            [command.payload_type, command.id, @maxRetries - failureCount]
+            [command.payload_type, command.id, @max_retries - failureCount]
         end
 
         perform_schedule command, dispatcher

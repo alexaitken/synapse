@@ -54,7 +54,7 @@ module Synapse
           @type == other.type
       end
 
-      alias eql? ==
+      alias_method :eql?, :==
 
       # TODO Is this a good hash function? Probs not
       # @return [Integer]

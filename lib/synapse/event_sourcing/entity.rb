@@ -25,8 +25,10 @@ module Synapse
       # @param [AggregateRoot] aggregate_root
       # @return [undefined]
       def aggregate_root=(aggregate_root)
-        if @aggregate_root and !@aggregate_root.equal? aggregate_root
-          raise 'Entity is registered to a different aggregate root'
+        if @aggregate_root
+          unless @aggregate_root === aggregate_root
+            raise 'Entity is registered to a different aggregate root'
+          end
         end
 
         @aggregate_root = aggregate_root

@@ -117,7 +117,7 @@ module Synapse
       def notify_current_process(process_id, event, correlation)
         process = @repository.load process_id
 
-        unless process and process.active and process.correlations.include? correlation
+        unless process && process.active && process.correlations.include?(correlation)
           # Process has changed or was deleted between the time of the selection query and the
           # actual loading and locking of the process
           return

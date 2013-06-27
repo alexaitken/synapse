@@ -65,7 +65,7 @@ module Synapse
           raise AggregateDeletedError.new type_identifier, aggregate_id
         end
 
-        if expected_version and @conflict_resolver.nil?
+        if expected_version && @conflict_resolver.nil?
           assert_version_expected aggregate, expected_version
         end
 
@@ -75,7 +75,7 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def post_registration(aggregate)
-        if @snapshot_policy and @snapshot_taker
+        if @snapshot_policy && @snapshot_taker
           listener =
             SnapshotUnitOfWorkListener.new type_identifier, aggregate, @snapshot_policy, @snapshot_taker
 
@@ -92,7 +92,7 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def save_aggregate(aggregate)
-        if aggregate.version and !@lock_manager.validate_lock aggregate
+        if aggregate.version && !@lock_manager.validate_lock(aggregate)
           raise Repository::ConflictingModificationError
         end
 
@@ -122,7 +122,7 @@ module Synapse
       # @param [Integer] expected_version
       # @return [DomainEventStream]
       def add_conflict_resolution(stream, aggregate, expected_version)
-        unless expected_version and @conflict_resolver
+        unless expected_version && @conflict_resolver
           return stream
         end
 
@@ -135,7 +135,7 @@ module Synapse
 
         stream
       end
-    end
+    end # EventSourcingRepository
 
     # Raised when an aggregate has been found but it was marked for deletion
     class AggregateDeletedError < Repository::AggregateNotFoundError
@@ -145,6 +145,6 @@ module Synapse
       def initialize(type_identifier, aggregate_id)
         super 'Aggregate marked for deletion [%s] [%s]' % [type_identifier, aggregate_id]
       end
-    end
-  end
+    end # AggregateDeletedError
+  end # EventSourcing
 end

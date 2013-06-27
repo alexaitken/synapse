@@ -33,7 +33,7 @@ module Synapse
         @builder.converter_factory
 
         factory = @container.resolve :converter_factory
-        factory.converters.at(0).is_a? Serialization::JsonToObjectConverter
+        factory.converters.first.is_a? Serialization::JsonToObjectConverter
 
         # Customized
         @builder.converter_factory :alt_factory do
@@ -41,7 +41,7 @@ module Synapse
         end
 
         factory = @container.resolve :alt_factory
-        factory.converters.at(0).is_a? Serialization::JsonToObjectConverter
+        factory.converters.first.is_a? Serialization::JsonToObjectConverter
       end
     end
   end

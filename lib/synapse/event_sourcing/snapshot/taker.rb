@@ -30,7 +30,7 @@ module Synapse
           first_sequence_number = stream.peek.sequence_number
           snapshot = create_snapshot type_identifier, aggregate_id, stream
 
-          if snapshot and snapshot.sequence_number > first_sequence_number
+          if snapshot && snapshot.sequence_number > first_sequence_number
             @event_store.append_snapshot_event type_identifier, snapshot
           end
         end

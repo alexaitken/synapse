@@ -13,7 +13,7 @@ module Synapse
     # @param [Object] identifier
     # @return [Boolean]
     def owned?(identifier)
-      lock_available?(identifier) and lock_for(identifier).owned?
+      lock_available?(identifier) && lock_for(identifier).owned?
     end
 
     # Obtains a lock for the given identifier, blocking until the lock is obtained

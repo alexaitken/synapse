@@ -160,7 +160,7 @@ module Synapse
       # @return [AggregateRoot] Returns nil if no similar aggregate was found
       def find_similar_aggregate(aggregate)
         @aggregates.each_key do |candidate|
-          if aggregate.class === candidate and aggregate.id == candidate.id
+          if aggregate.class === candidate && aggregate.id == candidate.id
             return candidate
           end
         end

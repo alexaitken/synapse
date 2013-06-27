@@ -22,7 +22,7 @@ module Synapse
         @upcasters.push upcaster
       end
 
-      alias << push
+      alias_method :<<, :push
 
       # @param [SerializedObject] serialized_object
       # @param [UpcastingContext] upcast_context

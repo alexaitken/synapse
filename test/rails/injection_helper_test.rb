@@ -14,8 +14,8 @@ module Synapse
         @controller_class.send :include, InjectionHelper
       end
 
-      should 'inject dependencies only once' do
-        container_mock = mock(Synapse).container.mock!
+      should 'inject dependencies from the Synapse container' do
+        container_mock = stub(Synapse).container.mock!
         container_mock.inject_into(@controller)
 
         @controller.inject_dependencies

@@ -40,7 +40,7 @@ module Synapse
         end
       end
 
-      alias [] resolve
+      alias_method :[], :resolve
 
       # Resolves any definitions that have the given tag
       #

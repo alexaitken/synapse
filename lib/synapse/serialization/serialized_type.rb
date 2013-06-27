@@ -16,12 +16,12 @@ module Synapse
       end
 
       def ==(other)
-        self.class === other and
-          other.name == @name and
+        self.class === other &&
+          other.name == @name &&
           other.revision == @revision
       end
 
-      alias eql? ==
+      alias_method :eql?, :==
 
       def hash
         @name.hash ^ @revision.hash

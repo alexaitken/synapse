@@ -21,7 +21,7 @@ module Synapse
       # @return [Boolean] True if this aggregate has been marked for deletion
       attr_reader :deleted
 
-      alias deleted? deleted
+      alias_method :deleted?, :deleted
 
       # @return [Object] The identifier of this aggregate
       attr_reader :id

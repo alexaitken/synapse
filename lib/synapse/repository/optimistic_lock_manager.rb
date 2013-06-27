@@ -14,7 +14,7 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
       def validate_lock(aggregate)
-        @aggregates.has_key? aggregate.id and @aggregates[aggregate.id].validate aggregate
+        @aggregates.has_key?(aggregate.id) && @aggregates[aggregate.id].validate(aggregate)
       end
 
       # @param [Object] aggregate_id
@@ -23,7 +23,7 @@ module Synapse
         obtained = false
         until obtained
           lock = lock_for aggregate_id
-          obtained = lock and lock.lock
+          obtained = lock && lock.lock
           unless obtained
             remove_lock aggregate_id, lock
           end
@@ -49,7 +49,7 @@ module Synapse
       # @return [undefined]
       def remove_lock(aggregate_id, lock)
         @mutex.synchronize do
-          if @aggregates.has_key? aggregate_id and @aggregates[aggregate_id].equal? lock
+          if @aggregates.has_key?(aggregate_id) && @aggregates[aggregate_id] === lock
             @aggregates.delete aggregate_id
           end
         end
@@ -74,7 +74,7 @@ module Synapse
       # @return [Boolean] True if this lock can be disposed
       attr_reader :closed
 
-      alias closed? closed
+      alias_method :closed?, :closed
 
       # @return [Hash] Hash of threads to the number of times they hold the lock
       attr_reader :threads
@@ -88,8 +88,8 @@ module Synapse
       # @return [Boolean]
       def validate(aggregate)
         last_committed = aggregate.version
-        if @version.nil? or @version.eql? last_committed
-          @version = (last_committed or 0) + aggregate.uncommitted_event_count
+        if @version.nil? || @version == last_committed
+          @version = (last_committed || 0) + aggregate.uncommitted_event_count
           true
         else
           false

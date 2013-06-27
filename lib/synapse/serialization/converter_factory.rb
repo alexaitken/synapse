@@ -42,9 +42,8 @@ module Synapse
         end
 
         @converters.each do |converter|
-          if converter.source_type == source_type && converter.target_type == target_type
-            return converter
-          end
+          return converter if converter.source_type == source_type &&
+            converter.target_type == target_type
         end
 
         raise ConversionError, 'No converter capable of [%s] -> [%s]' % [source_type, target_type]

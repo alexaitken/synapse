@@ -21,13 +21,13 @@ module Synapse
       end
 
       def ==(other)
-        self.class === other and
-          other.content == @content and
-          other.content_type == @content_type and
+        self.class === other &&
+          other.content == @content &&
+          other.content_type == @content_type &&
           other.type == @type
       end
 
-      alias eql? ==
+      alias_method :eql?, :==
 
       def hash
         @content.hash ^ @content_type.hash ^ @type.hash

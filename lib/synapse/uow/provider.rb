@@ -41,7 +41,6 @@ module Synapse
         stack.last
       end
 
-
       # Pushes the given unit of work onto the top of the stack, making it the active unit of work
       #
       # If there are other units of work bound to this provider, they will be held until the given

@@ -27,7 +27,7 @@ module Synapse
         @listeners.push listener
       end
 
-      alias << push
+      alias_method :<<, :push
 
       # @param [UnitOfWork] unit
       # @return [undefined]
