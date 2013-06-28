@@ -43,7 +43,8 @@ module Synapse
           callback.on_success result
         rescue => exception
           backtrace = exception.backtrace.join $RS
-          @logger.error "Exception occured while dispatching command {#{command.payload_type}} {#{command.id}}: #{exception.inspect} #{backtrace}"
+          @logger.error "Exception occured while dispatching command {#{command.payload_type}} {#{command.id}}:\n" +
+            "#{exception.inspect} #{backtrace}"
 
           callback.on_failure exception
         end
@@ -96,8 +97,7 @@ module Synapse
         chain = InterceptorChain.new unit, @interceptors, handler
 
         begin
-          @logger.info 'Dispatching command [%s] [%s] to handler [%s]' %
-            [command.id, command.payload_type, handler.class]
+          @logger.info "Dispatching command {#{command.id}} {#{command.payload_type}} to handler {#{handler.class}}"
 
           result = chain.proceed command
         rescue => exception
@@ -121,12 +121,12 @@ module Synapse
       # @param [CommandMessage] command
       # @return [CommandHandler]
       def handler_for(command)
-        type = command.payload_type
+        command_type = command.payload_type
 
         begin
-          @handlers.fetch type
+          @handlers.fetch command_type
         rescue KeyError
-          raise NoHandlerError, 'No handler subscribed for command [%s]' % type
+          raise NoHandlerError, "No handler subscribed for command {#{command_type}}"
         end
       end
     end # SimpleCommandBus
