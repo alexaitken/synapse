@@ -108,29 +108,22 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      should 'log when a subscribed handler is replaced' do
-        handler = Object.new
-
-        mock(@logger).debug(anything).ordered
-        mock(@logger).info(anything).ordered
-
-        @command_bus.subscribe TestCommand, handler
-        @command_bus.subscribe TestCommand, handler
-      end
-
-      should 'log when a handler is unsubscribed' do
+      should 'return the previous handler when a subscribed handler is replaced' do
         handler_a = Object.new
         handler_b = Object.new
 
-        mock(@logger).info(anything).ordered # not subscribed to anyone
-        mock(@logger).debug(anything).ordered # now subscribed
-        mock(@logger).info(anything).ordered # subscribed to different
-        mock(@logger).debug(anything).ordered # now unsubscribed
+        assert_nil (@command_bus.subscribe TestCommand, handler_a)
+        assert_same (@command_bus.subscribe TestCommand, handler_b), handler_a
+      end
 
-        @command_bus.unsubscribe TestCommand, handler_a
+      should 'return true when a handler is unsubscribed' do
+        handler_a = Object.new
+        handler_b = Object.new
+
+        refute @command_bus.unsubscribe TestCommand, handler_a
         @command_bus.subscribe TestCommand, handler_a
-        @command_bus.unsubscribe TestCommand, handler_b
-        @command_bus.unsubscribe TestCommand, handler_a
+        refute @command_bus.unsubscribe TestCommand, handler_b
+        assert @command_bus.unsubscribe TestCommand, handler_a
       end
     end
 

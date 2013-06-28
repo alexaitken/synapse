@@ -16,9 +16,7 @@ module Synapse
             @condition.wait @mutex, timeout
           end
 
-          if @exception
-            raise @exception
-          end
+          raise @exception if @exception
 
           @result
         end

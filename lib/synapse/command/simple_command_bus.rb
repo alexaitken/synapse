@@ -42,9 +42,8 @@ module Synapse
           result = perform_dispatch command
           callback.on_success result
         rescue => exception
-          backtrace = exception.backtrace.join $/
-          @logger.error 'Exception occured while dispatching command [%s] [%s]: %s %s' %
-            [command.payload_type, command.id, exception.inspect, backtrace]
+          backtrace = exception.backtrace.join $RS
+          @logger.error "Exception occured while dispatching command {#{command.payload_type}} {#{command.id}}: #{exception.inspect} #{backtrace}"
 
           callback.on_failure exception
         end
@@ -53,39 +52,29 @@ module Synapse
       # @api public
       # @param [Class] command_type
       # @param [CommandHandler] handler
-      # @return [undefined]
+      # @return [CommandHandler] The command handler being replaced, if any
       def subscribe(command_type, handler)
-        if @handlers.has_key? command_type
-          current_handler = @handlers.fetch command_type
-          @logger.info 'Command handler [%s] is being replaced by [%s] for command type [%s]' %
-            [current_handler.class, handler.class, command_type]
-        else
-          @logger.debug 'Command handler [%s] subscribed to command type [%s]' %
-            [handler.class, command_type]
-        end
+        current = @handlers.fetch command_type, nil
 
         @handlers.store command_type, handler
+        @logger.debug "Command handler {#{handler.class}} subscribed to command type {#{command_type}}"
+
+        current
       end
 
       # @api public
       # @param [Class] command_type
       # @param [CommandHandler] handler
-      # @return [undefined]
+      # @return [Boolean] True if command handler was unsubscribed from command handler
       def unsubscribe(command_type, handler)
-        if @handlers.has_key? command_type
-          current_handler = @handlers.fetch command_type
-          if current_handler.equal? handler
-            @handlers.delete command_type
+        current = @handlers.fetch command_type, nil
 
-            @logger.debug 'Command handler [%s] unsubscribed from command type [%s]' %
-              [handler.class, command_type]
-          else
-            @logger.info 'Command type [%s] subscribed to handler [%s] not [%s]' %
-              [command_type, current_handler.class, handler.class]
-          end
-        else
-          @logger.info 'Command type [%s] not subscribed to any handler' % command_type
-        end
+        return false unless current === handler
+
+        @handlers.delete command_type
+        @logger.debug "Command handler {#{handler.class}} unsubscribed from command type {#{command_type}}"
+
+        return true
       end
 
     protected

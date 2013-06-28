@@ -34,7 +34,7 @@ module Synapse
       #
       # @param [Class] command_type
       # @param [CommandHandler] handler
-      # @return [undefined]
+      # @return [CommandHandler] The command handler being replaced, if any
       def subscribe(command_type, handler)
         raise NotImplementedError
       end
@@ -44,7 +44,7 @@ module Synapse
       #
       # @param [Class] command_type
       # @param [CommandHandler] handler
-      # @return [undefined]
+      # @return [Boolean] True if command handler was unsubscribed from command handler
       def unsubscribe(command_type, handler)
         raise NotImplementedError
       end
