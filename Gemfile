@@ -6,17 +6,12 @@ group :test do
   gem 'simplecov'
 
   gem 'test-unit'
-  # Temporary fix for lack of MiniTest
-  gem 'shoulda-context', :github => 'thoughtbot/shoulda-context', :branch => :master
+  gem 'shoulda-context'
 
   # Test doubles
   gem 'rr'
   gem 'test-unit-rr'
   gem 'timecop'
-
-  # Used for Railtie integration testing
-  gem 'railties', '~> 3.2'
-  gem 'actionpack', '~> 3.2'
 end
 
 group :development do
@@ -27,8 +22,8 @@ group :development do
   gem 'eventmachine'
 
   # Used for serialization component
-  gem 'oj', '~> 2.0', platform: :ruby
-  gem 'ox', platform: :ruby
+  gem 'oj', '~> 2.0.14', platform: :ruby
+  gem 'ox', '~> 2.0.4', platform: :ruby
 
   # Used for documentation
   gem 'yard'

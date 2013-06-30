@@ -30,5 +30,3 @@ module Synapse
   autoload :ProcessManager
   autoload :Upcasting
 end
-
-require 'synapse/railtie' if defined? Rails
