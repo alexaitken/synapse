@@ -100,6 +100,8 @@ module Synapse
       # @return [undefined]
       def post_registration(aggregate); end
 
+      # @raise [ConcurrencyError] If aggregate is versioned and its lock has been invalidated by
+      #   the lock manager
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def delete_aggregate(aggregate)
@@ -107,6 +109,8 @@ module Synapse
         delete_aggregate_with_lock aggregate
       end
 
+      # @raise [ConcurrencyError] If aggregate is versioned and its lock has been invalidated by
+      #   the lock manager
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def save_aggregate(aggregate)
@@ -114,13 +118,13 @@ module Synapse
         save_aggregate_with_lock aggregate
       end
 
-      # @raise [ConflictingModificationError] If aggregate is versioned and its lock has been
-      #   invalidated by the lock manager
+      # @raise [ConcurrencyError] If aggregate is versioned and its lock has been invalidated by
+      #   the lock manager
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def assert_valid_lock(aggregate)
         if aggregate.version && !@lock_manager.validate_lock(aggregate)
-          raise ConflictingModificationError
+          raise ConcurrencyError
         end
       end
     end # LockingRepository
