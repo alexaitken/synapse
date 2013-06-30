@@ -83,7 +83,7 @@ module Synapse
           false
         end
 
-        assert_raise Repository::ConflictingModificationError do
+        assert_raise Repository::ConcurrencyError do
           @unit.commit
         end
       end

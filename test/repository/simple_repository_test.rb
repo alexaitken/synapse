@@ -73,7 +73,7 @@ module Synapse
           false
         end
 
-        assert_raise ConflictingModificationError do
+        assert_raise ConcurrencyError do
           unit.commit
         end
       end
