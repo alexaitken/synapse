@@ -27,7 +27,7 @@ group :development do
   gem 'eventmachine'
 
   # Used for serialization component
-  gem 'oj', platform: :ruby
+  gem 'oj', '~> 2.0', platform: :ruby
   gem 'ox', platform: :ruby
 
   # Used for documentation
