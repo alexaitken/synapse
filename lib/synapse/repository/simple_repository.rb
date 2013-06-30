@@ -30,13 +30,14 @@ module Synapse
         # Most ORMs that I can think of use #find like this -- no need for orm_adapter or anything
         # crazy like that
         aggregate = @aggregate_type.find aggregate_id
-        aggregate.tap do
-          unless aggregate
-            raise AggregateNotFoundError
-          end
 
-          assert_version_expected aggregate, expected_version
+        unless aggregate
+          raise AggregateNotFoundError
         end
+
+        assert_version_expected aggregate, expected_version
+
+        aggregate
       end
 
       # @return [Class]
@@ -46,13 +47,13 @@ module Synapse
 
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def delete_aggregate(aggregate)
+      def delete_aggregate_with_lock(aggregate)
         aggregate.destroy
       end
 
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def save_aggregate(aggregate)
+      def save_aggregate_with_lock(aggregate)
         aggregate.save
       end
     end # SimpleRepository

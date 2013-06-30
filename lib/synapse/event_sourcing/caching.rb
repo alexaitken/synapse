@@ -38,7 +38,7 @@ module Synapse
 
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def save_aggregate(aggregate)
+      def save_aggregate_with_lock(aggregate)
         super aggregate
         @cache.write aggregate.id, aggregate
       end

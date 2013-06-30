@@ -85,17 +85,13 @@ module Synapse
 
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def delete_aggregate(aggregate)
-        save_aggregate aggregate
+      def delete_aggregate_with_lock(aggregate)
+        save_aggregate_with_lock aggregate
       end
 
       # @param [AggregateRoot] aggregate
       # @return [undefined]
-      def save_aggregate(aggregate)
-        if aggregate.version && !@lock_manager.validate_lock(aggregate)
-          raise Repository::ConflictingModificationError
-        end
-
+      def save_aggregate_with_lock(aggregate)
         stream = aggregate.uncommitted_events
         @stream_decorators.reverse_each do |decorator|
           stream = decorator.decorate_for_append type_identifier, aggregate, stream

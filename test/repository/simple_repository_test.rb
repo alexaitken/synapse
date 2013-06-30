@@ -2,12 +2,15 @@ require 'test_helper'
 
 module Synapse
   module Repository
+
     class SimpleRepositoryTest < Test::Unit::TestCase
       def setup
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
         @unit_factory = UnitOfWork::UnitOfWorkFactory.new @unit_provider
 
-        @repository = SimpleRepository.new NullLockManager.new, TestMappedAggregate
+        @lock_manager = NullLockManager.new
+
+        @repository = SimpleRepository.new @lock_manager, TestMappedAggregate
         @repository.event_bus = EventBus::SimpleEventBus.new
         @repository.unit_provider = @unit_provider
       end
@@ -15,43 +18,71 @@ module Synapse
       should 'load an aggregate using its finder' do
         unit = @unit_factory.create
 
-        aggregate = TestMappedAggregate.new '5677b4f7'
-        mock(TestMappedAggregate).find(aggregate.id) do
+        aggregate_id = SecureRandom.uuid
+        aggregate = TestMappedAggregate.new aggregate_id
+
+        mock(TestMappedAggregate).find(aggregate_id) do
           aggregate
         end
 
-        loaded = @repository.load aggregate.id
+        loaded = @repository.load aggregate_id
 
         assert_same loaded, aggregate
       end
 
       should 'raise an exception if the aggregate could not be found' do
-        mock(TestMappedAggregate).find('5677b4f7')
+        aggregate_id = SecureRandom.uuid
+
+        mock(TestMappedAggregate).find(aggregate_id)
 
         assert_raise AggregateNotFoundError do
-          @repository.load '5677b4f7'
+          @repository.load aggregate_id
         end
       end
 
       should 'raise an exception if the loaded aggregate has an unexpected version' do
         unit = @unit_factory.create
 
-        aggregate = TestMappedAggregate.new '5677b4f7'
+        aggregate_id = SecureRandom.uuid
+        aggregate = TestMappedAggregate.new aggregate_id
         aggregate.version = 5
 
-        mock(TestMappedAggregate).find(aggregate.id) do
+        mock(TestMappedAggregate).find(aggregate_id) do
           aggregate
         end
 
         assert_raise ConflictingAggregateVersionError do
-          @repository.load aggregate.id, 4
+          @repository.load aggregate_id, 4
+        end
+      end
+
+      should 'raise an exception while saving if lock could not be validated' do
+        unit = @unit_factory.create
+
+        aggregate_id = SecureRandom.uuid
+        aggregate = TestMappedAggregate.new aggregate_id
+        aggregate.version = 5
+
+        mock(TestMappedAggregate).find(aggregate_id) do
+          aggregate
+        end
+
+        @repository.load aggregate_id
+
+        mock(@lock_manager).validate_lock(aggregate) do
+          false
+        end
+
+        assert_raise ConflictingModificationError do
+          unit.commit
         end
       end
 
       should 'delete the aggregate if it has been marked for deletion' do
         unit = @unit_factory.create
 
-        aggregate = TestMappedAggregate.new '5677b4f7'
+        aggregate_id = SecureRandom.uuid
+        aggregate = TestMappedAggregate.new aggregate_id
         aggregate.delete_this_thing
 
         @repository.add aggregate
@@ -75,5 +106,6 @@ module Synapse
         mark_deleted
       end
     end
+
   end
 end

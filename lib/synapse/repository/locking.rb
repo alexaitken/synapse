@@ -74,11 +74,55 @@ module Synapse
         raise NotImplementedError
       end
 
+      # Deletes the given aggregate from the underlying storage mechanism, ensuring that the lock
+      # for the aggregate is valid before doing so
+      #
+      # @abstract
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def delete_aggregate_with_lock(aggregate)
+        raise NotImplementedError
+      end
+
+      # Saves the given aggregate using the underlying storage mechanism, ensuring that the lock
+      # for the aggregate is valid before doing so
+      #
+      # @abstract
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def save_aggregate_with_lock(aggregate)
+        raise NotImplementedError
+      end
+
       # Hook that is called after an aggregate is registered to the current unit of work
       #
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def post_registration(aggregate); end
+
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def delete_aggregate(aggregate)
+        assert_valid_lock aggregate
+        delete_aggregate_with_lock aggregate
+      end
+
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def save_aggregate(aggregate)
+        assert_valid_lock aggregate
+        save_aggregate_with_lock aggregate
+      end
+
+      # @raise [ConflictingModificationError] If aggregate is versioned and its lock has been
+      #   invalidated by the lock manager
+      # @param [AggregateRoot] aggregate
+      # @return [undefined]
+      def assert_valid_lock(aggregate)
+        if aggregate.version && !@lock_manager.validate_lock(aggregate)
+          raise ConflictingModificationError
+        end
+      end
     end # LockingRepository
 
     # Unit of work listener that releases the lock on an aggregate when the unit of work

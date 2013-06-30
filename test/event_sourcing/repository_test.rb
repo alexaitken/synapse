@@ -70,6 +70,24 @@ module Synapse
         end
       end
 
+      should 'raise an exception while saving if lock could not be validated' do
+        event = create_event(123, 0, StubCreatedEvent.new(123))
+
+        mock(@event_store).read_events(@factory.type_identifier, 123) do
+          Domain::SimpleDomainEventStream.new event
+        end
+
+        aggregate = @repository.load 123
+
+        mock(@lock_manager).validate_lock(aggregate) do
+          false
+        end
+
+        assert_raise Repository::ConflictingModificationError do
+          @unit.commit
+        end
+      end
+
       should 'defer version checking to a conflict resolver if one is set' do
         @repository.conflict_resolver = AcceptAllConflictResolver.new
 
