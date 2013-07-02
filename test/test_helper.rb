@@ -1,3 +1,5 @@
+require 'bundler/setup'
+
 if ENV['TRAVIS']
   require 'coveralls'
   Coveralls.wear!
@@ -7,9 +9,6 @@ else
     add_filter '/test/'
   end
 end
-
-# Need this for Contender, since we get it from GitHub for now
-require 'bundler/setup'
 
 require 'synapse'
 

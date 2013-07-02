@@ -11,7 +11,7 @@ module Synapse
         end
 
         filter = ActiveModelValidationFilter.new
-        filter.filter message
+        assert_same message, filter.filter(message)
       end
 
       should 'raise an exception if payload of a command message is invalid' do

@@ -5,6 +5,8 @@ module Synapse
       def initialize
         @mutex = Mutex.new
         @condition = ConditionVariable.new
+
+        @dispatched = false
       end
 
       # @raise [Exception] If an exception occured during command execution

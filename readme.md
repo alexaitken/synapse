@@ -13,6 +13,8 @@ Synapse is partially an idiomatic port of [AxonFramework](http://axonframework.o
 
 ## Resources
 
+Have questions? Come to `#synapse-cqrs` on `irc.freenode.net`. I'm usually around.
+
 + [CQRS Guide](http://cqrsguide.com/guide)
 + [CQRS is too complicated](http://codeofrob.com/entries/cqrs-is-too-complicated.html)
 + [AxonFramework reference guide](http://www.axonframework.org/docs/2.0/)

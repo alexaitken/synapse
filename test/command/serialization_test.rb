@@ -10,11 +10,14 @@ module Synapse
         command = CommandMessage.build
         chain = Object.new
         unit = Object.new
+        result = Object.new
 
-        mock(chain).proceed(command)
+        mock(chain).proceed(command) do
+          result
+        end
         mock(unit).register_listener(is_a(SerializationOptimizingListener))
 
-        interceptor.intercept(command, unit, chain)
+        assert_same result, interceptor.intercept(command, unit, chain)
       end
     end
 
