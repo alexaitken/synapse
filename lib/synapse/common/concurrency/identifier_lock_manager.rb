@@ -1,21 +1,30 @@
 module Synapse
+  # Generic lock manager that can be used to lock identifiers for exclusive access
   class IdentifierLockManager
     @mutex = Mutex.new
     @instances = Ref::WeakKeyMap.new
 
     class << self
+      # @api private
+      # @return [Array]
       def instances
         @mutex.synchronize do
           @instances.keys
         end
       end
 
+      # @api private
+      # @param [IdentifierLockManager] instance
+      # @return [undefined]
       def add(instance)
         @mutex.synchronize do
           @instances[instance] = true
         end
       end
 
+      # @api private
+      # @param [Thread] thread
+      # @return [Set]
       def waiters_for_locks_owned_by(thread)
         stack = Array.new
         waiters = Set.new
@@ -27,6 +36,11 @@ module Synapse
 
     private
 
+      # @param [Thread] thread
+      # @param [Array] managers
+      # @param [Set] waiters
+      # @param [Array] stack
+      # @return [undefined]
       def find_waiters(thread, managers, waiters, stack)
         stack.push thread
 
@@ -51,6 +65,7 @@ module Synapse
       end
     end
 
+    # @return [undefined]
     def initialize
       @locks = Hash.new
       @mutex = Mutex.new
@@ -58,10 +73,19 @@ module Synapse
       IdentifierLockManager.add self
     end
 
+    # Returns true if the calling thread holds the lock for the given identifier
+    #
+    # @param [Object] identifier
+    # @return [Boolean]
     def owned?(identifier)
       lock_available?(identifier) && lock_for(identifier).owned?
     end
 
+
+    # Obtains a lock for the given identifier, blocking until the lock is obtained
+    #
+    # @param [Object] identifier
+    # @return [undefined]
     def obtain_lock(identifier)
       loop do
         lock = lock_for identifier
@@ -71,6 +95,11 @@ module Synapse
       end
     end
 
+    # Releases a lock for the given identifier
+    #
+    # @raise [RuntimeError] If no lock was ever obtained for the identifier
+    # @param [Object] identifier
+    # @return [undefined]
     def release_lock(identifier)
       unless lock_available? identifier
         raise RuntimeError
@@ -83,6 +112,7 @@ module Synapse
     end
 
     # @api private
+    # @return [Array]
     def internal_locks
       @mutex.synchronize do
         @locks.values
@@ -91,12 +121,18 @@ module Synapse
 
   private
 
+    # @param [Object] identifier
+    # @param [DisposableLock] lock
+    # @return [undefined]
     def try_dispose(identifier, lock)
       if lock.try_close
         remove_lock identifier, lock
       end
     end
 
+    # @param [Object] identifier
+    # @param [DisposableLock] lock
+    # @return [undefined]
     def remove_lock(identifier, lock)
       @mutex.synchronize do
         @locks.delete_if do |i, l|
@@ -105,6 +141,8 @@ module Synapse
       end
     end
 
+    # @param [Object] identifier
+    # @return [DisposableLock]
     def lock_for(identifier)
       @mutex.synchronize do
         if @locks.has_key? identifier
@@ -115,150 +153,12 @@ module Synapse
       end
     end
 
+    # @param [Object] identifier
+    # @return [Boolean]
     def lock_available?(identifier)
       @mutex.synchronize do
         @locks.has_key? identifier
       end
     end
-  end
-
-  # @api private
-  class DisposableLock
-    attr_reader :closed
-
-    alias_method :closed?, :closed
-
-    attr_reader :hold_count
-    attr_reader :owner
-    attr_reader :waiters
-
-    def initialize
-      @mutex = Mutex.new
-
-      @closed = false
-      @hold_count = 0
-      @owner = nil
-      @waiters = Array.new
-    end
-
-    def owned?
-      @owner == Thread.current
-    end
-
-    def owned_by?(thread)
-      @owner == thread
-    end
-
-    def locked?
-      @hold_count > 0
-    end
-
-    def lock
-      @mutex.synchronize do
-        unless owned?
-          if @hold_count == 0
-            @owner = Thread.current
-          else
-            @waiters.push Thread.current
-
-            begin
-              wait_for_lock
-            ensure
-              @waiters.delete Thread.current
-            end
-
-            return unless owned?
-          end
-        end
-
-        @hold_count += 1
-      end
-
-      if closed?
-        unlock
-        return false
-      end
-
-      return true
-    end
-
-    def try_lock
-      @mutex.synchronize do
-        unless owned?
-          if @hold_count == 0
-            @owner = Thread.current
-          else
-            return false
-          end
-        end
-
-        @hold_count += 1
-        return true
-      end
-    end
-
-    def unlock
-      @mutex.synchronize do
-        raise ArgumentError unless owned?
-
-        @hold_count -= 1
-
-        if @hold_count == 0
-          @owner = nil
-          wakeup_next_waiter
-        end
-      end
-    end
-
-    def try_close
-      return false unless try_lock
-
-      begin
-        if @hold_count == 1
-          @closed = true
-          return true
-        end
-
-        return false
-      ensure
-        unlock
-      end
-    end
-
-  private
-
-    def check_for_deadlock
-      return if owned?
-      return unless locked?
-
-      for waiter in IdentifierLockManager.waiters_for_locks_owned_by(Thread.current)
-        if owned_by? waiter
-          raise DeadlockError
-        end
-      end
-    end
-
-    # Mutex must be locked to perform this operation
-    def wait_for_lock
-      loop do
-        if @hold_count == 0
-          @owner = Thread.current
-          return
-        end
-
-        check_for_deadlock
-        @mutex.sleep 0.1 # Sleep for 100 milliseconds
-      end
-    end
-
-    def wakeup_next_waiter
-      begin
-        n = @waiters.shift
-        n.wakeup if n
-      rescue ThreadError
-        retry
-      end
-    end
-  end
+  end # IdentifierLockManager
 end
-
