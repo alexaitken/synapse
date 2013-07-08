@@ -92,15 +92,8 @@ module Synapse
   private
 
     def try_dispose(identifier, lock)
-      return unless lock.try_lock
-
-      begin
-        if lock.hold_count == 1
-          lock.close
-          remove_lock identifier, lock
-        end
-      ensure
-        lock.unlock
+      if lock.try_close
+        remove_lock identifier, lock
       end
     end
 
@@ -146,11 +139,6 @@ module Synapse
       @hold_count = 0
       @owner = nil
       @waiters = Array.new
-    end
-
-    # Should only be called by lock owners
-    def close
-      @closed = true
     end
 
     def owned?
@@ -219,6 +207,21 @@ module Synapse
           @owner = nil
           wakeup_next_waiter
         end
+      end
+    end
+
+    def try_close
+      return false unless try_lock
+
+      begin
+        if @hold_count == 1
+          @closed = true
+          return true
+        end
+
+        return false
+      ensure
+        unlock
       end
     end
 
