@@ -1,8 +1,10 @@
 require 'active_support'
 require 'active_support/core_ext'
+require 'atomic'
 require 'contender'
 require 'forwardable'
 require 'logging'
+require 'ref'
 require 'set'
 
 require 'synapse/common'
