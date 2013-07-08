@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'atomic', '~> 1.1'
   s.add_dependency 'logging', '~> 1.8'
   s.add_dependency 'contender', '~> 0.1'
+  s.add_dependency 'ref', '~> 1.0'
 end
