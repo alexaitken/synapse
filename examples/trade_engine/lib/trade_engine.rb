@@ -1,5 +1,6 @@
 require 'active_model'
-require 'synapse'
+
+require 'synapse-core'
 require 'synapse-mongo'
 
 require 'trade_engine/commands'

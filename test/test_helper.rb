@@ -10,7 +10,7 @@ else
   end
 end
 
-require 'synapse'
+require 'synapse-core'
 
 require 'pp'
 require 'test/unit'
