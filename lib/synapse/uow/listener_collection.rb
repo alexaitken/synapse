@@ -23,7 +23,7 @@ module Synapse
       # @param [UnitOfWorkListener] listener
       # @return [undefined]
       def push(listener)
-        @logger.debug 'Registering listener [%s]' % listener.class
+        @logger.debug "Registering listener {#{listener.class}}"
         @listeners.push listener
       end
 
@@ -33,7 +33,7 @@ module Synapse
       # @return [undefined]
       def on_start(unit)
         @listeners.each do |listener|
-          @logger.debug 'Notifying [%s] of start' % listener.class
+          @logger.debug "Notifying {#{listener.class}} that unit of work is starting"
           listener.on_start unit
         end
       end
@@ -55,7 +55,7 @@ module Synapse
       # @return [undefined]
       def on_prepare_commit(unit, aggregates, events)
         @listeners.each do |listener|
-          @logger.debug 'Notifying [%s] of commit' % listener.class
+          @logger.debug "Notifying {#{listener.class}} that unit of work is preparing for commit"
           listener.on_prepare_commit unit, aggregates, events
         end
       end
@@ -65,7 +65,7 @@ module Synapse
       # @return [undefined]
       def on_prepare_transaction_commit(unit, transaction)
         @listeners.each do |listener|
-          @logger.debug 'Notifying [%s] of transactional commit' % listener.class
+          @logger.debug "Notifying {#{listener.class}} that unit of work is preparing for tx commit"
           listener.on_prepare_transaction_commit unit, transaction
         end
       end
@@ -74,7 +74,7 @@ module Synapse
       # @return [undefined]
       def after_commit(unit)
         @listeners.reverse_each do |listener|
-          @logger.debug 'Notifying [%s] of finished commit' % listener.class
+          @logger.debug "Notifying {#{listener.class}} that unit of work has been committed"
           listener.after_commit unit
         end
       end
@@ -84,7 +84,7 @@ module Synapse
       # @return [undefined]
       def on_rollback(unit, cause = nil)
         @listeners.reverse_each do |listener|
-          @logger.debug 'Notifying [%s] of rollback' % listener.class
+          @logger.debug "Notifying {#{listener.class}} that unit of work is rolling back"
           listener.on_rollback unit, cause
         end
       end
@@ -93,13 +93,15 @@ module Synapse
       # @return [undefined]
       def on_cleanup(unit)
         @listeners.reverse_each do |listener|
-          @logger.debug 'Notifying [%s] of cleanup' % listener.class
+          @logger.debug "Notifying {#{listener.class}} that unit of work is cleaning up"
 
           begin
             listener.on_cleanup unit
           rescue => exception
             # Ignore this exception so that we can continue cleaning up
-            @logger.warn 'Listener raised an exception during cleanup: %s' % exception.inspect
+            backtrace = exception.backtrace.join $RS
+            @logger.warn "Listener {#{listener.class}} raised exception during cleanup: " +
+              "#{exception.inspect} #{backtrace}"
           end
         end
       end

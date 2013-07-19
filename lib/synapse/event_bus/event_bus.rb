@@ -22,7 +22,7 @@ module Synapse
       # Subscribes the given listener to this event bus
       #
       # @abstract
-      # @raise [SubscriptionFailedError] If subscription of an event listener failed
+      # @raise [SubscriptionError] If subscription of an event listener failed
       # @param [EventListener] listener
       # @return [undefined]
       def subscribe(listener)
@@ -41,6 +41,6 @@ module Synapse
 
     # Raised when the subscription of an event listener has not succeeded. Generally, this means that
     # some precondition set by an event bus implementation for the listener have not been met.
-    class SubscriptionFailedError < NonTransientError; end
+    class SubscriptionError < NonTransientError; end
   end
 end

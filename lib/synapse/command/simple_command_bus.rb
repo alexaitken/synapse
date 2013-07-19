@@ -30,7 +30,7 @@ module Synapse
       # @param [CommandMessage] command
       # @return [undefined]
       def dispatch(command)
-        dispatch_with_callback command, CommandCallback.new
+        dispatch_with_callback command, VoidCallback.new
       end
 
       # @api public

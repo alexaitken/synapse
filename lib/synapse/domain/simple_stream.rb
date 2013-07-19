@@ -9,14 +9,13 @@ module Synapse
         @next_index = 0
       end
 
-      # Returns true if the end of the stream has been reached
+      # @api public
       # @return [Boolean]
       def end?
         @next_index >= @events.size
       end
 
-      # Returns the next event in the stream and moves the stream's pointer forward
-      #
+      # @api public
       # @raise [EndOfStreamError] If the end of the stream has been reached
       # @return [DomainEventMessage]
       def next_event
@@ -28,8 +27,7 @@ module Synapse
         event
       end
 
-      # Returns the next event in the stream without moving the stream's pointer forward
-      #
+      # @api public
       # @raise [EndOfStreamError] If the end of the stream has been reached
       # @return [DomainEventMessage]
       def peek
