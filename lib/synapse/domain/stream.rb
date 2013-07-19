@@ -3,13 +3,13 @@ module Synapse
     # Represents a historical stream of domain events in chronological order
     #
     # @example
-    #   stream = InMemoryDomainEventStream.new events
+    #   stream = SimpleDomainEventStream.new events
     #   until stream.end?
     #     puts stream.next_event
     #   end
     #
     # @example
-    #   stream = InMemoryDomainEventStream.new events
+    #   stream = SimpleDomainEventStream.new events
     #   stream.each do |event|
     #     puts event
     #   end

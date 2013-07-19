@@ -40,3 +40,4 @@ require 'synapse/command/gateway/interval_retry_scheduler'
 require 'synapse/command/gateway/retrying_callback'
 
 require 'synapse/command/callbacks/future'
+require 'synapse/command/callbacks/void'

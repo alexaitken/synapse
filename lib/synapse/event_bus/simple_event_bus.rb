@@ -17,8 +17,7 @@ module Synapse
         events.flatten!
         events.each do |event|
           @listeners.each do |listener|
-            @logger.debug 'Dispatching event [%s] to listener [%s]' %
-              [event.payload_type, listener.class]
+            @logger.debug "Publishing event {#{event.payload_type}} to {#{listener.class}}"
 
             listener.notify event
           end
@@ -39,9 +38,9 @@ module Synapse
       # @return [undefined]
       def subscribe(listener)
         if @listeners.add? listener
-          @logger.debug 'Event listener [%s] subscribed' % listener.class
+          @logger.debug "Event listener {#{listener.class}} subscribed"
         else
-          @logger.info 'Event listener [%s] not added, was already subscribed' % listener.class
+          @logger.info "Event listener {#{listener.class}} is already subscribed"
         end
       end
 
@@ -50,9 +49,9 @@ module Synapse
       # @return [undefined]
       def unsubscribe(listener)
         if @listeners.delete? listener
-          @logger.debug 'Event listener [%s] unsubscribed' % listener.class
+          @logger.debug "Event listener {#{listener.class}} unsubscribed"
         else
-          @logger.info 'Event listener [%s] not removed, was not subscribed' % listener.class
+          @logger.info "Event listener {#{listener.class}} is not subscribed"
         end
       end
     end # SimpleEventBus
