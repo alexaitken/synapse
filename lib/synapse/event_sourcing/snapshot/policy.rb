@@ -23,7 +23,7 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
       def should_snapshot?(aggregate)
-        (aggregate.version - (aggregate.initial_version or 0)) >= @threshold
+        (aggregate.version - (aggregate.initial_version || 0)) >= @threshold
       end
     end # IntervalSnapshotPolicy
   end # EventSourcing

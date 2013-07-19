@@ -51,9 +51,7 @@ module Synapse
           raise Repository::AggregateNotFoundError
         end
 
-        @stream_decorators.each do |decorator|
-          stream = decorator.decorate_for_read aggregate_type, aggregate_id, stream
-        end
+        stream = decorate_stream_for_read aggregate_id, stream
 
         aggregate = @aggregate_factory.create_aggregate aggregate_id, stream.peek
 
@@ -93,9 +91,7 @@ module Synapse
       # @return [undefined]
       def save_aggregate_with_lock(aggregate)
         stream = aggregate.uncommitted_events
-        @stream_decorators.reverse_each do |decorator|
-          stream = decorator.decorate_for_append type_identifier, aggregate, stream
-        end
+        stream = decorate_stream_for_append aggregate, stream
 
         @event_store.append_events type_identifier, stream
         aggregate.mark_committed
@@ -112,6 +108,26 @@ module Synapse
       end
 
     private
+
+      # @param [Object] aggregate_id
+      # @param [DomainEventStream] stream
+      # @return [DomainEventStream]
+      def decorate_stream_for_read(aggregate_id, stream)
+        @stream_decorators.each do |decorator|
+          stream = decorator.decorate_for_read aggregate_type, aggregate_id, stream
+        end
+
+        stream
+      end
+
+      # @param [AggregateRoot] aggregate
+      # @param [DomainEventStream] stream
+      # @return [DomainEventStream]
+      def decorate_stream_for_append(aggregate, stream)
+        @stream_decorators.reverse_each do |decorator|
+          stream = decorator.decreate_for_append type_identifier, aggregate, stream
+        end
+      end
 
       # @param [DomainEventStream] stream
       # @param [AggregateRoot] aggregate
