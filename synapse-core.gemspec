@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = 'A versatile CQRS and event sourcing framework'
   s.summary = 'A versatile CQRS and event sourcing framework'
 
-  s.files = Dir.glob '{lib,test}/**/*'
+  s.files = Dir.glob '{lib,spec}/**/*'
   s.require_path = 'lib'
 
   s.add_dependency 'activesupport', '~> 3.2'
