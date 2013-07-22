@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module Serialization
-    
+
     describe IdentityConverter do
       it 'passes through objects unchanged' do
         converter = IdentityConverter.new Hash
@@ -14,6 +14,6 @@ module Synapse
         converter.convert_content(content).should be(content)
       end
     end
-    
+
   end
 end

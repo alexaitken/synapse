@@ -3,7 +3,7 @@ require 'upcasting/fixtures'
 
 module Synapse
   module Upcasting
-    
+
     describe UpcasterChain do
       it 'treats registered upcasters as an upcasting pipeline' do
         factory = Serialization::ConverterFactory.new
@@ -24,6 +24,6 @@ module Synapse
         output[1].type.name.should == 'BarEvent'
       end
     end
-    
+
   end
 end

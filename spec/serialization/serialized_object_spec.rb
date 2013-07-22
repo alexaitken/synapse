@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module Serialization
-    
+
     describe SerializedObject do
       it 'provides correct attributes' do
         content = 'some content'
@@ -28,12 +28,12 @@ module Synapse
         b.should == a
         a.should_not == c
         a.should_not == d
-        
+
         a.hash.should == b.hash
         a.hash.should_not == c.hash
         a.hash.should_not == d.hash
       end
     end
-    
+
   end
 end

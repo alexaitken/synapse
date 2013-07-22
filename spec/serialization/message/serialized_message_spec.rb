@@ -42,19 +42,19 @@ module Synapse
           builder.metadata = metadata_lazy
           builder.payload = payload_lazy
         end
-        
+
         expect(message.serialized_metadata.deserialized?).to be_false
         message.metadata.should == metadata
         expect(message.serialized_metadata.deserialized?).to be_true
-        
+
         message.payload_type.should == Hash
         expect(message.serialized_payload.deserialized?).to be_false
         message.payload.should == payload
         expect(message.serialized_payload.deserialized?).to be_true
-        
+
         expect(message.serialize_metadata(@serializer_a, String)).to be(metadata_serialized)
         expect(message.serialize_payload(@serializer_a, String)).to be(payload_serialized)
-        
+
         expect(message.serialize_metadata(@serializer_b, String)).to eql(metadata_serialized)
         expect(message.serialize_payload(@serializer_b, String)).to eql(payload_serialized)
       end

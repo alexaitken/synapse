@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module Serialization
-    
+
     describe AttributeSerializer do
       it 'supports serialization and deserialization of a hash' do
         converter_factory = ConverterFactory.new
@@ -13,10 +13,10 @@ module Synapse
         }
 
         serialized_object = serializer.serialize(content, Hash)
-        
+
         expect(serialized_object.content).to eql(content)
         expect(serializer.deserialize(serialized_object)).to eql(content)
-        
+
         expect(serializer.can_serialize_to?(Hash)).to be_true
       end
 
@@ -31,7 +31,7 @@ module Synapse
         }
 
         serialized_object = serializer.serialize(content, Hash)
-        
+
         expect(serialized_object.content).to eql(attributes)
         expect(serializer.deserialize(serialized_object).attributes).to eql(attributes)
       end
@@ -46,6 +46,6 @@ module Synapse
         }
       end
     end
-    
+
   end
 end

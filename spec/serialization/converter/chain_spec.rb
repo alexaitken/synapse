@@ -9,7 +9,7 @@ module Synapse
         converters << ObjectToJsonConverter.new << JsonToObjectConverter.new
 
         chain = ConverterChain.new converters
-        
+
         chain.source_type.should == Object
         chain.target_type.should == Object
 
@@ -20,7 +20,7 @@ module Synapse
 
         converted = chain.convert object
         converted_content = chain.convert_content content
-        
+
         converted.content.should == content
         converted_content.should == content
         converted.type.should == type

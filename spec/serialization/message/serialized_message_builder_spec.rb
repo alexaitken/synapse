@@ -19,14 +19,14 @@ module Synapse
         builder.from_data data, serializer
 
         built = builder.build
-        
+
         expect(built.id).to eql(data.id)
-        
+
         expect(built.serialized_metadata.serialized_object).to eql(data.metadata)
         expect(built.serialized_metadata.serializer).to eql(serializer)
         expect(built.serialized_payload.serialized_object).to eql(data.payload)
         expect(built.serialized_payload.serializer).to eql(serializer)
-        
+
         expect(built.timestamp).to eql(data.timestamp)
         expect(built.aggregate_id).to eql(data.aggregate_id)
         expect(built.sequence_number).to eql(data.sequence_number)

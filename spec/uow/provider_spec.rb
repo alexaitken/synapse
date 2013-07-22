@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module UnitOfWork
-    
+
     describe UnitOfWorkProvider do
       before do
         @provider = UnitOfWorkProvider.new
@@ -23,7 +23,7 @@ module Synapse
 
         outer.start
         inner.start
-        
+
         expect {
           @provider.clear outer
         }.to raise_error(ArgumentError)
@@ -34,7 +34,7 @@ module Synapse
         uow.start
 
         @provider.commit
-        
+
         expect(@provider.started?).to be_false
         expect(uow.started?).to be_false
       end
@@ -47,7 +47,7 @@ module Synapse
         }.to raise_error(RuntimeError)
 
         uow.start
-        
+
         expect(@provider.current).to be(uow)
       end
 
@@ -67,6 +67,6 @@ module Synapse
         expect(t2.value).to be_false
       end
     end
-    
+
   end
 end

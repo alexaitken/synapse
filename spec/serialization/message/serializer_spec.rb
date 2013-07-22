@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module Serialization
-    
+
     describe MessageSerializer do
       it 'delegates serialization to serializer if message not serialization aware' do
         delegate = Object.new
@@ -25,7 +25,7 @@ module Synapse
         mock(delegate).serialize(payload, String) do
           serialized_payload
         end
-        
+
         serializer.serialize_metadata(m, String).should == serialized_metadata
         serializer.serialize_payload(m, String).should == serialized_payload
       end
@@ -47,6 +47,6 @@ module Synapse
         serializer.serialize_payload(stub, String)
       end
     end
-    
+
   end
 end

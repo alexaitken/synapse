@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module Serialization
-    
+
     describe SerializationAwareDomainEventMessage do
       it 'delegates attributes to the original message' do
         message = Domain::DomainEventMessage.build do |builder|
@@ -63,7 +63,7 @@ module Synapse
         end
 
         aware = SerializationAwareDomainEventMessage.new message
-        
+
         # Don't duplicate for empty metadata hashes
         new_aware = aware.and_metadata Hash.new
         new_aware.should be(aware)
@@ -87,6 +87,6 @@ module Synapse
         new_aware.should be_a(SerializationAwareDomainEventMessage)
       end
     end
-    
+
   end
 end

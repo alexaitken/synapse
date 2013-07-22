@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module UnitOfWork
-    
+
     describe OuterCommitUnitOfWorkListener do
       before do
         @provider = Object.new
@@ -47,6 +47,6 @@ module Synapse
     end
 
     TestError = Class.new RuntimeError
-    
+
   end
 end

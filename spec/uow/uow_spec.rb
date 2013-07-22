@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module UnitOfWork
-    
+
     describe UnitOfWork do
       before :each do
         @provider = UnitOfWorkProvider.new
@@ -17,7 +17,7 @@ module Synapse
 
       it 'raises an exception if the unit is started twice' do
         @uow.start
-        
+
         expect {
           @uow.start
         }.to raise_error(RuntimeError)
@@ -39,7 +39,7 @@ module Synapse
 
         event_bus = Object.new
         storage_callback = lambda {}
-        
+
         @uow.register_aggregate(aggregate_a, event_bus, &storage_callback).should be(aggregate_a)
         @uow.register_aggregate(aggregate_b, event_bus, &storage_callback).should be(aggregate_b)
         @uow.register_aggregate(aggregate_c, event_bus, &storage_callback).should be(aggregate_c)
@@ -131,11 +131,11 @@ module Synapse
 
         inner_unit.register_listener listener
         inner_unit.commit
-        
+
         committed.should be_false
 
         outer_unit.commit
-        
+
         committed.should be_true
       end
 
@@ -152,7 +152,7 @@ module Synapse
 
         @uow.register_listener listener
         @uow.start
-        
+
         expect {
           @uow.commit
         }.to raise_error(TestError)
@@ -177,7 +177,7 @@ module Synapse
         @uow.register_aggregate aggregate_root, event_bus do |aggregate|
           raise cause
         end
-        
+
         expect {
           @uow.commit
         }.to raise_error(TestError)
@@ -201,7 +201,7 @@ module Synapse
         @uow.start
         @uow.register_listener listener
         @uow.publish_event event, event_bus
-        
+
         expect {
           @uow.commit
         }.to raise_error(TestError)
@@ -318,7 +318,7 @@ module Synapse
         uow
       end
     end
-    
+
     TestError = Class.new RuntimeError
 
     class TestAggregateA
@@ -333,6 +333,6 @@ module Synapse
         @id = id
       end
     end
-    
+
   end
 end

@@ -8,7 +8,7 @@ module Synapse
         metadata = {
           foo: 0
         }
-        
+
         provider = CommandMetadataProvider.new
         command = Command::CommandMessage.build do |builder|
           builder.metadata = metadata
