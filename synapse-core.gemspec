@@ -18,4 +18,14 @@ Gem::Specification.new do |s|
   s.add_dependency 'logging', '~> 1.8'
   s.add_dependency 'contender', '~> 0.1'
   s.add_dependency 'ref', '~> 1.0'
+
+  # Development dependencies
+  s.add_development_dependency 'rake'
+
+  # Testing dependencies
+  s.add_development_dependency 'coveralls'
+  s.add_development_dependency 'rr'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'timecop'
 end

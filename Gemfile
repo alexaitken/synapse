@@ -1,17 +1,5 @@
 source 'https://rubygems.org'
 
-group :test do
-  # Code coverage utilities
-  gem 'coveralls'
-  gem 'simplecov'
-
-  gem 'rspec'
-
-  # Test doubles
-  gem 'rr'
-  gem 'timecop'
-end
-
 group :development do
   gem 'guard-rspec'
 
