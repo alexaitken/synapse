@@ -1,22 +1,18 @@
-require 'test_helper'
+require 'spec_helper'
 require 'serialization/fixtures'
 
 module Synapse
   module Serialization
 
-    class OjSerializerTest < Test::Unit::TestCase
-      def setup
-        omit 'Oj not supported on JRuby' if defined? JRUBY_VERSION
-      end
-
-      should 'support serializing and deserializing content' do
+    describe OjSerializer, oj: true do
+      it 'supports serializing and deserializing content' do
         serializer = OjSerializer.new ConverterFactory.new
         event = TestEvent.new 'derp', 'herp'
 
         serialized_obj = serializer.serialize event, String
         deserialized = serializer.deserialize serialized_obj
 
-        assert_equal event, deserialized
+        deserialized.should == event
       end
     end
 

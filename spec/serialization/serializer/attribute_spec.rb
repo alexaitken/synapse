@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Serialization
     
-    class AttributeSerializerTest < Test::Unit::TestCase
-      should 'support serialization and deserialization of a hash' do
+    describe AttributeSerializer do
+      it 'supports serialization and deserialization of a hash' do
         converter_factory = ConverterFactory.new
         serializer = AttributeSerializer.new converter_factory
 
@@ -13,13 +13,14 @@ module Synapse
         }
 
         serialized_object = serializer.serialize(content, Hash)
-        assert_same content, serialized_object.content
-        assert_same content, serializer.deserialize(serialized_object)
-
-        assert serializer.can_serialize_to? Hash
+        
+        expect(serialized_object.content).to eql(content)
+        expect(serializer.deserialize(serialized_object)).to eql(content)
+        
+        expect(serializer.can_serialize_to?(Hash)).to be_true
       end
 
-      should 'support serialization and deserialization of a compatible object' do
+      it 'supports serialization and deserialization of a compatible object' do
         converter_factory = ConverterFactory.new
         serializer = AttributeSerializer.new converter_factory
 
@@ -30,10 +31,9 @@ module Synapse
         }
 
         serialized_object = serializer.serialize(content, Hash)
-        assert_equal attributes, serialized_object.content
-
-        deserialized = serializer.deserialize serialized_object
-        assert_equal attributes, deserialized.attributes
+        
+        expect(serialized_object.content).to eql(attributes)
+        expect(serializer.deserialize(serialized_object).attributes).to eql(attributes)
       end
     end
 

@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Serialization
 
-    class SerializerTest < Test::Unit::TestCase
-      should 'add revisions to serialized objects when a revision resolver is present' do
+    describe Serializer do
+      it 'uses a revision resolver when one is configured' do
         revision = '123'
 
         serializer = Serializer.new ConverterFactory.new
@@ -12,7 +12,7 @@ module Synapse
 
         type = serializer.type_for Object
 
-        assert_equal revision, type.revision
+        type.revision.should == revision
       end
     end
 
