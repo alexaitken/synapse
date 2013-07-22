@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module EventBus
 
-    class MappingEventListenerTest < Test::Unit::TestCase
+    describe MappingEventListener do
       should 'use the correct handler when notified of an events' do
         listener = ExampleMappingEventListener.new
 

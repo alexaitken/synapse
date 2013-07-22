@@ -3,7 +3,7 @@ require 'domain/fixtures'
 
 module Synapse
   module EventSourcing
-    class EventSourcingRepositoryTest < Test::Unit::TestCase
+    describe EventSourcingRepository do
       def setup
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
         @unit = UnitOfWork::UnitOfWork.new @unit_provider

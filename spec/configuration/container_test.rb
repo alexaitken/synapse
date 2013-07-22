@@ -3,7 +3,7 @@ require 'configuration/fixtures/dependent'
 
 module Synapse
   module Configuration
-    class ContainerTest < Test::Unit::TestCase
+    describe Container do
 
       should 'inject services into a Dependent object' do
         container = Container.new

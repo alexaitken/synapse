@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class DefinitionTest < Test::Unit::TestCase
+    describe Definition do
 
       should 'call the defrred factory every time if prototype' do
         factory_invoked = 0

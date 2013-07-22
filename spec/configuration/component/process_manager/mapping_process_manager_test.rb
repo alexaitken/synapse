@@ -3,7 +3,7 @@ require 'process_manager/mapping/fixtures'
 
 module Synapse
   module Configuration
-    class MappingProcessManagerDefinitionBuilderTest < Test::Unit::TestCase
+    describe MappingProcessManagerDefinitionBuilder do
 
       def setup
         @container = Container.new

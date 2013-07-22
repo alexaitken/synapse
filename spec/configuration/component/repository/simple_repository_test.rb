@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class SimpleRepositoryDefinitionBuilderTest < Test::Unit::TestCase
+    describe SimpleRepositoryDefinitionBuilder do
 
       def setup
         @container = Container.new

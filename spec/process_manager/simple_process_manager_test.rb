@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module ProcessManager
-    class SimpleProcessManagerTest < Test::Unit::TestCase
+    describe SimpleProcessManager do
       def setup
         @repository = InMemoryProcessRepository.new
         @factory = GenericProcessFactory.new

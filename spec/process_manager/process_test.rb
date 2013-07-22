@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module ProcessManager
 
-    class ProcessTest < Test::Unit::TestCase
+    describe Process do
       should 'initialize with sensible defaults' do
         process = StubProcess.new
         correlation = Correlation.new :process_id, process.id

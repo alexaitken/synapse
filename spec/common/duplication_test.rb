@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Synapse
-  class DuplicationRecorderTest < Test::Unit::TestCase
+  describe DuplicationRecorder do
     def setup
       @recorder = DuplicationRecorder.new
       @message = Message.build

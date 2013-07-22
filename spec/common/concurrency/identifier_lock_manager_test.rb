@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Synapse
-  class IdentifierLockManagerTest < Test::Unit::TestCase
+  describe IdentifierLockManager do
     CountdownLatch = Contender::CountdownLatch
 
     should 'dispose locks when they are no longer in use' do

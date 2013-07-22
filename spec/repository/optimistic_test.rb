@@ -3,7 +3,7 @@ require 'domain/fixtures'
 
 module Synapse
   module Repository
-    class OptimisticLockManagerTest < Test::Unit::TestCase
+    describe OptimisticLockManager do
       should 'fail to validate on concurrent modification' do
         manager = OptimisticLockManager.new
 

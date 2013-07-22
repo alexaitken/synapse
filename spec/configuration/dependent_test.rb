@@ -3,7 +3,7 @@ require 'configuration/fixtures/dependent'
 
 module Synapse
   module Configuration
-    class DependentTest < Test::Unit::TestCase
+    describe Dependent do
 
       should 'create accessors for injectable attributes' do
         dependent = ExampleDependent.new

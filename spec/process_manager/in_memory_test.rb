@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module ProcessManager
 
-    class InMemoryProcessRepositoryTest < Test::Unit::TestCase
+    describe InMemoryProcessRepository do
       should 'support finding processes by correlations' do
         correlation_a = Correlation.new :order_id, 1
         correlation_b = Correlation.new :order_id, 2

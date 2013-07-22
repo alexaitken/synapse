@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Command
 
-    class SimpleCommandBusTest < Test::Unit::TestCase
-      def setup
+    describe SimpleCommandBus do
+      before do
         @unit_factory = Object.new
         @unit = Object.new
         @command_bus = SimpleCommandBus.new @unit_factory
@@ -15,7 +15,7 @@ module Synapse
         end
       end
 
-      should 'dispatch a command message to its registered handler' do
+      it 'dispatches a command message to its registered handler' do
         handler = Object.new
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
@@ -28,7 +28,7 @@ module Synapse
         @command_bus.dispatch command
       end
 
-      should 'invoke a callback with the return value from a command handler' do
+      it 'invokes a callback with the return value from a command handler' do
         handler = Object.new
         callback = Object.new
         command = CommandMessage.build do |m|
@@ -47,7 +47,7 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      should 'raise an exception when a dispatched command has no registered handler' do
+      it 'raises an exception when a dispatched command has no registered handler' do
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
         end
@@ -58,7 +58,7 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      should 'roll back the current unit of work if the command handler raises an exception' do
+      it 'rolls back the current unit of work if the command handler raises an exception' do
         handler = Object.new
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
@@ -81,7 +81,7 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      should 'commit the current unit of work if the command handler raises an exception' do
+      it 'commits the current unit of work if the command handler raises an exception' do
         handler = Object.new
         command = CommandMessage.build do |m|
           m.payload = TestCommand.new
@@ -108,22 +108,22 @@ module Synapse
         @command_bus.dispatch_with_callback command, callback
       end
 
-      should 'return the previous handler when a subscribed handler is replaced' do
+      it 'returns the previous handler when a subscribed handler is replaced' do
         handler_a = Object.new
         handler_b = Object.new
 
-        assert_nil (@command_bus.subscribe TestCommand, handler_a)
-        assert_same (@command_bus.subscribe TestCommand, handler_b), handler_a
+        @command_bus.subscribe(TestCommand, handler_a).should be_nil
+        @command_bus.subscribe(TestCommand, handler_b).should be(handler_a)
       end
 
-      should 'return true when a handler is unsubscribed' do
+      it 'returns true when a handler is unsubscribed' do
         handler_a = Object.new
         handler_b = Object.new
 
-        refute @command_bus.unsubscribe TestCommand, handler_a
+        @command_bus.unsubscribe(TestCommand, handler_a).should be_false
         @command_bus.subscribe TestCommand, handler_a
-        refute @command_bus.unsubscribe TestCommand, handler_b
-        assert @command_bus.unsubscribe TestCommand, handler_a
+        @command_bus.unsubscribe(TestCommand, handler_b).should be_false
+        @command_bus.unsubscribe(TestCommand, handler_a).should be_true
       end
     end
 

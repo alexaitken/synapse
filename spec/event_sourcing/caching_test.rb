@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module EventSourcing
-    class CachingEventSourcingRepositoryTest < Test::Unit::TestCase
+    describe CachingEventSourcingRepository do
 
       def setup
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new

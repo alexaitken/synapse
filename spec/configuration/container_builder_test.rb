@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class ContainerBuilderTest < Test::Unit::TestCase
+    describe ContainerBuilder do
       def setup
         # Backup any existing initializers
         @initializers = ContainerBuilder.initializers

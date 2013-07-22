@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Domain
-    class SimpleDomainEventStreamTest < Test::Unit::TestCase
+    describe SimpleDomainEventStream do
 
       def setup
         @events = Array.new

@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Domain
-    class EventMessageTest < Test::Unit::TestCase
+    describe EventMessage do
       should 'wrap event objects into event messages' do
         event = Object.new
         event_message = EventMessage.build
@@ -14,7 +14,7 @@ module Synapse
       end
     end
 
-    class DomainEventMessageTest < Test::Unit::TestCase
+    describe DomainEventMessage do
       def setup
         @payload = OpenStruct.new
         @aggregate_id = 123

@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class EventSourcingRepositoryDefinitionBuilderTest < Test::Unit::TestCase
+    describe EventSourcingRepositoryDefinitionBuilder do
 
       def setup
         @container = Container.new

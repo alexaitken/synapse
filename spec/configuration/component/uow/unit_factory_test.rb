@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class UnitOfWorkFactoryDefinitionBuilderTest < Test::Unit::TestCase
+    describe UnitOfWorkFactoryDefinitionBuilder do
       def setup
         @container = Container.new
         @builder = ContainerBuilder.new @container

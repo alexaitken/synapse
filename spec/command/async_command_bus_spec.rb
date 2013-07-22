@@ -1,9 +1,9 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Command
-    class AsynchronousCommandBusTest < Test::Unit::TestCase
-      def setup
+    describe AsynchronousCommandBus do
+      before do
         unit_provider = UnitOfWork::UnitOfWorkProvider.new
         unit_factory = UnitOfWork::UnitOfWorkFactory.new unit_provider
 
@@ -12,7 +12,7 @@ module Synapse
         @bus.thread_pool.start
       end
 
-      should 'be able to dispatch commands asynchronously using a thread pool' do
+      it 'dispatches commands asynchronously using a thread pool' do
         x = 5 # Number of commands to dispatch
 
         command = CommandMessage.as_message TestCommand.new
@@ -25,7 +25,7 @@ module Synapse
           @bus.dispatch command
         end
 
-        assert latch.await 5
+        latch.await
 
         @bus.shutdown
       end

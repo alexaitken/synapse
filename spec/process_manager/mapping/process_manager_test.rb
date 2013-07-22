@@ -4,7 +4,7 @@ require 'process_manager/mapping/fixtures'
 module Synapse
   module ProcessManager
 
-    class MappingProcessManagerTest < Test::Unit::TestCase
+    describe MappingProcessManager do
       def setup
         @repository = InMemoryProcessRepository.new
         @factory = GenericProcessFactory.new

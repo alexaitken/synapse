@@ -4,7 +4,7 @@ require 'event_sourcing/fixtures'
 module Synapse
   module EventSourcing
 
-    class AggregateSnapshotTakerTest < Test::Unit::TestCase
+    describe AggregateSnapshotTaker do
       def setup
         @event_store = Object.new
         @aggregate_factory = GenericAggregateFactory.new StubAggregate

@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class AsynchronousCommandBusDefinitionFactoryTest < Test::Unit::TestCase
+    describe AsynchronousCommandBusDefinitionFactory do
       def setup
         @container = Container.new
         @builder = ContainerBuilder.new @container

@@ -1,15 +1,17 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Command
 
-    class CommandGatewayTest < Test::Unit::TestCase
-      def setup
+    describe CommandGateway do
+      CountdownLatch = Contender::CountdownLatch
+
+      before do
         @command_bus = Object.new
         @gateway = CommandGateway.new @command_bus
       end
 
-      should 'wrap bare command objects in command messages before dispatch' do
+      it 'wraps bare command objects in command messages before dispatch' do
         command = Object.new
         command_message = CommandMessage.build do |builder|
           builder.payload = command
@@ -22,7 +24,7 @@ module Synapse
         @gateway.send command_message
       end
 
-      should 'wrap callback in RetryingCallback if RetryScheduler' do
+      it 'wraps callback in RetryingCallback if a retry scheduler is set' do
         @gateway.retry_scheduler = IntervalRetryScheduler.new 3, 3
 
         command = Object.new
@@ -33,7 +35,7 @@ module Synapse
         @gateway.send_with_callback command, callback
       end
 
-      should 'send a command and wait for it to be dispatched' do
+      it 'sends a command and waits for it to be dispatched' do
         @gateway.retry_scheduler = IntervalRetryScheduler.new 3, 3
 
         command = Object.new
@@ -44,14 +46,15 @@ module Synapse
         end
 
         received_result = nil
+        result_latch = CountdownLatch.new 1
 
         Thread.new do
           received_result = @gateway.send_and_wait(command)
+          result_latch.countdown
         end
 
-        wait_until do
-          received_result.equal? result
-        end
+        result_latch.await
+        received_result.should be(result)
       end
     end
 

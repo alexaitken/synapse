@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Repository
-    class LockingRepositoryTest < Test::Unit::TestCase
+    describe LockingRepository do
       def setup
         @event_bus = Object.new
         @lock_manager = Object.new

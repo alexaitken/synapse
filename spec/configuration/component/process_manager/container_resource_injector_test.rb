@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class ContainerResourceInjectorDefinitionBuilderTest < Test::Unit::TestCase
+    describe ContainerResourceInjectorDefinitionBuilder do
 
       def setup
         @container = Container.new

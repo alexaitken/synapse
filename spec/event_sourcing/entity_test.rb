@@ -4,7 +4,7 @@ require 'event_sourcing/fixtures'
 module Synapse
   module EventSourcing
 
-    class EntityTest < Test::Unit::TestCase
+    describe Entity do
       should 'raise an exception if an event is published and aggregate root is not set' do
         entity = StubEntity.new
 

@@ -17,8 +17,6 @@ require 'rspec'
 require 'rr'
 require 'timecop'
 
-require 'wait_helper'
-
 RSpec.configure do |r|
   # Ox and Oj are not compatible with JRuby
   if defined? JRUBY_VERSION

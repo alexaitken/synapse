@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module EventBus
-    class EventPublisherTest < Test::Unit::TestCase
+    describe EventPublisher do
       should 'wrap event objects in messages before they are published' do
         event_bus = Object.new
 

@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module ProcessManager
-    class CorrelationSetTest < Test::Unit::TestCase
+    describe CorrelationSet do
 
       should 'track correlation additions' do
         correlation = Correlation.new :order_id, '512d5467-d319-481e-ab5e-4d6f7445bcff'

@@ -1,28 +1,28 @@
-require 'test_helper'
+require 'spec_helper'
 require 'active_model'
 
 module Synapse
   module Command
 
-    class ActiveModelValidationFilterTest < Test::Unit::TestCase
-      should 'continue if payload of a command message is valid' do
+    describe ActiveModelValidationFilter do
+      it 'does nothing if payload of a command message is valid' do
         message = CommandMessage.build do |m|
           m.payload = CreatePersonCommand.new 'River Tam'
         end
 
         filter = ActiveModelValidationFilter.new
-        assert_same message, filter.filter(message)
+        filter.filter(message).should be(message)
       end
 
-      should 'raise an exception if payload of a command message is invalid' do
+      it 'raises an exception if payload of a command message is invalid' do
         message = CommandMessage.build do |m|
           m.payload = CreatePersonCommand.new nil
         end
 
         filter = ActiveModelValidationFilter.new
-        assert_raise ActiveModelValidationError do
+        expect {
           filter.filter message
-        end
+        }.to raise_error(ActiveModelValidationError)
       end
     end
 

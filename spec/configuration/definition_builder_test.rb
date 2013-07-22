@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class DefinitionBuilderTest < Test::Unit::TestCase
+    describe DefinitionBuilder do
 
       def setup
         @container = Container.new

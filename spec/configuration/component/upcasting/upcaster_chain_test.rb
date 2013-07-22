@@ -1,6 +1,6 @@
 module Synapse
   module Configuration
-    class UpcasterChainDefinitionBuilderTest < Test::Unit::TestCase
+    describe UpcasterChainDefinitionBuilder do
 
       def setup
         @container = Container.new

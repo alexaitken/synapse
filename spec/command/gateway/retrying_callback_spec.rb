@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Command
-    class RetryingCallbackTest < Test::Unit::TestCase
 
-      def setup
+    describe RetryingCallback do
+      before do
         @command = CommandMessage.as_message Object.new
         @delegate = Object.new
         @retry_scheduler = Object.new
@@ -13,14 +13,14 @@ module Synapse
         @callback = RetryingCallback.new @delegate, @command, @retry_scheduler, @command_bus
       end
 
-      should 'notify delegate of a successful dispatch' do
+      it 'notifies delegate of a successful dispatch' do
         result = Object.new
 
         mock(@delegate).on_success(result)
         @callback.on_success result
       end
 
-      should 'not notify delegate of a failed dispatch when rescheduling' do
+      it 'does not notify delegate of a failed dispatch when rescheduling' do
         failures = [RuntimeError.new]
 
         mock(@command_bus).dispatch_with_callback(@command, @callback)
@@ -33,7 +33,7 @@ module Synapse
         @callback.on_failure failures.last
       end
 
-      should 'notify delegate of a failed dispatch when not rescheduling' do
+      it 'notifies delegate of a failed dispatch when not rescheduling' do
         failures = [RuntimeError.new]
 
         mock(@retry_scheduler).schedule(@command, failures, is_a(Proc)) do
@@ -44,14 +44,14 @@ module Synapse
         @callback.on_failure failures.last
       end
 
-      should 'notify delegate of a failed dispatch on an unchecked exception' do
+      it 'notifies delegate of a failed dispatch on an unchecked exception' do
         failure = ThreadError.new
 
         mock(@delegate).on_failure(failure)
 
         @callback.on_failure failure
       end
-
     end
+
   end
 end

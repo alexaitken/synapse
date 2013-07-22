@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class ConverterFactoryDefinitionBuilderTest < Test::Unit::TestCase
+    describe ConverterFactoryDefinitionBuilder do
       def setup
         @container = Container.new
         @builder = ContainerBuilder.new @container

@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module ProcessManager
-    class GenericProcessFactoryTest < Test::Unit::TestCase
+    describe GenericProcessFactory do
       should 'be able to create processes' do
         injector = Object.new
 

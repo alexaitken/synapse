@@ -3,7 +3,7 @@ require 'domain/fixtures'
 
 module Synapse
   module Repository
-    class PessimisticLockManagerTest < Test::Unit::TestCase
+    describe PessimisticLockManager do
       should 'support obtaining and releasing a lock for an aggregate' do
         @manager = PessimisticLockManager.new
 

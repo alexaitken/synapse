@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module EventSourcing
 
-    class GenericAggregateFactoryTest < Test::Unit::TestCase
+    describe GenericAggregateFactory do
       def setup
         @factory = GenericAggregateFactory.new StubAggregate
       end

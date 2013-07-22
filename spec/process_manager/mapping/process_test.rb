@@ -4,7 +4,7 @@ require 'process_manager/mapping/fixtures'
 module Synapse
   module ProcessManager
 
-    class MappingProcessTest < Test::Unit::TestCase
+    describe MappingProcess do
       def setup
         @process = OrderProcess.new
       end

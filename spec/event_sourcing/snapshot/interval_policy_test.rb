@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module EventSourcing
-    class IntervalSnapshotPolicyTest < Test::Unit::TestCase
+    describe IntervalSnapshotPolicy do
 
       should 'suggest a snapshot if the threshold is surpassed' do
         aggregate_a = Object.new

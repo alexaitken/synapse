@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class ExtensionTest < Test::Unit::TestCase
+    describe Extension do
       should 'delegate building to the service container' do
         reference = Object.new
 

@@ -3,7 +3,7 @@ require 'test_helper'
 module Synapse
   module Repository
 
-    class SimpleRepositoryTest < Test::Unit::TestCase
+    describe SimpleRepository do
       def setup
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
         @unit_factory = UnitOfWork::UnitOfWorkFactory.new @unit_provider

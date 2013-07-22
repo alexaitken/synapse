@@ -3,7 +3,7 @@ require 'domain/fixtures'
 
 module Synapse
   module Domain
-    class AggregateRootTest < Test::Unit::TestCase
+    describe AggregateRoot do
 
       def setup
         @person = Person.new 123, 'Fry'

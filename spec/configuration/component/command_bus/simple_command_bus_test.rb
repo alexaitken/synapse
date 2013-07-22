@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class SimpleCommandBusDefinitionFactoryTest < Test::Unit::TestCase
+    describe SimpleCommandBusDefinitionFactory do
 
       def setup
         @container = Container.new

@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Command
 
-    class MappingCommandHandlerTest < Test::Unit::TestCase
-      should 'pass the command to the correct mapped handler' do
+    describe MappingCommandHandler do
+      it 'passes the command to the correct mapped handler' do
         handler = ExampleMappingCommandHandler.new
         unit = Object.new
 
@@ -13,25 +13,25 @@ module Synapse
         end
 
         handler.handle command, unit
-        assert handler.handled
+        handler.handled.should be_true
 
         command = CommandMessage.build do |builder|
           builder.payload = TestSubCommand.new
         end
 
         handler.handle command, unit
-        assert handler.sub_handled
+        handler.sub_handled.should be_true
 
         command = CommandMessage.build do |builder|
           builder.payload = 5
         end
 
-        assert_raise ArgumentError do
+        expect {
           handler.handle command, unit
-        end
+        }.to raise_error(ArgumentError)
       end
 
-      should 'subscribe handler to the command bus for each mapped command type' do
+      it 'subscribes handler to the command bus for each mapped command type' do
         handler = ExampleMappingCommandHandler.new
         bus = Object.new
 
@@ -41,7 +41,7 @@ module Synapse
         handler.subscribe bus
       end
 
-      should 'unsubscribe handler from the command bus for each mapped command type' do
+      it 'unsubscribes handler from the command bus for each mapped command type' do
         handler = ExampleMappingCommandHandler.new
         bus = Object.new
 

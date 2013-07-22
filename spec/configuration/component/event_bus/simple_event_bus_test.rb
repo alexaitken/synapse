@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module Configuration
-    class SimpleEventBusDefinitionBuilderTest < Test::Unit::TestCase
+    describe SimpleEventBusDefinitionBuilder do
       def setup
         @container = Container.new
         @builder = ContainerBuilder.new @container

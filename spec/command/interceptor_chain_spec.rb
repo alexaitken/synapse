@@ -1,13 +1,13 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Command
 
-    class InterceptorChainTest < Test::Unit::TestCase
-      should 'allow interceptors to control the flow of dispatch' do
+    describe InterceptorChain do
+      it 'uses interceptors to control the flow of dispatch' do
         unit = Object.new
         interceptor = Object.new
-        interceptors = Array.new << interceptor
+        interceptors = [interceptor]
         handler = Object.new
 
         command = Object.new

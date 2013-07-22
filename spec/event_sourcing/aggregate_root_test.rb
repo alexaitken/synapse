@@ -4,7 +4,7 @@ require 'event_sourcing/fixtures'
 module Synapse
   module EventSourcing
 
-    class AggregateRootTest < Test::Unit::TestCase
+    describe AggregateRoot do
       should 'track published events' do
         stub = StubAggregate.new 123
         stub.change_something

@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Synapse
   module EventStore
-    class InMemoryEventStoreTest < Test::Unit::TestCase
+    describe InMemoryEventStore do
 
       def setup
         @event_store = InMemoryEventStore.new
