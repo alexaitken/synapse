@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module ProcessManager
 
     describe ContainerResourceInjector do
-      should 'use a service container to inject resources' do
+      it 'use a service container to inject resources' do
         container = Object.new
         resource_injector = ContainerResourceInjector.new container
         process = Process.new

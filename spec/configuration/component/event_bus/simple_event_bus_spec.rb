@@ -1,21 +1,22 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
+
     describe SimpleEventBusDefinitionBuilder do
-      def setup
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
         @builder.simple_event_bus
 
-        factory = @container.resolve :event_bus
-        assert factory.is_a? EventBus::SimpleEventBus
+        event_bus = @container.resolve :event_bus
+        event_bus.should be_a(EventBus::SimpleEventBus)
       end
 
-      should 'build and subscribe tagged event listeners' do
+      it 'builds and subscribes tagged event listeners' do
         @builder.definition :first_listener do
           tag :event_listener
           use_factory do
@@ -34,8 +35,8 @@ module Synapse
         @builder.simple_event_bus
 
         event_bus = @container.resolve :event_bus
-        assert event_bus.subscribed? @container.resolve :first_listener
-        refute event_bus.subscribed? @container.resolve :second_listener
+        event_bus.subscribed?(@container.resolve(:first_listener)).should be_true
+        event_bus.subscribed?(@container.resolve(:second_listener)).should be_false
 
         # Customized
         @builder.simple_event_bus :alt_event_bus do
@@ -43,8 +44,8 @@ module Synapse
         end
 
         event_bus = @container.resolve :alt_event_bus
-        refute event_bus.subscribed? @container.resolve :first_listener
-        assert event_bus.subscribed? @container.resolve :second_listener
+        event_bus.subscribed?(@container.resolve(:first_listener)).should be_false
+        event_bus.subscribed?(@container.resolve(:second_listener)).should be_true
       end
     end
 
@@ -54,5 +55,6 @@ module Synapse
     class TestAltEventListener
       include EventBus::MappingEventListener
     end
+
   end
 end

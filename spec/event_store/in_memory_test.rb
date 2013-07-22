@@ -1,20 +1,20 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module EventStore
     describe InMemoryEventStore do
 
-      def setup
+      before do
         @event_store = InMemoryEventStore.new
       end
 
-      should 'raise an exception if a stream could not be found' do
+      it 'raise an exception if a stream could not be found' do
         assert_raise StreamNotFoundError do
           @event_store.read_events 'Person', 123
         end
       end
 
-      should 'support appending and reading an event stream' do
+      it 'support appending and reading an event stream' do
         event_a = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
         event_b = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
         event_c = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
@@ -30,7 +30,7 @@ module Synapse
         assert_equal [event_a, event_b, event_c], stream.to_a
       end
 
-      should 'be able to be cleared of all streams' do
+      it 'be able to be cleared of all streams' do
         event = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
         stream = Domain::SimpleDomainEventStream.new event
 

@@ -1,9 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
+
     describe Extension do
-      should 'delegate building to the service container' do
+      it 'delegate building to the service container' do
         reference = Object.new
 
         Synapse.build do
@@ -12,8 +13,9 @@ module Synapse
           end
         end
 
-        assert_same reference, Synapse.container[:test_service]
+        expect(Synapse.container.resolve(:test_service)).to be(reference)
       end
     end
+
   end
 end

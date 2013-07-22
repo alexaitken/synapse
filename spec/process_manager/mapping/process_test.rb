@@ -1,15 +1,15 @@
-require 'test_helper'
+require 'spec_helper'
 require 'process_manager/mapping/fixtures'
 
 module Synapse
   module ProcessManager
 
     describe MappingProcess do
-      def setup
+      before do
         @process = OrderProcess.new
       end
 
-      should 'use the correct handler when notified of an event' do
+      it 'use the correct handler when notified of an event' do
         event = Domain::EventMessage.build do |builder|
           builder.payload = OrderCreated.new 123
         end
@@ -19,7 +19,7 @@ module Synapse
         assert_equal 1, @process.handled
       end
 
-      should 'use mapping attributes to determine when to mark itself as finished' do
+      it 'use mapping attributes to determine when to mark itself as finished' do
         event = Domain::EventMessage.build do |builder|
           builder.payload = OrderCanceled.new 123
         end

@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module ProcessManager
 
     describe Process do
-      should 'initialize with sensible defaults' do
+      it 'initialize with sensible defaults' do
         process = StubProcess.new
         correlation = Correlation.new :process_id, process.id
 
@@ -14,7 +14,7 @@ module Synapse
         assert process.active?
       end
 
-      should 'support deletion of a correlation' do
+      it 'support deletion of a correlation' do
         process = StubProcess.new
 
         key = :order_id
@@ -27,7 +27,7 @@ module Synapse
         refute process.correlations.include? Correlation.new(key, value)
       end
 
-      should 'be able to be marked as finished' do
+      it 'be able to be marked as finished' do
         process = StubProcess.new
         process.cause_finish
 

@@ -1,15 +1,15 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
-    describe EventSourcingRepositoryDefinitionBuilder do
 
-      def setup
+    describe EventSourcingRepositoryDefinitionBuilder do
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
         # Repository needs unit of work provider (initialized by default)
         # Repository needs event bus
         @builder.simple_event_bus
@@ -31,14 +31,14 @@ module Synapse
         event_store = @container.resolve :event_store
         unit_provider = @container.resolve :unit_provider
 
-        assert_same event_bus, repository.event_bus
-        assert_same event_store, repository.event_store
-        assert_same unit_provider, repository.unit_provider
+        repository.event_bus.should be(event_bus)
+        repository.event_store.should be(event_store)
+        repository.unit_provider.should be(unit_provider)
 
-        assert_instance_of Repository::PessimisticLockManager, repository.lock_manager
+        repository.lock_manager.should be_a(Repository::PessimisticLockManager)
       end
 
-      should 'build with optional components' do
+      it 'builds with optional components' do
         @builder.simple_event_bus
         @builder.factory :event_store do
           Object.new
@@ -61,12 +61,12 @@ module Synapse
         snapshot_policy = @container.resolve :snapshot_policy
         snapshot_taker = @container.resolve :snapshot_taker
 
-        assert_same conflict_resolver, repository.conflict_resolver
-        assert_same snapshot_policy, repository.snapshot_policy
-        assert_same snapshot_taker, repository.snapshot_taker
+        repository.conflict_resolver.should be(conflict_resolver)
+        repository.snapshot_policy.should be(snapshot_policy)
+        repository.snapshot_taker.should be(snapshot_taker)
       end
 
-      should 'build caching repository if cache is set' do
+      it 'builds a caching repository if cache is set' do
         @builder.simple_event_bus
         @builder.factory :event_store do
           Object.new
@@ -85,10 +85,10 @@ module Synapse
 
         cache = @container.resolve :cache
 
-        assert_instance_of EventSourcing::CachingEventSourcingRepository, repository
-        assert_same cache, repository.cache
+        repository.should be_a(EventSourcing::CachingEventSourcingRepository)
+        repository.cache.should be(cache)
       end
-
     end
+
   end
 end

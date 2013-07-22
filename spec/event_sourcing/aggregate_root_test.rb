@@ -1,11 +1,11 @@
-require 'test_helper'
+require 'spec_helper'
 require 'event_sourcing/fixtures'
 
 module Synapse
   module EventSourcing
 
     describe AggregateRoot do
-      should 'track published events' do
+      it 'track published events' do
         stub = StubAggregate.new 123
         stub.change_something
         stub.change_something
@@ -20,7 +20,7 @@ module Synapse
         assert_equal 2, stub.version
       end
 
-      should 'support initializing state from an event stream' do
+      it 'support initializing state from an event stream' do
         events = Array.new
         events.push create_event(123, 0, StubCreatedEvent.new(123))
         events.push create_event(123, 1, StubChangedEvent.new)
@@ -35,7 +35,7 @@ module Synapse
         assert_equal 0, aggregate.initial_version
       end
 
-      should 'raise an exception if initialization is attempted when the aggregate has state' do
+      it 'raise an exception if initialization is attempted when the aggregate has state' do
         aggregate = StubAggregate.new 123
 
         assert_raise RuntimeError do
@@ -43,7 +43,7 @@ module Synapse
         end
       end
 
-      should 'notify child entities of aggregate events' do
+      it 'notify child entities of aggregate events' do
         stub_entity_a = StubEntity.new
         stub_entity_b = StubEntity.new
 

@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module EventSourcing
     describe CachingEventSourcingRepository do
 
-      def setup
+      before do
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
         @unit = UnitOfWork::UnitOfWork.new @unit_provider
         @unit.start
@@ -19,7 +19,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      should 'load from cache before hitting the event store' do
+      it 'load from cache before hitting the event store' do
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
 
@@ -30,7 +30,7 @@ module Synapse
         assert_same aggregate, @repository.load(aggregate_id)
       end
 
-      should 'raise an exception if the aggregate loaded from the cache is marked for deletion' do
+      it 'raise an exception if the aggregate loaded from the cache is marked for deletion' do
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
         aggregate.delete_me
@@ -44,7 +44,7 @@ module Synapse
         end
       end
 
-      should 'load from the event store if cache miss' do
+      it 'load from the event store if cache miss' do
         type_identifier = @factory.type_identifier
         aggregate_id = SecureRandom.uuid
 
@@ -58,7 +58,7 @@ module Synapse
         end
       end
 
-      should 'clear the cache if the unit of work is rolled back' do
+      it 'clear the cache if the unit of work is rolled back' do
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
 
@@ -72,7 +72,7 @@ module Synapse
         @unit.rollback
       end
 
-      should 'delete aggregate from cache when aggregate is deleted' do
+      it 'delete aggregate from cache when aggregate is deleted' do
         type_identifier = @factory.type_identifier
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
@@ -91,7 +91,7 @@ module Synapse
         @unit.commit
       end
 
-      should 'delete aggregate from cache when commit goes wrong' do
+      it 'delete aggregate from cache when commit goes wrong' do
         type_identifier = @factory.type_identifier
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id

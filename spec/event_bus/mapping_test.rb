@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module EventBus
 
     describe MappingEventListener do
-      should 'use the correct handler when notified of an events' do
+      it 'use the correct handler when notified of an events' do
         listener = ExampleMappingEventListener.new
 
         event = Domain::EventMessage.build do |builder|

@@ -1,15 +1,15 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
-    describe SimpleRepositoryDefinitionBuilder do
 
-      def setup
+    describe SimpleRepositoryDefinitionBuilder do
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
         # Repository needs unit of work provider (initialized by default)
         # Repository needs event bus
         @builder.simple_event_bus
@@ -24,12 +24,12 @@ module Synapse
         event_bus = @container.resolve :event_bus
         unit_provider = @container.resolve :unit_provider
 
-        assert_same event_bus, repository.event_bus
-        assert_same unit_provider, repository.unit_provider
+        repository.event_bus.should be(event_bus)
+        repository.unit_provider.should be(unit_provider)
 
-        assert_instance_of Repository::PessimisticLockManager, repository.lock_manager
+        repository.lock_manager.should be_a(Repository::PessimisticLockManager)
       end
-
     end
+
   end
 end

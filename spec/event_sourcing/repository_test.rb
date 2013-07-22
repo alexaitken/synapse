@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 require 'domain/fixtures'
 
 module Synapse
   module EventSourcing
     describe EventSourcingRepository do
-      def setup
+      before do
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
         @unit = UnitOfWork::UnitOfWork.new @unit_provider
         @unit.start
@@ -17,7 +17,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      should 'raise an exception if an incompatible aggregate is added' do
+      it 'raise an exception if an incompatible aggregate is added' do
         aggregate = Domain::Person.new 123, 'Polandball'
 
         assert_raise ArgumentError do
@@ -25,7 +25,7 @@ module Synapse
         end
       end
 
-      should 'load an aggregate from an event stream' do
+      it 'load an aggregate from an event stream' do
         event = create_event(123, 0, StubCreatedEvent.new(123))
 
         mock(@event_store).read_events(@factory.type_identifier, 123) do
@@ -35,7 +35,7 @@ module Synapse
         aggregate = @repository.load 123
       end
 
-      should 'raise an exception if an unexpected aggregate version is loaded' do
+      it 'raise an exception if an unexpected aggregate version is loaded' do
         event = create_event(123, 1, StubCreatedEvent.new(123))
 
         mock(@event_store).read_events(@factory.type_identifier, 123) do
@@ -47,7 +47,7 @@ module Synapse
         end
       end
 
-      should 'raise an exception if an event stream could not be found for the aggregate id' do
+      it 'raise an exception if an event stream could not be found for the aggregate id' do
         mock(@event_store).read_events(@factory.type_identifier, 123) do
           raise EventStore::StreamNotFoundError.new @factory.type_identifier, 123
         end
@@ -57,7 +57,7 @@ module Synapse
         end
       end
 
-      should 'raise an exception if the loaded aggregate has been marked for deletion' do
+      it 'raise an exception if the loaded aggregate has been marked for deletion' do
         event_a = create_event(123, 0, StubCreatedEvent.new(123))
         event_b = create_event(123, 1, StubDeletedEvent.new)
 
@@ -70,7 +70,7 @@ module Synapse
         end
       end
 
-      should 'raise an exception while saving if lock could not be validated' do
+      it 'raise an exception while saving if lock could not be validated' do
         event = create_event(123, 0, StubCreatedEvent.new(123))
 
         mock(@event_store).read_events(@factory.type_identifier, 123) do
@@ -88,7 +88,7 @@ module Synapse
         end
       end
 
-      should 'defer version checking to a conflict resolver if one is set' do
+      it 'defer version checking to a conflict resolver if one is set' do
         @repository.conflict_resolver = AcceptAllConflictResolver.new
 
         event_a = create_event(123, 0, StubCreatedEvent.new(123))
@@ -106,7 +106,7 @@ module Synapse
         @unit.commit
       end
 
-      should 'register a snapshot listener if a policy and taker are set' do
+      it 'register a snapshot listener if a policy and taker are set' do
         @repository.snapshot_policy = IntervalSnapshotPolicy.new 30
         @repository.snapshot_taker = AggregateSnapshotTaker.new
         @repository.snapshot_taker.event_store = @event_store

@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 require 'domain/fixtures'
 
 module Synapse
   module Repository
     describe PessimisticLockManager do
-      should 'support obtaining and releasing a lock for an aggregate' do
+      it 'support obtaining and releasing a lock for an aggregate' do
         @manager = PessimisticLockManager.new
 
         aggregate = Domain::Person.new SecureRandom.uuid, 'Bender'

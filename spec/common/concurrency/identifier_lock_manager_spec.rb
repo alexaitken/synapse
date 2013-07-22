@@ -1,40 +1,42 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
+
   describe IdentifierLockManager do
     CountdownLatch = Contender::CountdownLatch
 
-    should 'dispose locks when they are no longer in use' do
+    it 'disposes locks when they are no longer in use' do
       manager = IdentifierLockManager.new
 
       identifier = SecureRandom.uuid
       manager.obtain_lock identifier
-      manager.release_lock identifier
+      expect(manager.internal_locks.size).to eql(1)
 
-      assert_equal 0, manager.internal_locks.size
+      manager.release_lock identifier
+      expect(manager.internal_locks.size).to eql(0)
     end
 
-    should 'not dispose locks when they are still in use' do
+    it 'does not dispose locks when they are still in use' do
       manager = IdentifierLockManager.new
 
       identifier = SecureRandom.uuid
 
-      refute manager.owned? identifier
+      manager.owned?(identifier).should be_false
 
       manager.obtain_lock identifier
-      assert manager.owned? identifier
+      manager.owned?(identifier).should be_true
 
       manager.obtain_lock identifier
-      assert manager.owned? identifier
+      manager.owned?(identifier).should be_true
 
       manager.release_lock identifier
-      assert manager.owned? identifier
+      manager.owned?(identifier).should be_true
 
       manager.release_lock identifier
-      refute manager.owned? identifier
+      manager.owned?(identifier).should be_false
     end
 
-    should 'detect a deadlock between two threads' do
+    it 'detects a deadlock between two threads' do
       manager = IdentifierLockManager.new
 
       start_latch = CountdownLatch.new 1
@@ -53,13 +55,13 @@ module Synapse
 
       begin
         manager.obtain_lock lock_a
-        assert deadlock.get
+        deadlock.get
       rescue DeadlockError
         # This is expected behavior
       end
     end
 
-    should 'detect a deadlock between two threads across lock managers' do
+    it 'detects a deadlock between two threads across lock managers' do
       manager_a = IdentifierLockManager.new
       manager_b = IdentifierLockManager.new
 
@@ -79,13 +81,13 @@ module Synapse
 
       begin
         manager_a.obtain_lock lock_a
-        assert deadlock.get
+        deadlock.get.should be_true
       rescue DeadlockError
         # This is expected behavior
       end
     end
 
-    should 'detect a deadlock between three threads in a vector' do
+    it 'detects a deadlock between three threads in a vector' do
       manager = IdentifierLockManager.new
 
       start_latch = CountdownLatch.new 3
@@ -108,7 +110,7 @@ module Synapse
 
       begin
         manager.obtain_lock lock_a
-        assert deadlock.get
+        deadlock.get.should be_true
       rescue DeadlockError
         # This is expected behavior
       end
@@ -134,4 +136,5 @@ module Synapse
       end
     end
   end
+
 end

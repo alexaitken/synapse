@@ -1,14 +1,14 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module EventSourcing
 
     describe GenericAggregateFactory do
-      def setup
+      before do
         @factory = GenericAggregateFactory.new StubAggregate
       end
 
-      should 'create an aggregate from a normal event' do
+      it 'create an aggregate from a normal event' do
         event = Domain::DomainEventMessage.build do |m|
           m.payload = StubCreatedEvent.new 123
         end
@@ -18,7 +18,7 @@ module Synapse
         assert aggregate.is_a? StubAggregate
       end
 
-      should 'use an aggregate snapshot if available' do
+      it 'use an aggregate snapshot if available' do
         snapshot = StubAggregate.new 123
         snapshot.change_something
         snapshot.mark_committed

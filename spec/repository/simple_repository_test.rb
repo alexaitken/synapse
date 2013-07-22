@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Repository
 
     describe SimpleRepository do
-      def setup
+      before do
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
         @unit_factory = UnitOfWork::UnitOfWorkFactory.new @unit_provider
 
@@ -15,7 +15,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      should 'load an aggregate using its finder' do
+      it 'load an aggregate using its finder' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid
@@ -30,7 +30,7 @@ module Synapse
         assert_same loaded, aggregate
       end
 
-      should 'raise an exception if the aggregate could not be found' do
+      it 'raise an exception if the aggregate could not be found' do
         aggregate_id = SecureRandom.uuid
 
         mock(TestMappedAggregate).find(aggregate_id)
@@ -40,7 +40,7 @@ module Synapse
         end
       end
 
-      should 'raise an exception if the loaded aggregate has an unexpected version' do
+      it 'raise an exception if the loaded aggregate has an unexpected version' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid
@@ -56,7 +56,7 @@ module Synapse
         end
       end
 
-      should 'raise an exception while saving if lock could not be validated' do
+      it 'raise an exception while saving if lock could not be validated' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid
@@ -78,7 +78,7 @@ module Synapse
         end
       end
 
-      should 'delete the aggregate if it has been marked for deletion' do
+      it 'delete the aggregate if it has been marked for deletion' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid

@@ -1,9 +1,9 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Domain
     describe EventMessage do
-      should 'wrap event objects into event messages' do
+      it 'wrap event objects into event messages' do
         event = Object.new
         event_message = EventMessage.build
 
@@ -15,7 +15,7 @@ module Synapse
     end
 
     describe DomainEventMessage do
-      def setup
+      before do
         @payload = OpenStruct.new
         @aggregate_id = 123
         @sequence_number = 1
@@ -27,7 +27,7 @@ module Synapse
         end
       end
 
-      should 'populate fields with sensible defaults' do
+      it 'populate fields with sensible defaults' do
         # ensure empty fields were populated with default values
         assert @message.id
         assert @message.metadata
@@ -40,7 +40,7 @@ module Synapse
         assert_equal @sequence_number, @message.sequence_number
       end
 
-      should 'create a complete copy of itself when merging metadata' do
+      it 'create a complete copy of itself when merging metadata' do
         additional_metadata_a = { foo: 'bar' }
         additional_metadata_b = { baz: 'qux' }
 
@@ -58,7 +58,7 @@ module Synapse
         assert_equal additional_metadata_a.merge(additional_metadata_b), merged.metadata
       end
 
-      should 'create a complete copy of itself when replacing metadata' do
+      it 'create a complete copy of itself when replacing metadata' do
         additional_metadata_a = { foo: 'bar' }
         additional_metadata_b = { baz: 'qux' }
 

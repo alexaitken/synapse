@@ -1,23 +1,23 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
-    describe SimpleCommandBusDefinitionFactory do
 
-      def setup
+    describe SimpleCommandBusDefinitionBuilder do
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
         @builder.unit_factory
         @builder.simple_command_bus
 
         command_bus = @container.resolve :command_bus
-        assert command_bus.is_a? Command::SimpleCommandBus
+        command_bus.should be_a(Command::SimpleCommandBus)
       end
 
-      should 'build with an alternate unit of work factory' do
+      it 'builds with an alternate unit of work factory' do
         @builder.unit_factory :alt_unit_factory
         @builder.simple_command_bus do
           use_unit_factory :alt_unit_factory
@@ -26,7 +26,7 @@ module Synapse
         command_bus = @container.resolve :command_bus
       end
 
-      should 'build and register tagged command handlers' do
+      it 'builds and registers tagged command handlers' do
         handler_a = Object.new
         handler_b = Object.new
 
@@ -54,7 +54,7 @@ module Synapse
         command_bus = @container.resolve :alt_command_bus
       end
 
-      should 'build and register tagged command interceptors' do
+      it 'builds and registers tagged command interceptors' do
         @builder.factory :serialization_interceptor, :tag => :dispatch_interceptor do
           Command::SerializationOptimizingInterceptor.new
         end
@@ -65,10 +65,10 @@ module Synapse
         command_bus = @container.resolve :command_bus
         serialization_interceptor = @container.resolve :serialization_interceptor
 
-        assert_include command_bus.interceptors, serialization_interceptor
+        command_bus.interceptors.should include(serialization_interceptor)
       end
 
-      should 'build and register tagged command filters' do
+      it 'builds and registers tagged command filters' do
         @builder.factory :validation_filter, :tag => :command_filter do
           Command::ActiveModelValidationFilter.new
         end
@@ -79,9 +79,9 @@ module Synapse
         command_bus = @container.resolve :command_bus
         validation_filter = @container.resolve :validation_filter
 
-        assert_include command_bus.filters, validation_filter
+        command_bus.filters.should include(validation_filter)
       end
-
     end
+
   end
 end

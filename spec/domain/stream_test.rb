@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Domain
     describe SimpleDomainEventStream do
 
-      def setup
+      before do
         @events = Array.new
         @events.push DomainEventMessage.build
         @events.push DomainEventMessage.build
@@ -12,12 +12,12 @@ module Synapse
         @stream = SimpleDomainEventStream.new @events
       end
 
-      should 'support peeking without moving the pointer forward' do
+      it 'support peeking without moving the pointer forward' do
         assert_same @events.at(0), @stream.peek
         assert_same @events.at(0), @stream.peek
       end
 
-      should 'raise an exception when the end of the stream is reached' do
+      it 'raise an exception when the end of the stream is reached' do
         @stream.next_event
         @stream.next_event
 

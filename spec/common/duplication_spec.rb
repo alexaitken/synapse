@@ -1,31 +1,31 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   describe DuplicationRecorder do
-    def setup
+    before do
       @recorder = DuplicationRecorder.new
       @message = Message.build
     end
 
-    should 'raise an exception when a message is recorded more than once' do
-      refute @recorder.recorded? @message
+    it 'raises an exception when a message is recorded more than once' do
+      @recorder.recorded?(@message).should be_false
 
       @recorder.record @message
-      assert @recorder.recorded? @message
+      @recorder.recorded?(@message).should be_true
 
-      assert_raise DuplicationError do
+      expect {
         @recorder.record @message
-      end
+      }.to raise_error(DuplicationError)
     end
 
-    should 'be able to forget a message' do
+    it 'supports forgetting a message' do
       @recorder.record @message
       @recorder.forget @message
 
-      refute @recorder.recorded? @message
+      @recorder.recorded?(@message).should be_false
     end
 
-    should 'be able to forget messages recorded before a certain time' do
+    it 'support pruning old messages' do
       @recorder.record @message
 
       threshold = 60 * 20 # 20 minutes
@@ -34,7 +34,7 @@ module Synapse
         @recorder.forget_older_than Time.now - threshold
       end
 
-      refute @recorder.recorded? @message
+      @recorder.recorded?(@message).should be_false
     end
   end
 end

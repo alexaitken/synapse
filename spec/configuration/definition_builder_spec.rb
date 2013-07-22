@@ -1,28 +1,28 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
-    describe DefinitionBuilder do
 
-      def setup
+    describe DefinitionBuilder do
+      before do
         @container = Container.new
       end
 
-      should 'build a definition with just an identifier' do
+      it 'builds a definition with just an identifier' do
         DefinitionBuilder.build @container, :some_id do
           # we'll pass here
         end
-        assert @container.registered? :some_id
+        @container.registered?(:some_id).should be_true
       end
 
-      should 'build a definition using an identifier set in the block' do
+      it 'builds a definition using an identifier set in the block' do
         DefinitionBuilder.build @container do
           identified_by :other_id
         end
-        assert @container.registered? :other_id
+        @container.registered?(:other_id).should be_true
       end
 
-      should 'build a definition using tags set in the block' do
+      it 'builds a definition using tags set in the block' do
         reference = Object.new
 
         DefinitionBuilder.build @container, :derp_service do
@@ -30,13 +30,13 @@ module Synapse
           use_instance reference
         end
 
-        assert @container.registered? :derp_service
-        assert_equal [reference], @container.resolve_tagged(:one)
-        assert_equal [reference], @container.resolve_tagged(:two)
-        assert_equal [], @container.resolve_tagged(:three)
+        @container.registered?(:derp_service).should be_true
+        @container.resolve_tagged(:one).should include(reference)
+        @container.resolve_tagged(:two).should include(reference)
+        @container.resolve_tagged(:three).should be_empty
       end
 
-      should 'build a prototype definition using a factory' do
+      it 'builds a prototype definition using a factory' do
         DefinitionBuilder.build @container, :keygen do
           as_prototype
           use_factory do
@@ -47,10 +47,10 @@ module Synapse
         first = @container.resolve :keygen
         second = @container.resolve :keygen
 
-        refute_equal first, second
+        first.should_not == second
       end
 
-      should 'build a singleton definition using a factory' do
+      it 'builds a singleton definition using a factory' do
         DefinitionBuilder.build @container, :static_keygen do
           as_singleton
           use_factory do
@@ -61,12 +61,14 @@ module Synapse
         first = @container.resolve :static_keygen
         second = @container.resolve :static_keygen
 
-        assert_equal first, second
+        first.should == second
       end
 
-      should 'delegate resolution to the service container' do
+      it 'delegates resolution to the service container' do
+        reference = Object.new
+
         DefinitionBuilder.build @container, :some_dependency do
-          use_instance 123
+          use_instance reference
         end
 
         DefinitionBuilder.build @container, :dependent do
@@ -75,8 +77,7 @@ module Synapse
           end
         end
 
-        value = @container.resolve :dependent
-        assert_equal 123, value
+        @container.resolve(:dependent).should be(reference)
 
         DefinitionBuilder.build @container, :self_dependent do
           use_factory do
@@ -84,13 +85,14 @@ module Synapse
           end
         end
 
-        value = @container.resolve :self_dependent
-        assert value.is_a? Hash
+        @container.resolve(:self_dependent).should be_a(Hash)
       end
 
-      should 'delegate tag resolution to the service container' do
+      it 'delegates tag resolution to the service container' do
+        reference = Object.new
+
         DefinitionBuilder.build @container, :some_tagged_dependency do
-          use_instance 123
+          use_instance reference
           tag :dependency
         end
 
@@ -100,27 +102,26 @@ module Synapse
           end
         end
 
-        value = @container.resolve :dependent
-        assert_equal [123], value
+        @container.resolve(:dependent).should include(reference)
       end
 
-      should 'delegate building child services to another builder' do
+      it 'delegates building child services to another builder' do
         DefinitionBuilder.build @container, :outside do
           build_composite do
             identified_by :inside
           end
         end
 
-        assert @container.registered? :outside
-        assert @container.registered? :inside
+        @container.registered?(:outside).should be_true
+        @container.registered?(:inside).should be_true
       end
 
-      should 'raise an exception if no identifier is set when registering with the container' do
-        assert_raise ConfigurationError do
+      it 'raises an exception if no identifier is set when registering with the container' do
+        expect {
           DefinitionBuilder.build @container
-        end
+        }.to raise_error(ConfigurationError)
       end
-
     end
+
   end
 end

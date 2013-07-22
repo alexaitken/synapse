@@ -1,9 +1,9 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module ProcessManager
     describe GenericProcessFactory do
-      should 'be able to create processes' do
+      it 'be able to create processes' do
         injector = Object.new
 
         mock(injector).inject_resources(is_a(Process))
@@ -16,7 +16,7 @@ module Synapse
         assert process.is_a? Process
       end
 
-      should 'be able to determine if a process implementation is supported' do
+      it 'be able to determine if a process implementation is supported' do
         factory = GenericProcessFactory.new
 
         assert factory.supports Process

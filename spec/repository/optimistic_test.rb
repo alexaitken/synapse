@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 require 'domain/fixtures'
 
 module Synapse
   module Repository
     describe OptimisticLockManager do
-      should 'fail to validate on concurrent modification' do
+      it 'fail to validate on concurrent modification' do
         manager = OptimisticLockManager.new
 
         id = SecureRandom.uuid
@@ -23,7 +23,7 @@ module Synapse
         refute manager.validate_lock aggregate2
       end
 
-      should 'cleanup unused locks' do
+      it 'cleanup unused locks' do
         manager = OptimisticLockManager.new
 
         id = SecureRandom.uuid

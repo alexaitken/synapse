@@ -1,11 +1,11 @@
-require 'test_helper'
+require 'spec_helper'
 require 'event_sourcing/fixtures'
 
 module Synapse
   module EventSourcing
 
     describe Entity do
-      should 'raise an exception if an event is published and aggregate root is not set' do
+      it 'raise an exception if an event is published and aggregate root is not set' do
         entity = StubEntity.new
 
         assert_raise RuntimeError do
@@ -18,7 +18,7 @@ module Synapse
         entity.change_something
       end
 
-      should 'raise an exception if registration is attempted with more than one aggregate' do
+      it 'raise an exception if registration is attempted with more than one aggregate' do
         entity = StubEntity.new
         aggregate_a = StubAggregate.new 123
         aggregate_b = StubAggregate.new 123

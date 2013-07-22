@@ -1,9 +1,9 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Repository
     describe LockingRepository do
-      def setup
+      before do
         @event_bus = Object.new
         @lock_manager = Object.new
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
@@ -16,7 +16,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      should 'handling locking when an aggregate is added' do
+      it 'handling locking when an aggregate is added' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
@@ -26,7 +26,7 @@ module Synapse
         @unit.commit
       end
 
-      should 'raise an exception if an incompatible aggregate is added' do
+      it 'raise an exception if an incompatible aggregate is added' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
@@ -38,7 +38,7 @@ module Synapse
         end
       end
 
-      should 'raise an exception if an aggregate is added that already has a version' do
+      it 'raise an exception if an aggregate is added that already has a version' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
@@ -49,7 +49,7 @@ module Synapse
         end
       end
 
-      should 'raise an exception if a loaded aggregate has an unexpected version' do
+      it 'raise an exception if a loaded aggregate has an unexpected version' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 

@@ -1,27 +1,28 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
-    describe AsynchronousCommandBusDefinitionFactory do
-      def setup
+
+    describe AsynchronousCommandBusDefinitionBuilder do
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
         @builder.unit_factory
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
         @builder.async_command_bus
 
         command_bus = @container.resolve :command_bus
-        assert command_bus.is_a? Command::AsynchronousCommandBus
+        command_bus.should be_a(Command::AsynchronousCommandBus)
 
         thread_pool = command_bus.thread_pool
-        assert_instance_of Contender::Pool::ThreadPoolExecutor, thread_pool
-        assert thread_pool.active?
+        thread_pool.should be_a(Contender::Pool::ThreadPoolExecutor)
+        expect(thread_pool.active?).to be_true
         thread_pool.shutdown
       end
 
-      should 'build with a custom thread pool options' do
+      it 'builds with a custom thread pool options' do
         @builder.async_command_bus do
           use_pool_options size: 4, non_block: true
         end
@@ -29,9 +30,10 @@ module Synapse
         command_bus = @container.resolve :command_bus
 
         thread_pool = command_bus.thread_pool
-        assert thread_pool.active?
+        expect(thread_pool.active?).to be_true
         thread_pool.shutdown
       end
     end
+
   end
 end

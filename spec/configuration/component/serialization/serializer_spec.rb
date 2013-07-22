@@ -1,14 +1,15 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
+
     describe SerializerDefinitionBuilder do
-      def setup
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with an alternate converter factory' do
+      it 'builds with an alternate converter factory' do
         @builder.converter_factory :alt_converter_factory
         @builder.serializer do
           use_converter_factory :alt_converter_factory
@@ -16,33 +17,32 @@ module Synapse
 
         serializer = @container.resolve :serializer
         converter_factory = @container.resolve :alt_converter_factory
-        assert_same converter_factory, serializer.converter_factory
+
+        serializer.converter_factory.should be(converter_factory)
       end
 
-      should 'build with AttributeSerializer' do
+      it 'builds with AttributeSerializer' do
         @builder.converter_factory
         @builder.serializer do
           use_attribute
         end
 
         serializer = @container.resolve :serializer
-        assert serializer.is_a? Serialization::AttributeSerializer
+        serializer.should be_a(Serialization::AttributeSerializer)
       end
 
-      should 'build with MarshalSerializer' do
+      it 'builds with MarshalSerializer' do
         @builder.converter_factory
         @builder.serializer do
           use_marshal
         end
 
         serializer = @container.resolve :serializer
-        assert serializer.is_a? Serialization::MarshalSerializer
+        serializer.should be_a(Serialization::MarshalSerializer)
       end
 
-      should 'build with OxSerializer' do
-        omit 'Ox not supported on JRuby' if defined? JRUBY_VERSION
-
-        serialize_options = { :circular => true }
+      it 'builds with OxSerializer', ox: true do
+        serialize_options = { circular: true }
 
         @builder.converter_factory
         @builder.serializer do
@@ -51,15 +51,13 @@ module Synapse
         end
 
         serializer = @container.resolve :serializer
-        assert serializer.is_a? Serialization::OxSerializer
-        assert_equal serialize_options, serializer.serialize_options
+        serializer.should be_a(Serialization::OxSerializer)
+        serializer.serialize_options.should == serialize_options
       end
 
-      should 'build with OjSerializer' do
-        omit 'Oj not supported on JRuby' if defined? JRUBY_VERSION
-
-        serialize_options = { :indent => 2, :circular => true }
-        deserialize_options = { :symbol_keys => true }
+      it 'builds with OjSerializer', oj: true do
+        serialize_options = { indent: 2, circular: true }
+        deserialize_options = { symbol_keys: true }
 
         @builder.converter_factory
         @builder.serializer do
@@ -69,10 +67,11 @@ module Synapse
         end
 
         serializer = @container.resolve :serializer
-        assert serializer.is_a? Serialization::OjSerializer
-        assert_equal serialize_options, serializer.serialize_options
-        assert_equal deserialize_options, serializer.deserialize_options
+        serializer.should be_a(Serialization::OjSerializer)
+        serializer.serialize_options.should == serialize_options
+        serializer.deserialize_options.should == deserialize_options
       end
     end
+
   end
 end

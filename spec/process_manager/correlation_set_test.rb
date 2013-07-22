@@ -1,10 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module ProcessManager
     describe CorrelationSet do
 
-      should 'track correlation additions' do
+      it 'track correlation additions' do
         correlation = Correlation.new :order_id, '512d5467-d319-481e-ab5e-4d6f7445bcff'
 
         set = CorrelationSet.new
@@ -25,7 +25,7 @@ module Synapse
         assert_equal 0, set.deletions.count
       end
 
-      should 'track correlation deletions' do
+      it 'track correlation deletions' do
         correlation = Correlation.new :order_id, '512d5467-d319-481e-ab5e-4d6f7445bcff'
 
         set = CorrelationSet.new

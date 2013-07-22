@@ -1,11 +1,11 @@
-require 'test_helper'
+require 'spec_helper'
 require 'configuration/fixtures/dependent'
 
 module Synapse
   module Configuration
-    describe Container do
 
-      should 'inject services into a Dependent object' do
+    describe Container do
+      it 'injects services into a Dependent object' do
         container = Container.new
 
         service_a = Object.new
@@ -22,18 +22,18 @@ module Synapse
         dependent = ExampleDependent.new
         container.inject_into dependent
 
-        assert_same service_a, dependent.service_a
-        assert_same service_b, dependent.some_service
+        dependent.service_a.should be(service_a)
+        dependent.some_service.should be(service_b)
       end
 
-      should 'not attempt to inject services into a non-Dependent object' do
+      it 'does not attempt to inject services into a non-Dependent object' do
         container = Container.new
         object = Object.new
 
         container.inject_into object
       end
 
-      should 'not overwrite existing attributes when injecting into a Dependent object' do
+      it 'does not overwrite existing attributes when injecting into a Dependent object' do
         container = Container.new
 
         service_a = Object.new
@@ -53,11 +53,11 @@ module Synapse
         dependent.service_a = other_service_a
         container.inject_into dependent
 
-        assert_same other_service_a, dependent.service_a
-        assert_same service_b, dependent.some_service
+        dependent.service_a.should be(other_service_a)
+        dependent.some_service.should be(service_b)
       end
 
-      should 'resolve a service from a definition by its identifier' do
+      it 'resolves a service from a definition by its identifier' do
         reference = Object.new
         container = Container.new
 
@@ -65,10 +65,10 @@ module Synapse
           use_instance reference
         end
 
-        assert_same reference, container.resolve(:some_service)
+        container.resolve(:some_service).should be(reference)
       end
 
-      should 'resolve a service from a definition by its tag' do
+      it 'resolves a service from a definition by its tag' do
         container = Container.new
         some_service = Object.new
         some_other_service = Object.new
@@ -84,20 +84,19 @@ module Synapse
         end
 
         # Do it breh
-        tagged = container.resolve_tagged :some_tag
-        assert tagged.include? some_service
+        container.resolve_tagged(:some_tag).should include(some_service)
       end
 
-      should 'support optional service resolution' do
+      it 'supports optional service resolution' do
         container = Container.new
 
-        assert_nil container.resolve :some_service, true
-        assert_raise ConfigurationError do
+        container.resolve(:some_service, true).should be_nil
+        expect {
           container.resolve :some_service
-        end
+        }.to raise_error(ConfigurationError)
       end
 
-      should 'log when a definition is replaced' do
+      it 'logs when a definition is replaced' do
         logger = Logging.logger[Container]
 
         mock(logger).info(anything)
@@ -106,7 +105,7 @@ module Synapse
         container.register :some_service, Object.new
         container.register :some_service, Object.new
       end
-
     end
+
   end
 end

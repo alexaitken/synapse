@@ -1,11 +1,11 @@
-require 'test_helper'
+require 'spec_helper'
 require 'process_manager/mapping/fixtures'
 
 module Synapse
   module ProcessManager
 
     describe MappingProcessManager do
-      def setup
+      before do
         @repository = InMemoryProcessRepository.new
         @factory = GenericProcessFactory.new
         @lock_manager = LockManager.new
@@ -13,13 +13,13 @@ module Synapse
         @manager = MappingProcessManager.new @repository, @factory, @lock_manager, OrderProcess
       end
 
-      should 'raise an exception if used with a process that does not support wiring' do
+      it 'raise an exception if used with a process that does not support wiring' do
         assert_raise ArgumentError do
           MappingProcessManager.new @repository, @factory, @lock_manager, Process
         end
       end
 
-      should 'use mapping attributes to determine correlation keys' do
+      it 'use mapping attributes to determine correlation keys' do
         event = create_event OrderCreated.new 123
         @manager.notify event
 
@@ -29,7 +29,7 @@ module Synapse
         assert_equal 1, processes.count
       end
 
-      should 'use mapping attributes to determine creation policy' do
+      it 'use mapping attributes to determine creation policy' do
         event = create_event OrderCreated.new 123
 
         @manager.notify event
@@ -52,7 +52,7 @@ module Synapse
         assert_equal 3, @repository.count
       end
 
-     should 'raise an exception if the correlation key does not exist on the event' do
+     it 'raise an exception if the correlation key does not exist on the event' do
         event = create_event OrderDerped.new
 
         assert_raise RuntimeError do

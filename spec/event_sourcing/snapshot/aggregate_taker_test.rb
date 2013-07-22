@@ -1,11 +1,11 @@
-require 'test_helper'
+require 'spec_helper'
 require 'event_sourcing/fixtures'
 
 module Synapse
   module EventSourcing
 
     describe AggregateSnapshotTaker do
-      def setup
+      before do
         @event_store = Object.new
         @aggregate_factory = GenericAggregateFactory.new StubAggregate
 
@@ -14,7 +14,7 @@ module Synapse
         @snapshot_taker.register_factory @aggregate_factory
       end
 
-      should 'store a snapshot by serializing the aggregate itself' do
+      it 'store a snapshot by serializing the aggregate itself' do
         type_identifier = @aggregate_factory.type_identifier
         id = SecureRandom.uuid
 
@@ -38,7 +38,7 @@ module Synapse
         @snapshot_taker.schedule_snapshot type_identifier, id
       end
 
-      should 'not store a snapshot if it replaces only one event' do
+      it 'not store a snapshot if it replaces only one event' do
         type_identifier = @aggregate_factory.type_identifier
         id = SecureRandom.uuid
 

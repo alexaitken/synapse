@@ -1,9 +1,10 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
+
     describe ContainerBuilder do
-      def setup
+      before do
         # Backup any existing initializers
         @initializers = ContainerBuilder.initializers
         ContainerBuilder.initializers = nil
@@ -12,12 +13,12 @@ module Synapse
         @container = Container.new
       end
 
-      def teardown
+      after do
         # Restore any existing initializers
         ContainerBuilder.initializers = @initializers
       end
 
-      should 'call initializers upon creation' do
+      it 'call initializers upon creation' do
         ContainerBuilder.initializer do
           definition :test_definition do
             tag :derp
@@ -26,20 +27,23 @@ module Synapse
 
         builder = ContainerBuilder.new @container
 
-        assert @container.registered? :test_definition
+        @container.registered?(:test_definition).should be_true
       end
 
-      should 'create a simple definition from a factory' do
+      it 'create a simple definition from a factory' do
+        reference = Object.new
+
         builder = ContainerBuilder.new @container
         builder.factory :derp_service, :tag => [:first_tag, :nth_tag] do
-          123
+          reference
         end
 
-        assert @container.registered? :derp_service
-        assert_equal 123, @container.resolve(:derp_service)
-        assert_equal [123], @container.resolve_tagged(:first_tag)
-        assert_equal [123], @container.resolve_tagged(:nth_tag)
+        @container.registered?(:derp_service).should be_true
+        @container.resolve(:derp_service).should == reference
+        @container.resolve_tagged(:first_tag).should include(reference)
+        @container.resolve_tagged(:nth_tag).should include(reference)
       end
     end
+
   end
 end

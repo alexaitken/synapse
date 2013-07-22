@@ -1,37 +1,42 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
+
     describe UnitOfWorkFactoryDefinitionBuilder do
-      def setup
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
+        txm = UnitOfWork::TransactionManager.new
+
         @builder.factory :transaction_manager do
-          UnitOfWork::TransactionManager.new
+          txm
         end
         @builder.unit_factory
 
         factory = @container.resolve :unit_factory
-        assert factory.is_a? UnitOfWork::UnitOfWorkFactory
-        assert factory.transaction_manager
+        factory.should be_a(UnitOfWork::UnitOfWorkFactory)
+        factory.transaction_manager.should be(txm)
       end
 
-      should 'build with an alternate transaction manager' do
+      it 'builds with an alternate transaction manager' do
+        txm = UnitOfWork::TransactionManager.new
+
         @builder.factory :alt_tx_manager do
-          UnitOfWork::TransactionManager.new
+          txm
         end
         @builder.unit_factory do
           use_transaction_manager :alt_tx_manager
         end
 
         factory = @container.resolve :unit_factory
-        assert factory.transaction_manager
+        factory.transaction_manager.should be(txm)
       end
 
-      should 'build with an alternate unit of work provider' do
+      it 'builds with an alternate unit of work provider' do
         @builder.factory :alt_unit_provider do
           UnitOfWork::UnitOfWorkProvider.new
         end
@@ -42,5 +47,6 @@ module Synapse
         @container.resolve :unit_factory
       end
     end
+
   end
 end

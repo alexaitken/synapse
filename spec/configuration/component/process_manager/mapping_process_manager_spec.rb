@@ -1,16 +1,16 @@
-require 'test_helper'
+require 'spec_helper'
 require 'process_manager/mapping/fixtures'
 
 module Synapse
   module Configuration
     describe MappingProcessManagerDefinitionBuilder do
 
-      def setup
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
         @builder.factory :process_repository do
           ProcessManager::InMemoryProcessRepository.new
         end
@@ -22,14 +22,14 @@ module Synapse
 
         process_manager = @container.resolve :process_manager
 
-        assert_equal [process_manager], @container.resolve_tagged(:event_listener)
+        @container.resolve_tagged(:event_listener).should include(process_manager)
 
         factory = @container.resolve :process_factory
         repository = @container.resolve :process_repository
 
-        assert_same factory, process_manager.factory
-        assert_same repository, process_manager.repository
-        assert_instance_of ProcessManager::PessimisticLockManager, process_manager.lock_manager
+        process_manager.factory.should be(factory)
+        process_manager.repository.should be(repository)
+        process_manager.lock_manager.should be_a(ProcessManager::PessimisticLockManager)
       end
 
     end

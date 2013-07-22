@@ -1,21 +1,21 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
-    describe ContainerResourceInjectorDefinitionBuilder do
 
-      def setup
+    describe ContainerResourceInjectorDefinitionBuilder do
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build a resource injector' do
+      it 'builds a resource injector' do
         @builder.container_resource_injector
 
         resource_injector = @container.resolve :resource_injector
-        assert_instance_of ProcessManager::ContainerResourceInjector, resource_injector
+        resource_injector.should be_a(ProcessManager::ContainerResourceInjector)
       end
-
     end
+
   end
 end

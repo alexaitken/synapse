@@ -1,27 +1,29 @@
-require 'test_helper'
+require 'spec_helper'
 
 module Synapse
   module Configuration
+
     describe ConverterFactoryDefinitionBuilder do
-      def setup
+      before do
         @container = Container.new
         @builder = ContainerBuilder.new @container
       end
 
-      should 'build with sensible defaults' do
+      it 'builds with sensible defaults' do
         @builder.converter_factory
 
         factory = @container.resolve :converter_factory
-        assert factory.is_a? Serialization::ConverterFactory
+        factory.should be_a(Serialization::ConverterFactory)
       end
 
-      should 'build and register tagged converters' do
+      it 'builds and registers tagged converters' do
         @builder.definition :json2object_converter do
           tag :converter, :alt_converter
           use_factory do
             Serialization::JsonToObjectConverter.new
           end
         end
+
         @builder.definition :json2object_alt_converter do
           tag :alt_converter
           use_factory do
@@ -33,7 +35,7 @@ module Synapse
         @builder.converter_factory
 
         factory = @container.resolve :converter_factory
-        factory.converters.first.is_a? Serialization::JsonToObjectConverter
+        expect(factory.converters.first).to be_a(Serialization::JsonToObjectConverter)
 
         # Customized
         @builder.converter_factory :alt_factory do
@@ -41,8 +43,9 @@ module Synapse
         end
 
         factory = @container.resolve :alt_factory
-        factory.converters.first.is_a? Serialization::JsonToObjectConverter
+        expect(factory.converters.first).to be_a(Serialization::JsonToObjectConverter)
       end
     end
+
   end
 end
