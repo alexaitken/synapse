@@ -1,13 +1,12 @@
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 require 'yard'
 
 require File.expand_path '../lib/synapse/version', __FILE__
 
-task :default => :test
+task :default => :spec
 
-Rake::TestTask.new do |t|
-  t.libs << 'lib' << 'test'
-  t.test_files = FileList.new 'test/**/*test.rb'
+RSpec::Core::RakeTask.new do |t|
+  t.rspec_opts = '--format d'
 end
 
 task :build do

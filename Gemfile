@@ -5,16 +5,16 @@ group :test do
   gem 'coveralls'
   gem 'simplecov'
 
-  gem 'test-unit'
-  gem 'shoulda-context'
+  gem 'rspec'
 
   # Test doubles
   gem 'rr'
-  gem 'test-unit-rr'
   gem 'timecop'
 end
 
 group :development do
+  gem 'guard-rspec'
+
   # Used for command validation and serialization
   gem 'activemodel'
 
