@@ -24,21 +24,17 @@ module Synapse
       # @param [SerializedObject] original
       # @return [SerializedObject]
       def convert(original)
-        intermediate = original
-        @delegates.each do |delegate|
-          intermediate = delegate.convert intermediate
+        @delegates.inject original do |intermediate, delegate|
+          delegate.convert intermediate
         end
-        intermediate
       end
 
       # @param [Object] original
       # @return [Object]
       def convert_content(original)
-        intermediate = original
-        @delegates.each do |delegate|
-          intermediate = delegate.convert_content intermediate
+        @delegates.inject original do |intermediate, delegate|
+          delegate.convert_content intermediate
         end
-        intermediate
       end
     end # ConverterChain
   end # Serialization

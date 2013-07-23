@@ -31,12 +31,10 @@ module Synapse
       # @param [InterceptorChain] chain
       # @return [Object] The result of the execution of the command
       def intercept(command, unit, chain)
-        begin
-          chain.proceed command
-        rescue TransientError
-          @recorder.forget command
-          raise
-        end
+        chain.proceed command
+      rescue TransientError
+        @recorder.forget command
+        raise
       end
     end # DuplicationCleanupInterceptor
   end # Command

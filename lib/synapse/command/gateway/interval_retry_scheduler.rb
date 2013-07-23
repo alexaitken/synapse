@@ -22,27 +22,29 @@ module Synapse
       # @param [Proc] dispatcher
       # @return [Boolean]
       def schedule(command, failures, dispatcher)
-        lastFailure = failures.last
+        last_failure = failures.last
 
-        if explicitly_non_transient? lastFailure
-          @logger.info 'Dispatch of command [%s] [%s] resulted in non-transient exception' %
-            [command.payload_type, command.id]
+        if explicitly_non_transient? last_failure
+          @logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
+            "resulted in a non-transient exception"
 
           return false
         end
 
-        failureCount = failures.size
+        failure_count = failures.size
 
-        if failureCount > @max_retries
-          @logger.info 'Dispatch of command [%s] [%s] resulted in exception [%s] times' %
-            [command.payload_type, command.id, failureCount]
+        if failure_count > @max_retries
+          @logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
+            "resulted in an exception #{failure_count} times"
 
           return false
         end
 
         if @logger.info?
-          @logger.info 'Dispatch of command [%s] [%s] resulted in exception; will retry up to [%s] more times' %
-            [command.payload_type, command.id, @max_retries - failureCount]
+          retries_left = @max_retries - failure_count
+
+          @logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
+            "resulted in an exception; will retry up to #{retries_left} more times"
         end
 
         perform_schedule command, dispatcher

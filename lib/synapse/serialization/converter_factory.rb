@@ -46,7 +46,7 @@ module Synapse
             converter.target_type == target_type
         end
 
-        raise ConversionError, 'No converter capable of [%s] -> [%s]' % [source_type, target_type]
+        raise ConversionError, "No converter capable of {#{source_type}} -> {#{target_type}}"
       end
 
       # Returns true if this factory contains a converter capable of converting content from the
