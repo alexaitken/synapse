@@ -5,7 +5,7 @@ module Synapse
       # @return [EventBus]
       attr_accessor :event_bus
 
-    protected
+      protected
 
       # Publishes the given event object or event message to the configured event bus
       #

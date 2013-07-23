@@ -6,7 +6,7 @@ module Synapse
       def self.builder
         CommandMessageBuilder
       end
-    end
+    end # CommandMessage
 
     # Message builder capable of producing CommandMessage instances
     class CommandMessageBuilder < MessageBuilder
@@ -14,6 +14,6 @@ module Synapse
       def build
         CommandMessage.new @id, @metadata, @payload, @timestamp
       end
-    end
-  end
+    end # CommandMessageBuilder
+  end # Command
 end

@@ -41,7 +41,7 @@ module Synapse
 
       # Delegators for regular serializer methods
       def_delegators :@serializer, :converter_factory, :serialize, :deserialize,
-        :can_serialize_to?, :class_for, :type_for
+                     :can_serialize_to?, :class_for, :type_for
     end # MessageSerializer
   end # Serialization
 end

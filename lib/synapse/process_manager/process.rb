@@ -43,7 +43,7 @@ module Synapse
         raise NotImplementedError
       end
 
-    protected
+      protected
 
       # Correlates this process instance with the given key and value
       #

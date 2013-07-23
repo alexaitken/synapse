@@ -76,7 +76,7 @@ module Synapse
         event_container.add_registration_listener listener
       end
 
-    protected
+      protected
 
       # Publishes a domain event with the given payload and optional metadata
       #
@@ -111,7 +111,7 @@ module Synapse
         @event_container.last_committed_sequence_number
       end
 
-    private
+      private
 
       # Initializes the event container with the given sequence number
       #

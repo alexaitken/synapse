@@ -30,7 +30,7 @@ module Synapse
         @event_store = event_store
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

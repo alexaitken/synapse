@@ -16,7 +16,7 @@ module Synapse
         @threshold = threshold
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

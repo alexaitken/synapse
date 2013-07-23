@@ -28,7 +28,7 @@ module Synapse
         @converter_tag = converter_tag
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

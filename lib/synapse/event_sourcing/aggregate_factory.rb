@@ -58,7 +58,7 @@ module Synapse
         post_process aggregate
       end
 
-    protected
+      protected
 
       # Performs any processing that must be done on an aggregate instance that was reconstructed
       # from a snapshot event. Implementations may choose to modify the existing instance or return

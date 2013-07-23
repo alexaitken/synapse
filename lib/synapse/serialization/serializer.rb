@@ -44,10 +44,12 @@ module Synapse
       # @param [SerializedType] serialized_type
       # @return [Class]
       def class_for(serialized_type)
+        name = serialized_type.name
+
         begin
-          serialized_type.name.constantize
+          name.constantize
         rescue
-          raise UnknownSerializedTypeError, 'Unknown serialized type %s' % serialized_type.name
+          raise UnknownSerializedTypeError, "Unknown serialized type {#{name}}"
         end
       end
 
@@ -61,7 +63,7 @@ module Synapse
         end
       end
 
-    protected
+      protected
 
       # Serializes the given Ruby object
       #
@@ -90,7 +92,7 @@ module Synapse
         raise NotImplementedError
       end
 
-    private
+      private
 
       # Converts the given content from the given source type to the given target type
       #

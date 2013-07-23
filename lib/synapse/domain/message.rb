@@ -43,7 +43,7 @@ module Synapse
         DomainEventMessageBuilder
       end
 
-    protected
+      protected
 
       # @param [DomainEventMessageBuilder] builder
       # @param [Hash] metadata

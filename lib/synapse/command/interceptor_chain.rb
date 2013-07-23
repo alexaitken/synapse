@@ -20,11 +20,9 @@ module Synapse
       # @param [CommandMessage] command The command to proceed with
       # @return [Object] The result of the execution of the command
       def proceed(command)
-        begin
-          @interceptors.next.intercept command, @unit, self
-        rescue StopIteration
-          @handler.handle command, @unit
-        end
+        @interceptors.next.intercept command, @unit, self
+      rescue StopIteration
+        @handler.handle command, @unit
       end
     end # InterceptorChain
   end # Command

@@ -115,7 +115,7 @@ module Synapse
         @events.size
       end
 
-    private
+      private
 
       # Returns the next sequence number to use for registered events
       # @return [Integer]

@@ -61,7 +61,7 @@ module Synapse
         events
       end
 
-    protected
+      protected
 
       # @raise [EndOfStreamError] If at the end of the stream
       # @return [undefined]

@@ -58,7 +58,7 @@ module Synapse
         end
       end
 
-    protected
+      protected
 
       # Fetches the aggregate with the given identifier from the underlying aggregate store
       #

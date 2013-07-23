@@ -58,7 +58,7 @@ module Synapse
         !stack.empty?
       end
 
-    private
+      private
 
       # @return [Array<UnitOfWork>]
       def stack

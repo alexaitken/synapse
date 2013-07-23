@@ -19,7 +19,7 @@ module Synapse
         @resource_injector = resource_injector
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

@@ -23,7 +23,7 @@ module Synapse
         @optionally_create_events = Array.new
       end
 
-    protected
+      protected
 
       # @param [Class] process_type
       # @param [EventMessage] event

@@ -14,7 +14,7 @@ module Synapse
       # @return [Hash] Options that will be passed to the Oj load method
       attr_accessor :deserialize_options
 
-    protected
+      protected
 
       # @param [Object] content
       # @return [Object]

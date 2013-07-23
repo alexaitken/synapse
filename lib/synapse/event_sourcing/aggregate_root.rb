@@ -176,7 +176,7 @@ module Synapse
         apply payload, metadata
       end
 
-    protected
+      protected
 
       # Hook that is called before the aggregate is initialized
       # @return [undefined]

@@ -48,7 +48,7 @@ module Synapse
         end
       end
 
-    private
+      private
 
       # @param [Class] type
       # @param [Hash] options

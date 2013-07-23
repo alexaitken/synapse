@@ -44,7 +44,7 @@ module Synapse
         raise NotImplementedError
       end
 
-    protected
+      protected
 
       # Returns the type of aggregate that this repository handles
       #
@@ -107,11 +107,11 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def register_aggregate(aggregate)
-        current_unit.register_aggregate aggregate, @event_bus do |aggregate|
-          if aggregate.deleted?
-            delete_aggregate aggregate
+        current_unit.register_aggregate aggregate, @event_bus do |ar|
+          if ar.deleted?
+            delete_aggregate ar
           else
-            save_aggregate aggregate
+            save_aggregate ar
           end
         end
       end

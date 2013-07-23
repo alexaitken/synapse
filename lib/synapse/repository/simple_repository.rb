@@ -17,7 +17,7 @@ module Synapse
         @aggregate_type = aggregate_type
       end
 
-    protected
+      protected
 
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found

@@ -24,7 +24,7 @@ module Synapse
       # @param [SerializedObject] original
       # @return [SerializedObject]
       def convert(original)
-        @delegates.inject original do |intermediate, delegate|
+        @delegates.reduce original do |intermediate, delegate|
           delegate.convert intermediate
         end
       end
@@ -32,7 +32,7 @@ module Synapse
       # @param [Object] original
       # @return [Object]
       def convert_content(original)
-        @delegates.inject original do |intermediate, delegate|
+        @delegates.reduce original do |intermediate, delegate|
           delegate.convert_content intermediate
         end
       end

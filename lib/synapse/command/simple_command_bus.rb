@@ -38,16 +38,14 @@ module Synapse
       # @param [CommandCallback] callback
       # @return [undefined]
       def dispatch_with_callback(command, callback)
-        begin
-          result = perform_dispatch command
-          callback.on_success result
-        rescue => exception
-          backtrace = exception.backtrace.join $RS
-          logger.error "Exception occured while dispatching command {#{command.payload_type}} {#{command.id}}:\n" +
-            "#{exception.inspect} #{backtrace}"
+        result = perform_dispatch command
+        callback.on_success result
+      rescue => exception
+        backtrace = exception.backtrace.join $RS
+        logger.error "Exception occured while dispatching command {#{command.payload_type}} {#{command.id}}:\n" +
+          "#{exception.inspect} #{backtrace}"
 
-          callback.on_failure exception
-        end
+        callback.on_failure exception
       end
 
       # @api public
@@ -80,7 +78,7 @@ module Synapse
         end
       end
 
-    protected
+      protected
 
       # @raise [CommandExecutionError]
       #   If an error occurs during the handling of the command

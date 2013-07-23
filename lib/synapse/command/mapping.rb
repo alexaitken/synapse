@@ -41,7 +41,7 @@ module Synapse
         mapping = command_mapper.mapping_for command.payload_type
 
         unless mapping
-          raise ArgumentError, 'Not capable of handling [%s] commands' % command.payload_type
+          raise ArgumentError, "Not capable of handling command {#{command.payload_type}}"
         end
 
         mapping.invoke self, command.payload, command, current_unit

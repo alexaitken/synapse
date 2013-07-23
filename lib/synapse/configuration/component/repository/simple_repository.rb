@@ -14,7 +14,7 @@ module Synapse
         @aggregate_type = aggregate_type
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

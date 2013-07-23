@@ -8,6 +8,11 @@ module Synapse
     #
     # @abstract
     class NestableUnitOfWork
+      # @return [Boolean] True if this unit of work has been started
+      attr_reader :started
+
+      alias_method :started?, :started
+
       # @param [UnitOfWorkProvider] provider
       # @return [undefined]
       def initialize(provider)
@@ -30,9 +35,7 @@ module Synapse
       # @raise [RuntimeError] If unit of work hasn't been started yet
       # @return [undefined]
       def commit
-        unless started?
-          raise 'Unit of work has not been started yet'
-        end
+        raise 'Unit of work has not started yet' unless started?
 
         begin
           notify_prepare_commit
@@ -66,17 +69,16 @@ module Synapse
       # @param [Error] cause
       # @return [undefined]
       def rollback(cause = nil)
-        begin
-          if started?
-            @inner_units.each do |inner_unit|
-              @provider.push inner_unit
-              inner_unit.rollback cause
-            end
-            perform_rollback cause
+        if started?
+          @inner_units.each do |inner_unit|
+            @provider.push inner_unit
+            inner_unit.rollback cause
           end
-        ensure
-          finalize_rollback
+
+          perform_rollback cause
         end
+      ensure
+        finalize_rollback
       end
 
       # Starts the unit of work, preparing it for aggregate registration
@@ -85,9 +87,7 @@ module Synapse
       # @raise [RuntimeError] If unit of work has already been started
       # @return [undefined]
       def start
-        if started?
-          raise 'Unit of work has already been started'
-        end
+        raise 'Unit of work has already been started' if started?
 
         perform_start
 
@@ -95,7 +95,7 @@ module Synapse
           # This is a nested unit of work
           @outer_unit = @provider.current
 
-          if NestableUnitOfWork === @outer_unit
+          if @outer_unit.is_a? NestableUnitOfWork
             @outer_unit.register_inner_unit self
           else
             # Outer unit is not aware of inner units, hook in with a listener
@@ -107,15 +107,7 @@ module Synapse
         @started = true
       end
 
-      # Returns true if this unit of work has been started
-      #
-      # @api public
-      # @return [Boolean]
-      def started?
-        @started
-      end
-
-    protected
+      protected
 
       # Executes logic required to commit this unit of work
       #
@@ -216,7 +208,7 @@ module Synapse
         stop
       end
 
-    private
+      private
 
       # @return [undefined]
       def finalize_rollback

@@ -17,6 +17,6 @@ module Synapse
       # @param [String] process_id
       # @return [undefined]
       def release_lock(process_id); end
-    end
-  end
+    end # LockManager
+  end # ProcessManager
 end

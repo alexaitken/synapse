@@ -65,7 +65,7 @@ module Synapse
         @process_types = process_types.flatten
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

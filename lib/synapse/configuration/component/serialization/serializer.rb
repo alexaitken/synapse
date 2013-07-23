@@ -70,7 +70,7 @@ module Synapse
         @deserialize_options = deserialize_options
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

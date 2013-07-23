@@ -14,7 +14,7 @@ module Synapse
         @aggregate_factories.store factory.type_identifier, factory
       end
 
-    protected
+      protected
 
       # @param [String] type_identifier
       # @param [Object] aggregate_id

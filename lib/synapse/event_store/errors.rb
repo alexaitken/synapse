@@ -9,7 +9,7 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [undefined]
       def initialize(type_identifier, aggregate_id)
-        super 'Stream not found for [%s] [%s]' % [type_identifier, aggregate_id]
+        super "Stream not found for {#{type_identifier}} {#{aggregate_id}}"
       end
     end # StreamNotFoundError
   end # EventStore

@@ -34,7 +34,7 @@ module Synapse
         waiters
       end
 
-    private
+      private
 
       # @param [Thread] thread
       # @param [Array] managers
@@ -119,7 +119,7 @@ module Synapse
       end
     end
 
-  private
+    private
 
     # @param [Object] identifier
     # @param [DisposableLock] lock

@@ -7,23 +7,33 @@ module Synapse
     class UpcastingContext
       # @abstract
       # @return [String]
-      def message_id; end
+      def message_id
+        raise NotImplementedError
+      end
 
       # @abstract
       # @return [Hash]
-      def metadata; end
+      def metadata
+        raise NotImplementedError
+      end
 
       # @abstract
       # @return [Time]
-      def timestamp; end
+      def timestamp
+        raise NotImplementedError
+      end
 
       # @abstract
       # @return [Object]
-      def aggregate_id; end
+      def aggregate_id
+        raise NotImplementedError
+      end
 
       # @abstract
       # @return [Integer]
-      def sequence_number; end
+      def sequence_number
+        raise NotImplementedError
+      end
     end
 
     # Upcasting context that provides information from serialized domain event data

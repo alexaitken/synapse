@@ -38,7 +38,7 @@ module Synapse
         serialized_objects
       end
 
-    protected
+      protected
 
       # @param [Upcaster] upcaster
       # @param [SerializedObject] representation
@@ -49,7 +49,7 @@ module Synapse
         upcaster.upcast representation, expected_types, upcast_context
       end
 
-    private
+      private
 
       # @param [Upcaster] upcaster
       # @param [Array<SerializedObject>] serialized_objects
@@ -73,6 +73,6 @@ module Synapse
 
         upcast_objects
       end
-    end
-  end
+    end # UpcasterChain
+  end # Upcasting
 end

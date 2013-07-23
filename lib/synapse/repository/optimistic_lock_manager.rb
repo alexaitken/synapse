@@ -42,14 +42,14 @@ module Synapse
         end
       end
 
-    private
+      private
 
       # @param [Object] aggregate_id
       # @param [OptimisticLock] lock
       # @return [undefined]
       def remove_lock(aggregate_id, lock)
         @mutex.synchronize do
-          if @aggregates.has_key?(aggregate_id) && @aggregates[aggregate_id] === lock
+          if @aggregates.has_key?(aggregate_id) && @aggregates[aggregate_id].equal?(lock)
             @aggregates.delete aggregate_id
           end
         end

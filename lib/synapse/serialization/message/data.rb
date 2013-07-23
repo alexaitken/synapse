@@ -3,23 +3,41 @@ module Synapse
     # Describes the properties that a serialized domain event should have
     # @abstract
     class SerializedDomainEventData
+      # @abstract
       # @return [String] Identifier of the serialized event
-      def id; end
+      def id
+        raise NotImplementedError
+      end
 
+      # @abstract
       # @return [SerializedObject] Serialized metadata of the serialized event
-      def metadata; end
+      def metadata
+        raise NotImplementedError
+      end
 
+      # @abstract
       # @return [SerializedObject] Serialized payload of the serialized event
-      def payload; end
+      def payload
+        raise NotImplementedError
+      end
 
+      # @abstract
       # @return [Time] Timestamp of the serialized event
-      def timestamp; end
+      def timestamp
+        raise NotImplementedError
+      end
 
+      # @abstract
       # @return [Object] Identifier of the aggregate that the event was applied to
-      def aggregate_id; end
+      def aggregate_id
+        raise NotImplementedError
+      end
 
+      # @abstract
       # @return [Integer] Sequence number of the event in the aggregate
-      def sequence_number; end
-    end
-  end
+      def sequence_number
+        raise NotImplementedError
+      end
+    end # SerializedDomainEventData
+  end # Serialization
 end

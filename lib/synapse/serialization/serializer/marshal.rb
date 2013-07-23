@@ -10,7 +10,7 @@ module Synapse
     class MarshalSerializer < Serializer
       # This serializer doesn't provide any configuration options
 
-    protected
+      protected
 
       # @param [Object] content
       # @return [Object]

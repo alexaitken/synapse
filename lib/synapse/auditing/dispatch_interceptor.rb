@@ -1,5 +1,6 @@
 module Synapse
   module Auditing
+    # Interceptor that applies auditing to the dispatch of a command
     class AuditingDispatchInterceptor < Command::DispatchInterceptor
       # @return [Array<AuditDataProvider>]
       attr_accessor :data_providers
@@ -7,6 +8,7 @@ module Synapse
       # @return [Array<AuditLogger>]
       attr_accessor :loggers
 
+      # @return [undefined]
       def initialize
         @data_providers = Array.new
         @loggers = Array.new

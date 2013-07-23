@@ -21,7 +21,7 @@ module Synapse
         @command_bus = command_bus
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

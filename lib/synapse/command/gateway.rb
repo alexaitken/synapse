@@ -64,7 +64,7 @@ module Synapse
         callback.result timeout
       end
 
-    protected
+      protected
 
       # @param [CommandMessage] command
       # @return [CommandMessage] The message to dispatch

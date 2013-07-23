@@ -58,7 +58,7 @@ module Synapse
         @unit_provider = unit_provider
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

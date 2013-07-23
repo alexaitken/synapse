@@ -12,9 +12,7 @@ module Synapse
       # @param [EventMessage] message
       # @return [SerializationAwareEventMessage]
       def self.decorate(message)
-        if message.is_a? SerializationAware
-          return message
-        end
+        return message if message.is_a? SerializationAware
 
         self.new message
       end
@@ -31,9 +29,7 @@ module Synapse
       # @return [SerializationAwareEventMessage]
       def and_metadata(additional_metadata)
         new_message = @message.and_metadata additional_metadata
-        if new_message.equal? @message
-          return self
-        end
+        return self if new_message.equal? @message
 
         self.class.new new_message
       end
@@ -43,9 +39,7 @@ module Synapse
       # @return [SerializationAwareEventMessage]
       def with_metadata(replacement_metadata)
         new_message = @message.with_metadata replacement_metadata
-        if new_message.equal? @message
-          return self
-        end
+        return self if new_message.equal? @message
 
         self.class.new new_message
       end

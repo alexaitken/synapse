@@ -62,7 +62,7 @@ module Synapse
         @unit_factory = unit_factory
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

@@ -26,7 +26,7 @@ module Synapse
       # @return [undefined]
       def aggregate_root=(aggregate_root)
         if @aggregate_root
-          unless @aggregate_root === aggregate_root
+          unless @aggregate_root.equal? aggregate_root
             raise 'Entity is registered to a different aggregate root'
           end
         end
@@ -34,7 +34,7 @@ module Synapse
         @aggregate_root = aggregate_root
       end
 
-    protected
+      protected
 
       # Handles the event locally and then cascades to any registered child entities
       #

@@ -19,7 +19,7 @@ module Synapse
         @listener_tag = listener_tag
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

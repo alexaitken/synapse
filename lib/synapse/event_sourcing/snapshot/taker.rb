@@ -36,7 +36,7 @@ module Synapse
         end
       end
 
-    protected
+      protected
 
       # @abstract
       # @param [String] type_identifier

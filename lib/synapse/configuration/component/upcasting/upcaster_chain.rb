@@ -37,7 +37,7 @@ module Synapse
         @upcaster_tag = upcaster_tag
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

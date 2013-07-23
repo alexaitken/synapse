@@ -14,12 +14,12 @@ module Synapse
 
         @process_types.each do |process_type|
           unless process_type.respond_to? :event_mapper
-            raise ArgumentError, 'Incompatible process type %s' % process_type
+            raise ArgumentError, "Incompatible process type #{process_type}"
           end
         end
       end
 
-    protected
+      protected
 
       # @param [Class] process_type
       # @param [EventMessage] event
@@ -43,29 +43,23 @@ module Synapse
       # @return [Correlation] Returns nil if no correlation could be extracted
       def extract_correlation(process_type, event)
         mapping = process_type.event_mapper.mapping_for event.payload_type
-
+        # Process does not have a mapping for this event
         return unless mapping
 
-        correlation_key = mapping.options[:correlate]
-        if correlation_key
-          correlation_value event.payload, correlation_key
-        end
-      end
+        key = mapping.options[:correlate]
+        # Mapping does not contain a correlation key
+        return unless key
 
-    private
-
-      # @param [Object] payload
-      # @param [Symbol] correlation_key
-      # @return [Correlation] Returns nil if correlation value could not be extracted
-      def correlation_value(payload, correlation_key)
-        unless payload.respond_to? correlation_key
-          raise 'Correlation key [%s] is not valid for [%s]' % [correlation_key, payload.class]
+        payload = event.payload
+        unless payload.respond_to? key
+          raise "Correlation key {#{key}} not valid for event #{payload.class}"
         end
 
-        value = payload.public_send correlation_key
-        if value
-          Correlation.new correlation_key, value
-        end
+        value = payload.public_send key
+        # The value of the correlation key for the event is nil
+        return unless value
+
+        Correlation.new key, value
       end
     end # MappingProcessManager
   end # ProcessManager

@@ -19,7 +19,7 @@ module Synapse
       # @param [Integer] expected_version
       # @return [undefined]
       def initialize(aggregate, expected_version)
-        super 'Aggregate [%s] has version %s, expected %s' % [aggregate.id, aggregate.version, expected_version]
+        super "Aggregate {#{aggregate.id}} is version #{aggregate.version}; expected #{expected_version}"
       end
     end # ConflictingAggregateVersionError
   end # Repository

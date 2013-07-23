@@ -103,7 +103,7 @@ module Synapse
       MessageBuilder
     end
 
-  protected
+    protected
 
     # Populates a duplicated message with attributes from this message
     #
@@ -116,5 +116,5 @@ module Synapse
       builder.payload = @payload
       builder.timestamp = @timestamp
     end
-  end
+  end # Message
 end

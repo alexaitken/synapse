@@ -35,7 +35,7 @@ module Synapse
         upcast_types
       end
 
-    protected
+      protected
 
       # @abstract
       # @param [SerializedObject] intermediate

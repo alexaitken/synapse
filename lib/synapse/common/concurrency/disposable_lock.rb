@@ -62,10 +62,10 @@ module Synapse
 
       if closed?
         unlock
-        return false
+        false
+      else
+        true
       end
-
-      return true
     end
 
     # @return [Boolean]
@@ -115,7 +115,7 @@ module Synapse
       end
     end
 
-  private
+    private
 
     # @raise [DeadlockError]
     # @return [undefined]
@@ -146,12 +146,10 @@ module Synapse
 
     # @return [undefined]
     def wakeup_next_waiter
-      begin
-        n = @waiters.shift
-        n.wakeup if n
-      rescue ThreadError
-        retry
-      end
+      n = @waiters.shift
+      n.wakeup if n
+    rescue ThreadError
+      retry
     end
   end # DisposableLock
 end

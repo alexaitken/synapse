@@ -100,7 +100,7 @@ module Synapse
         builder.build(&block)
       end
 
-    protected
+      protected
 
       # Populates a duplicated message with attributes from this message
       #
@@ -114,7 +114,7 @@ module Synapse
         builder.timestamp = @timestamp
       end
 
-    private
+      private
 
       # @param [LazyObject] object
       # @param [Serializer] serializer
@@ -165,7 +165,7 @@ module Synapse
         SerializedDomainEventMessageBuilder
       end
 
-    protected
+      protected
 
       # @param [SerializedDomainEventMessageBuilder] builder
       # @param [Hash] metadata

@@ -38,5 +38,5 @@ module Synapse
       @metadata ||= Hash.new
       @timestamp ||= Time.now
     end
-  end
+  end # MessageBuilder
 end

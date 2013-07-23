@@ -116,7 +116,7 @@ module Synapse
         end
       end
 
-    protected
+      protected
 
       # Creates a definition builder of the given type, uses the identifier (if any is given),
       # executes the block in the context of the definition builder, then finally builds and

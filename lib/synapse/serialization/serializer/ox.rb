@@ -11,7 +11,7 @@ module Synapse
       # @return [Hash] Options that will be passed to the Ox dump method
       attr_accessor :serialize_options
 
-    protected
+      protected
 
       # @param [Object] content
       # @return [Object]

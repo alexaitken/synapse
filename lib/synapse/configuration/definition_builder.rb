@@ -119,7 +119,7 @@ module Synapse
         @container.register @id, build_definition
       end
 
-    protected
+      protected
 
       # Sets the default values for the definition being built
       # @return [undefined]

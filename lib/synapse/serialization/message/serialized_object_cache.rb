@@ -26,7 +26,7 @@ module Synapse
         serialize @message.payload, @payload_cache, serializer, expected_type
       end
 
-    private
+      private
 
       # @param [Object] object
       # @param [Hash<Serializer, SerializedObject>] cache

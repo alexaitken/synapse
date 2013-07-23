@@ -23,7 +23,7 @@ module Synapse
           attribute = options[:as] || service
           attr_accessor attribute
 
-          self.dependencies[service] = attribute
+          dependencies.store service, attribute
         end
       end
     end # Dependent

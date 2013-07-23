@@ -15,7 +15,7 @@ module Synapse
     class AsynchronousCommandBusDefinitionBuilder < SimpleCommandBusDefinitionBuilder
       include ThreadPoolDefinitionBuilder
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

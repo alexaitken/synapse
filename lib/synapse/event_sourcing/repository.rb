@@ -33,7 +33,7 @@ module Synapse
         @stream_decorators = Array.new
       end
 
-    protected
+      protected
 
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found
@@ -107,7 +107,7 @@ module Synapse
         @aggregate_factory.type_identifier
       end
 
-    private
+      private
 
       # @param [Object] aggregate_id
       # @param [DomainEventStream] stream
@@ -155,7 +155,7 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [undefined]
       def initialize(type_identifier, aggregate_id)
-        super 'Aggregate marked for deletion [%s] [%s]' % [type_identifier, aggregate_id]
+        super "Aggregate {#{type_identifier}} {#{aggregate_id}} has been marked for deletion"
       end
     end # AggregateDeletedError
   end # EventSourcing

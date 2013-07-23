@@ -52,7 +52,7 @@ module Synapse
         true
       end
 
-    private
+      private
 
       # @param [Exception] exception
       # @return [Boolean]

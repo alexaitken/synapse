@@ -13,7 +13,7 @@ module Synapse
     class AttributeSerializer < Serializer
       # This serializer doesn't provide any configuration options
 
-    protected
+      protected
 
       # @param [Object] content
       # @return [Object]

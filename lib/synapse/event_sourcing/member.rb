@@ -42,7 +42,7 @@ module Synapse
         end
       end
 
-    protected
+      protected
 
       # Returns an array of the child entities of this aggregate member
       # @return [Array]
@@ -75,13 +75,13 @@ module Synapse
       # @param [EventMessage] event
       # @return [undefined]
       def handle_event(event)
-        mapping = self.event_mapper.mapping_for event.payload_type
+        mapping = event_mapper.mapping_for event.payload_type
         if mapping
           mapping.invoke self, event.payload, event
         end
       end
 
-    private
+      private
 
       # @param [Array] entities
       # @return [Array]

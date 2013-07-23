@@ -51,15 +51,15 @@ module Synapse
         end
       end
 
-    private
+      private
 
       # @return [Boolean]
       def potential_conflicts?
-        @aggregate.uncommitted_event_count > 0 and
-          @aggregate.version and
+        @aggregate.uncommitted_event_count > 0 &&
+          @aggregate.version &&
           @unseen_events.size > 0
       end
-    end
+    end # ConflictResolvingUnitOfWorkListener
 
     # Event stream decorator that captures any events that have been applied after the expected
     # version of an aggregate
@@ -78,15 +78,17 @@ module Synapse
 
       # @return [DomainEventMessage]
       def next_event
-        @delegate.next_event.tap do |event|
-          if @expected_version and event.sequence_number > @expected_version
-            @unseen_events.push event
-          end
+        event = @delegate.next_event
+
+        if @expected_version && event.sequence_number > @expected_version
+          @unseen_events.push event
         end
+
+        event
       end
 
       # Delegators for domain event stream
       def_delegators :@delegate, :end?, :peek
-    end
-  end
+    end # CapturingEventStream
+  end # EventSourcing
 end

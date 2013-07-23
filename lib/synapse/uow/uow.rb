@@ -94,7 +94,7 @@ module Synapse
         @transaction_manager = transaction_manager
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def perform_commit
@@ -151,7 +151,7 @@ module Synapse
         @aggregates.clear
       end
 
-    private
+      private
 
       # Checks if an aggregate of the same type and identifier as the given aggregate has been
       # previously registered with this unit work. If one is found, it is returned.
@@ -165,7 +165,7 @@ module Synapse
           end
         end
 
-        return
+        nil
       end
 
       # Continually publishes all buffered events to their respective event buses until all

@@ -86,7 +86,7 @@ module Synapse
         @snapshot_taker = snapshot_taker
       end
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

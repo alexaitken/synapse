@@ -13,7 +13,7 @@ module Synapse
         @pool_options = pool_options
       end
 
-    protected
+      protected
 
       # Creates a thread pool with the configured options
       # @return [Contender::Pool::ThreadPoolExecutor]

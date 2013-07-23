@@ -37,8 +37,8 @@ module Synapse
               @retry_scheduler.schedule @command, @failures, @dispatcher
             @delegate.on_failure exception
           end
-        rescue
-          @delegate.on_failure $!
+        rescue => exception
+          @delegate.on_failure exception
         end
       end
     end # RetryingCallback

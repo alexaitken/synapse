@@ -7,7 +7,7 @@ module Synapse
     class ContainerResourceInjectorDefinitionBuilder < DefinitionBuilder
       # No options available for this definition builder
 
-    protected
+      protected
 
       # @return [undefined]
       def populate_defaults

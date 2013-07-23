@@ -46,7 +46,7 @@ module Synapse
         end
       end
 
-    protected
+      protected
 
       # @abstract
       # @param [Class] process_type
@@ -63,6 +63,8 @@ module Synapse
       def extract_correlation(process_type, event)
         raise NotImplementedError
       end
+
+      private
 
       # Determines whether or not a new process should be started, based off of existing processes
       # and the creation policy for the event and process
@@ -166,16 +168,14 @@ module Synapse
       # @param [EventMessage] event
       # @return [undefined]
       def notify_process(process, event)
-        begin
-          process.handle event
-        rescue => exception
-          raise unless @suppress_exceptions
+        process.handle event
+      rescue => exception
+        raise unless @suppress_exceptions
 
-          backtrace = exception.backtrace.join $RS
-          logger.error "Exception occured while invoking process " +
-            "{#{process.class}} {#{process.id}} with {#{event.payload_type}}:\n" +
-            "#{exception.inspect} #{backtrace}"
-        end
+        backtrace = exception.backtrace.join $RS
+        logger.error "Exception occured while invoking process " +
+          "{#{process.class}} {#{process.id}} with {#{event.payload_type}}:\n" +
+          "#{exception.inspect} #{backtrace}"
       end
     end # ProcessManager
   end # ProcessManager

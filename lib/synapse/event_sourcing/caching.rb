@@ -11,7 +11,7 @@ module Synapse
       # @return [ActiveSupport::Cache::Store]
       attr_accessor :cache
 
-    protected
+      protected
 
       # @raise [AggregateNotFoundError]
       #   If the aggregate with the given identifier could not be found

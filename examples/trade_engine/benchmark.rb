@@ -55,6 +55,6 @@ overall = time.round 2
 latency = (time/t * 1000).round 1
 throughput = (t/time).round
 
-puts '   Overall: Took %ss to handle %s commands' % [overall, t]
-puts 'Throughput: %s commands/sec' % [throughput]
-puts '   Latency: %sms' % [latency]
+puts "   Overall: Took #{overall}s to handle #{t} commands"
+puts "Throughput: #{thoughput} commands/sec"
+puts "   Latency: #{latency}ms"
