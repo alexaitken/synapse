@@ -5,12 +5,12 @@ module Synapse
   module EventSourcing
 
     describe Entity do
-      it 'raise an exception if an event is published and aggregate root is not set' do
+      it 'raises an exception if an event is published and aggregate root is not set' do
         entity = StubEntity.new
 
-        assert_raise RuntimeError do
+        expect {
           entity.change_something
-        end
+        }.to raise_error(RuntimeError)
 
         aggregate = StubAggregate.new 123
 
@@ -18,16 +18,16 @@ module Synapse
         entity.change_something
       end
 
-      it 'raise an exception if registration is attempted with more than one aggregate' do
+      it 'raises an exception if registration is attempted with more than one aggregate' do
         entity = StubEntity.new
         aggregate_a = StubAggregate.new 123
         aggregate_b = StubAggregate.new 123
 
         entity.aggregate_root = aggregate_a
 
-        assert_raise RuntimeError do
+        expect {
           entity.aggregate_root = aggregate_b
-        end
+        }.to raise_error(RuntimeError)
       end
     end
 

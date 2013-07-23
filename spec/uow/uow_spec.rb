@@ -4,12 +4,12 @@ module Synapse
   module UnitOfWork
 
     describe UnitOfWork do
-      before :each do
+      before do
         @provider = UnitOfWorkProvider.new
         @uow = UnitOfWork.new @provider
       end
 
-      after :each do
+      after do
         if @provider.started?
           fail 'Unit of work was not properly cleared from the provider'
         end

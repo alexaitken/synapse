@@ -2,12 +2,13 @@ require 'spec_helper'
 
 module Synapse
   module EventBus
+
     describe EventPublisher do
       it 'wrap event objects in messages before they are published' do
         event_bus = Object.new
 
         mock(event_bus).publish(is_a(Domain::EventMessage)) do |message|
-          assert message.payload.is_a? TestEvent
+          message.payload.should be_a(TestEvent)
         end
 
         publisher = ExampleEventPublisher.new
@@ -25,5 +26,6 @@ module Synapse
     end
 
     class TestEvent; end
+
   end
 end

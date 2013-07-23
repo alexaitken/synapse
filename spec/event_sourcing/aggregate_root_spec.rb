@@ -5,45 +5,49 @@ module Synapse
   module EventSourcing
 
     describe AggregateRoot do
-      it 'track published events' do
-        stub = StubAggregate.new 123
+      it 'tracks published events' do
+        id = SecureRandom.uuid
+
+        stub = StubAggregate.new id
         stub.change_something
         stub.change_something
 
-        assert_equal 123, stub.id
-        assert_equal 3, stub.uncommitted_event_count
-
-        assert_nil stub.version
+        stub.id.should == id
+        stub.uncommitted_event_count.should == 3
+        stub.version.should be_nil
 
         stub.mark_committed
 
-        assert_equal 2, stub.version
+        stub.version.should == 2
+        stub.uncommitted_event_count.should == 0
       end
 
-      it 'support initializing state from an event stream' do
+      it 'supports initializing state from an event stream' do
+        id = SecureRandom.uuid
+
         events = Array.new
-        events.push create_event(123, 0, StubCreatedEvent.new(123))
-        events.push create_event(123, 1, StubChangedEvent.new)
-        events.push create_event(123, 2, StubChangedEvent.new)
+        events.push create_event(id, 0, StubCreatedEvent.new(id))
+        events.push create_event(id, 1, StubChangedEvent.new)
+        events.push create_event(id, 2, StubChangedEvent.new)
 
         stream = Domain::SimpleDomainEventStream.new events
 
         aggregate = StubAggregate.new_from_stream stream
 
-        assert_equal 123, aggregate.id
-        assert_equal 2, aggregate.version
-        assert_equal 0, aggregate.initial_version
+        aggregate.id.should == id
+        aggregate.version == 2
+        aggregate.initial_version == 0
       end
 
-      it 'raise an exception if initialization is attempted when the aggregate has state' do
+      it 'raises an exception if initialization is attempted when the aggregate has state' do
         aggregate = StubAggregate.new 123
 
-        assert_raise RuntimeError do
+        expect {
           aggregate.initialize_from_stream Domain::SimpleDomainEventStream.new
-        end
+        }.to raise_error(RuntimeError)
       end
 
-      it 'notify child entities of aggregate events' do
+      it 'notifies child entities of aggregate events' do
         stub_entity_a = StubEntity.new
         stub_entity_b = StubEntity.new
 
@@ -57,9 +61,9 @@ module Synapse
 
         aggregate.change_something
 
-        assert_equal 4, aggregate.event_count
-        assert_equal 3, stub_entity_a.event_count
-        assert_equal 1, stub_entity_b.event_count
+        aggregate.event_count.should == 4
+        stub_entity_a.event_count.should == 3
+        stub_entity_b.event_count.should == 1
       end
 
     private

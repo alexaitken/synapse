@@ -15,7 +15,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      it 'load an aggregate using its finder' do
+      it 'loads an aggregate using its finder' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid
@@ -26,21 +26,20 @@ module Synapse
         end
 
         loaded = @repository.load aggregate_id
-
-        assert_same loaded, aggregate
+        loaded.should be(aggregate)
       end
 
-      it 'raise an exception if the aggregate could not be found' do
+      it 'raises an exception if the aggregate could not be found' do
         aggregate_id = SecureRandom.uuid
 
         mock(TestMappedAggregate).find(aggregate_id)
 
-        assert_raise AggregateNotFoundError do
+        expect {
           @repository.load aggregate_id
-        end
+        }.to raise_error(AggregateNotFoundError)
       end
 
-      it 'raise an exception if the loaded aggregate has an unexpected version' do
+      it 'raises an exception if the loaded aggregate has an unexpected version' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid
@@ -51,12 +50,12 @@ module Synapse
           aggregate
         end
 
-        assert_raise ConflictingAggregateVersionError do
+        expect {
           @repository.load aggregate_id, 4
-        end
+        }.to raise_error(ConflictingAggregateVersionError)
       end
 
-      it 'raise an exception while saving if lock could not be validated' do
+      it 'raises an exception while saving if lock could not be validated' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid
@@ -73,12 +72,12 @@ module Synapse
           false
         end
 
-        assert_raise ConcurrencyError do
+        expect {
           unit.commit
-        end
+        }.to raise_error(ConcurrencyError)
       end
 
-      it 'delete the aggregate if it has been marked for deletion' do
+      it 'deletes the aggregate if it has been marked for deletion' do
         unit = @unit_factory.create
 
         aggregate_id = SecureRandom.uuid

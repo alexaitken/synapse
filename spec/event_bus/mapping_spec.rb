@@ -4,7 +4,7 @@ module Synapse
   module EventBus
 
     describe MappingEventListener do
-      it 'use the correct handler when notified of an events' do
+      it 'uses the correct handler when notified of an events' do
         listener = ExampleMappingEventListener.new
 
         event = Domain::EventMessage.build do |builder|
@@ -13,7 +13,7 @@ module Synapse
 
         listener.notify event
 
-        assert listener.handled
+        listener.handled.should be_true
 
         event = Domain::EventMessage.build do |builder|
           builder.payload = TestSubEvent.new
@@ -21,7 +21,7 @@ module Synapse
 
         listener.notify event
 
-        assert listener.sub_handled
+        listener.sub_handled.should be_true
       end
     end
 

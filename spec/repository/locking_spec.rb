@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module Repository
+
     describe LockingRepository do
       before do
         @event_bus = Object.new
@@ -16,7 +17,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      it 'handling locking when an aggregate is added' do
+      it 'handles locking when an aggregate is added' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
@@ -26,38 +27,38 @@ module Synapse
         @unit.commit
       end
 
-      it 'raise an exception if an incompatible aggregate is added' do
+      it 'raises an exception if an incompatible aggregate is added' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
         aggregate = OpenStruct.new
         aggregate.id = 123
 
-        assert_raises ArgumentError do
+        expect {
           @repository.add aggregate
-        end
+        }.to raise_error(ArgumentError)
       end
 
-      it 'raise an exception if an aggregate is added that already has a version' do
+      it 'raises an exception if an aggregate is added that already has a version' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
         aggregate = TestAggregateRoot.new 123, 0
 
-        assert_raises ArgumentError do
+        expect {
           @repository.add aggregate
-        end
+        }.to raise_error(ArgumentError)
       end
 
-      it 'raise an exception if a loaded aggregate has an unexpected version' do
+      it 'raises an exception if a loaded aggregate has an unexpected version' do
         mock(@lock_manager).obtain_lock(123)
         mock(@lock_manager).release_lock(123)
 
         @repository.aggregate = TestAggregateRoot.new 123, 1
 
-        assert_raises ConflictingAggregateVersionError do
+        expect {
           @repository.load 123, 0
-        end
+        }.to raise_error(ConflictingAggregateVersionError)
       end
     end
 
@@ -91,5 +92,6 @@ module Synapse
       def save_aggregate(aggregate); end
       def delete_aggregate(aggregate); end
     end
+
   end
 end

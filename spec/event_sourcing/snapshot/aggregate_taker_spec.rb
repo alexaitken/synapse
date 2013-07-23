@@ -14,7 +14,7 @@ module Synapse
         @snapshot_taker.register_factory @aggregate_factory
       end
 
-      it 'store a snapshot by serializing the aggregate itself' do
+      it 'stores a snapshot by serializing the aggregate itself' do
         type_identifier = @aggregate_factory.type_identifier
         id = SecureRandom.uuid
 
@@ -30,15 +30,15 @@ module Synapse
         end
 
         mock(@event_store).append_snapshot_event(type_identifier, anything) do |_, snapshot|
-          assert_equal StubAggregate, snapshot.payload_type
-          assert_equal 2, snapshot.sequence_number
-          assert_equal id, snapshot.aggregate_id
+          snapshot.aggregate_id.should == id
+          snapshot.payload_type.should == StubAggregate
+          snapshot.sequence_number.should == 2
         end
 
         @snapshot_taker.schedule_snapshot type_identifier, id
       end
 
-      it 'not store a snapshot if it replaces only one event' do
+      it 'does not store a snapshot if it replaces only one event' do
         type_identifier = @aggregate_factory.type_identifier
         id = SecureRandom.uuid
 

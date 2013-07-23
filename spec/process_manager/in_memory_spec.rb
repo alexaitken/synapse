@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'process_manager/fixtures'
 
 module Synapse
   module ProcessManager
@@ -17,8 +18,8 @@ module Synapse
         repository.add process_a
         repository.add process_b
 
-        assert_equal [process_a.id], repository.find(Process, correlation_a)
-        assert_equal [process_b.id], repository.find(Process, correlation_b)
+        repository.find(Process, correlation_a).should include(process_a.id)
+        repository.find(Process, correlation_b).should include(process_b.id)
       end
 
       it 'support loading processes by identifier' do
@@ -30,26 +31,26 @@ module Synapse
         repository.add process_a
         repository.add process_b
 
-        assert_equal process_a, repository.load(process_a.id)
-        assert_equal process_b, repository.load(process_b.id)
+        repository.load(process_a.id).should == process_a
+        repository.load(process_b.id).should == process_b
       end
 
       it 'mark processes as committed' do
         repository = InMemoryProcessRepository.new
 
-        process = Process.new
+        process = StubProcess.new
         repository.commit process
 
-        assert_equal 1, repository.count
+        repository.count.should == 1
+
         # Make sure the correlation set was marked as committed
-        assert_equal 0, process.correlations.additions.count
-        assert_equal 0, process.correlations.deletions.count
+        process.correlations.additions.count.should == 0
+        process.correlations.deletions.count.should == 0
 
-        process.send :finish
+        process.cause_finish
 
         repository.commit process
-
-        assert_equal 0, repository.count
+        repository.count.should == 0
       end
     end
 

@@ -20,7 +20,7 @@ require 'timecop'
 RSpec.configure do |r|
   # Ox and Oj are not compatible with JRuby
   if defined? JRUBY_VERSION
-    r.filter_run_excluding ox: true
     r.filter_run_excluding oj: true
+    r.filter_run_excluding ox: true
   end
 end

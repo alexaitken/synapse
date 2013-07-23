@@ -2,16 +2,16 @@ require 'spec_helper'
 
 module Synapse
   module EventStore
-    describe InMemoryEventStore do
 
+    describe InMemoryEventStore do
       before do
         @event_store = InMemoryEventStore.new
       end
 
       it 'raise an exception if a stream could not be found' do
-        assert_raise StreamNotFoundError do
+        expect {
           @event_store.read_events 'Person', 123
-        end
+        }.to raise_error(StreamNotFoundError)
       end
 
       it 'support appending and reading an event stream' do
@@ -26,8 +26,7 @@ module Synapse
         @event_store.append_events 'Person', stream_b
 
         stream = @event_store.read_events 'Person', 123
-
-        assert_equal [event_a, event_b, event_c], stream.to_a
+        stream.to_a.should == [event_a, event_b, event_c]
       end
 
       it 'be able to be cleared of all streams' do
@@ -37,11 +36,11 @@ module Synapse
         @event_store.append_events 'Person', stream
         @event_store.clear
 
-        assert_raise StreamNotFoundError do
+        expect {
           @event_store.read_events 'Person', 123
-        end
+        }.to raise_error(StreamNotFoundError)
       end
-
     end
+
   end
 end

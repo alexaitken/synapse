@@ -13,51 +13,51 @@ module Synapse
         @manager = MappingProcessManager.new @repository, @factory, @lock_manager, OrderProcess
       end
 
-      it 'raise an exception if used with a process that does not support wiring' do
-        assert_raise ArgumentError do
+      it 'raises an exception if used with a process that does not support wiring' do
+        expect {
           MappingProcessManager.new @repository, @factory, @lock_manager, Process
-        end
+        }.to raise_error(ArgumentError)
       end
 
-      it 'use mapping attributes to determine correlation keys' do
+      it 'uses mapping attributes to determine correlation keys' do
         event = create_event OrderCreated.new 123
         @manager.notify event
 
         correlation = Correlation.new :order_id, 123
 
         processes = @repository.find OrderProcess, correlation
-        assert_equal 1, processes.count
+        processes.count.should == 1
       end
 
-      it 'use mapping attributes to determine creation policy' do
+      it 'uses mapping attributes to determine creation policy' do
         event = create_event OrderCreated.new 123
 
         @manager.notify event
         @manager.notify event
 
-        assert_equal 1, @repository.count
+        @repository.count.should == 1
 
         event = create_event OrderForceCreated.new 123
 
         @manager.notify event
         @manager.notify event
 
-        assert_equal 3, @repository.count
+        @repository.count.should == 3
 
         event = create_event OrderUpdated.new 123
 
         @manager.notify event
         @manager.notify event
 
-        assert_equal 3, @repository.count
+        @repository.count.should == 3
       end
 
-     it 'raise an exception if the correlation key does not exist on the event' do
+     it 'raises an exception if the correlation key does not exist on the event' do
         event = create_event OrderDerped.new
 
-        assert_raise RuntimeError do
+        expect {
           @manager.notify event
-        end
+        }.to raise_error(RuntimeError)
       end
 
     private

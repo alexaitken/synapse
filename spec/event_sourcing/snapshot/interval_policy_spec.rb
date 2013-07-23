@@ -2,9 +2,9 @@ require 'spec_helper'
 
 module Synapse
   module EventSourcing
-    describe IntervalSnapshotPolicy do
 
-      it 'suggest a snapshot if the threshold is surpassed' do
+    describe IntervalSnapshotPolicy do
+      it 'suggests a snapshot if the threshold is surpassed' do
         aggregate_a = Object.new
         aggregate_b = Object.new
 
@@ -15,10 +15,10 @@ module Synapse
 
         policy = IntervalSnapshotPolicy.new 30
 
-        assert policy.should_snapshot? aggregate_a
-        refute policy.should_snapshot? aggregate_b
+        policy.should_snapshot?(aggregate_a).should be_true
+        policy.should_snapshot?(aggregate_b).should be_false
       end
-
     end
+
   end
 end

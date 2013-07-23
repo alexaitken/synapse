@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module ProcessManager
+
     describe SimpleProcessManager do
       before do
         @repository = InMemoryProcessRepository.new
@@ -11,7 +12,7 @@ module Synapse
         @manager = SimpleProcessManager.new @repository, @factory, @lock_manager, @resolver, TestProcess
       end
 
-      it 'create a new process and notify it if one could not be found' do
+      it 'creates a new process and notify it if one could not be found' do
         @manager.optionally_create_events << CauseProcessCreationEvent
 
         correlation = Correlation.new :order_id, 123
@@ -21,10 +22,10 @@ module Synapse
 
         @manager.notify create_event 123, CauseProcessCreationEvent.new
 
-        assert_equal 1, @repository.count
+        @repository.count.should == 1
       end
 
-      it 'load and notify an existing process correlated with an event' do
+      it 'loads and notifies an existing process correlated with an event' do
         process = TestProcess.new
         process.correlations.add Correlation.new :order_id, 123
 
@@ -35,10 +36,10 @@ module Synapse
 
         @manager.notify create_event 123, CauseProcessNotificationEvent.new
 
-        assert_equal 1, @repository.count
+        @repository.count.should == 1
       end
 
-      it 'suppress exceptions raised by a process while handling an event' do
+      it 'suppresses exceptions raised by a process while handling an event' do
         process = TestProcess.new
         process.correlations.add Correlation.new :order_id, 123
 
@@ -49,10 +50,10 @@ module Synapse
 
         @manager.notify create_event 123, CauseProcessRaiseExceptionEvent.new
 
-        assert_equal 1, @repository.count
+        @repository.count.should == 1
       end
 
-      it 'release its lock before raising an exception caused by a process' do
+      it 'releases its lock before raising an exception caused by a process' do
         process = TestProcess.new
         process.correlations.add Correlation.new :order_id, 123
 
@@ -63,12 +64,12 @@ module Synapse
 
         @manager.suppress_exceptions = false
 
-        assert_raise RuntimeError do
+        expect {
           @manager.notify create_event 123, CauseProcessRaiseExceptionEvent.new
-        end
+        }.to raise_error(RuntimeError)
       end
 
-      it 'always create a process if specified by the creation policy' do
+      it 'always creates a process if specified by the creation policy' do
         @manager.always_create_events << CauseProcessCreationEvent
 
         correlation = Correlation.new :order_id, 123
@@ -80,7 +81,7 @@ module Synapse
         @manager.notify create_event 123, CauseProcessCreationEvent.new
         @manager.notify create_event 123, CauseProcessCreationEvent.new
 
-        assert_equal 2, @repository.count
+        @repository.count.should == 2
       end
 
     private
@@ -126,5 +127,6 @@ module Synapse
     class CauseProcessCreationEvent; end
     class CauseProcessNotificationEvent; end
     class CauseProcessRaiseExceptionEvent; end
+
   end
 end

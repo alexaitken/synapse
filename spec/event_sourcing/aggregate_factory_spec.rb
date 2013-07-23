@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'event_sourcing/fixtures'
 
 module Synapse
   module EventSourcing
@@ -8,17 +9,16 @@ module Synapse
         @factory = GenericAggregateFactory.new StubAggregate
       end
 
-      it 'create an aggregate from a normal event' do
+      it 'creates an aggregate from a normal event' do
         event = Domain::DomainEventMessage.build do |m|
           m.payload = StubCreatedEvent.new 123
         end
 
         aggregate = @factory.create_aggregate 123, event
-
-        assert aggregate.is_a? StubAggregate
+        aggregate.is_a?(StubAggregate).should be_true
       end
 
-      it 'use an aggregate snapshot if available' do
+      it 'uses an aggregate snapshot if available' do
         snapshot = StubAggregate.new 123
         snapshot.change_something
         snapshot.mark_committed
@@ -29,8 +29,8 @@ module Synapse
 
         aggregate = @factory.create_aggregate 123, snapshot_event
 
-        assert_same snapshot, aggregate
-        assert_equal snapshot.version, aggregate.initial_version
+        aggregate.should be(snapshot)
+        aggregate.initial_version.should == snapshot.version
       end
     end
 

@@ -1,10 +1,12 @@
 require 'spec_helper'
+require 'event_sourcing/fixtures'
 
 module Synapse
   module EventSourcing
-    describe CachingEventSourcingRepository do
 
+    describe CachingEventSourcingRepository do
       before do
+        # i herd u like dependencies
         @unit_provider = UnitOfWork::UnitOfWorkProvider.new
         @unit = UnitOfWork::UnitOfWork.new @unit_provider
         @unit.start
@@ -19,7 +21,7 @@ module Synapse
         @repository.unit_provider = @unit_provider
       end
 
-      it 'load from cache before hitting the event store' do
+      it 'loads from cache before hitting the event store' do
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
 
@@ -27,10 +29,10 @@ module Synapse
           aggregate
         end
 
-        assert_same aggregate, @repository.load(aggregate_id)
+        @repository.load(aggregate_id).should be(aggregate)
       end
 
-      it 'raise an exception if the aggregate loaded from the cache is marked for deletion' do
+      it 'raises an exception if the aggregate loaded from the cache is marked for deletion' do
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
         aggregate.delete_me
@@ -39,12 +41,12 @@ module Synapse
           aggregate
         end
 
-        assert_raise AggregateDeletedError do
+        expect {
           @repository.load aggregate_id
-        end
+        }.to raise_error(AggregateDeletedError)
       end
 
-      it 'load from the event store if cache miss' do
+      it 'loads from the event store if cache miss' do
         type_identifier = @factory.type_identifier
         aggregate_id = SecureRandom.uuid
 
@@ -53,12 +55,12 @@ module Synapse
           raise EventStore::StreamNotFoundError.new(type_identifier, aggregate_id)
         end
 
-        assert_raise Repository::AggregateNotFoundError do
+        expect {
           @repository.load aggregate_id
-        end
+        }.to raise_error(Repository::AggregateNotFoundError)
       end
 
-      it 'clear the cache if the unit of work is rolled back' do
+      it 'clears the cache if the unit of work is rolled back' do
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
 
@@ -72,7 +74,7 @@ module Synapse
         @unit.rollback
       end
 
-      it 'delete aggregate from cache when aggregate is deleted' do
+      it 'deletes aggregate from cache when aggregate is deleted' do
         type_identifier = @factory.type_identifier
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
@@ -91,7 +93,7 @@ module Synapse
         @unit.commit
       end
 
-      it 'delete aggregate from cache when commit goes wrong' do
+      it 'deletes aggregate from cache when commit goes wrong' do
         type_identifier = @factory.type_identifier
         aggregate_id = SecureRandom.uuid
         aggregate = StubAggregate.new aggregate_id
@@ -108,11 +110,11 @@ module Synapse
 
         @repository.load aggregate_id
 
-        assert_raise RuntimeError do
+        expect {
           @unit.commit
-        end
+        }.to raise_error(RuntimeError)
       end
-
     end
+
   end
 end
