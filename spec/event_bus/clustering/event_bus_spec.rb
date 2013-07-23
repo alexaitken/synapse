@@ -21,6 +21,22 @@ module Synapse
         bus.publish event
       end
 
+      it 'uses clusters for subscription management' do
+        terminal = LocalEventBusTerminal.new
+
+        cluster = SimpleCluster.new :default
+        selector = SimpleClusterSelector.new cluster
+
+        listener = Object.new
+
+        mock(cluster).subscribe(listener)
+        mock(cluster).unsubscribe(listener)
+
+        bus = ClusteringEventBus.new selector, terminal
+        bus.subscribe listener
+        bus.unsubscribe listener
+      end
+
       it 'raises an error no cluster is selected for an event listener' do
         listener = Object.new
 
