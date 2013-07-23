@@ -26,6 +26,24 @@ module Synapse
       def unsubscribe(listener)
         raise NotImplementedError
       end
+
+      # @abstract
+      # @return [String]
+      def name
+        raise NotImplementedError
+      end
+
+      # @abstract
+      # @return [Set]
+      def members
+        raise NotImplementedError
+      end
+
+      # @abstract
+      # @return [Hash]
+      def metadata
+        raise NotImplementedError
+      end
     end # Cluster
   end # EventBus
 end

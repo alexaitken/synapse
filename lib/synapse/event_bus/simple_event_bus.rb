@@ -3,10 +3,12 @@ module Synapse
     # Implementation of an event bus that notifies any subscribed event listeners in the calling
     # thread. Listeners are expected to implement asynchronous handing themselves, if desired.
     class SimpleEventBus < EventBus
+      include EventListenerProxyAware
       include Loggable
 
       # @return [undefined]
       def initialize
+        # @todo This should be a thread-safe structure
         @listeners = Set.new
       end
 
@@ -19,7 +21,10 @@ module Synapse
         events.flatten!
         events.each do |event|
           @listeners.each do |listener|
-            logger.debug "Publishing event {#{event.payload_type}} to {#{listener.class}}"
+            if logger.debug?
+              listener_type = resolve_listener_type listener
+              logger.debug "Publishing event {#{event.payload_type}} to {#{listener_type}}"
+            end
 
             listener.notify event
           end
@@ -39,12 +44,12 @@ module Synapse
       # @param [EventListener] listener
       # @return [undefined]
       def subscribe(listener)
-        type = actual_type_of listener
+        listener_type = resolve_listener_type listener
 
         if @listeners.add? listener
-          logger.debug "Event listener {#{type}} subscribed"
+          logger.debug "Event listener {#{listener_type}} subscribed"
         else
-          logger.info "Event listener {#{type}} is already subscribed"
+          logger.info "Event listener {#{listener_type}} is already subscribed"
         end
       end
 
@@ -52,24 +57,12 @@ module Synapse
       # @param [EventListener] listener
       # @return [undefined]
       def unsubscribe(listener)
-        type = actual_type_of listener
+        listener_type = resolve_listener_type listener
 
         if @listeners.delete? listener
-          logger.debug "Event listener {#{type}} unsubscribed"
+          logger.debug "Event listener {#{listener_type}} unsubscribed"
         else
-          logger.info "Event listener {#{type}} is not subscribed"
-        end
-      end
-
-      private
-
-      # @param [EventListener] listener
-      # @return [Class]
-      def actual_type_of(listener)
-        if listener.respond_to? :proxy_type
-          listener.proxy_type
-        else
-          listener.class
+          logger.info "Event listener {#{listener_type}} is not subscribed"
         end
       end
     end # SimpleEventBus

@@ -1,19 +1,11 @@
 module Synapse
   module EventBus
     class CompositeClusterSelector
+      # @param [Enumerable<ClusterSelector>] selectors
       # @return [undefined]
-      def initialize
-        @selectors = Array.new
+      def initialize(selectors)
+        @selectors = Array.new selectors
       end
-
-      # @param [ClusterSelector] selector
-      # @return [CompositeClusterSelector] For fluent interface
-      def push(selector)
-        @selectors.push selector
-        self
-      end
-
-      alias_method :<<, :push
 
       # @param [EventListener] listener
       # @return [Cluster]
