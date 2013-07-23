@@ -1,20 +1,8 @@
 source 'https://rubygems.org'
 
-group :test do
-  # Code coverage utilities
-  gem 'coveralls'
-  gem 'simplecov'
-
-  gem 'test-unit'
-  gem 'shoulda-context'
-
-  # Test doubles
-  gem 'rr'
-  gem 'test-unit-rr'
-  gem 'timecop'
-end
-
 group :development do
+  gem 'guard-rspec'
+
   # Used for command validation and serialization
   gem 'activemodel'
 

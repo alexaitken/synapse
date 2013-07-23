@@ -3,7 +3,7 @@ require 'synapse/configuration/container_builder'
 require 'synapse/configuration/definition'
 require 'synapse/configuration/definition_builder'
 require 'synapse/configuration/dependent'
-require 'synapse/configuration/ext'
+require 'synapse/configuration/extension'
 
 require 'synapse/configuration/component/shared/thread_pool'
 require 'synapse/configuration/component/command_bus'
