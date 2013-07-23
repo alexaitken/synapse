@@ -8,6 +8,7 @@ module Synapse
     # Note that if an error occurs while saving an aggregate, it will be invalidated from the cache
     # to prevent aggregates being returned from the cache that were not fully persisted to disk.
     class CachingEventSourcingRepository < EventSourcingRepository
+      # @todo This should be a ctor parameter
       # @return [ActiveSupport::Cache::Store]
       attr_accessor :cache
 

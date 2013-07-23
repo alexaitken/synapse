@@ -2,6 +2,7 @@ module Synapse
   module Configuration
     # Represents a definition for a service being provided by the container
     # @see DefinitionBuilder
+    # @todo This should be a thread-safe structure
     class Definition
       # @return [Set<Symbol>] Symbols that this definition is tagged with
       attr_reader :tags

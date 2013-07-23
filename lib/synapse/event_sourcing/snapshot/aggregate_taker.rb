@@ -5,6 +5,7 @@ module Synapse
       # @return [undefined]
       def initialize
         super
+        # @todo This should be a thread-safe structure
         @aggregate_factories = Hash.new
       end
 

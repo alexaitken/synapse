@@ -35,7 +35,7 @@ module Synapse
         @builder.converter_factory
 
         factory = @container.resolve :converter_factory
-        expect(factory.converters.first).to be_a(Serialization::JsonToObjectConverter)
+        factory.has_converter?(String, Object).should be_true
 
         # Customized
         @builder.converter_factory :alt_factory do
@@ -43,7 +43,7 @@ module Synapse
         end
 
         factory = @container.resolve :alt_factory
-        expect(factory.converters.first).to be_a(Serialization::JsonToObjectConverter)
+        factory.has_converter?(String, Object).should be_true
       end
     end
 

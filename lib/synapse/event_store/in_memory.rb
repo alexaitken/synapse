@@ -2,6 +2,8 @@ module Synapse
   module EventStore
     # Implementation of an event store that stores events in memory; for testing purposes and
     # not thread safe
+    #
+    # @todo This should be a thread-safe structure
     class InMemoryEventStore < EventStore
       def initialize
         @streams = Hash.new

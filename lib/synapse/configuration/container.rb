@@ -7,6 +7,7 @@ module Synapse
 
       # @return [undefined]
       def initialize
+        # @todo This should be a thread-safe structure
         @definitions = Hash.new
       end
 

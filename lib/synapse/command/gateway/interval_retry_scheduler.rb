@@ -57,9 +57,9 @@ module Synapse
       # @param [Exception] exception
       # @return [Boolean]
       def explicitly_non_transient?(exception)
-        return true if exception.is_a? NonTransientError
-
-        if exception.respond_to? :cause
+        if exception.is_a? NonTransientError
+          true
+        elsif exception.respond_to? :cause
           explicitly_non_transient? exception.cause
         else
           false

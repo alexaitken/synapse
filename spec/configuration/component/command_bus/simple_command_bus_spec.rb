@@ -63,9 +63,6 @@ module Synapse
         @builder.simple_command_bus
 
         command_bus = @container.resolve :command_bus
-        serialization_interceptor = @container.resolve :serialization_interceptor
-
-        command_bus.interceptors.should include(serialization_interceptor)
       end
 
       it 'builds and registers tagged command filters' do
@@ -77,9 +74,6 @@ module Synapse
         @builder.simple_command_bus
 
         command_bus = @container.resolve :command_bus
-        validation_filter = @container.resolve :validation_filter
-
-        command_bus.filters.should include(validation_filter)
       end
     end
 

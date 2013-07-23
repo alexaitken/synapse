@@ -48,14 +48,9 @@ module Synapse
 
         use_factory do
           converter_factory = resolve @converter_factory
+          upcasters = resolve_tagged @upcaster_tag
 
-          upcaster_chain = Upcasting::UpcasterChain.new converter_factory
-
-          with_tagged @upcaster_tag do |upcaster|
-            upcaster_chain.push upcaster
-          end
-
-          upcaster_chain
+          Upcasting::UpcasterChain.new converter_factory, upcasters
         end
       end
     end # UpcasterChainDefinitionBuilder

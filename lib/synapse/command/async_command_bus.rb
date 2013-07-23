@@ -2,11 +2,11 @@ module Synapse
   module Command
     # Command bus that uses a thread pool to asynchronously execute commands, invoking the given
     # callback when execution is completed or resulted in an error
-    #
-    # @todo Look into non-blocking circular buffers or LMAX Disruptor
     class AsynchronousCommandBus < SimpleCommandBus
       # Pool of worker threads that dispatch commands from a queue
-      # @return [Contender::Pool::ThreadPoolExecutor]
+      #
+      # @todo This should be a ctor parameter
+      # @return [Contender::Executor]
       attr_accessor :thread_pool
 
       # @api public

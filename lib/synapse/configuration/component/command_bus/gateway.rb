@@ -31,7 +31,7 @@ module Synapse
 
         use_factory do
           command_bus = resolve @command_bus
-          Command::CommandGateway.new command_bus
+          Command::CommandGateway.new command_bus, Array.new
         end
       end
     end # CommandGatewayDefinitionBuilder

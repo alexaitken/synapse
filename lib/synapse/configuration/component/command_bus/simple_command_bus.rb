@@ -83,16 +83,11 @@ module Synapse
             command_bus.rollback_policy = resolve @rollback_policy
           end
 
+          command_bus.filters = resolve_tagged @filter_tag
+          command_bus.interceptors = resolve_tagged @interceptor_tag
+
           with_tagged @handler_tag do |handler|
             handler.subscribe command_bus
-          end
-
-          with_tagged @filter_tag do |filter|
-            command_bus.filters.push filter
-          end
-
-          with_tagged @interceptor_tag do |interceptor|
-            command_bus.interceptors.push interceptor
           end
 
           command_bus

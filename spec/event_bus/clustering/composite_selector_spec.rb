@@ -15,8 +15,13 @@ module Synapse
 
         do_not_allow(selector_c).select_for(listener)
 
-        selector = CompositeClusterSelector.new
-        selector << selector_a << selector_b << selector_c
+        selectors = [
+          selector_a,
+          selector_b,
+          selector_c
+        ]
+
+        selector = CompositeClusterSelector.new selectors
         selector.select_for(listener).should == cluster
       end
     end

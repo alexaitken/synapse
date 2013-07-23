@@ -4,6 +4,8 @@ module Synapse
     #
     # While the storage of processes are thread-safe, the processes themselves may not be. Use a
     # lock manager if the processes are not thread-safe.
+    #
+    # @todo I'm not so sure of the thread-safety of this class
     class InMemoryProcessRepository < ProcessRepository
       def initialize
         @managed_processes = Hash.new

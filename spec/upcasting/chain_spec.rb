@@ -6,13 +6,16 @@ module Synapse
 
     describe UpcasterChain do
       it 'treats registered upcasters as an upcasting pipeline' do
-        factory = Serialization::ConverterFactory.new
+        cf = Serialization::ConverterFactory.new
+        cf.register Serialization::JsonToObjectConverter.new
 
-        chain = UpcasterChain.new factory
-        chain.push TestTypeUpcaster.new
-        chain.push TestSplitUpcaster.new
-        chain.push TestPhaseOutUpcaster.new
-        chain.converter_factory.register Serialization::JsonToObjectConverter.new
+        upcasters = [
+          TestTypeUpcaster.new,
+          TestSplitUpcaster.new,
+          TestPhaseOutUpcaster.new
+        ]
+
+        chain = UpcasterChain.new cf, upcasters
 
         content = Hash.new
 

@@ -21,9 +21,7 @@ module Synapse
         some_upcaster = @container.resolve :some_upcaster
 
         upcaster_chain = @container.resolve :upcaster_chain
-
-        upcaster_chain.converter_factory.should be(converter_factory)
-        upcaster_chain.upcasters.should include(some_upcaster)
+        upcaster_chain.should be_a(Upcasting::UpcasterChain)
       end
     end
 

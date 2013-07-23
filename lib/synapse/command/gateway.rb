@@ -3,17 +3,15 @@ module Synapse
     # Simplified interface to the command bus
     # @api public
     class CommandGateway
-      # @return [Array<CommandFilter>]
-      attr_reader :filters
-
       # @return [RetryScheduler]
       attr_accessor :retry_scheduler
 
       # @param [CommandBus] command_bus
+      # @param [Enumerable<CommandFilter>] filters
       # @return [undefined]
-      def initialize(command_bus)
+      def initialize(command_bus, filters)
         @command_bus = command_bus
-        @filters = Array.new
+        @filters = Array.new filters
       end
 
       # Fire and forget method of sending a command to the command bus
@@ -25,7 +23,7 @@ module Synapse
       # @param [Object] command
       # @return [undefined]
       def send(command)
-        send_with_callback command, CommandCallback.new
+        send_with_callback command, VoidCallback.new
       end
 
       # Sends the given command
@@ -69,10 +67,9 @@ module Synapse
       # @param [CommandMessage] command
       # @return [CommandMessage] The message to dispatch
       def process_with_filters(command)
-        @filters.each do |filter|
-          command = filter.filter command
+        @filters.reduce command do |intermediate, filter|
+          filter.filter intermediate
         end
-        command
       end
     end # CommandGateway
   end # Command

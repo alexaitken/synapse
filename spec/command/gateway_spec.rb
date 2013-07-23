@@ -8,8 +8,10 @@ module Synapse
 
       before do
         @command_bus = Object.new
-        @gateway = CommandGateway.new @command_bus
+        @gateway = CommandGateway.new @command_bus, Array.new
       end
+
+      it 'filters commands before sending them to the command bus'
 
       it 'wraps bare command objects in command messages before dispatch' do
         command = Object.new

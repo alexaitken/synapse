@@ -8,18 +8,14 @@ module Synapse
       # @return [RollbackPolicy]
       attr_accessor :rollback_policy
 
-      # @return [Array<CommandFilter>]
-      attr_reader :filters
-
-      # @return [Array<DispatchInterceptor>]
-      attr_reader :interceptors
-
       # @param [UnitOfWorkFactory] unit_factory
       # @return [undefined]
       def initialize(unit_factory)
         @unit_factory = unit_factory
 
+        # @todo This should be a thread-safe structure
         @handlers = Hash.new
+
         @filters = Array.new
         @interceptors = Array.new
 
@@ -76,6 +72,18 @@ module Synapse
         else
           false
         end
+      end
+
+      # @param [Enumerable<CommandFilter>] filters
+      # @return [undefined]
+      def filters=(filters)
+        @filters = Array.new filters
+      end
+
+      # @param [Enumerable<DispatchInterceptor>] interceptors
+      # @return [undefined]
+      def interceptors=(interceptors)
+        @interceptors = Array.new interceptors
       end
 
       protected

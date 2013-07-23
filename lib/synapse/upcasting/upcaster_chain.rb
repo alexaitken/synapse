@@ -1,28 +1,13 @@
 module Synapse
   module Upcasting
     class UpcasterChain
-      # @return [ConverterFactory]
-      attr_reader :converter_factory
-
-      # @return [Array<Upcaster>]
-      attr_reader :upcasters
-
       # @param [ConverterFactory] converter_factory
+      # @param [Enumerable<Upcaster>] upcasters
       # @return [undefined]
-      def initialize(converter_factory)
+      def initialize(converter_factory, upcasters)
         @converter_factory = converter_factory
-        @upcasters = Array.new
+        @upcasters = Array.new upcasters
       end
-
-      # Pushes the given upcaster onto the end of this upcaster chain
-      #
-      # @param [Upcaster] upcaster
-      # @return [undefined]
-      def push(upcaster)
-        @upcasters.push upcaster
-      end
-
-      alias_method :<<, :push
 
       # @param [SerializedObject] serialized_object
       # @param [UpcastingContext] upcast_context
@@ -62,7 +47,7 @@ module Synapse
           serialized_type = serialized_object.type
 
           if upcaster.can_upcast? serialized_type
-            serialized_object = converter_factory.convert serialized_object, upcaster.expected_content_type
+            serialized_object = @converter_factory.convert serialized_object, upcaster.expected_content_type
             expected_types = upcaster.upcast_type serialized_type
 
             upcast_objects.concat(perform_upcast(upcaster, serialized_object, expected_types, upcast_context))
