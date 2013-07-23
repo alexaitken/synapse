@@ -39,10 +39,12 @@ module Synapse
       # @param [EventListener] listener
       # @return [undefined]
       def subscribe(listener)
+        type = actual_type_of listener
+
         if @listeners.add? listener
-          logger.debug "Event listener {#{listener.class}} subscribed"
+          logger.debug "Event listener {#{type}} subscribed"
         else
-          logger.info "Event listener {#{listener.class}} is already subscribed"
+          logger.info "Event listener {#{type}} is already subscribed"
         end
       end
 
@@ -50,10 +52,24 @@ module Synapse
       # @param [EventListener] listener
       # @return [undefined]
       def unsubscribe(listener)
+        type = actual_type_of listener
+
         if @listeners.delete? listener
-          logger.debug "Event listener {#{listener.class}} unsubscribed"
+          logger.debug "Event listener {#{type}} unsubscribed"
         else
-          logger.info "Event listener {#{listener.class}} is not subscribed"
+          logger.info "Event listener {#{type}} is not subscribed"
+        end
+      end
+
+      private
+
+      # @param [EventListener] listener
+      # @return [Class]
+      def actual_type_of(listener)
+        if listener.respond_to? :proxy_type
+          listener.proxy_type
+        else
+          listener.class
         end
       end
     end # SimpleEventBus

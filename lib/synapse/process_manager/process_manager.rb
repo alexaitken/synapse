@@ -3,7 +3,7 @@ module Synapse
     # Represents a mechanism for managing the lifeycle and notification of process instances
     # @abstract
     class ProcessManager
-      include EventBus::EventListener
+      include EventBus::EventListenerProxy
       include Loggable
 
       # @return [LockManager]
@@ -44,6 +44,11 @@ module Synapse
             end
           end
         end
+      end
+
+      # @return [Class]
+      def proxy_type
+        @process_types.first
       end
 
       protected

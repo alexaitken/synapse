@@ -12,6 +12,10 @@ module Synapse
         @manager = SimpleProcessManager.new @repository, @factory, @lock_manager, @resolver, TestProcess
       end
 
+      it 'acts as an event listener proxy' do
+        @manager.proxy_type.should == TestProcess
+      end
+
       it 'creates a new process and notify it if one could not be found' do
         @manager.optionally_create_events << CauseProcessCreationEvent
 
