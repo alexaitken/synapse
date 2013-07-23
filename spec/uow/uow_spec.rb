@@ -140,7 +140,7 @@ module Synapse
       end
 
       it 'rolls back if a listener raises an exception while preparing to commit' do
-        cause = TestError.new
+        cause = ExampleError.new
         listener = UnitOfWorkListener.new
 
         mock(listener).on_prepare_commit(@uow, anything, anything) {
@@ -155,7 +155,7 @@ module Synapse
 
         expect {
           @uow.commit
-        }.to raise_error(TestError)
+        }.to raise_error(ExampleError)
       end
 
       it 'rolls back if an aggregate storage callback raises an exception' do
@@ -164,7 +164,7 @@ module Synapse
         stub(aggregate_root).id
 
         event_bus = Object.new
-        cause = TestError.new
+        cause = ExampleError.new
 
         listener = UnitOfWorkListener.new
         mock(listener).on_prepare_commit(@uow, anything, anything)
@@ -180,11 +180,11 @@ module Synapse
 
         expect {
           @uow.commit
-        }.to raise_error(TestError)
+        }.to raise_error(ExampleError)
       end
 
       it 'rolls back if the event bus raises an exception when publishing events' do
-        cause = TestError.new
+        cause = ExampleError.new
         event = Object.new
 
         event_bus = Object.new
@@ -204,7 +204,7 @@ module Synapse
 
         expect {
           @uow.commit
-        }.to raise_error(TestError)
+        }.to raise_error(ExampleError)
       end
 
       it 'delays cleanup of inner unit after commit until outer unit is committed' do
@@ -319,7 +319,7 @@ module Synapse
       end
     end
 
-    TestError = Class.new RuntimeError
+    ExampleError = Class.new RuntimeError
 
     class TestAggregateA
       include Domain::AggregateRoot

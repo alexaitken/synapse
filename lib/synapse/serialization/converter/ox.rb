@@ -1,4 +1,8 @@
-require 'ox'
+begin
+  require 'ox'
+rescue LoadError
+  warn 'Ensure that Ox is installed before using the Ox converter'
+end
 
 module Synapse
   module Serialization
@@ -6,12 +10,20 @@ module Synapse
     class OxDocumentToXmlConverter
       include Converter
 
-      converts Ox::Document, String
-
       # @param [Object] original
       # @return [Object]
       def convert_content(original)
         Ox.dump original, @options
+      end
+
+      # @return [Class]
+      def source_type
+        Ox::Document
+      end
+
+      # @return [Class]
+      def target_type
+        String
       end
     end # OxDocumentToXmlConverter
 
@@ -19,12 +31,20 @@ module Synapse
     class XmlToOxDocumentConverter
       include Converter
 
-      converts String, Ox::Document
-
       # @param [Object] original
       # @return [Object]
       def convert_content(original)
         Ox.load original, @options
+      end
+
+      # @return [Class]
+      def source_type
+        String
+      end
+
+      # @return [Class]
+      def target_type
+        Ox::Document
       end
     end # XmlToOxDocumentConverter
   end # Serialization

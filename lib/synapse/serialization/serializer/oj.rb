@@ -1,4 +1,8 @@
-require 'oj'
+begin
+  require 'oj'
+rescue LoadError
+  warn 'Ensure that Oj is installed before using the Oj serializer'
+end
 
 module Synapse
   module Serialization

@@ -1,4 +1,8 @@
-require 'ox'
+begin
+  require 'ox'
+rescue LoadError
+  warn 'Ensure that Ox is installed before using the Ox serializer'
+end
 
 module Synapse
   module Serialization

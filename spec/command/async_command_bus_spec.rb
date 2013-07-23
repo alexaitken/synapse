@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Synapse
   module Command
+
     describe AsynchronousCommandBus do
       before do
         unit_provider = UnitOfWork::UnitOfWorkProvider.new
@@ -42,5 +43,6 @@ module Synapse
     end
 
     class TestCommand; end
+
   end
 end
