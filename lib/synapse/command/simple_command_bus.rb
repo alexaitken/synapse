@@ -3,6 +3,8 @@ module Synapse
     # Implementation of a command bus that dispatches commands in the calling thread
     # @todo Thread safety?
     class SimpleCommandBus < CommandBus
+      include Loggable
+
       # @return [RollbackPolicy]
       attr_accessor :rollback_policy
 
@@ -22,8 +24,6 @@ module Synapse
         @interceptors = Array.new
 
         @rollback_policy = RollbackOnAnyExceptionPolicy.new
-
-        @logger = Logging.logger[self.class]
       end
 
       # @api public
@@ -43,7 +43,7 @@ module Synapse
           callback.on_success result
         rescue => exception
           backtrace = exception.backtrace.join $RS
-          @logger.error "Exception occured while dispatching command {#{command.payload_type}} {#{command.id}}:\n" +
+          logger.error "Exception occured while dispatching command {#{command.payload_type}} {#{command.id}}:\n" +
             "#{exception.inspect} #{backtrace}"
 
           callback.on_failure exception
@@ -58,7 +58,7 @@ module Synapse
         current = @handlers.fetch command_type, nil
 
         @handlers.store command_type, handler
-        @logger.debug "Command handler {#{handler.class}} subscribed to command type {#{command_type}}"
+        logger.debug "Command handler {#{handler.class}} subscribed to command type {#{command_type}}"
 
         current
       end
@@ -70,12 +70,14 @@ module Synapse
       def unsubscribe(command_type, handler)
         current = @handlers.fetch command_type, nil
 
-        return false unless current === handler
+        if current.equal? handler
+          @handlers.delete command_type
+          logger.debug "Command handler {#{handler.class}} unsubscribed from command type {#{command_type}}"
 
-        @handlers.delete command_type
-        @logger.debug "Command handler {#{handler.class}} unsubscribed from command type {#{command_type}}"
-
-        return true
+          true
+        else
+          false
+        end
       end
 
     protected
@@ -97,15 +99,15 @@ module Synapse
         chain = InterceptorChain.new unit, @interceptors, handler
 
         begin
-          @logger.info "Dispatching command {#{command.id}} {#{command.payload_type}} to handler {#{handler.class}}"
+          logger.info "Dispatching command {#{command.id}} {#{command.payload_type}} to handler {#{handler.class}}"
 
           result = chain.proceed command
         rescue => exception
           if @rollback_policy.should_rollback exception
-            @logger.debug 'Unit of work is being rolled back due to rollback policy'
+            logger.debug 'Unit of work is being rolled back due to rollback policy'
             unit.rollback exception
           else
-            @logger.info 'Unit of work is being committed due to rollback policy'
+            logger.info 'Unit of work is being committed due to rollback policy'
             unit.commit
           end
 

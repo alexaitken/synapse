@@ -3,9 +3,11 @@ module Synapse
     # Implementation of an event bus that notifies any subscribed event listeners in the calling
     # thread. Listeners are expected to implement asynchronous handing themselves, if desired.
     class SimpleEventBus < EventBus
+      include Loggable
+
+      # @return [undefined]
       def initialize
         @listeners = Set.new
-        @logger = Logging.logger[self.class]
       end
 
       # @api public
@@ -17,7 +19,7 @@ module Synapse
         events.flatten!
         events.each do |event|
           @listeners.each do |listener|
-            @logger.debug "Publishing event {#{event.payload_type}} to {#{listener.class}}"
+            logger.debug "Publishing event {#{event.payload_type}} to {#{listener.class}}"
 
             listener.notify event
           end
@@ -38,9 +40,9 @@ module Synapse
       # @return [undefined]
       def subscribe(listener)
         if @listeners.add? listener
-          @logger.debug "Event listener {#{listener.class}} subscribed"
+          logger.debug "Event listener {#{listener.class}} subscribed"
         else
-          @logger.info "Event listener {#{listener.class}} is already subscribed"
+          logger.info "Event listener {#{listener.class}} is already subscribed"
         end
       end
 
@@ -49,9 +51,9 @@ module Synapse
       # @return [undefined]
       def unsubscribe(listener)
         if @listeners.delete? listener
-          @logger.debug "Event listener {#{listener.class}} unsubscribed"
+          logger.debug "Event listener {#{listener.class}} unsubscribed"
         else
-          @logger.info "Event listener {#{listener.class}} is not subscribed"
+          logger.info "Event listener {#{listener.class}} is not subscribed"
         end
       end
     end # SimpleEventBus

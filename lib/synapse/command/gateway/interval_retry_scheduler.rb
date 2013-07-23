@@ -7,14 +7,14 @@ module Synapse
     #
     # This implementation uses EventMachine to schedule one-shot timers.
     class IntervalRetryScheduler < RetryScheduler
+      include Loggable
+
       # @param [Float] interval
       # @param [Integer] max_retries
       # @return [undefined]
       def initialize(interval, max_retries)
         @interval = interval
         @max_retries = max_retries
-
-        @logger = Logging.logger[self.class]
       end
 
       # @param [CommandMessage] command
@@ -25,7 +25,7 @@ module Synapse
         last_failure = failures.last
 
         if explicitly_non_transient? last_failure
-          @logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
+          logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
             "resulted in a non-transient exception"
 
           return false
@@ -34,16 +34,16 @@ module Synapse
         failure_count = failures.size
 
         if failure_count > @max_retries
-          @logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
+          logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
             "resulted in an exception #{failure_count} times"
 
           return false
         end
 
-        if @logger.info?
+        if logger.info?
           retries_left = @max_retries - failure_count
 
-          @logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
+          logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
             "resulted in an exception; will retry up to #{retries_left} more times"
         end
 

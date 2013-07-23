@@ -3,9 +3,11 @@ module Synapse
     # Container used for storing and resolving definitions of services
     # @see ContainerBuilder
     class Container
+      include Loggable
+
+      # @return [undefined]
       def initialize
         @definitions = Hash.new
-        @logger = Logging.logger[self.class]
       end
 
       # Injects any configured dependencies into the given object
@@ -34,9 +36,9 @@ module Synapse
       # @return [Object]
       def resolve(id, optional = false)
         if @definitions.has_key? id
-          @definitions[id].resolve
+          @definitions.fetch(id).resolve
         elsif not optional
-          raise ConfigurationError, 'Definition for service [%s] not found' % id
+          raise ConfigurationError, "Definition for service {#{id}} not found"
         end
       end
 
@@ -65,7 +67,7 @@ module Synapse
       # @return [undefined]
       def register(id, definition)
         if @definitions.has_key? id
-          @logger.info 'Definition [%s] is being replaced' % id
+          logger.info "Definition {#{id}} is being replaced"
         end
 
         @definitions.store id, definition
@@ -83,7 +85,7 @@ module Synapse
       def inspect
         result = "#<#{self.class}\n"
         @definitions.keys.sort.each do |key|
-          definition = @definitions[key]
+          definition = @definitions.fetch key
           result << "\t#{key} => #{definition.tags.inspect}\n"
         end
         result << ">"

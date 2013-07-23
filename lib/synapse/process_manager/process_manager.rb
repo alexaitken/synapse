@@ -4,6 +4,7 @@ module Synapse
     # @abstract
     class ProcessManager
       include EventBus::EventListener
+      include Loggable
 
       # @return [LockManager]
       attr_reader :lock_manager
@@ -28,7 +29,6 @@ module Synapse
         @lock_manager = lock_manager
         @process_types = process_types.flatten
 
-        @logger = Logging.logger[self.class]
         @suppress_exceptions = true
       end
 
@@ -169,13 +169,12 @@ module Synapse
         begin
           process.handle event
         rescue => exception
-          if @suppress_exceptions
-            backtrace = exception.backtrace.join $/
-            @logger.error 'Exception occured while invoking process [%s] [%s] with [%s]: %s %s' %
-              [process.class, process.id, event.payload_type, exception.inspect, backtrace]
-          else
-            raise
-          end
+          raise unless @suppress_exceptions
+
+          backtrace = exception.backtrace.join $RS
+          logger.error "Exception occured while invoking process " +
+            "{#{process.class}} {#{process.id}} with {#{event.payload_type}}:\n" +
+            "#{exception.inspect} #{backtrace}"
         end
       end
     end # ProcessManager

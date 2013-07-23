@@ -12,10 +12,11 @@ module Synapse
     # before any listeners are allowed to do anything, and log that the commit is finished after
     # all other listeners have finished.
     class UnitOfWorkListenerCollection < UnitOfWorkListener
+      include Loggable
+
       # @return [undefined]
       def initialize
         @listeners = Array.new
-        @logger = Logging.logger[self.class]
       end
 
       # Pushes a unit of work listener onto the end of this collection
@@ -23,7 +24,7 @@ module Synapse
       # @param [UnitOfWorkListener] listener
       # @return [undefined]
       def push(listener)
-        @logger.debug "Registering listener {#{listener.class}}"
+        logger.debug "Registering listener {#{listener.class}}"
         @listeners.push listener
       end
 
@@ -33,7 +34,7 @@ module Synapse
       # @return [undefined]
       def on_start(unit)
         @listeners.each do |listener|
-          @logger.debug "Notifying {#{listener.class}} that unit of work is starting"
+          logger.debug "Notifying {#{listener.class}} that unit of work is starting"
           listener.on_start unit
         end
       end
@@ -55,7 +56,7 @@ module Synapse
       # @return [undefined]
       def on_prepare_commit(unit, aggregates, events)
         @listeners.each do |listener|
-          @logger.debug "Notifying {#{listener.class}} that unit of work is preparing for commit"
+          logger.debug "Notifying {#{listener.class}} that unit of work is preparing for commit"
           listener.on_prepare_commit unit, aggregates, events
         end
       end
@@ -65,7 +66,7 @@ module Synapse
       # @return [undefined]
       def on_prepare_transaction_commit(unit, transaction)
         @listeners.each do |listener|
-          @logger.debug "Notifying {#{listener.class}} that unit of work is preparing for tx commit"
+          logger.debug "Notifying {#{listener.class}} that unit of work is preparing for tx commit"
           listener.on_prepare_transaction_commit unit, transaction
         end
       end
@@ -74,7 +75,7 @@ module Synapse
       # @return [undefined]
       def after_commit(unit)
         @listeners.reverse_each do |listener|
-          @logger.debug "Notifying {#{listener.class}} that unit of work has been committed"
+          logger.debug "Notifying {#{listener.class}} that unit of work has been committed"
           listener.after_commit unit
         end
       end
@@ -84,7 +85,7 @@ module Synapse
       # @return [undefined]
       def on_rollback(unit, cause = nil)
         @listeners.reverse_each do |listener|
-          @logger.debug "Notifying {#{listener.class}} that unit of work is rolling back"
+          logger.debug "Notifying {#{listener.class}} that unit of work is rolling back"
           listener.on_rollback unit, cause
         end
       end
@@ -93,14 +94,14 @@ module Synapse
       # @return [undefined]
       def on_cleanup(unit)
         @listeners.reverse_each do |listener|
-          @logger.debug "Notifying {#{listener.class}} that unit of work is cleaning up"
+          logger.debug "Notifying {#{listener.class}} that unit of work is cleaning up"
 
           begin
             listener.on_cleanup unit
           rescue => exception
             # Ignore this exception so that we can continue cleaning up
             backtrace = exception.backtrace.join $RS
-            @logger.warn "Listener {#{listener.class}} raised exception during cleanup: " +
+            logger.warn "Listener {#{listener.class}} raised exception during cleanup:\n" +
               "#{exception.inspect} #{backtrace}"
           end
         end
