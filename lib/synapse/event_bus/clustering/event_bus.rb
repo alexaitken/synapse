@@ -8,10 +8,11 @@ module Synapse
       # @param [EventBusTerminal] terminal
       # @return [undefined]
       def initialize(cluster_selector, terminal)
-        # @todo This should be a thread-safe structure
-        @clusters = Set.new
         @cluster_selector = cluster_selector
         @terminal = terminal
+
+        # @todo this should be a thread safe structure
+        @clusters = Set.new
       end
 
       # @param [EventMessage...] events
@@ -24,17 +25,20 @@ module Synapse
       # @param [EventListener] listener
       # @return [undefined]
       def subscribe(listener)
-        raise NotImplementedError
+        cluster_for(listener).subscribe(listener)
       end
 
       # @param [EventListener] listener
       # @return [undefined]
       def unsubscribe(listener)
-        raise NotImplementedError
+        cluster_for(listener).unsubscribe(listener)
       end
 
       private
 
+      # @raise [SubscriptionError] If no cluster could be selected
+      # @param [EventListener] listener
+      # @return [Cluster]
       def cluster_for(listener)
         listener_type = resolve_listener_type listener
         cluster = @cluster_selector.select_for listener
