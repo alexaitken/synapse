@@ -4,7 +4,7 @@ module Synapse
   module Configuration
 
     describe Extension do
-      it 'delegate building to the service container' do
+      it 'delegates building to the service container' do
         reference = Object.new
 
         Synapse.build do

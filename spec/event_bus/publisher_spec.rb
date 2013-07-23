@@ -4,7 +4,7 @@ module Synapse
   module EventBus
 
     describe EventPublisher do
-      it 'wrap event objects in messages before they are published' do
+      it 'wraps events in messages before they are published' do
         event_bus = Object.new
 
         mock(event_bus).publish(is_a(Domain::EventMessage)) do |message|

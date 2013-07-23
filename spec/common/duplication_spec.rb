@@ -25,7 +25,7 @@ module Synapse
       @recorder.recorded?(@message).should be_false
     end
 
-    it 'support pruning old messages' do
+    it 'supports pruning old messages' do
       @recorder.record @message
 
       threshold = 60 * 20 # 20 minutes

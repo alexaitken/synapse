@@ -5,7 +5,7 @@ module Synapse
   module ProcessManager
 
     describe InMemoryProcessRepository do
-      it 'support finding processes by correlations' do
+      it 'supports finding processes by correlations' do
         correlation_a = Correlation.new :order_id, 1
         correlation_b = Correlation.new :order_id, 2
 
@@ -22,7 +22,7 @@ module Synapse
         repository.find(Process, correlation_b).should include(process_b.id)
       end
 
-      it 'support loading processes by identifier' do
+      it 'supports loading processes by identifier' do
         repository = InMemoryProcessRepository.new
 
         process_a = Process.new
@@ -35,7 +35,7 @@ module Synapse
         repository.load(process_b.id).should == process_b
       end
 
-      it 'mark processes as committed' do
+      it 'marks processes as committed' do
         repository = InMemoryProcessRepository.new
 
         process = StubProcess.new

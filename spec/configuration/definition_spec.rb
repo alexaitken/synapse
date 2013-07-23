@@ -4,7 +4,7 @@ module Synapse
   module Configuration
 
     describe Definition do
-      it 'call the deferred factory every time if prototype' do
+      it 'calls the deferred factory every time if prototype' do
         factory_invoked = 0
         factory = proc do
           factory_invoked += 1
@@ -17,7 +17,7 @@ module Synapse
         factory_invoked.should == 2
       end
 
-      it 'call the deferred factory only once if singleton' do
+      it 'calls the deferred factory only once if singleton' do
         factory_invoked = 0
         factory = proc do
           factory_invoked += 1
@@ -30,7 +30,7 @@ module Synapse
         factory_invoked.should == 1
       end
 
-      it 'resolve to an instance if one is provided' do
+      it 'resolves to an instance if one is provided' do
         instance = Object.new
 
         # Singleton service definition w/ late instance

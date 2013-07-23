@@ -8,13 +8,13 @@ module Synapse
         @event_store = InMemoryEventStore.new
       end
 
-      it 'raise an exception if a stream could not be found' do
+      it 'raises an exception if a stream could not be found' do
         expect {
           @event_store.read_events 'Person', 123
         }.to raise_error(StreamNotFoundError)
       end
 
-      it 'support appending and reading an event stream' do
+      it 'supports appending and reading an event stream' do
         event_a = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
         event_b = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
         event_c = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
@@ -29,7 +29,7 @@ module Synapse
         stream.to_a.should == [event_a, event_b, event_c]
       end
 
-      it 'be able to be cleared of all streams' do
+      it 'supports clearing all event streams' do
         event = Domain::DomainEventMessage.build { |e| e.aggregate_id = 123 }
         stream = Domain::SimpleDomainEventStream.new event
 

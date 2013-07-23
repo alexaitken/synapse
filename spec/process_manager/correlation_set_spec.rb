@@ -4,7 +4,7 @@ module Synapse
   module ProcessManager
 
     describe CorrelationSet do
-      it 'track correlation additions' do
+      it 'tracks correlation additions' do
         id = SecureRandom.uuid
         correlation = Correlation.new :order_id, id
 
@@ -25,7 +25,7 @@ module Synapse
         set.deletions.count.should == 0
       end
 
-      it 'track correlation deletions' do
+      it 'tracks correlation deletions' do
         id = SecureRandom.uuid
         correlation = Correlation.new :order_id, id
 

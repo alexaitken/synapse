@@ -18,7 +18,7 @@ module Synapse
         ContainerBuilder.initializers = @initializers
       end
 
-      it 'call initializers upon creation' do
+      it 'calls initializers upon creation' do
         ContainerBuilder.initializer do
           definition :test_definition do
             tag :derp
@@ -30,7 +30,7 @@ module Synapse
         @container.registered?(:test_definition).should be_true
       end
 
-      it 'create a simple definition from a factory' do
+      it 'creates a simple definition from a factory' do
         reference = Object.new
 
         builder = ContainerBuilder.new @container

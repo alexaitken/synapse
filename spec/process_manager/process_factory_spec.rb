@@ -17,7 +17,7 @@ module Synapse
         process.should be_a(StubProcess)
       end
 
-      it 'be able to determine if a process implementation is supported' do
+      it 'can determine if a process implementation is supported' do
         factory = GenericProcessFactory.new
         factory.supports(StubProcess).should be_true
         factory.supports(StubProcessWithArguments).should be_false

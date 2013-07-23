@@ -4,7 +4,7 @@ module Synapse
   module ProcessManager
 
     describe ContainerResourceInjector do
-      it 'use a service container to inject resources' do
+      it 'uses a service container to inject resources' do
         container = Object.new
         resource_injector = ContainerResourceInjector.new container
         process = Process.new
