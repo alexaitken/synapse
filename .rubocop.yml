@@ -13,3 +13,9 @@ MethodLength:
 
 TrivialAccessors:
   Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+WhileUntilModifier:
+  Enabled: false

@@ -44,13 +44,13 @@ module Synapse
       # @param [Mapping] other
       # @return [Integer]
       def <=>(other)
-        (@type <=> other.type) or 0
+        (@type <=> other.type) || 0
       end
 
       # @param [Mapping] other
       # @return [Boolean]
       def ==(other)
-        self.class === other and
+        self.class === other &&
           @type == other.type
       end
 

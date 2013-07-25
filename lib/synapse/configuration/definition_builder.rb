@@ -144,12 +144,14 @@ module Synapse
       # @return [Object]
       def resolve(value, optional = false)
         if value.is_a? Symbol
-          @container.resolve value, optional
-        elsif value.nil? and not optional
-          raise ConfigurationError, 'Value was not set'
-        else
-          value
+          return @container.resolve value, optional
         end
+
+        if value.nil?
+          raise ConfigurationError unless optional
+        end
+
+        value
       end
 
       # Resolves all services that have the given tag

@@ -37,8 +37,10 @@ module Synapse
       # @return [Object]
       def resolve(id, optional = false)
         if @definitions.has_key? id
-          @definitions.fetch(id).resolve
-        elsif not optional
+          return @definitions.fetch(id).resolve
+        end
+
+        unless optional
           raise ConfigurationError, "Definition for service {#{id}} not found"
         end
       end
@@ -53,7 +55,7 @@ module Synapse
         resolved = Array.new
 
         @definitions.each_value do |definition|
-          if definition.tags and definition.tags.include? tag
+          if definition.tags && definition.tags.include?(tag)
             resolved.push definition.resolve
           end
         end
