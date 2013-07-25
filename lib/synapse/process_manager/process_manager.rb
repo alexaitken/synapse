@@ -47,7 +47,7 @@ module Synapse
       end
 
       # @return [Class]
-      def proxy_type
+      def proxied_type
         @process_types.first
       end
 

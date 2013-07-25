@@ -1,5 +1,7 @@
 module Synapse
   module EventBus
+    # Implementation of a cluster selector that delegates selection to a list of selectors,
+    # trying each one until a cluster is selected.
     class CompositeClusterSelector
       # @param [Enumerable<ClusterSelector>] selectors
       # @return [undefined]

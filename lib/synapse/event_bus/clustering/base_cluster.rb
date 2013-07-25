@@ -20,12 +20,14 @@ module Synapse
         @members = Set.new
       end
 
+      # @api public
       # @param [EventListener] listener
       # @return [undefined]
       def subscribe(listener)
         @members.add listener
       end
 
+      # @api public
       # @param [EventListener] listener
       # @return [undefined]
       def unsubscribe(listener)

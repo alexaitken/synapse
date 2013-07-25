@@ -15,12 +15,14 @@ module Synapse
         @clusters = Set.new
       end
 
+      # @api public
       # @param [EventMessage...] events
       # @return [undefined]
       def publish(*events)
         @terminal.publish *events
       end
 
+      # @api public
       # @raise [SubscriptionError] If subscription of an event listener failed
       # @param [EventListener] listener
       # @return [undefined]
@@ -28,6 +30,7 @@ module Synapse
         cluster_for(listener).subscribe(listener)
       end
 
+      # @api public
       # @param [EventListener] listener
       # @return [undefined]
       def unsubscribe(listener)
