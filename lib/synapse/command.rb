@@ -2,8 +2,6 @@ module Synapse
   module Command
     extend ActiveSupport::Autoload
 
-    autoload :AsynchronousCommandBus, 'synapse/command/async_command_bus'
-
     # Optional filters and interceptors
     autoload_at 'synapse/command/duplication' do
       autoload :DuplicationFilter
@@ -38,6 +36,7 @@ require 'synapse/command/gateway'
 require 'synapse/command/gateway/retry_scheduler'
 require 'synapse/command/gateway/interval_retry_scheduler'
 require 'synapse/command/gateway/retrying_callback'
+require 'synapse/command/gateway/schedule_provider'
 
 require 'synapse/command/callbacks/future'
 require 'synapse/command/callbacks/void'
