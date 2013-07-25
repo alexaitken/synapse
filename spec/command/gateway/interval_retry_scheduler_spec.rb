@@ -1,14 +1,16 @@
 require 'spec_helper'
-require 'eventmachine'
 
 module Synapse
   module Command
 
     describe IntervalRetryScheduler do
       before do
-        @maxRetries = 3
+        @interval = 5
+        @max_retries = 3
 
-        @scheduler = IntervalRetryScheduler.new 5.0, @maxRetries
+        @provider = Object.new
+
+        @scheduler = IntervalRetryScheduler.new @interval, @max_retries, @provider
         @command = CommandMessage.as_message Object.new
         @dispatcher = proc {}
       end
@@ -16,9 +18,9 @@ module Synapse
       it 'schedules up until the max number of retries' do
         failures = Array.new
 
-        mock(EventMachine).add_timer(5.0, &@dispatcher).times(@maxRetries)
+        mock(@provider).schedule_dispatch(@interval, @dispatcher).times(@max_retries)
 
-        @maxRetries.times do
+        @max_retries.times do
           failures.push RuntimeError.new
           @scheduler.schedule(@command, failures, @dispatcher).should be_true
         end

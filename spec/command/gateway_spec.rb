@@ -27,7 +27,7 @@ module Synapse
       end
 
       it 'wraps callback in RetryingCallback if a retry scheduler is set' do
-        @gateway.retry_scheduler = IntervalRetryScheduler.new 3, 3
+        @gateway.retry_scheduler = create_retry_scheduler
 
         command = Object.new
         callback = CommandCallback.new
@@ -38,7 +38,7 @@ module Synapse
       end
 
       it 'sends a command and waits for it to be dispatched' do
-        @gateway.retry_scheduler = IntervalRetryScheduler.new 3, 3
+        @gateway.retry_scheduler = create_retry_scheduler
 
         command = Object.new
         result = Object.new
@@ -57,6 +57,12 @@ module Synapse
 
         result_latch.await
         received_result.should be(result)
+      end
+
+    private
+
+      def create_retry_scheduler
+        IntervalRetryScheduler.new 3, 3, Object.new # Mock schedule provider
       end
     end
 

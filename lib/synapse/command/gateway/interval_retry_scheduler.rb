@@ -12,9 +12,10 @@ module Synapse
       # @param [Float] interval
       # @param [Integer] max_retries
       # @return [undefined]
-      def initialize(interval, max_retries)
+      def initialize(interval, max_retries, schedule_provider)
         @interval = interval
         @max_retries = max_retries
+        @schedule_provider = schedule_provider
       end
 
       # @param [CommandMessage] command
@@ -47,7 +48,7 @@ module Synapse
             "resulted in an exception; will retry up to #{retries_left} more times"
         end
 
-        perform_schedule command, dispatcher
+        @schedule_provider.schedule_dispatch @interval, dispatcher
 
         true
       end
@@ -64,13 +65,6 @@ module Synapse
         else
           false
         end
-      end
-
-      # @param [CommandMessage] command
-      # @param [Proc] dispatcher
-      # @return [undefined]
-      def perform_schedule(command, dispatcher)
-        EventMachine.add_timer @interval, &dispatcher
       end
     end # IntervalRetryScheduler
   end # Command

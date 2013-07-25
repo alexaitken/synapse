@@ -1,13 +1,12 @@
 source 'https://rubygems.org'
 
 group :development do
+  # Used for testing on the fly
+  gem 'guard'
   gem 'guard-rspec'
 
   # Used for command validation and serialization
   gem 'activemodel'
-
-  # Used for deferred activities
-  gem 'eventmachine'
 
   # Used for serialization component
   gem 'oj', '~> 2.0.14', platform: :ruby
