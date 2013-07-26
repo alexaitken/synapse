@@ -2,7 +2,15 @@
 
 ## Immediate
 
-+ Issues on GitHub
++ [EventBus] More cluster selector implementations
+
+## In flux with Contender
+
++ Replace mutable structures with copy-on-write implementations
++ Implement a retry scheduler provider using `ScheduledPoolExecutor`
++ Test `ScheduledPoolExecutor` with aggregate snapshot taker
++ Create event scheduler using `ScheduledPoolExecutor`
++ Rewrite some of the locking mechanisms using `ReentrantLock`
 
 ## AxonFramework functionality
 
@@ -10,12 +18,11 @@
   + Instrumentation for command buses (Graphite, Ganglia, etc.)
   + Abstraction of aggregate load/store (plus aggregate target DSL)
 + Event handling
-  + Listener groups and group bus
   + Asynchronous event bus
   + Distributed event bus (AMQP)
   + Instrumentation for event buses (Graphite, Ganglia, etc.)
   + Event replay framework
-  + Event scheduling framework (Quartz-like)
+  + Event scheduler interface
 + Event sourcing
   + Hybrid ES repository
 + Event store
@@ -35,12 +42,6 @@
 
 + Engine processes
 + Message quarantine
-+ Partitioning
-  + Queue reader/writer abstraction
-  + JSON, BSON, MsgPack message packing
-  + In-memory queue
-  + AMQP queue
-  + Redis queue
 + Projections
   + In-memory projections or serialized projections
 + Dashboard
@@ -52,6 +53,7 @@
 
 ## Odds and ends
 
++ Better serialization framework (external, would be able to handle transient properties, etc.)
 + Simplified mixins for domain commands and events
   + For serialization, validation, building, etc.
 + Disruptor for command bus (??) JRuby and pure Ruby?

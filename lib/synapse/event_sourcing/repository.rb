@@ -18,9 +18,6 @@ module Synapse
       # @return [SnapshotTaker]
       attr_accessor :snapshot_taker
 
-      # @return [Array<EventStreamDecorator>]
-      attr_reader :stream_decorators
-
       # @param [AggregateFactory] aggregate_factory
       # @param [EventStore] event_store
       # @param [LockManager] lock_manager
@@ -30,7 +27,14 @@ module Synapse
 
         @aggregate_factory = aggregate_factory
         @event_store = event_store
+        # TODO This should be a thread-safe structure
         @stream_decorators = Array.new
+      end
+
+      # @param [EventStreamDecorator] decorator
+      # @return [undefined]
+      def add_stream_decorator(decorator)
+        @stream_decorators.push decorator
       end
 
       protected

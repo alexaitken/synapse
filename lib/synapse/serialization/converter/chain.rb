@@ -4,9 +4,6 @@ module Synapse
     class ConverterChain
       include Converter
 
-      # @return [Array<Converter>]
-      attr_reader :delegates
-
       # @return [Class]
       attr_reader :source_type
 

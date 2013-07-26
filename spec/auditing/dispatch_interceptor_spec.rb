@@ -10,7 +10,7 @@ module Synapse
         command = Object.new
         unit = Object.new
 
-        interceptor = AuditingDispatchInterceptor.new
+        interceptor = AuditingDispatchInterceptor.new [], []
 
         mock(unit).register_listener(is_a(AuditingUnitOfWorkListener))
         mock(chain).proceed(command) do

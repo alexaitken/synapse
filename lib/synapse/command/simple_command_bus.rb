@@ -109,14 +109,7 @@ module Synapse
 
           result = chain.proceed command
         rescue => exception
-          if @rollback_policy.should_rollback exception
-            logger.debug 'Unit of work is being rolled back due to rollback policy'
-            unit.rollback exception
-          else
-            logger.info 'Unit of work is being committed due to rollback policy'
-            unit.commit
-          end
-
+          on_execution_error exception, unit
           raise CommandExecutionError, exception
         end
 
@@ -135,6 +128,21 @@ module Synapse
           @handlers.fetch command_type
         rescue KeyError
           raise NoHandlerError, "No handler subscribed for command {#{command_type}}"
+        end
+      end
+
+      private
+
+      # @param [Exception] exception
+      # @param [UnitOfWork] current_unit
+      # @return [undefined]
+      def on_execution_error(exception, current_unit)
+        if @rollback_policy.should_rollback exception
+          logger.debug 'Unit of work is being rolled back due to rollback policy'
+          current_unit.rollback exception
+        else
+          logger.info 'Unit of work is being committed due to rollback policy'
+          current_unit.commit
         end
       end
     end # SimpleCommandBus

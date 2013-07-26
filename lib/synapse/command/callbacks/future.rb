@@ -2,6 +2,7 @@ module Synapse
   module Command
     # Callback that provides a deferred result or exception from the execution of a command
     class FutureCallback < CommandCallback
+      # @return [undefined]
       def initialize
         @mutex = Mutex.new
         @condition = ConditionVariable.new

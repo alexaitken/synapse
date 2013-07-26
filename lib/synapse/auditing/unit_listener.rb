@@ -1,6 +1,7 @@
 module Synapse
   module Auditing
     # Unit of work listener that audits the outcome of a command dispatch
+    # @api private
     class AuditingUnitOfWorkListener < UnitOfWork::UnitOfWorkListener
       # @return [Array<EventMessage>]
       attr_reader :recorded_events

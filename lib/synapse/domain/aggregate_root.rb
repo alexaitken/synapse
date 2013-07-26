@@ -34,10 +34,10 @@ module Synapse
       # @api public
       # @return [undefined]
       def mark_committed
-        if @event_container
-          @last_sequence_number = @event_container.last_sequence_number
-          @event_container.mark_committed
-        end
+        return unless @event_container
+
+        @last_sequence_number = @event_container.last_sequence_number
+        @event_container.mark_committed
       end
 
       # Returns the number of uncommitted events published by this aggregate

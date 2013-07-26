@@ -1,6 +1,17 @@
 module Synapse
   module Serialization
     class SerializedObject
+      # Convenience method for creating serialized objects
+      #
+      # @param [Object] content
+      # @param [Class] content_type
+      # @param [String] type_name
+      # @param [String] type_revision
+      # @return [SerializedObject]
+      def self.build(content, content_type, type_name, type_revision)
+        self.new(content, content_type, SerializedType.new(type_name, type_revision))
+      end
+
       # @return [Object]
       attr_reader :content
 

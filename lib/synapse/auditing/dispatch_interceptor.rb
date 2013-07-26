@@ -3,15 +3,17 @@ module Synapse
     # Interceptor that applies auditing to the dispatch of a command
     class AuditingDispatchInterceptor < Command::DispatchInterceptor
       # @return [Array<AuditDataProvider>]
-      attr_accessor :data_providers
+      attr_reader :data_providers
 
       # @return [Array<AuditLogger>]
-      attr_accessor :loggers
+      attr_reader :loggers
 
+      # @param [Enumerable<AuditDataProvider>] data_providers
+      # @param [Enumerable<AuditLogger>] loggers
       # @return [undefined]
-      def initialize
-        @data_providers = Array.new
-        @loggers = Array.new
+      def initialize(data_providers, loggers)
+        @data_providers = Array.new data_providers
+        @loggers = Array.new loggers
       end
 
       # @param [CommandMessage] command
