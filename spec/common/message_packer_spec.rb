@@ -29,7 +29,7 @@ module Synapse
       unpacked.metadata.should == message.metadata
       unpacked.payload.should == message.payload
       unpacked.payload_type.should == Hash
-      unpacked.timestamp.to_f.should == message.timestamp.to_f
+      unpacked.timestamp.to_i.should == message.timestamp.to_i
       unpacked.aggregate_id.should == message.aggregate_id
       unpacked.sequence_number.should == message.sequence_number
     end
