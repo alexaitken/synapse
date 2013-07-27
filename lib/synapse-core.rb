@@ -1,6 +1,7 @@
 require 'active_support'
 require 'active_support/core_ext'
 require 'atomic'
+require 'bindata'
 require 'contender'
 require 'forwardable'
 require 'logging'

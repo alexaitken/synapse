@@ -27,6 +27,14 @@ module Synapse
       end
     end # SerializedMessageBuilder
 
+    # Message builder capable of producing SerializedCommandMessage instances
+    class SerializedCommandMessageBuilder < SerializedMessageBuilder
+      # @return [SerializedCommandMessage]
+      def build
+        SerializedCommandMessage.new @id, @metadata, @payload, @timestamp
+      end
+    end # SerializedCommandMessageBuilder
+
     # Message builder capable of producing SerializedEventMessage instances
     class SerializedEventMessageBuilder < SerializedMessageBuilder
       # @return [SerializedEventMessage]

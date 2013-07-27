@@ -130,6 +130,14 @@ module Synapse
       end
     end # SerializedMessage
 
+    # Serialized representation of a command message
+    class SerializedCommandMessage < SerializedMessage
+      # @return [Class]
+      def self.builder
+        SerializedCommandMessageBuilder
+      end
+    end # SerializedCommandMessage
+
     # Serialized representation of an event message
     class SerializedEventMessage < SerializedMessage
       # @return [Class]

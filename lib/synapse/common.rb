@@ -8,3 +8,7 @@ require 'synapse/common/concurrency/disposable_lock'
 require 'synapse/common/concurrency/identifier_lock_manager'
 
 require 'synapse/common/duplication'
+
+require 'synapse/common/message/pascal_string'
+require 'synapse/common/message/message_record'
+require 'synapse/common/message/message_packer'
