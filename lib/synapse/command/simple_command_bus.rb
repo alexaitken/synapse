@@ -34,7 +34,7 @@ module Synapse
       # @param [CommandCallback] callback
       # @return [undefined]
       def dispatch_with_callback(command, callback)
-        result = perform_dispatch command
+        result = perform_dispatch(filter_command(command))
         callback.on_success result
       rescue => exception
         backtrace = exception.backtrace.join $RS
@@ -88,6 +88,14 @@ module Synapse
 
       protected
 
+      # @param [CommandMessage] command
+      # @return [CommandMessage]
+      def filter_command(command)
+        @filters.reduce command do |intermediate, filter|
+          filter.filter intermediate
+        end
+      end
+
       # @raise [CommandExecutionError]
       #   If an error occurs during the handling of the command
       # @raise [NoHandlerError]
@@ -95,10 +103,6 @@ module Synapse
       # @param [CommandMessage] command
       # @return [Object] The result from the command handler
       def perform_dispatch(command)
-        @filters.each do |filter|
-          command = filter.filter command
-        end
-
         handler = handler_for command
         unit = @unit_factory.create
 

@@ -31,6 +31,7 @@ require 'synapse/command/mapping'
 require 'synapse/command/message'
 require 'synapse/command/rollback_policy'
 require 'synapse/command/simple_command_bus'
+require 'synapse/command/async_command_bus'
 
 require 'synapse/command/gateway'
 require 'synapse/command/gateway/retry_scheduler'
