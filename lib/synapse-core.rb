@@ -22,7 +22,7 @@ module Synapse
   autoload :EventSourcing
   autoload :EventStore
   autoload :Mapping
-  autoload :ProcessManager
+  autoload :Saga
   autoload :Repository
   autoload :Serialization
   autoload :UnitOfWork, 'synapse/uow'
