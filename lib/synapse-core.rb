@@ -16,7 +16,6 @@ module Synapse
 
   autoload :Auditing
   autoload :Command
-  autoload :Configuration
   autoload :Domain
   autoload :EventBus
   autoload :EventSourcing
