@@ -6,7 +6,19 @@ if ENV['TRAVIS']
 else
   require 'simplecov'
   SimpleCov.start do
+
     add_filter '/spec/'
+
+    add_filter do |source_file|
+      source_file.lines.each do |line|
+        if line.source =~ /raise NotImplementedError/
+          line.skipped!
+        end
+      end
+
+      false
+    end
+
   end
 end
 
