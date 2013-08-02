@@ -90,6 +90,20 @@ module Synapse
 
         unit.commit
       end
+
+      it 'saves the aggregate upon commit' do
+        unit = @unit_factory.create
+
+        aggregate_id = SecureRandom.uuid
+        aggregate = TestMappedAggregate.new aggregate_id
+
+        @repository.add aggregate
+
+        mock(aggregate).save
+        mock.proxy(aggregate).mark_committed
+
+        unit.commit
+      end
     end
 
     class TestMappedAggregate

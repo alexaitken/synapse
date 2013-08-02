@@ -113,6 +113,8 @@ module Synapse
           else
             save_aggregate ar
           end
+
+          ar.mark_committed
         end
       end
 
