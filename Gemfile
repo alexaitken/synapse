@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 # Waiting on my pull requests to be accepted
 gem 'ref', github: 'ianunruh/ref'
-gem 'thread_safe', github: 'ianunruh/thread_safe'
 
 group :development do
   # Used for testing on the fly

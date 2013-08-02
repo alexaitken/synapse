@@ -12,6 +12,8 @@ require 'thread_safe'
 require 'synapse/common'
 require 'synapse/version'
 
+require 'synapse/ext'
+
 module Synapse
   extend ActiveSupport::Autoload
 
