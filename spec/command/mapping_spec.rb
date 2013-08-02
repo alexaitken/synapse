@@ -31,24 +31,9 @@ module Synapse
         }.to raise_error(ArgumentError)
       end
 
-      it 'subscribes handler to the command bus for each mapped command type' do
+      it 'provides the command types it supports' do
         handler = ExampleMappingCommandHandler.new
-        bus = Object.new
-
-        mock(bus).subscribe(TestSubCommand, handler)
-        mock(bus).subscribe(TestCommand, handler)
-
-        handler.subscribe bus
-      end
-
-      it 'unsubscribes handler from the command bus for each mapped command type' do
-        handler = ExampleMappingCommandHandler.new
-        bus = Object.new
-
-        mock(bus).unsubscribe(TestSubCommand, handler)
-        mock(bus).unsubscribe(TestCommand, handler)
-
-        handler.unsubscribe bus
+        handler.supported_commands.should == [TestCommand, TestSubCommand]
       end
     end
 

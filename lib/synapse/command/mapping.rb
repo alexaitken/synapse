@@ -47,24 +47,10 @@ module Synapse
         mapping.invoke self, command.payload, command, current_unit
       end
 
-      # Subscribes this handler to the given command bus for any types that have been mapped
-      #
-      # @param [CommandBus] command_bus
-      # @return [undefined]
-      def subscribe(command_bus)
-        command_mapper.each_type do |type|
-          command_bus.subscribe type, self
-        end
-      end
-
-      # Unsubscribes this handler from the given command bus for any types that have been mapped
-      #
-      # @param [CommandBus] command_bus
-      # @return [undefined]
-      def unsubscribe(command_bus)
-        command_mapper.each_type do |type|
-          command_bus.unsubscribe type, self
-        end
+      # Returns the types of commands supported by this handler
+      # @return [Array]
+      def supported_commands
+        command_mapper.types
       end
     end # MappingCommandHandler
   end # Command

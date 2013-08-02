@@ -48,6 +48,14 @@ module Synapse
         end
       end
 
+      # Returns the types mapped by this mapper
+      # @return [Array]
+      def types
+        @mappings.map do |mapping|
+          mapping.type
+        end
+      end
+
       private
 
       # @param [Class] type
