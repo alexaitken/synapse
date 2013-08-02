@@ -61,6 +61,6 @@ module Synapse
 
         Correlation.new key, value
       end
-    end # MappingSaga
+    end # MappingSagaManager
   end # Saga
 end

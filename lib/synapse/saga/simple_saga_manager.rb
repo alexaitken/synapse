@@ -44,6 +44,6 @@ module Synapse
       def extract_correlation(saga_type, event)
         @correlation_resolver.resolve event
       end
-    end # SimpleSaga
+    end # SimpleSagaManager
   end # Saga
 end

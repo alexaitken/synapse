@@ -1,6 +1,6 @@
 module Synapse
   module Saga
-    # Sagaes are used to maintain the state of long-running business transactions
+    # Sagas are used to maintain the state of long-running business transactions
     # @abstract
     class Saga
       # @return [String] The unique identifier of this saga
@@ -26,7 +26,7 @@ module Synapse
 
       # Handles the given event
       #
-      # The actual result of the sagaing depends on the implementation of the saga.
+      # The actual result of the processing depends on the implementation of the saga.
       # Implementations are highly discouraged from throwing exceptions.
       #
       # @abstract
