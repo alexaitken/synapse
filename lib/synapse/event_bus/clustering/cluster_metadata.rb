@@ -48,7 +48,7 @@ module Synapse
       def to_hash
         hash = Hash.new
         @properties.each_pair do |key, value|
-          hash[key] = value
+          hash.put key, value
         end
 
         hash

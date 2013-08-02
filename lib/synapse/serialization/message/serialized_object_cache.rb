@@ -48,7 +48,7 @@ module Synapse
           serializer.converter_factory.convert serialized, expected_type
         else
           serialized = serializer.serialize object, expected_type
-          cache.store serializer, serialized
+          cache.put serializer, serialized
           serialized
         end
       end

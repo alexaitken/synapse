@@ -8,7 +8,9 @@ module Synapse
         super
 
         @aggregates = Hash.new
-        @events = Hash.new
+        @events = Hash.new do |hash, key|
+          hash.put key, Array.new
+        end
         @listeners = UnitOfWorkListenerCollection.new
       end
 
@@ -55,7 +57,7 @@ module Synapse
           publish_event event, event_bus
         end
 
-        @aggregates.store aggregate, storage_callback
+        @aggregates.put aggregate, storage_callback
 
         aggregate
       end
@@ -69,15 +71,11 @@ module Synapse
       # @return [EventMessage] The event that will be published to the event bus
       def publish_event(event, event_bus)
         event = @listeners.on_event_registered self, event
-        event.tap do
-          begin
-            events = @events.fetch event_bus
-          rescue KeyError
-            events = @events.store event_bus, Array.new
-          end
 
-          events.push event
-        end
+        events = @events.get event_bus
+        events.push event
+
+        event
       end
 
       # Sets the transaction manager that will be used by this unit of work
@@ -148,6 +146,7 @@ module Synapse
         @aggregates.each_pair do |aggregate, storage_callback|
           storage_callback.call aggregate
         end
+
         @aggregates.clear
       end
 

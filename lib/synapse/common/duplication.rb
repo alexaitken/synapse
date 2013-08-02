@@ -21,7 +21,7 @@ module Synapse
           raise DuplicationError
         end
 
-        @recorded.store message.id, Time.now
+        @recorded.put message.id, Time.now
       end
     end
 

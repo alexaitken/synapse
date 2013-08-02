@@ -64,7 +64,7 @@ module Synapse
       def stack
         @threads.fetch Thread.current
       rescue KeyError
-        @threads.store Thread.current, Array.new
+        @threads.put Thread.current, Array.new
       end
     end # UnitOfWorkProvider
   end # UnitOfWork

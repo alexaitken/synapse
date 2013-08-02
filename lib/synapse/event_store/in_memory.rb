@@ -6,8 +6,8 @@ module Synapse
       # @return [undefined]
       def initialize
         @mutex = Mutex.new
-        @streams = Hash.new do |h, k|
-          h[k] = []
+        @streams = Hash.new do |hash, key|
+          hash.put key, Array.new
         end
       end
 

@@ -148,7 +148,7 @@ module Synapse
         if @locks.has_key? identifier
           @locks.fetch identifier
         else
-          @locks.store identifier, DisposableLock.new
+          @locks.put identifier, DisposableLock.new
         end
       end
     end
