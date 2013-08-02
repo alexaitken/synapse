@@ -26,7 +26,7 @@ module Synapse
 
         @manager.notify create_event 123, CauseSagaCreationEvent.new
 
-        @repository.count.should == 1
+        @repository.size.should == 1
       end
 
       it 'loads and notifies an existing saga correlated with an event' do
@@ -40,7 +40,7 @@ module Synapse
 
         @manager.notify create_event 123, CauseSagaNotificationEvent.new
 
-        @repository.count.should == 1
+        @repository.size.should == 1
       end
 
       it 'suppresses exceptions raised by a saga while handling an event' do
@@ -54,7 +54,7 @@ module Synapse
 
         @manager.notify create_event 123, CauseSagaRaiseExceptionEvent.new
 
-        @repository.count.should == 1
+        @repository.size.should == 1
       end
 
       it 'releases its lock before raising an exception caused by a saga' do
@@ -85,7 +85,7 @@ module Synapse
         @manager.notify create_event 123, CauseSagaCreationEvent.new
         @manager.notify create_event 123, CauseSagaCreationEvent.new
 
-        @repository.count.should == 2
+        @repository.size.should == 2
       end
 
     private

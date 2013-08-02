@@ -26,7 +26,7 @@ module Synapse
         correlation = Correlation.new :order_id, 123
 
         sagas = @repository.find OrderSaga, correlation
-        sagas.count.should == 1
+        sagas.size.should == 1
       end
 
       it 'uses mapping attributes to determine creation policy' do
@@ -35,21 +35,21 @@ module Synapse
         @manager.notify event
         @manager.notify event
 
-        @repository.count.should == 1
+        @repository.size.should == 1
 
         event = create_event OrderForceCreated.new 123
 
         @manager.notify event
         @manager.notify event
 
-        @repository.count.should == 3
+        @repository.size.should == 3
 
         event = create_event OrderUpdated.new 123
 
         @manager.notify event
         @manager.notify event
 
-        @repository.count.should == 3
+        @repository.size.should == 3
       end
 
      it 'raises an exception if the correlation key does not exist on the event' do

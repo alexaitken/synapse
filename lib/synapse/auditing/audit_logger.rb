@@ -28,5 +28,24 @@ module Synapse
         raise NotImplementedError
       end
     end # AuditLogger
+
+    # Implementation of an audit logger that does nothing
+    class NullAuditLogger < AuditLogger
+      # @param [CommandMessage] command
+      # @param [Object] return_value
+      # @param [Array] events
+      # @return [undefined]
+      def on_success(command, return_value, events)
+        # This method is intentionally empty
+      end
+
+      # @param [CommandMessage] command
+      # @param [Exception] exception
+      # @param [Array] events
+      # @return [undefined]
+      def on_failure(command, exception, events)
+        # This method is intentionally empty
+      end
+    end # NullAuditLogger
   end # Auditing
 end

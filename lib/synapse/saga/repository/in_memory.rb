@@ -5,62 +5,63 @@ module Synapse
     # While the storage of sagas are thread-safe, the sagas themselves may not be. Use a
     # lock manager if the sagas are not thread-safe.
     #
-    # @todo I'm not so sure of the thread-safety of this class
+    # @api public
     class InMemorySagaRepository < SagaRepository
+      # @return [undefined]
       def initialize
-        @managed_sagas = Hash.new
-        @mutex = Mutex.new
+        @managed_sagas = ThreadSafe::Cache.new
       end
 
+      # @api public
       # @param [Class] type
       # @param [Correlation] correlation
       # @return [Set]
       def find(type, correlation)
-        matching = Array.new
+        matching = Set.new
 
         @managed_sagas.each_value do |saga|
           if saga.correlations.include? correlation
-            matching.push saga.id
+            matching.add saga.id
           end
         end
 
         matching
       end
 
+      # @api public
       # @param [String] id
       # @return [Saga] Returns nil if saga could not be found
       def load(id)
-        if @managed_sagas.has_key? id
-          @managed_sagas.fetch id
-        end
+        @managed_sagas.get id
       end
 
+      # @api public
       # @param [Saga] saga
       # @return [undefined]
       def commit(saga)
-        @mutex.synchronize do
-          if saga.active?
-            @managed_sagas.store saga.id, saga
-          else
-            @managed_sagas.delete saga.id
-          end
+        if saga.active?
+          @managed_sagas.put saga.id, saga
+        else
+          @managed_sagas.delete saga.id
         end
 
         saga.correlations.commit
       end
 
+      # @api public
       # @param [Saga] saga
       # @return [undefined]
       def add(saga)
-        if saga.active?
-          commit saga
-        end
+        commit saga
       end
 
+      # @api public
       # @return [Integer] The number of sagas managed by this repository
-      def count
-        @managed_sagas.count
+      def size
+        @managed_sagas.size
       end
+
+      alias_method :length, :size
     end # InMemorySagaRepository
   end # Saga
 end

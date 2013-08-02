@@ -1,4 +1,5 @@
 require 'synapse/event_sourcing/aggregate_factory'
+require 'synapse/event_sourcing/errors'
 require 'synapse/event_sourcing/repository'
 require 'synapse/event_sourcing/caching'
 require 'synapse/event_sourcing/stream_decorator'

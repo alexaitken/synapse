@@ -7,42 +7,49 @@ module Synapse
       # @return [undefined]
       def initialize(message)
         @message = message
-        @mutex = Mutex.new
+
         @metadata_cache = Hash.new
+        @metadata_mutex = Mutex.new
         @payload_cache = Hash.new
+        @payload_mutex = Mutex.new
       end
 
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize_metadata(serializer, expected_type)
-        serialize @message.metadata, @metadata_cache, serializer, expected_type
+        @metadata_mutex.synchronize do
+          serialize @message.metadata, @metadata_cache, serializer, expected_type
+        end
       end
 
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize_payload(serializer, expected_type)
-        serialize @message.payload, @payload_cache, serializer, expected_type
+        @payload_mutex.synchronize do
+          serialize @message.payload, @payload_cache, serializer, expected_type
+        end
       end
 
       private
 
+      # Calls to this method must be synchronized
+      #
       # @param [Object] object
       # @param [Hash] cache
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize(object, cache, serializer, expected_type)
-        @mutex.synchronize do
-          serialized = cache[serializer]
-          if serialized
-            serializer.converter_factory.convert serialized, expected_type
-          else
-            serialized = serializer.serialize object, expected_type
-            cache[serializer] = serialized
-            serialized
-          end
+        serialized = cache.get serializer
+
+        if serialized
+          serializer.converter_factory.convert serialized, expected_type
+        else
+          serialized = serializer.serialize object, expected_type
+          cache.store serializer, serialized
+          serialized
         end
       end
     end # SerializedObjectCache

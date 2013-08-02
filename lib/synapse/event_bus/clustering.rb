@@ -1,3 +1,5 @@
+require 'synapse/event_bus/clustering/cluster_metadata'
+
 require 'synapse/event_bus/clustering/cluster'
 require 'synapse/event_bus/clustering/base_cluster'
 require 'synapse/event_bus/clustering/simple_cluster'

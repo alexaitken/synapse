@@ -4,8 +4,14 @@ module Synapse
     # clustering event bus. Clusters are used to apply behavior to a group of listeners, such as
     # transaction management, asynchronous publishing and distribution.
     #
+    # Note that listeners should not be directly subscribed to a cluster. Use the subscription
+    # mechanism provided by the clustering event bus to ensure that a cluster is properly
+    # recognized by the event bus.
+    #
     # @abstract
     class Cluster
+      # Publishes the given events to any members subscribed to this cluster
+      #
       # @abstract
       # @param [EventMessage...] events
       # @return [undefined]
@@ -13,6 +19,8 @@ module Synapse
         raise NotImplementedError
       end
 
+      # Subscribes an event listener to this cluster
+      #
       # @abstract
       # @param [EventListener] listener
       # @return [undefined]
@@ -20,6 +28,8 @@ module Synapse
         raise NotImplementedError
       end
 
+      # Unsubscribes an event listener from this cluster
+      #
       # @abstract
       # @param [EventListener] listener
       # @return [undefined]
@@ -27,20 +37,25 @@ module Synapse
         raise NotImplementedError
       end
 
+      # Returns the name of this cluster
       # @abstract
       # @return [String]
       def name
         raise NotImplementedError
       end
 
+      # Returns a snapshot of the members of this cluster
+      #
       # @abstract
       # @return [Set]
       def members
         raise NotImplementedError
       end
 
+      # Returns the metadata associated with this cluster
+      #
       # @abstract
-      # @return [Hash]
+      # @return [ClusterMetadata]
       def metadata
         raise NotImplementedError
       end

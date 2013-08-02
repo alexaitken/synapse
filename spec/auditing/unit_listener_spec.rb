@@ -5,27 +5,20 @@ module Synapse
 
     describe AuditingUnitOfWorkListener do
       it 'supplements events with auditing data' do
-        data_provider_a = Object.new
-        data_provider_b = Object.new
+        command = Command::CommandMessage.build do |builder|
+          builder.metadata = { foo: 0 }
+        end
 
-        command = Object.new
-        data_providers = [data_provider_a, data_provider_b]
-        loggers = []
+        event = Domain::EventMessage.build do |builder|
+          builder.metadata = { bar: 1 }
+        end
 
-        listener = AuditingUnitOfWorkListener.new command, data_providers, loggers
+        listener = AuditingUnitOfWorkListener.new command, CommandMetadataProvider.new, NullAuditLogger.new
 
-        event = Object.new
+        merged_event = listener.on_event_registered Object.new, event
+        merged_event.metadata.should == { foo: 0, bar: 1 }
 
-        data_a = { foo: 0 }
-        data_b = { bar: 1 }
-
-        mock(data_provider_a).provide_data_for(command) { data_a }
-        mock(data_provider_b).provide_data_for(command) { data_b }
-
-        mock(event).and_metadata(data_a.merge(data_b)) { event }
-
-        listener.on_event_registered(Object.new, event).should be(event)
-        listener.recorded_events.should include(event)
+        listener.recorded_events.should include(merged_event)
       end
 
       it 'notifies the audit logger of success after the unit of work is committed' do
@@ -33,13 +26,11 @@ module Synapse
 
         command = Object.new
         return_value = Object.new
-        data_providers = []
-        loggers = [logger]
         event = Object.new
 
         mock(logger).on_success(command, return_value, [event])
 
-        listener = AuditingUnitOfWorkListener.new command, data_providers, loggers
+        listener = AuditingUnitOfWorkListener.new command, EmptyDataProvider.new, logger
         listener.return_value = return_value
         listener.recorded_events.push event
 
@@ -51,13 +42,11 @@ module Synapse
 
         command = Object.new
         exception = Exception.new
-        data_providers = []
-        loggers = [logger]
         event = Object.new
 
         mock(logger).on_failure(command, exception, [event])
 
-        listener = AuditingUnitOfWorkListener.new command, data_providers, loggers
+        listener = AuditingUnitOfWorkListener.new command, EmptyDataProvider.new, logger
         listener.recorded_events.push event
 
         listener.on_rollback Object.new, exception

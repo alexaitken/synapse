@@ -9,7 +9,7 @@ module Synapse
     # to prevent aggregates being returned from the cache that were not fully persisted to disk.
     class CachingEventSourcingRepository < EventSourcingRepository
       # @return [ActiveSupport::Cache::Store]
-      attr_writer :cache
+      attr_accessor :cache
 
       # @param [AggregateFactory] aggregate_factory
       # @param [EventStore] event_store

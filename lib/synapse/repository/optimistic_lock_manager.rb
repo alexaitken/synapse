@@ -65,7 +65,7 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
       def validate(aggregate)
-        synchronize do
+        @mutex.synchronize do
           last_committed = aggregate.version
           if @version.nil? || @version == last_committed
             last = last_committed || 0
@@ -79,7 +79,7 @@ module Synapse
 
       # @return [Boolean] Returns false if lock is closed
       def lock
-        synchronize do
+        @mutex.synchronize do
           if @closed
             false
           else
@@ -92,7 +92,7 @@ module Synapse
 
       # @return [undefined]
       def unlock
-        synchronize do
+        @mutex.synchronize do
           count = @threads[Thread.current]
           if count <= 1
             @threads.delete Thread.current
@@ -103,16 +103,6 @@ module Synapse
           if @threads.empty?
             @closed = true
           end
-        end
-      end
-
-      private
-
-      # @yield
-      # @return [Object]
-      def synchronize
-        @mutex.synchronize do
-          yield
         end
       end
     end # OptimisticLock

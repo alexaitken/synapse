@@ -10,7 +10,7 @@ module Synapse
 
       it 'initializes with the correct attributes' do
         subject.name.should == :some_cluster_name
-        subject.metadata.should == {}
+        subject.metadata.should be_a ClusterMetadata
         subject.members.should be_empty
       end
 

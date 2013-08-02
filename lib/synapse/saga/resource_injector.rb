@@ -20,6 +20,6 @@ module Synapse
       def inject_resources(saga)
         # This method is intentionally empty
       end
-    end # ResourceInjector
+    end # NullResourceInjector
   end # Saga
 end

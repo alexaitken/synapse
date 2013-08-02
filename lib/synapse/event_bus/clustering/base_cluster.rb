@@ -5,10 +5,7 @@ module Synapse
       # @return [String]
       attr_reader :name
 
-      # @return [Set]
-      attr_reader :members
-
-      # @return [Hash]
+      # @return [ClusterMetadata]
       attr_reader :metadata
 
       # @param [String] name
@@ -16,7 +13,7 @@ module Synapse
       def initialize(name)
         @name = name
 
-        @metadata = Hash.new
+        @metadata = ClusterMetadata.new
         @members = Contender::CopyOnWriteSet.new
       end
 
@@ -32,6 +29,12 @@ module Synapse
       # @return [undefined]
       def unsubscribe(listener)
         @members.delete listener
+      end
+
+      # @api public
+      # @return [Set]
+      def members
+        @members.to_set
       end
     end # BaseCluster
   end # EventBus

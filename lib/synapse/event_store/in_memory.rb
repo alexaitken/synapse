@@ -1,11 +1,14 @@
 module Synapse
   module EventStore
-    # Implementation of an event store that stores events in memory
+    # Thread-safe implementation of an event store that stores events in memory
     # @api public
     class InMemoryEventStore < EventStore
       # @return [undefined]
       def initialize
-        @streams = ThreadSafe::Cache.new
+        @mutex = Mutex.new
+        @streams = Hash.new do |h, k|
+          h[k] = []
+        end
       end
 
       # Clears all streams from this event store
@@ -22,13 +25,15 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [DomainEventStream]
       def read_events(type_identifier, aggregate_id)
-        events = events_for aggregate_id
+        @mutex.synchronize do
+          unless @streams.key? aggregate_id
+            raise StreamNotFoundError.new type_identifier, aggregate_id
+          end
 
-        if events.empty?
-          raise StreamNotFoundError.new type_identifier, aggregate_id
+          stream = @streams.fetch aggregate_id
+
+          Domain::SimpleDomainEventStream.new stream
         end
-
-        Domain::SimpleDomainEventStream.new events
       end
 
       # @api public
@@ -38,10 +43,14 @@ module Synapse
       def append_events(type_identifier, stream)
         return if stream.end?
 
-        events = events_for stream.peek.aggregate_id
+        aggregate_id = stream.peek.aggregate_id
 
-        until stream.end?
-          events.push stream.next_event
+        @mutex.synchronize do
+          events = @streams.get aggregate_id
+
+          until stream.end?
+            events.push stream.next_event
+          end
         end
       end
 
@@ -51,8 +60,8 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [Array]
       def events_for(aggregate_id)
-        @streams.compute_if_absent aggregate_id do
-          Array.new
+        @mutex.synchronize do
+          @streams.get aggregate_id
         end
       end
     end # InMemoryEventStore

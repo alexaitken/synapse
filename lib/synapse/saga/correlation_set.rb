@@ -53,6 +53,6 @@ module Synapse
 
       # Delegates enumeration to the backing correlation set
       def_delegators :@correlations, :each, :size
-    end
-  end
+    end # CorrelationSet
+  end # Saga
 end

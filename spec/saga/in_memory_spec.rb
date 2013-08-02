@@ -41,16 +41,16 @@ module Synapse
         saga = StubSaga.new
         repository.commit saga
 
-        repository.count.should == 1
+        repository.size.should == 1
 
         # Make sure the correlation set was marked as committed
-        saga.correlations.additions.count.should == 0
-        saga.correlations.deletions.count.should == 0
+        saga.correlations.additions.size.should == 0
+        saga.correlations.deletions.size.should == 0
 
         saga.cause_finish
 
         repository.commit saga
-        repository.count.should == 0
+        repository.size.should == 0
       end
     end
 

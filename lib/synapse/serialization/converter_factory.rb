@@ -3,14 +3,14 @@ module Synapse
     # Represents a mechanism for storing and retrieving converters capable of converting content
     # of one type to another type, for the purpose of serialization and upcasting.
     class ConverterFactory
+      # @return [Set]
+      attr_reader :converters
+
       # @return [undefined]
       def initialize
-        # @todo this structure should be thread-safe
-        @converters = Set.new
+        @converters = Contender::CopyOnWriteSet.new
       end
 
-      # Adds the given converter to this converter factory
-      #
       # @param [Converter] converter
       # @return [undefined]
       def register(converter)

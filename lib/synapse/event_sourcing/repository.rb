@@ -130,6 +130,8 @@ module Synapse
         @stream_decorators.reverse_each do |decorator|
           stream = decorator.decreate_for_append type_identifier, aggregate, stream
         end
+
+        stream
       end
 
       # @param [DomainEventStream] stream
@@ -151,15 +153,5 @@ module Synapse
         stream
       end
     end # EventSourcingRepository
-
-    # Raised when an aggregate has been found but it was marked for deletion
-    class AggregateDeletedError < Repository::AggregateNotFoundError
-      # @param [String] type_identifier
-      # @param [Object] aggregate_id
-      # @return [undefined]
-      def initialize(type_identifier, aggregate_id)
-        super "Aggregate {#{type_identifier}} {#{aggregate_id}} has been marked for deletion"
-      end
-    end # AggregateDeletedError
   end # EventSourcing
 end

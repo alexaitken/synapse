@@ -4,6 +4,7 @@ module Synapse
   #
   # This implementation is thread-safe
   class DuplicationRecorder
+    # @return [undefined]
     def initialize
       @recorded = Hash.new
       @mutex = Mutex.new

@@ -2,6 +2,8 @@ module Synapse
   module EventBus
     # Implementation of an event bus that notifies any subscribed event listeners in the calling
     # thread. Listeners are expected to implement asynchronous handing themselves, if desired.
+    #
+    # @api public
     class SimpleEventBus < EventBus
       include EventListenerProxyAware
       include Loggable

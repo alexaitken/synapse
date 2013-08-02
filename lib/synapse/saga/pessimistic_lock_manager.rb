@@ -2,6 +2,7 @@ module Synapse
   module Saga
     # Lock manager that blocks until a lock can be obtained for a saga
     class PessimisticLockManager < LockManager
+      # @return [undefined]
       def initialize
         @manager = IdentifierLockManager.new
       end

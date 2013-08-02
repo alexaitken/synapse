@@ -3,15 +3,18 @@ module Synapse
     # Simplified interface to the command bus
     # @api public
     class CommandGateway
+      # @return [Array]
+      attr_reader :filters
+
       # @return [RetryScheduler]
       attr_accessor :retry_scheduler
 
       # @param [CommandBus] command_bus
       # @param [Array] filters
       # @return [undefined]
-      def initialize(command_bus, filters)
+      def initialize(command_bus)
         @command_bus = command_bus
-        @filters = filters
+        @filters = Contender::CopyOnWriteArray.new
       end
 
       # Fire and forget method of sending a command to the command bus
@@ -61,6 +64,13 @@ module Synapse
         callback = FutureCallback.new
         send_with_callback command, callback
         callback.result timeout
+      end
+
+      # @api public
+      # @param [Array] filters
+      # @return [undefined]
+      def filters=(filters)
+        @filters.replace filters
       end
 
       protected

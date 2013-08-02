@@ -10,13 +10,13 @@ module Synapse
       attr_accessor :return_value
 
       # @param [CommandMessage] command
-      # @param [Array] data_providers
-      # @param [Array] loggers
+      # @param [DataProvider] data_provider
+      # @param [AuditLogger] logger
       # @return [undefined]
-      def initialize(command, data_providers, loggers)
+      def initialize(command, data_provider, logger)
         @command = command
-        @data_providers = data_providers
-        @loggers = loggers
+        @data_provider = data_provider
+        @logger = logger
         @recorded_events = Array.new
       end
 
@@ -24,12 +24,11 @@ module Synapse
       # @param [EventMessage] event
       # @return [EventMessage]
       def on_event_registered(unit, event)
-        audit_data = Hash.new
-        @data_providers.each do |provider|
-          audit_data.merge! provider.provide_data_for @command
+        audit_data = @data_provider.provide_data_for @command
+        unless audit_data.empty?
+          event = event.and_metadata audit_data
         end
 
-        event = event.and_metadata audit_data
         @recorded_events.push event
 
         event
@@ -38,18 +37,14 @@ module Synapse
       # @param [UnitOfWork] unit
       # @return [undefined]
       def after_commit(unit)
-        @loggers.each do |logger|
-          logger.on_success @command, @return_value, @recorded_events
-        end
+        @logger.on_success @command, @return_value, @recorded_events
       end
 
       # @param [UnitOfWork] unit
       # @param [Error] cause
       # @return [undefined]
       def on_rollback(unit, cause = nil)
-        @loggers.each do |logger|
-          logger.on_failure @command, cause, @recorded_events
-        end
+        @logger.on_failure @command, cause, @recorded_events
       end
     end # AuditingUnitOfWorkListener
   end # Auditing

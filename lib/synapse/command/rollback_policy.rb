@@ -2,9 +2,12 @@ module Synapse
   module Command
     # Represents a mechanism for determining whether or not to rollback the unit of work for a
     # command dispatch in case an exception occurs during the dispatch
+    #
+    # @abstract
     class RollbackPolicy
       # Returns true if the unit of work should be rolled back
       #
+      # @abstract
       # @param [Exception] exception
       # @return [Boolean]
       def should_rollback(exception)
