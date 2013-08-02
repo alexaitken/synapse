@@ -17,7 +17,7 @@ module Synapse
       end
 
       it 'creates a new saga and notify it if one could not be found' do
-        @manager.optionally_create_events << CauseSagaCreationEvent
+        @manager.optionally_create_events.push CauseSagaCreationEvent
 
         correlation = Correlation.new :order_id, 123
 
@@ -70,11 +70,11 @@ module Synapse
 
         expect {
           @manager.notify create_event 123, CauseSagaRaiseExceptionEvent.new
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
       end
 
       it 'always creates a saga if specified by the creation policy' do
-        @manager.always_create_events << CauseSagaCreationEvent
+        @manager.always_create_events.push CauseSagaCreationEvent
 
         correlation = Correlation.new :order_id, 123
 

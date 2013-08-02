@@ -44,7 +44,7 @@ module Synapse
 
         expect {
           aggregate.initialize_from_stream Domain::SimpleDomainEventStream.new
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
       end
 
       it 'notifies child entities of aggregate events' do

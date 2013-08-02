@@ -37,7 +37,7 @@ module Synapse
 
         expect {
           @listener.on_rollback @outer_unit, cause
-        }.to raise_error(TestError)
+        }.to raise_error TestError
       end
 
       it 'cleans up the inner unit when the outer unit is cleaned up' do

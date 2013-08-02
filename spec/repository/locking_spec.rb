@@ -36,7 +36,7 @@ module Synapse
 
         expect {
           @repository.add aggregate
-        }.to raise_error(ArgumentError)
+        }.to raise_error ArgumentError
       end
 
       it 'raises an exception if an aggregate is added that already has a version' do
@@ -47,7 +47,7 @@ module Synapse
 
         expect {
           @repository.add aggregate
-        }.to raise_error(ArgumentError)
+        }.to raise_error ArgumentError
       end
 
       it 'raises an exception if a loaded aggregate has an unexpected version' do
@@ -58,7 +58,7 @@ module Synapse
 
         expect {
           @repository.load 123, 0
-        }.to raise_error(ConflictingAggregateVersionError)
+        }.to raise_error ConflictingAggregateVersionError
       end
     end
 

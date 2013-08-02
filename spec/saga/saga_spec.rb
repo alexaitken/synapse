@@ -12,27 +12,26 @@ module Synapse
         # If no identifier was given, one should be generated
         saga.id.should be_a(String)
         saga.correlations.should include(correlation)
-        expect(saga.active?).to be_true
+        saga.should be_active
       end
 
       it 'supports deletion of a correlation' do
         saga = StubSaga.new
 
-        key = :order_id
-        value = '512d5467'
+        correlation = Correlation.new :order_id, SecureRandom.uuid
 
-        saga.cause_correlate key, value
-        saga.correlations.should include(Correlation.new(key, value))
+        saga.cause_correlate correlation.key, correlation.value
+        saga.correlations.should include(correlation)
 
-        saga.cause_dissociate key, value
-        saga.correlations.should_not include(Correlation.new(key, value))
+        saga.cause_dissociate correlation.key, correlation.value
+        saga.correlations.should_not include(correlation)
       end
 
       it 'can be marked as finished' do
         saga = StubSaga.new
         saga.cause_finish
 
-        expect(saga.active?).to be_false
+        saga.should_not be_active
       end
     end
 

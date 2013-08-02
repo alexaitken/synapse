@@ -2,11 +2,11 @@ module Synapse
   module Upcasting
     class UpcasterChain
       # @param [ConverterFactory] converter_factory
-      # @param [Enumerable<Upcaster>] upcasters
+      # @param [Array] upcasters
       # @return [undefined]
       def initialize(converter_factory, upcasters)
         @converter_factory = converter_factory
-        @upcasters = Array.new upcasters
+        @upcasters = upcasters
       end
 
       # @param [SerializedObject] serialized_object

@@ -43,20 +43,20 @@ module Synapse
           builder.payload = payload_lazy
         end
 
-        expect(message.serialized_metadata.deserialized?).to be_false
+        message.serialized_metadata.should_not be_deserialized
         message.metadata.should == metadata
-        expect(message.serialized_metadata.deserialized?).to be_true
+        message.serialized_metadata.should be_deserialized
 
         message.payload_type.should == Hash
-        expect(message.serialized_payload.deserialized?).to be_false
+        message.serialized_payload.should_not be_deserialized
         message.payload.should == payload
-        expect(message.serialized_payload.deserialized?).to be_true
+        message.serialized_payload.should be_deserialized
 
-        expect(message.serialize_metadata(@serializer_a, String)).to be(metadata_serialized)
-        expect(message.serialize_payload(@serializer_a, String)).to be(payload_serialized)
+        message.serialize_metadata(@serializer_a, String).should be(metadata_serialized)
+        message.serialize_payload(@serializer_a, String).should be(payload_serialized)
 
-        expect(message.serialize_metadata(@serializer_b, String)).to eql(metadata_serialized)
-        expect(message.serialize_payload(@serializer_b, String)).to eql(payload_serialized)
+        message.serialize_metadata(@serializer_b, String).should == metadata_serialized
+        message.serialize_payload(@serializer_b, String).should == payload_serialized
       end
 
       it 'populates attributes of messages duplicated to add metadata' do

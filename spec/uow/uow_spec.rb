@@ -20,7 +20,7 @@ module Synapse
 
         expect {
           @uow.start
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
 
         @uow.rollback
       end
@@ -28,7 +28,7 @@ module Synapse
       it 'raises an exception if a commit is requested but the unit is not started' do
         expect {
           @uow.commit
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
       end
 
       it 'maintains an identity map for aggregates of the same type and identifier' do
@@ -155,7 +155,7 @@ module Synapse
 
         expect {
           @uow.commit
-        }.to raise_error(ExampleError)
+        }.to raise_error ExampleError
       end
 
       it 'rolls back if an aggregate storage callback raises an exception' do
@@ -180,7 +180,7 @@ module Synapse
 
         expect {
           @uow.commit
-        }.to raise_error(ExampleError)
+        }.to raise_error ExampleError
       end
 
       it 'rolls back if the event bus raises an exception when publishing events' do
@@ -204,7 +204,7 @@ module Synapse
 
         expect {
           @uow.commit
-        }.to raise_error(ExampleError)
+        }.to raise_error ExampleError
       end
 
       it 'delays cleanup of inner unit after commit until outer unit is committed' do
@@ -270,7 +270,7 @@ module Synapse
 
         expect {
           @uow.transaction_manager = Object.new
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
 
         @uow.commit
       end
@@ -287,7 +287,7 @@ module Synapse
           @uow.start
         rescue RuntimeError; end
 
-        expect(@provider.started?).to be_false
+        @provider.should_not be_started
       end
 
       it 'continually publishes events as events are published' do

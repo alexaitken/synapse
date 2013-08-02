@@ -10,8 +10,8 @@ module Synapse
 
         uow = factory.create
 
-        expect(uow.started?).to be_true
-        expect(uow.transactional?).to be_false
+        uow.should be_started
+        uow.should_not be_transactional
       end
 
       it 'creates a unit of work with a transaction manager and starts it' do
@@ -26,9 +26,8 @@ module Synapse
 
         uow = factory.create
 
-        expect(uow.started?).to be_true
-        expect(uow.transactional?).to be_true
-
+        uow.should be_started
+        uow.should be_transactional
       end
     end
 

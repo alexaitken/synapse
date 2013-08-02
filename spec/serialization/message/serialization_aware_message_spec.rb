@@ -14,14 +14,14 @@ module Synapse
         aware = SerializationAwareDomainEventMessage.new message
 
         # EventMessage
-        expect(aware.id).to be(message.id)
-        expect(aware.metadata).to be(message.metadata)
-        expect(aware.payload).to be(message.payload)
-        expect(aware.timestamp).to be(message.timestamp)
+        aware.id.should == message.id
+        aware.metadata.should == message.metadata
+        aware.payload.should == message.payload
+        aware.timestamp.should == message.timestamp
 
         # DomainEventMessage
-        expect(aware.aggregate_id).to be(message.aggregate_id)
-        expect(aware.sequence_number).to be(message.sequence_number)
+        aware.aggregate_id.should == message.aggregate_id
+        aware.sequence_number.should == message.sequence_number
       end
 
       it 'caches serialization operations' do

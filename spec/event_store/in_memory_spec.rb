@@ -11,7 +11,7 @@ module Synapse
       it 'raises an exception if a stream could not be found' do
         expect {
           @event_store.read_events 'Person', 123
-        }.to raise_error(StreamNotFoundError)
+        }.to raise_error StreamNotFoundError
       end
 
       it 'supports appending and reading an event stream' do
@@ -38,7 +38,7 @@ module Synapse
 
         expect {
           @event_store.read_events 'Person', 123
-        }.to raise_error(StreamNotFoundError)
+        }.to raise_error StreamNotFoundError
       end
     end
 

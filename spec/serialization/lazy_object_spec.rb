@@ -17,7 +17,7 @@ module Synapse
         lazy.serializer.should == serializer
         lazy.type.should == TestEvent
 
-        expect(lazy.deserialized?).to be_false
+        lazy.should_not be_deserialized
 
         deserialized_a = lazy.deserialized
         deserialized_b = lazy.deserialized
@@ -26,7 +26,7 @@ module Synapse
         deserialized_a.should == event
         deserialized_b.should == event
 
-        expect(lazy.deserialized?).to be_true
+        lazy.should be_deserialized
       end
 
     end

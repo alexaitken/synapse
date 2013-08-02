@@ -10,10 +10,10 @@ module Synapse
 
       identifier = SecureRandom.uuid
       manager.obtain_lock identifier
-      expect(manager.internal_locks.size).to eql(1)
+      manager.internal_locks.size.should == 1
 
       manager.release_lock identifier
-      expect(manager.internal_locks.size).to eql(0)
+      manager.internal_locks.size.should == 0
     end
 
     it 'does not dispose locks when they are still in use' do

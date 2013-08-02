@@ -18,7 +18,7 @@ module Synapse
 
         expect {
           @factory.converter(Object, String)
-        }.to raise_error(ConversionError)
+        }.to raise_error ConversionError
 
         converter = ObjectToJsonConverter.new
         @factory.register converter

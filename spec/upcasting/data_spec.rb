@@ -20,12 +20,13 @@ module Synapse
         upcast = UpcastSerializedDomainEventData.new delegate, aggregate_id, upcast_payload
 
         # Assert delegated properties
-        expect(upcast.id).to be(delegate.id)
-        expect(upcast.metadata).to be(delegate.metadata)
-        expect(upcast.payload).to be(upcast_payload)
-        expect(upcast.timestamp).to be(delegate.timestamp)
-        expect(upcast.aggregate_id).to be(aggregate_id)
-        expect(upcast.sequence_number).to be(delegate.sequence_number)
+
+        upcast.id.should be(delegate.id)
+        upcast.metadata.should be(delegate.metadata)
+        upcast.payload.should be(upcast_payload)
+        upcast.timestamp.should be(delegate.timestamp)
+        upcast.aggregate_id.should be(aggregate_id)
+        upcast.sequence_number.should be(delegate.sequence_number)
       end
 
     end

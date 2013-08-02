@@ -10,7 +10,7 @@ module Synapse
 
         expect {
           entity.change_something
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
 
         aggregate = StubAggregate.new 123
 
@@ -27,7 +27,7 @@ module Synapse
 
         expect {
           entity.aggregate_root = aggregate_b
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
       end
     end
 

@@ -5,8 +5,8 @@ module Synapse
   module EventSourcing
 
     describe GenericAggregateFactory do
-      before do
-        @factory = GenericAggregateFactory.new StubAggregate
+      subject do
+        GenericAggregateFactory.new StubAggregate
       end
 
       it 'creates an aggregate from a normal event' do
@@ -14,8 +14,8 @@ module Synapse
           m.payload = StubCreatedEvent.new 123
         end
 
-        aggregate = @factory.create_aggregate 123, event
-        aggregate.is_a?(StubAggregate).should be_true
+        aggregate = subject.create_aggregate 123, event
+        aggregate.should be_a StubAggregate
       end
 
       it 'uses an aggregate snapshot if available' do
@@ -27,7 +27,7 @@ module Synapse
           m.payload = snapshot
         end
 
-        aggregate = @factory.create_aggregate 123, snapshot_event
+        aggregate = subject.create_aggregate 123, snapshot_event
 
         aggregate.should be(snapshot)
         aggregate.initial_version.should == snapshot.version

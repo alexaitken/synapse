@@ -11,8 +11,8 @@ module Synapse
 
         data = StubSerializedDomainEventData.new
         data.id = 0
-        data.metadata = SerializedObject.new(nil, nil, SerializedType.new(Object.to_s, nil))
-        data.payload = SerializedObject.new(nil, nil, SerializedType.new(Object.to_s, nil))
+        data.metadata = SerializedObject.build nil, nil, Object.name, nil
+        data.payload = SerializedObject.build nil, nil, Object.name, nil
         data.aggregate_id = 1
         data.sequence_number = 2
 
@@ -20,16 +20,16 @@ module Synapse
 
         built = builder.build
 
-        expect(built.id).to eql(data.id)
+        built.id.should == data.id
 
-        expect(built.serialized_metadata.serialized_object).to eql(data.metadata)
-        expect(built.serialized_metadata.serializer).to eql(serializer)
-        expect(built.serialized_payload.serialized_object).to eql(data.payload)
-        expect(built.serialized_payload.serializer).to eql(serializer)
+        built.serialized_metadata.serialized_object.should == data.metadata
+        built.serialized_metadata.serializer.should == serializer
+        built.serialized_payload.serialized_object.should == data.payload
+        built.serialized_payload.serializer.should == serializer
 
-        expect(built.timestamp).to eql(data.timestamp)
-        expect(built.aggregate_id).to eql(data.aggregate_id)
-        expect(built.sequence_number).to eql(data.sequence_number)
+        built.timestamp.should == data.timestamp
+        built.aggregate_id.should == data.aggregate_id
+        built.sequence_number.should == data.sequence_number
       end
     end
 

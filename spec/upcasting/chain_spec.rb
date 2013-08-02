@@ -18,9 +18,10 @@ module Synapse
         chain = UpcasterChain.new cf, upcasters
 
         content = Hash.new
+        serialized_content = JSON.dump content
 
-        input = Serialization::SerializedObject.new(JSON.dump(content), String, Serialization::SerializedType.new('TestEvent', '1'))
-        output = chain.upcast(input, nil)
+        input = Serialization::SerializedObject.build serialized_content, String, 'TestEvent', '1'
+        output = chain.upcast input, String
 
         output.size.should == 2
         output[0].type.name.should == 'FooEvent'

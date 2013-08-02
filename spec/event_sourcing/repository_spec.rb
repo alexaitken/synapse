@@ -26,7 +26,7 @@ module Synapse
 
         expect {
           @repository.add aggregate # Polandball can't into repository :(
-        }.to raise_error(ArgumentError)
+        }.to raise_error ArgumentError
       end
 
       it 'loads an aggregate from an event stream' do
@@ -48,7 +48,7 @@ module Synapse
 
         expect {
           @repository.load @id, 0
-        }.to raise_error(Repository::ConflictingAggregateVersionError)
+        }.to raise_error Repository::ConflictingAggregateVersionError
       end
 
       it 'raises an exception if an event stream could not be found for the aggregate id' do
@@ -58,7 +58,7 @@ module Synapse
 
         expect {
           @repository.load @id
-        }.to raise_error(Repository::AggregateNotFoundError)
+        }.to raise_error Repository::AggregateNotFoundError
       end
 
       it 'raises an exception if the loaded aggregate has been marked for deletion' do
@@ -71,7 +71,7 @@ module Synapse
 
         expect {
           @repository.load @id
-        }.to raise_error(AggregateDeletedError)
+        }.to raise_error AggregateDeletedError
       end
 
       it 'raises an exception while saving if lock could not be validated' do
@@ -89,7 +89,7 @@ module Synapse
 
         expect {
           @unit.commit
-        }.to raise_error(Repository::ConcurrencyError)
+        }.to raise_error Repository::ConcurrencyError
       end
 
       it 'defers version checking to a conflict resolver if one is set' do

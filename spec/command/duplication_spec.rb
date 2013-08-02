@@ -34,7 +34,7 @@ module Synapse
 
         expect {
           interceptor.intercept command, unit, chain
-        }.to raise_error(TransientError)
+        }.to raise_error TransientError
 
         recorder.recorded?(command).should be_false
 
@@ -48,7 +48,7 @@ module Synapse
 
         expect {
           interceptor.intercept command, unit, chain
-        }.to raise_error(ExampleError)
+        }.to raise_error ExampleError
 
         recorder.recorded?(command).should be_true
       end

@@ -19,20 +19,25 @@ module Synapse
     class OrderSaga < MappingSaga
       attr_reader :handled
 
+      def initialize(id = nil)
+        super
+        @handled = 0
+      end
+
       map_event OrderCreated, correlate: :order_id, start: true do
-        @handled = (@handled or 0).next
+        @handled += 1
       end
 
       map_event OrderForceCreated, correlate: :order_id, start: true, force_new: true do
-        @handled = (@handled or 0).next
+        @handled += 1
       end
 
       map_event OrderUpdated, correlate: :order_id do
-        @handled = (@handled or 0).next
+        @handled += 1
       end
 
       map_event OrderCanceled, correlate: :order_id, finish: true do
-        @handled = (@handled or 0).next
+        @handled += 1
       end
 
       map_event OrderDerped, correlate: :derpy_key do; end

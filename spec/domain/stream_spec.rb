@@ -23,11 +23,11 @@ module Synapse
 
         expect {
           @stream.next_event
-        }.to raise_error(EndOfStreamError)
+        }.to raise_error EndOfStreamError
 
         expect {
           @stream.peek
-        }.to raise_error(EndOfStreamError)
+        }.to raise_error EndOfStreamError
       end
     end
 

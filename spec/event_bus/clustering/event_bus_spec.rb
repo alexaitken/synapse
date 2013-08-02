@@ -49,7 +49,7 @@ module Synapse
 
         expect {
           bus.subscribe listener
-        }.to raise_error(SubscriptionError)
+        }.to raise_error SubscriptionError
       end
 
       it 'only notifies the terminal of unknown clusters' do

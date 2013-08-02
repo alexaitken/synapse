@@ -23,7 +23,7 @@ module Synapse
 
       unpacked = packer.read io
 
-      unpacked.should be_a(Serialization::SerializedDomainEventMessage)
+      unpacked.should be_a Serialization::SerializedDomainEventMessage
 
       unpacked.id.should == message.id
       unpacked.metadata.should == message.metadata

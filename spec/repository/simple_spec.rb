@@ -36,7 +36,7 @@ module Synapse
 
         expect {
           @repository.load aggregate_id
-        }.to raise_error(AggregateNotFoundError)
+        }.to raise_error AggregateNotFoundError
       end
 
       it 'raises an exception if the loaded aggregate has an unexpected version' do
@@ -52,7 +52,7 @@ module Synapse
 
         expect {
           @repository.load aggregate_id, 4
-        }.to raise_error(ConflictingAggregateVersionError)
+        }.to raise_error ConflictingAggregateVersionError
       end
 
       it 'raises an exception while saving if lock could not be validated' do
@@ -74,7 +74,7 @@ module Synapse
 
         expect {
           unit.commit
-        }.to raise_error(ConcurrencyError)
+        }.to raise_error ConcurrencyError
       end
 
       it 'deletes the aggregate if it has been marked for deletion' do

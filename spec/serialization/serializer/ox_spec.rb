@@ -26,7 +26,7 @@ module Synapse
 
         expect {
           @serializer.class_for(SerializedType.new('NonExistentClass', nil))
-        }.to raise_error(UnknownSerializedTypeError)
+        }.to raise_error UnknownSerializedTypeError
       end
     end
 

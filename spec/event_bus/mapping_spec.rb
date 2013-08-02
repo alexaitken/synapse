@@ -4,24 +4,26 @@ module Synapse
   module EventBus
 
     describe MappingEventListener do
-      it 'uses the correct handler when notified of an events' do
-        listener = ExampleMappingEventListener.new
+      subject do
+        ExampleMappingEventListener.new
+      end
 
+      it 'uses the correct handler when notified of an events' do
         event = Domain::EventMessage.build do |builder|
           builder.payload = TestEvent.new
         end
 
-        listener.notify event
+        subject.notify event
 
-        listener.handled.should be_true
+        subject.handled.should be_true
 
         event = Domain::EventMessage.build do |builder|
           builder.payload = TestSubEvent.new
         end
 
-        listener.notify event
+        subject.notify event
 
-        listener.sub_handled.should be_true
+        subject.sub_handled.should be_true
       end
     end
 

@@ -12,9 +12,9 @@ module Synapse
         uow = UnitOfWork.new @provider
         uow.start
 
-        expect(@provider.started?).to be_true
+        @provider.should be_started
         @provider.clear uow
-        expect(@provider.started?).to be_false
+        @provider.should_not be_started
       end
 
       it 'raises an exception if the given unit of work to be cleared does not match the current unit of work' do
@@ -26,7 +26,7 @@ module Synapse
 
         expect {
           @provider.clear outer
-        }.to raise_error(ArgumentError)
+        }.to raise_error ArgumentError
       end
 
       it 'commits the current unit of work and clear it from the provider' do
@@ -35,8 +35,8 @@ module Synapse
 
         @provider.commit
 
-        expect(@provider.started?).to be_false
-        expect(uow.started?).to be_false
+        @provider.should_not be_started
+        uow.should_not be_started
       end
 
       it 'returns the current unit of work, if one is in the stack' do
@@ -44,11 +44,11 @@ module Synapse
 
         expect {
           @provider.current
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
 
         uow.start
 
-        expect(@provider.current).to be(uow)
+        @provider.current.should be(uow)
       end
 
       it 'tracks unit of work stacks separately for each thread' do
@@ -63,8 +63,8 @@ module Synapse
           @provider.started?
         }.join
 
-        expect(t1.value).to be_true
-        expect(t2.value).to be_false
+        t1.value.should be_true
+        t2.value.should be_false
       end
     end
 

@@ -4,36 +4,34 @@ module Synapse
   module Serialization
 
     describe AttributeSerializer do
-      it 'supports serialization and deserialization of a hash' do
-        converter_factory = ConverterFactory.new
-        serializer = AttributeSerializer.new converter_factory
+      subject do
+        AttributeSerializer.new ConverterFactory.new
+      end
 
+      it 'supports serialization and deserialization of a hash' do
         content = {
           foo: 0
         }
 
-        serialized_object = serializer.serialize(content, Hash)
+        serialized_object = subject.serialize content, Hash
 
-        expect(serialized_object.content).to eql(content)
-        expect(serializer.deserialize(serialized_object)).to eql(content)
+        serialized_object.content.should == content
+        subject.deserialize(serialized_object).should == content
 
-        expect(serializer.can_serialize_to?(Hash)).to be_true
+        subject.can_serialize_to?(Hash).should be_true
       end
 
       it 'supports serialization and deserialization of a compatible object' do
-        converter_factory = ConverterFactory.new
-        serializer = AttributeSerializer.new converter_factory
-
         content = SomeAttributeEvent.new 0
 
         attributes = {
           foo: 0
         }
 
-        serialized_object = serializer.serialize(content, Hash)
+        serialized_object = subject.serialize content, Hash
 
-        expect(serialized_object.content).to eql(attributes)
-        expect(serializer.deserialize(serialized_object).attributes).to eql(attributes)
+        serialized_object.content.should == attributes
+        subject.deserialize(serialized_object).attributes.should == attributes
       end
     end
 

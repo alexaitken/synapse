@@ -28,7 +28,7 @@ module Synapse
 
         expect {
           handler.handle command, unit
-        }.to raise_error(ArgumentError)
+        }.to raise_error ArgumentError
       end
 
       it 'provides the command types it supports' do

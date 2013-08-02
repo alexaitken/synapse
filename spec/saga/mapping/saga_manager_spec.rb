@@ -16,7 +16,7 @@ module Synapse
       it 'raises an exception if used with a saga that does not support wiring' do
         expect {
           MappingSagaManager.new @repository, @factory, @lock_manager, Saga
-        }.to raise_error(ArgumentError)
+        }.to raise_error ArgumentError
       end
 
       it 'uses mapping attributes to determine correlation keys' do
@@ -57,7 +57,7 @@ module Synapse
 
         expect {
           @manager.notify event
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
       end
 
     private

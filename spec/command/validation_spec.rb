@@ -22,7 +22,7 @@ module Synapse
         filter = ActiveModelValidationFilter.new
         expect {
           filter.filter message
-        }.to raise_error(ActiveModelValidationError)
+        }.to raise_error ActiveModelValidationError
       end
     end
 

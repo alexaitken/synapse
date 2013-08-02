@@ -43,7 +43,7 @@ module Synapse
 
         expect {
           @repository.load aggregate_id
-        }.to raise_error(AggregateDeletedError)
+        }.to raise_error AggregateDeletedError
       end
 
       it 'loads from the event store if cache miss' do
@@ -57,7 +57,7 @@ module Synapse
 
         expect {
           @repository.load aggregate_id
-        }.to raise_error(Repository::AggregateNotFoundError)
+        }.to raise_error Repository::AggregateNotFoundError
       end
 
       it 'clears the cache if the unit of work is rolled back' do
@@ -112,7 +112,7 @@ module Synapse
 
         expect {
           @unit.commit
-        }.to raise_error(RuntimeError)
+        }.to raise_error RuntimeError
       end
     end
 
