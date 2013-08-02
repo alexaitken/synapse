@@ -7,11 +7,11 @@ module Synapse
       attr_accessor :retry_scheduler
 
       # @param [CommandBus] command_bus
-      # @param [Enumerable<CommandFilter>] filters
+      # @param [Array] filters
       # @return [undefined]
       def initialize(command_bus, filters)
         @command_bus = command_bus
-        @filters = Array.new filters
+        @filters = filters
       end
 
       # Fire and forget method of sending a command to the command bus
@@ -38,8 +38,9 @@ module Synapse
       def send_with_callback(command, callback)
         command = filter(CommandMessage.as_message(command))
 
-        if @retry_scheduler
-          callback = RetryingCallback.new callback, command, @retry_scheduler, @command_bus
+        scheduler = @retry_scheduler
+        if scheduler
+          callback = RetryingCallback.new callback, command, scheduler, @command_bus
         end
 
         @command_bus.dispatch_with_callback(command, callback)

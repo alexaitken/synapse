@@ -33,7 +33,7 @@ module Synapse
 
       # @return [undefined]
       def initialize
-        @resource_injector = ResourceInjector.new
+        @resource_injector = NullResourceInjector.new
       end
 
       # @param [Class] saga_type

@@ -33,8 +33,8 @@ module Synapse
       end
 
       # @param [UnitOfWork] unit
-      # @param [Array<AggregateRoot>] aggregates
-      # @param [Hash<EventBus, Array>] events
+      # @param [Array] aggregates
+      # @param [Hash] events
       # @return [undefined]
       def on_prepare_commit(unit, aggregates, events)
         if potential_conflicts?

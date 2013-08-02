@@ -28,8 +28,8 @@ module Synapse
       # prevent event publication in certain circumstances.
       #
       # @param [UnitOfWork] unit
-      # @param [Array<AggregateRoot>] aggregates
-      # @param [Hash<EventBus, Array>] events
+      # @param [Array] aggregates
+      # @param [Hash] events
       # @return [undefined]
       def on_prepare_commit(unit, aggregates, events); end
 

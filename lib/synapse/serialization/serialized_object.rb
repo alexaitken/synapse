@@ -40,6 +40,7 @@ module Synapse
 
       alias_method :eql?, :==
 
+      # TODO fix this hash function
       def hash
         @content.hash ^ @content_type.hash ^ @type.hash
       end

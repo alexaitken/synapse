@@ -11,7 +11,7 @@ module Synapse
 
       # @param [SerializedObject] serialized_object
       # @param [UpcastingContext] upcast_context
-      # @return [Array<SerializedObject>]
+      # @return [Array]
       def upcast(serialized_object, upcast_context)
         serialized_objects = Array.new
         serialized_objects.push serialized_object
@@ -27,9 +27,9 @@ module Synapse
 
       # @param [Upcaster] upcaster
       # @param [SerializedObject] representation
-      # @param [Array<SerializedType>] expected_types
+      # @param [Array] expected_types
       # @param [UpcastingContent] upcast_context
-      # @return [Array<SerializedObject>]
+      # @return [Array]
       def perform_upcast(upcaster, representation, expected_types, upcast_context)
         upcaster.upcast representation, expected_types, upcast_context
       end
@@ -37,9 +37,9 @@ module Synapse
       private
 
       # @param [Upcaster] upcaster
-      # @param [Array<SerializedObject>] serialized_objects
+      # @param [Array] serialized_objects
       # @param [UpcastingContext] upcast_context
-      # @return [Array<SerializedObject>]
+      # @return [Array]
       def upcast_objects(upcaster, serialized_objects, upcast_context)
         upcast_objects = Array.new
 

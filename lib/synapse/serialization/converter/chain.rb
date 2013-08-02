@@ -10,7 +10,7 @@ module Synapse
       # @return [Class]
       attr_reader :target_type
 
-      # @param [Array<Converter>] delegates
+      # @param [Array] delegates
       # @return [undefined]
       def initialize(delegates)
         @delegates = delegates

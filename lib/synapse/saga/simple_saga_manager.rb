@@ -2,10 +2,10 @@ module Synapse
   module Saga
     # Simple implementation of a saga manager
     class SimpleSagaManager < SagaManager
-      # @return [Array<Class>] Types of events that will always result in the creation of a saga
+      # @return [Array] Types of events that will always result in the creation of a saga
       attr_accessor :always_create_events
 
-      # @return [Array<Class>] Types of events that will result in the creation of a saga if one
+      # @return [Array] Types of events that will result in the creation of a saga if one
       #   doesn't already exist
       attr_accessor :optionally_create_events
 

@@ -13,7 +13,7 @@ module Synapse
         metadata.content.should == content
         metadata.content_type.should == content_type
         metadata.type.name.should == 'Hash'
-        metadata.type.revision.should be_nil
+        metadata.type.revision.should == ''
       end
     end
 

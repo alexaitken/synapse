@@ -10,9 +10,9 @@ module Synapse
     # @abstract
     class SingleUpcaster < Upcaster
       # @param [SerialiedObject] intermediate
-      # @param [Array<SerializedType>] expected_types
+      # @param [Array] expected_types
       # @param [UpcastingContext] upcast_context
-      # @return [Array<SerializedObject>]
+      # @return [Array]
       def upcast(intermediate, expected_types, upcast_context)
         upcast_content = perform_upcast intermediate, upcast_context
         upcast_objects = Array.new
@@ -24,7 +24,7 @@ module Synapse
       end
 
       # @param [SerializedType] serialized_type
-      # @return [Array<SerializedType>]
+      # @return [Array]
       def upcast_type(serialized_type)
         upcast_type = perform_upcast_type serialized_type
         upcast_types = Array.new

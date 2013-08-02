@@ -14,7 +14,7 @@ module Synapse
 
       # @param [Class] type
       # @param [Correlation] correlation
-      # @return [Set<String>]
+      # @return [Set]
       def find(type, correlation)
         matching = Array.new
 

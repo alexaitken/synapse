@@ -7,7 +7,7 @@ module Synapse
       # @return [undefined]
       def initialize(message)
         @message = message
-        @lock = Mutex.new
+        @mutex = Mutex.new
         @metadata_cache = Hash.new
         @payload_cache = Hash.new
       end
@@ -29,12 +29,12 @@ module Synapse
       private
 
       # @param [Object] object
-      # @param [Hash<Serializer, SerializedObject>] cache
+      # @param [Hash] cache
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
       def serialize(object, cache, serializer, expected_type)
-        @lock.synchronize do
+        @mutex.synchronize do
           serialized = cache[serializer]
           if serialized
             serializer.converter_factory.convert serialized, expected_type

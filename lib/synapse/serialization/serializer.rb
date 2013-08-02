@@ -19,26 +19,26 @@ module Synapse
       # @param [Class] representation_type
       # @return [SerializedObject]
       def serialize(object, representation_type)
-        content = perform_serialize(object)
-        content = convert(content, native_content_type, representation_type)
-        type = type_for(object.class)
+        content = perform_serialize object
+        content = convert content, native_content_type, representation_type
+        type = type_for object.class
 
-        SerializedObject.new(content, representation_type, type)
+        SerializedObject.new content, representation_type, type
       end
 
       # @param [SerializedObject] serialized_object
       # @return [Object]
       def deserialize(serialized_object)
-        content = convert(serialized_object.content, serialized_object.content_type, native_content_type)
-        type = class_for(serialized_object.type)
+        content = convert serialized_object.content, serialized_object.content_type, native_content_type
+        type = class_for serialized_object.type
 
-        perform_deserialize(content, type)
+        perform_deserialize content, type
       end
 
       # @param [Class] representation_type
       # @return [Boolean]
       def can_serialize_to?(representation_type)
-        converter_factory.has_converter?(native_content_type, representation_type)
+        converter_factory.has_converter? native_content_type, representation_type
       end
 
       # @param [SerializedType] serialized_type
@@ -47,6 +47,7 @@ module Synapse
         name = serialized_type.name
 
         begin
+          # TODO replace this
           name.constantize
         rescue
           raise UnknownSerializedTypeError, "Unknown serialized type {#{name}}"
@@ -57,9 +58,9 @@ module Synapse
       # @return [SerializedType]
       def type_for(type)
         if @revision_resolver
-          SerializedType.new(type.to_s, @revision_resolver.revision_of(type))
+          SerializedType.new type.name, @revision_resolver.revision_of(type)
         else
-          SerializedType.new(type.to_s)
+          SerializedType.new type.name
         end
       end
 

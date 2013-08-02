@@ -51,7 +51,7 @@ module Synapse
       end
 
       # Returns the domain events in this stream as an array
-      # @return [Array<DomainEventMessage>]
+      # @return [Array]
       def to_a
         events = Array.new
         each do |event|

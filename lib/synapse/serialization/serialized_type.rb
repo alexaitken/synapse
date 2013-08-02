@@ -23,6 +23,7 @@ module Synapse
 
       alias_method :eql?, :==
 
+      # TODO fix this hash function
       def hash
         @name.hash ^ @revision.hash
       end

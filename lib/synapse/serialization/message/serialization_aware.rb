@@ -2,7 +2,9 @@ module Synapse
   module Serialization
     # Contract for message implementations that are aware of the serialization component and
     # can provide optimization for the serialization process
+    # @abstract
     module SerializationAware
+      # @abstract
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]
@@ -10,6 +12,7 @@ module Synapse
         raise NotImplementedError
       end
 
+      # @abstract
       # @param [Serializer] serializer
       # @param [Class] expected_type
       # @return [SerializedObject]

@@ -8,8 +8,6 @@ require 'synapse/saga/saga_factory'
 require 'synapse/saga/saga_manager'
 require 'synapse/saga/saga_repository'
 require 'synapse/saga/resource_injector'
-# Must be loaded after the resource injector
-require 'synapse/saga/container_resource_injector'
 require 'synapse/saga/simple_saga_manager'
 
 require 'synapse/saga/mapping/saga'

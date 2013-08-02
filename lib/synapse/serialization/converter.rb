@@ -23,14 +23,14 @@ module Synapse
         end
       end
 
-      def initialize(options = {})
+      def initialize(options = Hash.new)
         @options = options
       end
 
       # @param [SerializedObject] original
       # @return [SerializedObject]
       def convert(original)
-        SerializedObject.new(convert_content(original.content), target_type, original.type)
+        SerializedObject.new convert_content(original.content), target_type, original.type
       end
 
       # @abstract
