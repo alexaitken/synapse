@@ -9,10 +9,9 @@ require 'ref'
 require 'set'
 require 'thread_safe'
 
-require 'synapse/common'
 require 'synapse/version'
-
-require 'synapse/ext'
+require 'synapse/core_ext'
+require 'synapse/common'
 
 module Synapse
   extend ActiveSupport::Autoload

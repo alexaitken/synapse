@@ -1,9 +1,14 @@
 module Synapse
+  # @api public
   class MessagePacker
+    # @param [Serialization::Serializer] serializer
+    # @return [undefined]
     def initialize(serializer)
       @serializer = Serialization::MessageSerializer.new serializer
     end
 
+    # @param [#read] io
+    # @return [Serialization::SerializedMessage]
     def read(io)
       record = MessageRecord.read io
 
@@ -34,6 +39,9 @@ module Synapse
       end
     end
 
+    # @param [#write] io
+    # @param [Message] message
+    # @return [undefined]
     def write(io, message)
       serialized_metadata = @serializer.serialize_metadata message, String
       serialized_payload = @serializer.serialize_payload message, String
@@ -55,5 +63,5 @@ module Synapse
 
       record.write io
     end
-  end
+  end # MessagePacker
 end
