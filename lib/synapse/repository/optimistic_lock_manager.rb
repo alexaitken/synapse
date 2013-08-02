@@ -7,14 +7,14 @@ module Synapse
     class OptimisticLockManager < LockManager
       # @return [undefined]
       def initialize
-        @aggregates = Hash.new
-        @mutex = Mutex.new
+        @locks = ThreadSafe::Cache.new
       end
 
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
       def validate_lock(aggregate)
-        @aggregates.has_key?(aggregate.id) && @aggregates[aggregate.id].validate(aggregate)
+        lock = @locks.get aggregate.id
+        lock && lock.validate(aggregate)
       end
 
       # @param [Object] aggregate_id
@@ -22,10 +22,12 @@ module Synapse
       def obtain_lock(aggregate_id)
         obtained = false
         until obtained
-          lock = lock_for aggregate_id
+          @locks.put_if_absent aggregate_id, OptimisticLock.new
+          lock = @locks.get aggregate_id
           obtained = lock && lock.lock
+
           unless obtained
-            remove_lock aggregate_id, lock
+            @locks.delete_pair aggregate_id, lock
           end
         end
       end
@@ -33,36 +35,11 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [undefined]
       def release_lock(aggregate_id)
-        lock = @aggregates[aggregate_id]
+        lock = @locks.get aggregate_id
         if lock
           lock.unlock
           if lock.closed?
-            remove_lock aggregate_id, lock
-          end
-        end
-      end
-
-      private
-
-      # @param [Object] aggregate_id
-      # @param [OptimisticLock] lock
-      # @return [undefined]
-      def remove_lock(aggregate_id, lock)
-        @mutex.synchronize do
-          if @aggregates.has_key?(aggregate_id) && @aggregates[aggregate_id].equal?(lock)
-            @aggregates.delete aggregate_id
-          end
-        end
-      end
-
-      # @param [Object] aggregate_id
-      # @return [OptimisticLock]
-      def lock_for(aggregate_id)
-        @mutex.synchronize do
-          if @aggregates.has_key? aggregate_id
-            @aggregates[aggregate_id]
-          else
-            @aggregates[aggregate_id] = OptimisticLock.new
+            @locks.delete_pair aggregate_id, lock
           end
         end
       end
@@ -81,42 +58,61 @@ module Synapse
 
       def initialize
         @closed = false
-        @threads = Hash.new 0
+        @threads = Ref::WeakKeyMap.new
+        @mutex = Mutex.new
       end
 
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
       def validate(aggregate)
-        last_committed = aggregate.version
-        if @version.nil? || @version == last_committed
-          @version = (last_committed || 0) + aggregate.uncommitted_event_count
-          true
-        else
-          false
+        synchronize do
+          last_committed = aggregate.version
+          if @version.nil? || @version == last_committed
+            last = last_committed || 0
+            @version = last + aggregate.uncommitted_event_count
+            true
+          else
+            false
+          end
         end
       end
 
       # @return [Boolean] Returns false if lock is closed
       def lock
-        if @closed
-          false
-        else
-          @threads[Thread.current] = @threads[Thread.current] + 1
-          true
+        synchronize do
+          if @closed
+            false
+          else
+            lock_count = @threads[Thread.current] || 0
+            @threads[Thread.current] = lock_count + 1
+            true
+          end
         end
       end
 
       # @return [undefined]
       def unlock
-        count = @threads[Thread.current]
-        if count <= 1
-          @threads.delete Thread.current
-        else
-          @threads[Thread.current] = @threads[Thread.current] - 1
-        end
+        synchronize do
+          count = @threads[Thread.current]
+          if count <= 1
+            @threads.delete Thread.current
+          else
+            @threads[Thread.current] = @threads[Thread.current] - 1
+          end
 
-        if @threads.empty?
-          @closed = true
+          if @threads.empty?
+            @closed = true
+          end
+        end
+      end
+
+      private
+
+      # @yield
+      # @return [Object]
+      def synchronize
+        @mutex.synchronize do
+          yield
         end
       end
     end # OptimisticLock

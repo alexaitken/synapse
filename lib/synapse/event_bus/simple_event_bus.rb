@@ -8,8 +8,7 @@ module Synapse
 
       # @return [undefined]
       def initialize
-        # @todo This should be a thread-safe structure
-        @listeners = Set.new
+        @listeners = Contender::CopyOnWriteSet.new
       end
 
       # @api public

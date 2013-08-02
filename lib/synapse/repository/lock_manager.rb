@@ -44,11 +44,15 @@ module Synapse
 
       # @param [Object] aggregate_id
       # @return [undefined]
-      def obtain_lock(aggregate_id); end
+      def obtain_lock(aggregate_id)
+        # This method is intentionally empty
+      end
 
       # @param [Object] aggregate_id
       # @return [undefined]
-      def release_lock(aggregate_id); end
+      def release_lock(aggregate_id)
+        # This method is intentionally empty
+      end
     end # NullLockManager
   end # Repository
 end

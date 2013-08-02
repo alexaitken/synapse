@@ -79,28 +79,6 @@ module Synapse
     # When using a marshalling serializer, like the built-in Ruby marshaller or ones like Oj and
     # Ox, no work needs to be done to prepare the aggregate for serialization. However, when using
     # the attribute serializer, you have to treat snapshots as mementos.
-    #
-    #   class Order
-    #     include Synapse::EventSourcing::AggregateRoot
-    #
-    #     def attributes
-    #       line_items = @line_items.map { |li| li.attributes }
-    #       { id: @id, value: @value }
-    #     end
-    #
-    #     # Note that this is called after #allocate
-    #     def attributes=(attributes)
-    #       @id = attributes[:id]
-    #       @value = attributes[:value]
-    #       # Yeah, it's pretty ugly to support this
-    #       @line_items = attributes[:line_items].map do |line_item|
-    #         OrderLineItem.allocate.tap { |li| li.attributes = line_item }
-    #       end
-    #     end
-    #   end
-    #
-    # It would be nice to have something like XStream to make serialization easier, but as far as
-    # I can tell, there's nothing even close to it for Ruby.
     module AggregateRoot
       extend ActiveSupport::Concern
       include Domain::AggregateRoot

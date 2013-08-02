@@ -11,15 +11,14 @@ module Synapse
         @cluster_selector = cluster_selector
         @terminal = terminal
 
-        # @todo this should be a thread safe structure
-        @clusters = Set.new
+        @clusters = Contender::CopyOnWriteSet.new
       end
 
       # @api public
       # @param [EventMessage...] events
       # @return [undefined]
       def publish(*events)
-        @terminal.publish *events
+        @terminal.publish *events.flatten
       end
 
       # @api public

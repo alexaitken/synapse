@@ -3,15 +3,15 @@ module Synapse
     # Unit of work listener that audits the outcome of a command dispatch
     # @api private
     class AuditingUnitOfWorkListener < UnitOfWork::UnitOfWorkListener
-      # @return [Array<EventMessage>]
+      # @return [Array]
       attr_reader :recorded_events
 
       # @return [Object]
       attr_accessor :return_value
 
       # @param [CommandMessage] command
-      # @param [Array<AuditDataProvider>] data_providers
-      # @param [Array<AuditLogger>] loggers
+      # @param [Array] data_providers
+      # @param [Array] loggers
       # @return [undefined]
       def initialize(command, data_providers, loggers)
         @command = command

@@ -7,7 +7,6 @@ module Synapse
       def publish(*events)
         return if @members.empty?
 
-        events.flatten!
         events.each do |event|
           @members.each do |member|
             member.notify event

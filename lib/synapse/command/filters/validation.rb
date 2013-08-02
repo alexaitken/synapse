@@ -1,5 +1,6 @@
 module Synapse
   module Command
+    # Filter that uses ActiveModel to perform structural validation on a command
     class ActiveModelValidationFilter < CommandFilter
       # @raise [ActiveModelValidationError] If command doesn't pass validation
       # @param [CommandMessage] command
@@ -28,5 +29,5 @@ module Synapse
         @errors = errors
       end
     end # ActiveModelValidationError
-  end
+  end # Command
 end

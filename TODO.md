@@ -3,6 +3,20 @@
 ## Immediate
 
 + [EventBus] More cluster selector implementations
++ Thread-safety review
+  + [x] Auditing
+  + [x] Command
+  + [_] Common
+  + [x] Domain
+  + [x] EventBus
+  + [_] EventSourcing
+  + [X] EventStore
+  + [_] Mapping
+  + [X] Repository
+  + [_] Saga
+  + [_] Serialization
+  + [_] UnitOfWork
+  + [_] Upcasting
 
 ## In flux with Contender
 

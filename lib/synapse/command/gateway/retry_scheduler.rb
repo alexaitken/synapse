@@ -18,7 +18,7 @@ module Synapse
       #
       # @abstract
       # @param [CommandMessage] command
-      # @param [Array<Exception>] failures
+      # @param [Array] failures
       # @param [Proc] dispatcher
       # @return [Boolean]
       def schedule(command, failures, dispatcher)

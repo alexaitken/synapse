@@ -33,8 +33,8 @@ module Synapse
         manager.release_lock id
         manager.release_lock id
 
-        aggregates = manager.instance_variable_get :@aggregates
-        aggregates.has_key?(id).should be_false
+        locks = manager.instance_variable_get :@locks
+        locks.key?(id).should be_false
       end
     end
 

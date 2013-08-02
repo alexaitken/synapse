@@ -3,10 +3,10 @@ module Synapse
     # Implementation of a cluster selector that delegates selection to a list of selectors,
     # trying each one until a cluster is selected.
     class CompositeClusterSelector
-      # @param [Enumerable<ClusterSelector>] selectors
+      # @param [Array] selectors
       # @return [undefined]
       def initialize(selectors)
-        @selectors = Array.new selectors
+        @selectors = selectors
       end
 
       # @param [EventListener] listener

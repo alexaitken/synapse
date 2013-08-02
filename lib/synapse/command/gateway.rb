@@ -36,7 +36,7 @@ module Synapse
       # @param [CommandCallback] callback
       # @return [undefined]
       def send_with_callback(command, callback)
-        command = process_with_filters(CommandMessage.as_message(command))
+        command = filter(CommandMessage.as_message(command))
 
         if @retry_scheduler
           callback = RetryingCallback.new callback, command, @retry_scheduler, @command_bus
@@ -66,10 +66,12 @@ module Synapse
 
       # @param [CommandMessage] command
       # @return [CommandMessage] The message to dispatch
-      def process_with_filters(command)
-        @filters.reduce command do |intermediate, filter|
-          filter.filter intermediate
+      def filter(command)
+        @filters.each do |filter|
+          command = filter.filter command
         end
+
+        command
       end
     end # CommandGateway
   end # Command

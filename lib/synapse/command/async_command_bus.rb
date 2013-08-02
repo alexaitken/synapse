@@ -1,8 +1,10 @@
 module Synapse
   module Command
+    # Implementation of a command bus that defers execution of a command to an executor provided
+    # by Contender
     class AsynchronousCommandBus < SimpleCommandBus
       # @param [UnitOfWorkFactory] unit_factory
-      # @param [ExecutorService] executor
+      # @param [Contender::Executor] executor
       # @return [undefined]
       def initialize(unit_factory, executor)
         super unit_factory
@@ -31,6 +33,8 @@ module Synapse
       # @api public
       # @return [undefined]
       def shutdown
+        return unless @executor.respond_to? :shutdown
+
         @executor.shutdown
         @executor.await_termination 60
       end

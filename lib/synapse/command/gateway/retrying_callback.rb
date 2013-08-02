@@ -33,7 +33,6 @@ module Synapse
         @failures.push exception
 
         begin
-          # @todo This may need to be StandardError
           unless exception.is_a?(RuntimeError) &&
               @retry_scheduler.schedule(@command, @failures, @dispatcher)
             @delegate.on_failure exception

@@ -18,6 +18,9 @@ module Synapse
       # @return [SnapshotTaker]
       attr_accessor :snapshot_taker
 
+      # @return [Array]
+      attr_reader :stream_decorators
+
       # @param [AggregateFactory] aggregate_factory
       # @param [EventStore] event_store
       # @param [LockManager] lock_manager
@@ -27,14 +30,8 @@ module Synapse
 
         @aggregate_factory = aggregate_factory
         @event_store = event_store
-        # TODO This should be a thread-safe structure
-        @stream_decorators = Array.new
-      end
 
-      # @param [EventStreamDecorator] decorator
-      # @return [undefined]
-      def add_stream_decorator(decorator)
-        @stream_decorators.push decorator
+        @stream_decorators = Contender::CopyOnWriteArray.new
       end
 
       protected
@@ -67,8 +64,10 @@ module Synapse
           raise AggregateDeletedError.new type_identifier, aggregate_id
         end
 
-        if expected_version && @conflict_resolver.nil?
-          assert_version_expected aggregate, expected_version
+        if expected_version
+          unless @conflict_resolver
+            assert_version_expected aggregate, expected_version
+          end
         end
 
         aggregate
@@ -77,11 +76,11 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def post_registration(aggregate)
-        if @snapshot_policy && @snapshot_taker
-          listener =
-            SnapshotUnitOfWorkListener.new type_identifier, aggregate, @snapshot_policy, @snapshot_taker
+        policy = @snapshot_policy
+        taker = @snapshot_taker
 
-          register_listener listener
+        if policy && taker
+          register_listener(SnapshotUnitOfWorkListener.new(type_identifier, aggregate, policy, taker))
         end
       end
 
@@ -138,16 +137,16 @@ module Synapse
       # @param [Integer] expected_version
       # @return [DomainEventStream]
       def add_conflict_resolution(stream, aggregate, expected_version)
-        unless expected_version && @conflict_resolver
-          return stream
+        resolver = @conflict_resolver
+
+        if expected_version && resolver
+          unseen_events = Array.new
+
+          stream = CapturingEventStream.new stream, unseen_events, expected_version
+          listener = ConflictResolvingUnitOfWorkListener.new aggregate, unseen_events, resolver
+
+          register_listener listener
         end
-
-        unseen_events = Array.new
-
-        stream = CapturingEventStream.new stream, unseen_events, expected_version
-        listener = ConflictResolvingUnitOfWorkListener.new aggregate, unseen_events, @conflict_resolver
-
-        register_listener listener
 
         stream
       end

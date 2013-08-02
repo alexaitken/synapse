@@ -8,7 +8,7 @@ module Synapse
       # @abstract
       # @param [CommandMessage] command
       # @param [Object] return_value
-      # @param [Array<EventMessage>] events
+      # @param [Array] events
       # @return [undefined]
       def on_success(command, return_value, events)
         raise NotImplementedError
@@ -22,7 +22,7 @@ module Synapse
       # @abstract
       # @param [CommandMessage] command
       # @param [Exception] exception
-      # @param [Array<EventMessage>] events
+      # @param [Array] events
       # @return [undefined]
       def on_failure(command, exception, events)
         raise NotImplementedError

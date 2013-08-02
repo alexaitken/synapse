@@ -11,6 +11,7 @@ module Synapse
 
       # @param [Float] interval
       # @param [Integer] max_retries
+      # @param [ScheduleProvider] schedule_provider
       # @return [undefined]
       def initialize(interval, max_retries, schedule_provider)
         @interval = interval
@@ -19,13 +20,11 @@ module Synapse
       end
 
       # @param [CommandMessage] command
-      # @param [Array<Exception>] failures
+      # @param [Array] failures
       # @param [Proc] dispatcher
       # @return [Boolean]
       def schedule(command, failures, dispatcher)
-        last_failure = failures.last
-
-        if explicitly_non_transient? last_failure
+        if explicitly_non_transient? failures.last
           logger.info "Dispatch of command {#{command.payload_type}} {#{command.id}} " +
             "resulted in a non-transient exception"
 

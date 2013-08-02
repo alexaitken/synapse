@@ -3,14 +3,22 @@ module Synapse
     # Implementation of an event sourcing repository that uses a cache to improve performance when
     # loading aggregates
     #
-    # Caching is not compatible with optimistic locking
+    # *Locking note*: Caching is not compatible with optimistic locking
     #
     # Note that if an error occurs while saving an aggregate, it will be invalidated from the cache
     # to prevent aggregates being returned from the cache that were not fully persisted to disk.
     class CachingEventSourcingRepository < EventSourcingRepository
-      # @todo This should be a ctor parameter
       # @return [ActiveSupport::Cache::Store]
-      attr_accessor :cache
+      attr_writer :cache
+
+      # @param [AggregateFactory] aggregate_factory
+      # @param [EventStore] event_store
+      # @param [LockManager] lock_manager
+      # @return [undefined]
+      def initialize(aggregate_factory, event_store, lock_manager)
+        super
+        @cache = ActiveSupport::Cache::NullStore.new
+      end
 
       protected
 

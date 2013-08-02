@@ -7,6 +7,10 @@ module Synapse
   # Two messages with the same identifier should be interpreted as different representations
   # of the same conceptual message. In such case, the metadata may be different for both
   # representations. The payload *may* be identical.
+  #
+  # *Thread safety note*: Messages are designed to be immutable. As such, it is highly
+  # unrecommended to modify the metadata or payload of a message directly. Instead, use
+  # +and_metadata+ and +with_metadata+ to add additional metadata or replace existing metadata.
   class Message
     # Unique identifier of this message
     # @return [String]

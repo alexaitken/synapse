@@ -1,9 +1,14 @@
 module Synapse
   module Command
     # Implementation of a command bus that dispatches commands in the calling thread
-    # @todo Thread safety?
     class SimpleCommandBus < CommandBus
       include Loggable
+
+      # @return [Array]
+      attr_reader :filters
+
+      # @return [Array]
+      attr_reader :interceptors
 
       # @return [RollbackPolicy]
       attr_accessor :rollback_policy
@@ -13,11 +18,10 @@ module Synapse
       def initialize(unit_factory)
         @unit_factory = unit_factory
 
-        # @todo This should be a thread-safe structure
-        @handlers = Hash.new
+        @handlers = ThreadSafe::Cache.new
 
-        @filters = Array.new
-        @interceptors = Array.new
+        @filters = Contender::CopyOnWriteArray.new
+        @interceptors = Contender::CopyOnWriteArray.new
 
         @rollback_policy = RollbackOnAnyExceptionPolicy.new
       end
@@ -34,7 +38,7 @@ module Synapse
       # @param [CommandCallback] callback
       # @return [undefined]
       def dispatch_with_callback(command, callback)
-        result = perform_dispatch(filter_command(command))
+        result = perform_dispatch(filter(command))
         callback.on_success result
       rescue => exception
         backtrace = exception.backtrace.join $RS
@@ -49,9 +53,7 @@ module Synapse
       # @param [CommandHandler] handler
       # @return [CommandHandler] The command handler being replaced, if any
       def subscribe(command_type, handler)
-        current = @handlers.fetch command_type, nil
-
-        @handlers.store command_type, handler
+        current = @handlers.get_and_set command_type, handler
         logger.debug "Command handler {#{handler.class}} subscribed to command type {#{command_type}}"
 
         current
@@ -62,38 +64,36 @@ module Synapse
       # @param [CommandHandler] handler
       # @return [Boolean] True if command handler was unsubscribed from command handler
       def unsubscribe(command_type, handler)
-        current = @handlers.fetch command_type, nil
-
-        if current.equal? handler
-          @handlers.delete command_type
+        if @handlers.delete_pair command_type, handler
           logger.debug "Command handler {#{handler.class}} unsubscribed from command type {#{command_type}}"
-
           true
         else
           false
         end
       end
 
-      # @param [Enumerable<CommandFilter>] filters
+      # @param [Array] filters
       # @return [undefined]
       def filters=(filters)
-        @filters = Array.new filters
+        @filters.replace filters
       end
 
-      # @param [Enumerable<DispatchInterceptor>] interceptors
+      # @param [Array] interceptors
       # @return [undefined]
       def interceptors=(interceptors)
-        @interceptors = Array.new interceptors
+        @interceptors.replace interceptors
       end
 
       protected
 
       # @param [CommandMessage] command
       # @return [CommandMessage]
-      def filter_command(command)
-        @filters.reduce command do |intermediate, filter|
-          filter.filter intermediate
+      def filter(command)
+        @filters.each do |filter|
+          command = filter.filter command
         end
+
+        command
       end
 
       # @raise [CommandExecutionError]

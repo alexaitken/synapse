@@ -30,8 +30,7 @@ module Synapse
     class LocalEventBusTerminal < EventBusTerminal
       # @return [undefined]
       def initialize
-        # @todo This should be a thread-safe structure
-        @clusters = Array.new
+        @clusters = Contender::CopyOnWriteArray.new
       end
 
       # @param [EventMessage...] events

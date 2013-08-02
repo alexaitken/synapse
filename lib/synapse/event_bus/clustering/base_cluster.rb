@@ -15,9 +15,9 @@ module Synapse
       # @return [undefined]
       def initialize(name)
         @name = name
+
         @metadata = Hash.new
-        # @todo This should be a thread-safe structure
-        @members = Set.new
+        @members = Contender::CopyOnWriteSet.new
       end
 
       # @api public

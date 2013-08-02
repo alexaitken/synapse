@@ -10,6 +10,6 @@ module Synapse
       def schedule_dispatch(delay, dispatcher)
         raise NotImplementedError
       end
-    end # ScheduleStrategy
+    end # ScheduleProvider
   end # Command
 end

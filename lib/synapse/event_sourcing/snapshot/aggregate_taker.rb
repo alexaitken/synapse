@@ -5,14 +5,13 @@ module Synapse
       # @return [undefined]
       def initialize
         super
-        # @todo This should be a thread-safe structure
-        @aggregate_factories = Hash.new
+        @aggregate_factories = ThreadSafe::Cache.new
       end
 
       # @param [AggregateFactory] factory
       # @return [undefined]
       def register_factory(factory)
-        @aggregate_factories.store factory.type_identifier, factory
+        @aggregate_factories.put factory.type_identifier, factory
       end
 
       protected

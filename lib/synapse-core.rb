@@ -7,6 +7,7 @@ require 'forwardable'
 require 'logging'
 require 'ref'
 require 'set'
+require 'thread_safe'
 
 require 'synapse/common'
 require 'synapse/version'
