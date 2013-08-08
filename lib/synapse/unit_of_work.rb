@@ -3,6 +3,7 @@ require 'synapse/unit_of_work/transaction_manager'
 require 'synapse/unit_of_work/unit'
 require 'synapse/unit_of_work/unit_listener'
 require 'synapse/unit_of_work/unit_listener_list'
+require 'synapse/unit_of_work/unit_factory'
 
 require 'synapse/unit_of_work/nestable_unit'
 require 'synapse/unit_of_work/outer_commit_listener'

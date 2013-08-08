@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_dependency 'abstract_type', '~> 0.0.6'
+  s.add_dependency 'hamster', '~> 0.4.3'
+  s.add_dependency 'thread_safe', '~> 0.1.2'
 
   # Development dependencies
   s.add_development_dependency 'rake'

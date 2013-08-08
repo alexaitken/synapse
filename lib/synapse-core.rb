@@ -1,10 +1,13 @@
 require 'abstract_type'
+require 'hamster'
 require 'securerandom'
+require 'thread_safe'
 
 require 'synapse/version'
 
 # Core extension
 require 'synapse/core_ext/hash'
+require 'synapse/core_ext/thread_safe/cache'
 
 # Common classes
 require 'synapse/configuration'
@@ -15,11 +18,12 @@ require 'synapse/message'
 require 'synapse/message_builder'
 require 'synapse/threaded'
 
-# Components
-require 'synapse/event'
-require 'synapse/domain'
-require 'synapse/unit_of_work'
-
 module Synapse
   extend Configuration
+
+  # Components
+  autoload :Command,    'synapse/command'
+  autoload :Domain,     'synapse/domain'
+  autoload :Event,      'synapse/event'
+  autoload :UnitOfWork, 'synapse/unit_of_work'
 end
