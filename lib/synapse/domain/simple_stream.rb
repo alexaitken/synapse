@@ -1,6 +1,7 @@
 module Synapse
   module Domain
     # Implementation of a domain event stream that holds a stream of events in memory
+    # @api public
     class SimpleDomainEventStream < DomainEventStream
       # @param [EventMessage...] events
       # @return [undefined]
@@ -19,7 +20,7 @@ module Synapse
       # @raise [EndOfStreamError] If the end of the stream has been reached
       # @return [DomainEventMessage]
       def next_event
-        assert_valid
+        ensure_valid
 
         event = @events.at @next_index
         @next_index += 1
@@ -31,9 +32,11 @@ module Synapse
       # @raise [EndOfStreamError] If the end of the stream has been reached
       # @return [DomainEventMessage]
       def peek
-        assert_valid
+        ensure_valid
         @events.at @next_index
       end
+
+      EMPTY = new
     end # SimpleDomainEventStream
   end # Domain
 end

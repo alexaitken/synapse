@@ -1,17 +1,23 @@
-require 'synapse/configuration/container'
-require 'synapse/configuration/container_builder'
-require 'synapse/configuration/definition'
-require 'synapse/configuration/definition_builder'
-require 'synapse/configuration/dependent'
-require 'synapse/configuration/ext'
+module Synapse
+  # @api public
+  module Configuration
+    extend self
 
-require 'synapse/configuration/component/shared/thread_pool'
-require 'synapse/configuration/component/command_bus'
-require 'synapse/configuration/component/event_bus'
-# Has to be loaded before event sourcing
-require 'synapse/configuration/component/repository'
-require 'synapse/configuration/component/event_sourcing'
-require 'synapse/configuration/component/process_manager'
-require 'synapse/configuration/component/serialization'
-require 'synapse/configuration/component/uow'
-require 'synapse/configuration/component/upcasting'
+    # @return [IdentifierFactory]
+    attr_accessor :identifier_factory
+
+    # @return [Logger]
+    attr_accessor :logger
+
+    def configure
+      yield self if block_given?
+      populate_defaults
+    end
+
+    # @return [undefined]
+    def populate_defaults
+      @identifier_factory ||= UUIDIdentifierFactory.new
+      @logger ||= Logger.new $stdout
+    end
+  end
+end

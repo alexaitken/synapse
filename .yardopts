@@ -1,8 +1,0 @@
---protected
---no-private
---embed-mixin ClassMethods
---readme readme.md
--
-changelog.md
-readme.md
-todo.md

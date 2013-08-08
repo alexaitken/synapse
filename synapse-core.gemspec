@@ -10,12 +10,18 @@ Gem::Specification.new do |s|
   s.description = 'A versatile CQRS and event sourcing framework'
   s.summary = 'A versatile CQRS and event sourcing framework'
 
-  s.files = Dir.glob '{lib,test}/**/*'
+  s.files = Dir['LICENSE', 'README.md', 'lib/**/*']
+  s.test_files = Dir['spec/**/*']
   s.require_path = 'lib'
 
-  s.add_dependency 'activesupport', '~> 3.2'
-  s.add_dependency 'atomic', '~> 1.1'
-  s.add_dependency 'logging', '~> 1.8'
-  s.add_dependency 'contender', '~> 0.1'
-  s.add_dependency 'ref', '~> 1.0'
+  s.add_dependency 'abstract_type', '~> 0.0.6'
+
+  # Development dependencies
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'guard-rspec'
+
+  # Testing dependencies
+  s.add_development_dependency 'rr'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'simplecov'
 end

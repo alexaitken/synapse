@@ -4,40 +4,32 @@ module Synapse
     #
     # The persistence mechanism is left up to the aggregate root that uses this mixin. Any sort of
     # ORM can be used to persist aggregates.
-    #
-    # If optimistic locking is used, the ORM must increment the version field before saving.
-    #
-    #   class Order
-    #     include Synapse::Domain::AggregateRoot
-    #     include MongoMapper::Document
-    #
-    #     key :version, Integer
-    #
-    #     before_save { self.version += 1 }
-    #   end
-    #
-    # @see Repository::SimpleRepository
     module AggregateRoot
-      # @return [Boolean] True if this aggregate has been marked for deletion
-      attr_reader :deleted
-
-      alias_method :deleted?, :deleted
-
+      # @api public
       # @return [Object] The identifier of this aggregate
       attr_reader :id
 
+      # @api public
       # @return [Integer] The version of this aggregate
       attr_reader :version
+
+      # Returns true if this aggregate has been marked for deletion
+      #
+      # @api public
+      # @return [Boolean]
+      def deleted?
+        @deleted
+      end
 
       # Marks this aggregate as committed by a repository
       #
       # @api public
       # @return [undefined]
       def mark_committed
-        if @event_container
-          @last_sequence_number = @event_container.last_sequence_number
-          @event_container.mark_committed
-        end
+        return unless @event_container
+
+        @last_sequence_number = @event_container.last_sequence_number
+        @event_container.mark_committed
       end
 
       # Returns the number of uncommitted events published by this aggregate
@@ -58,7 +50,7 @@ module Synapse
       # @return [DomainEventStream]
       def uncommitted_events
         unless @event_container
-          return SimpleDomainEventStream.new
+          return SimpleDomainEventStream::EMPTY
         end
 
         @event_container.to_stream
@@ -70,13 +62,13 @@ module Synapse
       # will still get a change to process the uncommitted events in this aggregate.
       #
       # @api public
-      # @param [Proc] listener
+      # @yield [DomainEventMessage]
       # @return [undefined]
-      def add_registration_listener(&listener)
-        event_container.add_registration_listener listener
+      def add_registration_listener(&block)
+        event_container.add_registration_listener &block
       end
 
-    protected
+      protected
 
       # Publishes a domain event with the given payload and optional metadata
       #
@@ -84,8 +76,8 @@ module Synapse
       #
       # @api public
       # @raise [AggregateIdentifierNotInitializedError] If identifier not set
-      # @param [Object] payload Payload of the message; the actual event object
-      # @param [Hash] metadata Metadata associated with the event
+      # @param [Object] payload
+      # @param [Hash] metadata
       # @return [DomainEventMessage] The event that will be published
       def publish_event(payload, metadata = nil)
         event_container.register_event payload, metadata
@@ -111,7 +103,7 @@ module Synapse
         @event_container.last_committed_sequence_number
       end
 
-    private
+      private
 
       # Initializes the event container with the given sequence number
       #

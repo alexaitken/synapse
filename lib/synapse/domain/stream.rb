@@ -16,42 +16,30 @@ module Synapse
     #
     # @abstract
     class DomainEventStream
+      include AbstractType
+
       # Returns true if the end of the stream has been reached
-      #
-      # @abstract
       # @return [Boolean]
-      def end?
-        raise NotImplementedError
-      end
+      abstract_method :end?
 
       # Returns the next event in the stream and moves the stream's pointer forward
-      #
-      # @abstract
       # @return [DomainEventMessage]
-      def next_event
-        raise NotImplementedError
-      end
+      abstract_method :next_event
 
       # Returns the next event in the stream without moving the stream's pointer forward
-      #
-      # @abstract
       # @return [DomainEventMessage]
-      def peek
-        raise NotImplementedError
-      end
+      abstract_method :peek
 
       # Yields the next domain events in the stream until the end of the stream has been reached
       #
       # @yield [DomainEventMessage] The next event in the event stream
       # @return [undefined]
       def each
-        until end?
-          yield next_event
-        end
+        yield next_event until end?
       end
 
       # Returns the domain events in this stream as an array
-      # @return [Array<DomainEventMessage>]
+      # @return [Array]
       def to_a
         events = Array.new
         each do |event|
@@ -61,11 +49,11 @@ module Synapse
         events
       end
 
-    protected
+      protected
 
       # @raise [EndOfStreamError] If at the end of the stream
       # @return [undefined]
-      def assert_valid
+      def ensure_valid
         raise EndOfStreamError if end?
       end
     end # DomainEventStream

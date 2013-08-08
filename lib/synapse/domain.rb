@@ -1,6 +1,5 @@
-require 'synapse/domain/errors'
-
 require 'synapse/domain/aggregate_root'
+require 'synapse/domain/errors'
 require 'synapse/domain/event_container'
 require 'synapse/domain/message'
 require 'synapse/domain/message_builder'

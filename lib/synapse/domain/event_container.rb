@@ -12,8 +12,6 @@ module Synapse
       # Initializes this event container
       #
       # @param [Object] aggregate_id
-      #   The identifier of the aggregate being tracked
-      #
       # @return [undefined]
       def initialize(aggregate_id)
         @aggregate_id = aggregate_id
@@ -27,11 +25,7 @@ module Synapse
       # choose to modify or replace the message before it is committed.
       #
       # @param [Object] payload
-      #   Payload of the message; the actual event object
-      #
       # @param [Hash] metadata
-      #   Metadata associated with the event
-      #
       # @return [DomainEventMessage] The event that will be committed
       def register_event(payload, metadata)
         event = DomainEventMessage.build do |builder|
@@ -56,24 +50,24 @@ module Synapse
       # If the listener is added after events have already registered with the container, it will
       # be called with a backlog of events to process.
       #
-      # @param [Proc] listener
+      # @yield [DomainEventMessage]
       # @return [undefined]
-      def add_registration_listener(listener)
-        @listeners.push listener
+      def add_registration_listener(&block)
+        @listeners.push block
 
         @events.map! do |event|
-          listener.call event
+          block.call event
         end
       end
 
       # Sets the last committed sequence number for the container
       #
-      # @raise [RuntimeError] If events have already been registered to the container
+      # @raise [InvalidStateError] If events have already been registered to the container
       # @param [Integer] last_known
       # @return [undefined]
       def initialize_sequence_number(last_known)
         unless @events.empty?
-          raise 'Sequence number must be set before events are registered'
+          raise InvalidStateError, 'Sequence number must be set before events are registered'
         end
 
         @last_committed_sequence_number = last_known
@@ -115,7 +109,7 @@ module Synapse
         @events.size
       end
 
-    private
+      private
 
       # Returns the next sequence number to use for registered events
       # @return [Integer]

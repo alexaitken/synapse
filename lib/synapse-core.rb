@@ -1,31 +1,25 @@
-require 'active_support'
-require 'active_support/core_ext'
-require 'atomic'
-require 'contender'
-require 'forwardable'
-require 'logging'
-require 'ref'
-require 'set'
+require 'abstract_type'
+require 'securerandom'
 
-require 'synapse/common'
 require 'synapse/version'
 
+# Core extension
+require 'synapse/core_ext/hash'
+
+# Common classes
+require 'synapse/configuration'
+require 'synapse/errors'
+require 'synapse/identifier_factory'
+require 'synapse/loggable'
+require 'synapse/message'
+require 'synapse/message_builder'
+require 'synapse/threaded'
+
+# Components
+require 'synapse/event'
+require 'synapse/domain'
+require 'synapse/unit_of_work'
+
 module Synapse
-  # Core components
-  autoload :Command, 'synapse/command'
-  autoload :Domain, 'synapse/domain'
-  autoload :EventBus, 'synapse/event_bus'
-  autoload :Mapping, 'synapse/mapping'
-  autoload :Repository, 'synapse/repository'
-  autoload :Serialization, 'synapse/serialization'
-  autoload :UnitOfWork, 'synapse/uow'
-
-  # Optional components
-  autoload :Auditing, 'synapse/auditing'
-  autoload :Configuration, 'synapse/configuration'
-  autoload :EventSourcing, 'synapse/event_sourcing'
-  autoload :EventStore, 'synapse/event_store'
-  autoload :ProcessManager, 'synapse/process_manager'
-  autoload :Upcasting, 'synapse/upcasting'
+  extend Configuration
 end
-

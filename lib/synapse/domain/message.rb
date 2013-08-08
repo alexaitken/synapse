@@ -1,26 +1,16 @@
 module Synapse
   module Domain
-    # Represents the occurance of an event in the application that may be of some importance
-    # to another component of the application. It contains the relevant data for other
-    # components to act upon.
-    class EventMessage < Message
+    # @see DomainEventMessageBuilder
+    # @api public
+    class DomainEventMessage < Event::EventMessage
       # @return [Class]
       def self.builder
-        EventMessageBuilder
+        DomainEventMessageBuilder
       end
-    end
 
-    # Message that contains a domain event as a payload that represents a state change in the domain.
-    #
-    # In contrast to a regular event message, this type of message contains the identifier of the
-    # aggregate that reported it. It also contains a sequence number that allows the messages to be placed
-    # in the order they were reported.
-    class DomainEventMessage < EventMessage
-      # The identifier of the aggregate that reported the event
       # @return [Object]
       attr_reader :aggregate_id
 
-      # The sequence number of the event in the order of generation
       # @return [Integer]
       attr_reader :sequence_number
 
@@ -38,18 +28,14 @@ module Synapse
         @sequence_number = sequence_number
       end
 
-      # @return [Class]
-      def self.builder
-        DomainEventMessageBuilder
-      end
+      protected
 
-    protected
-
-      # @param [DomainEventMessageBuilder] builder
+      # @param [MessageBuilder] builder
       # @param [Hash] metadata
       # @return [undefined]
-      def build_duplicate(builder, metadata)
+      def populate_duplicate(builder, metadata)
         super
+
         builder.aggregate_id = @aggregate_id
         builder.sequence_number = @sequence_number
       end
