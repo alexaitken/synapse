@@ -1,0 +1,21 @@
+LineLength:
+  Enabled: true
+  Max: 120
+
+Encoding:
+  Enabled: false
+
+EmptyLiteral:
+  Enabled: false
+
+MethodLength:
+  Max: 20
+
+TrivialAccessors:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+WhileUntilModifier:
+  Enabled: false

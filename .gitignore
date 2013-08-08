@@ -1,4 +1,10 @@
 tmp
+.DS_Store
+.yardoc
+.rbx
+.project
 coverage
 doc
 Gemfile.lock
+*.gem
+.bundle
