@@ -12,7 +12,6 @@ module Synapse
         @inner_units = Array.new
       end
 
-      # @api public
       # @raise [InvalidStateError] If this unit of work is already active
       # @return [undefined]
       def start
@@ -40,7 +39,6 @@ module Synapse
         @active = true
       end
 
-      # @api public
       # @raise [InvalidStateError] If this unit of work is not active
       # @return [undefined]
       def commit
@@ -73,7 +71,6 @@ module Synapse
         end
       end
 
-      # @api public
       # @param [Exception] cause
       # @return [undefined]
       def rollback(cause = nil)
@@ -95,7 +92,6 @@ module Synapse
         end
       end
 
-      # @api public
       # @return [Boolean]
       def active?
         @active

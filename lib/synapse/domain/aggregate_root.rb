@@ -5,25 +5,19 @@ module Synapse
     # The persistence mechanism is left up to the aggregate root that uses this mixin. Any sort of
     # ORM can be used to persist aggregates.
     module AggregateRoot
-      # @api public
       # @return [Object] The identifier of this aggregate
       attr_reader :id
 
-      # @api public
       # @return [Integer] The version of this aggregate
       attr_reader :version
 
       # Returns true if this aggregate has been marked for deletion
-      #
-      # @api public
       # @return [Boolean]
       def deleted?
         @deleted
       end
 
       # Marks this aggregate as committed by a repository
-      #
-      # @api public
       # @return [undefined]
       def mark_committed
         return unless @event_container
@@ -33,8 +27,6 @@ module Synapse
       end
 
       # Returns the number of uncommitted events published by this aggregate
-      #
-      # @api public
       # @return [Integer]
       def uncommitted_event_count
         unless @event_container
@@ -45,12 +37,10 @@ module Synapse
       end
 
       # Returns a domain event strema containing any uncommitted events published by this aggregate
-      #
-      # @api public
       # @return [DomainEventStream]
       def uncommitted_events
         unless @event_container
-          return SimpleDomainEventStream::EMPTY
+          return EmptyStream
         end
 
         @event_container.to_stream
@@ -61,7 +51,6 @@ module Synapse
       # If an event registration listener is added after events have already been registered, it
       # will still get a change to process the uncommitted events in this aggregate.
       #
-      # @api public
       # @yield [DomainEventMessage]
       # @return [undefined]
       def add_registration_listener(&block)
@@ -74,7 +63,6 @@ module Synapse
       #
       # Before any events are published, the aggregate identifier must be set.
       #
-      # @api public
       # @raise [AggregateIdentifierNotInitializedError] If identifier not set
       # @param [Object] payload
       # @param [Hash] metadata
@@ -84,16 +72,12 @@ module Synapse
       end
 
       # Marks this aggregate for deletion by its repository
-      #
-      # @api public
       # @return [undefined]
       def mark_deleted
         @deleted = true
       end
 
       # Returns the sequence number of the last committed event
-      #
-      # @api public
       # @return [Integer]
       def last_committed_sequence_number
         unless @event_container

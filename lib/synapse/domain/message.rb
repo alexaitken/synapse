@@ -1,7 +1,6 @@
 module Synapse
   module Domain
     # @see DomainEventMessageBuilder
-    # @api public
     class DomainEventMessage < Event::EventMessage
       # @return [Class]
       def self.builder

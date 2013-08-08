@@ -1,8 +1,6 @@
 module Synapse
   # Builder that is used to easily create and populate messages
-  #
   # @see Message
-  # @api public
   class MessageBuilder
     # Convenience method that yields a new builder, populates defaults and returns the newly
     # built message instance

@@ -1,9 +1,7 @@
 module Synapse
   module Domain
     # Builder that is used to easily create and populate domain event messages
-    #
     # @see DomainEventMessage
-    # @api public
     class DomainEventMessageBuilder < Event::EventMessageBuilder
       # @return [Object]
       attr_accessor :aggregate_id

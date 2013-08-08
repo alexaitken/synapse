@@ -1,5 +1,4 @@
 module Synapse
-  # @api public
   module Configuration
     extend self
 

@@ -14,7 +14,6 @@ module Synapse
   module UnitOfWork
     # Returns the current unit of work for the calling thread
     #
-    # @api public
     # @see CurrentUnit
     # @raise [InvalidStateError] If there is no active unit of work
     # @return [Unit]

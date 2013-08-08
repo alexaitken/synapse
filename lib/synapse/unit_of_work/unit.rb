@@ -13,7 +13,6 @@ module Synapse
 
       # Starts this unit of work, preparing it for aggregate and event tracking
       #
-      # @api public
       # @raise [InvalidStateError] If this unit of work is already active
       # @return [undefined]
       abstract_method :start
@@ -28,7 +27,6 @@ module Synapse
       # whether or not the commit was successful. This effectively means that a rollback is done
       # if the commit operation fails.
       #
-      # @api public
       # @raise [InvalidStateError] If this unit of work is not active
       # @return [undefined]
       abstract_method :commit
@@ -38,7 +36,6 @@ module Synapse
       # Tracked aggregates and buffered events are discarded and registered unit listeners are
       # notified of the rollback.
       #
-      # @api public
       # @param [Exception] cause
       # @return [undefined]
       abstract_method :rollback
@@ -54,7 +51,6 @@ module Synapse
       # If an aggregate of the same type and with the same identity is already being tracked by
       # this unit of work, it may be returned instead of the given aggregate.
       #
-      # @api public
       # @yield [AggregateRoot]
       # @param [AggregateRoot] aggregate
       # @param [EventBus] event_bus
@@ -66,7 +62,6 @@ module Synapse
       # The actual publication of the event can be deferred until this unit of work is committed,
       # or can be done immediately.
       #
-      # @api public
       # @param [EventMessage] event
       # @param [EventBus] event_bus
       # @return [undefined]
@@ -74,20 +69,15 @@ module Synapse
 
       # Registers a listener that is notified when the state of this unit of work changes
       #
-      # @api public
       # @param [UnitListener] listener
       # @return [undefined]
       abstract_method :register_listener
 
       # Returns true if this unit of work is currently active
-      #
-      # @api public
       # @return [Boolean]
       abstract_method :active?
 
       # Returns true if this unit of work is bound to a transaction
-      #
-      # @api public
       # @return [Boolean]
       abstract_method :transactional?
     end # Unit

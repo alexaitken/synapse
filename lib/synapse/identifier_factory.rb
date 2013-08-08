@@ -12,7 +12,6 @@ module Synapse
   end
 
   # Implementation of an identifier factory that the UUID generator from SecureRandom
-  # @api public
   class UUIDIdentifierFactory < IdentifierFactory
     # @return [String]
     def generate

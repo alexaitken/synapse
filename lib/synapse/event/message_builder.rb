@@ -1,9 +1,7 @@
 module Synapse
   module Event
     # Builder that is used to easily create and populate event messages
-    #
     # @see EventMessage
-    # @api public
     class EventMessageBuilder < MessageBuilder
       # @return [EventMessage]
       def build

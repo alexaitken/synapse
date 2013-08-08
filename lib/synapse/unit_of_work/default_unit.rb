@@ -5,7 +5,6 @@ module Synapse
     class DefaultUnit < NestableUnit
       # Creates and starts a unit of work with the given transaction manager
       #
-      # @api public
       # @param [TransactionManager] transaction_manager
       # @return [DefaultUnit]
       def self.start(transaction_manager = nil)
@@ -29,7 +28,6 @@ module Synapse
         @listeners = UnitListenerList.new
       end
 
-      # @api public
       # @yield [AggregateRoot]
       # @param [AggregateRoot] aggregate
       # @param [EventBus] event_bus
@@ -38,7 +36,7 @@ module Synapse
         similar_aggregate = find_similar_aggregate aggregate.class, aggregate.id
         if similar_aggregate
           logger.info "Ignoring aggregate registration, similar aggregate already registered: " +
-            "[#{aggregate.class}] [#{aggregate.id}]"
+            "{#{aggregate.class}} {#{aggregate.id}}"
 
           return similar_aggregate
         end
@@ -54,25 +52,22 @@ module Synapse
         aggregate
       end
 
-      # @api public
       # @param [EventMessage] event
       # @param [EventBus] event_bus
       # @return [undefined]
       def publish_event(event, event_bus)
-        logger.debug "Staging event [#{event.class}] for publication on [#{event_bus.class}]"
+        logger.debug "Staging event {#{event.class}} for publication on {#{event_bus.class}}"
 
         event = notify_event_registered event
         defer_publication event, event_bus
       end
 
-      # @api public
       # @param [UnitListener] listener
       # @return [undefined]
       def register_listener(listener)
         @listeners.push listener
       end
 
-      # @api public
       # @return [Boolean]
       def transactional?
         !!@transaction_manager
@@ -85,7 +80,7 @@ module Synapse
         logger.debug "Persisting changes to aggregates"
 
         @registered_aggregates.each_pair do |aggregate, block|
-          logger.debug "Persisting changes to [#{aggregate.class}] [#{aggregate.id}]"
+          logger.debug "Persisting changes to {#{aggregate.class}} {#{aggregate.id}}"
           block.call aggregate
         end
 
@@ -185,7 +180,7 @@ module Synapse
         @publishing = true
         until @deferred_events.empty?
           @deferred_events.keys.each do |event_bus|
-            logger.debug "Publishing deferred events to [#{event_bus.class}]"
+            logger.debug "Publishing deferred events to {#{event_bus.class}}"
             events = @deferred_events.delete event_bus
             event_bus.publish *events
           end

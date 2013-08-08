@@ -13,7 +13,6 @@ module Synapse
   # +and_metadata+ and +with_metadata+ to add additional metadata or replace existing metadata.
   #
   # @see MessageBuilder
-  # @api public
   class Message
     # @param [Object] object
     # @return [Message]

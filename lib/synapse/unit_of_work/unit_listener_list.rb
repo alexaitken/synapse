@@ -32,7 +32,7 @@ module Synapse
       # @param [UnitListener] listener
       # @return [undefined]
       def push(listener)
-        logger.debug "Registering listener [#{listener.class}]"
+        logger.debug "Registering listener {#{listener.class}}"
         @listeners.push listener
       end
 
@@ -53,7 +53,7 @@ module Synapse
       # @return [undefined]
       def on_prepare_commit(unit, aggregates, events)
         @listeners.each do |listener|
-          logger.debug "Notifying [#{listener.class}] that unit is preparing for commit"
+          logger.debug "Notifying {#{listener.class}} that unit is preparing for commit"
           listener.on_prepare_commit unit, aggregates, events
         end
       end
@@ -63,7 +63,7 @@ module Synapse
       # @return [undefined]
       def on_prepare_transaction_commit(unit, transaction)
         @listeners.each do |listener|
-          logger.debug "Notifying [#{listener.class}] that unit is preparing for transaction commit"
+          logger.debug "Notifying {#{listener.class}} that unit is preparing for transaction commit"
           listener.on_prepare_transaction_commit unit, transaction
         end
       end
@@ -72,7 +72,7 @@ module Synapse
       # @return [undefined]
       def after_commit(unit)
         @listeners.reverse_each do |listener|
-          logger.debug "Notifying [#{listener.class}] that unit has been committed"
+          logger.debug "Notifying {#{listener.class}} that unit has been committed"
           listener.after_commit unit
         end
       end
@@ -82,7 +82,7 @@ module Synapse
       # @return [undefined]
       def on_rollback(unit, cause = nil)
         @listeners.reverse_each do |listener|
-          logger.debug "Notifying [#{listener.class}] that unit is rolling back"
+          logger.debug "Notifying {#{listener.class}} that unit is rolling back"
           listener.on_rollback unit, cause
         end
       end
@@ -91,13 +91,13 @@ module Synapse
       # @return [undefined]
       def on_cleanup(unit)
         @listeners.reverse_each do |listener|
-          logger.debug "Notifying [#{listener.class}] that unit is cleaning up"
+          logger.debug "Notifying {#{listener.class}} that unit is cleaning up"
 
           begin
             listener.on_cleanup unit
           rescue
             # TODO Log the exception
-            logger.warn "Listener [#{listener.class}] raised exception during cleanup"
+            logger.warn "Listener {#{listener.class}} raised exception during cleanup"
           end
         end
 
