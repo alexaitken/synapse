@@ -1,4 +1,6 @@
 require 'synapse/event/errors'
 require 'synapse/event/event_bus'
+require 'synapse/event/event_listener'
+require 'synapse/event/event_listener_proxy'
 require 'synapse/event/message'
 require 'synapse/event/message_builder'
