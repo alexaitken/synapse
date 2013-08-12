@@ -2,7 +2,7 @@ module Synapse
   module Command
     # Interceptor wrapping a command dispatch that can add custom behavior before or after a
     # command is dispatched to a command handler
-    class DispatchInterceptor
+    module DispatchInterceptor
       include AbstractType
 
       # @param [CommandMessage] command

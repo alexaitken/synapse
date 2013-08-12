@@ -30,6 +30,7 @@ module Synapse
   extend Configuration
 
   # Core components
+  autoload :Auditing,      'synapse/auditing'
   autoload :Command,       'synapse/command'
   autoload :Concurrent,    'synapse/concurrent'
   autoload :Domain,        'synapse/domain'
