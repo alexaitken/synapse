@@ -104,12 +104,11 @@ module Synapse
       # @return [undefined]
       def ensure_version_expected(aggregate, expected_version)
         if expected_version && aggregate.version && aggregate.version > expected_version
-          raise ConflictingAggregateVersionError, "Aggregate {#{aggregate.id}} is version " +
-            "#{aggregate.version}; expected #{expected_version}"
+          raise ConflictingAggregateVersionError
         end
       end
 
-      # @return [Unbit]
+      # @return [Unit]
       def current_unit
         UnitOfWork.current
       end

@@ -147,7 +147,6 @@ module Synapse
       CurrentUnit = UnitOfWork::CurrentUnit
       DefaultUnit = UnitOfWork::DefaultUnit
       DomainEventMessage = Domain::DomainEventMessage
-      StubAggregate = EventSourcing::StubAggregate
       TestUnitListener = UnitOfWork::TestUnitListener
       MockError = UnitOfWork::MockError
     end

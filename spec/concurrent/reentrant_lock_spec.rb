@@ -24,8 +24,6 @@ module Synapse
         subject.should_not be_owned
         subject.should_not be_locked
       end
-
-      CountdownLatch = Contender::CountdownLatch
     end
 
   end

@@ -14,9 +14,8 @@ module Synapse
 
     # Implementation of a rollback policy that performs a rollback on any exception
     class RollbackOnAnyExceptionPolicy < RollbackPolicy
-      # @param [Exception] exception
       # @return [Boolean]
-      def should_rollback?(exception)
+      def should_rollback?(*)
         true
       end
     end # RollbackOnAnyExceptionPolicy

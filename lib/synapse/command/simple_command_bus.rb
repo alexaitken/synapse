@@ -15,8 +15,8 @@ module Synapse
       def initialize
         @unit_factory = UnitFactory.new
 
-        @filters = Hamster.list
-        @interceptors = Hamster.list
+        @filters = EMPTY_LIST
+        @interceptors = EMPTY_LIST
         @subscriptions = ThreadSafe::Cache.new
 
         @rollback_policy = RollbackOnAnyExceptionPolicy.new
@@ -98,6 +98,7 @@ module Synapse
           result = dispatch_to_handler command, handler
           callback.on_success result
         rescue
+          # TODO Should log an error here
           callback.on_failure $!
         end
       end
@@ -107,7 +108,9 @@ module Synapse
       # @param [CommandMessage] command
       # @return [CommandMessage]
       def filter(command)
-        @filters.reduce(command) { |a, e| e.filter a }
+        @filters.reduce(command) { |intermediate, filter|
+          filter.filter intermediate
+        }
       end
 
       # @param [CommandMessage] command

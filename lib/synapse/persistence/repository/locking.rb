@@ -5,9 +5,6 @@ module Synapse
       include AbstractType
       include Loggable
 
-      # @return [LockManager]
-      attr_reader :lock_manager
-
       # @param [LockManager] lock_manager
       # @return [undefined]
       def initialize(lock_manager)
@@ -118,9 +115,11 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [undefined]
       def ensure_valid_lock(aggregate)
-        if aggregate.version && !@lock_manager.validate_lock(aggregate)
-          raise ConcurrencyError, "Aggregate {#{aggregate.class}} {#{aggregate.id}} " +
-            "could not be saved because a valid lock is not held."
+        # The aggregate is new, no need to validate our lock
+        return unless aggregate.version
+
+        unless @lock_manager.validate_lock aggregate
+          raise ConcurrencyError
         end
       end
     end # LockingRepository
