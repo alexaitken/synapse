@@ -2,14 +2,9 @@ module Synapse
   module EventSourcing
     # Mixin for the root entity of an aggregate that is initialized from a historical event stream
     module AggregateRoot
+      extend Concern
       include Domain::AggregateRoot
       include Member
-
-      # @param [Module] receiver
-      # @return [undefined]
-      def self.included(receiver)
-        receiver.extend ClassMethods
-      end
 
       module ClassMethods
         # Creates a new instance of this aggregate root without calling its initializer and

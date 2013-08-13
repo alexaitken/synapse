@@ -12,14 +12,8 @@ require 'ref'
 require 'thread_safe'
 
 require 'synapse/version'
-
-# Core extension
-require 'synapse/core_ext/array'
-require 'synapse/core_ext/class'
-require 'synapse/core_ext/hash'
-require 'synapse/core_ext/string'
-require 'synapse/core_ext/ref/weak_key_map'
-require 'synapse/core_ext/thread_safe/cache'
+require 'synapse/concern'
+require 'synapse/core_ext'
 
 # Common classes
 require 'synapse/configuration'

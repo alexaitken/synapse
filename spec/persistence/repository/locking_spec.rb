@@ -58,7 +58,7 @@ module Synapse
 
         subject.add aggregate
 
-        mock(event_bus).publish(is_a(DomainEventMessage))
+        mock(event_bus).publish.with_any_args
         mock(lock_manager).release_lock(aggregate.id)
 
         CurrentUnit.commit
@@ -73,7 +73,7 @@ module Synapse
         mock(lock_manager).obtain_lock(aggregate.id)
         subject.add aggregate
 
-        mock(event_bus).publish(is_a(DomainEventMessage))
+        mock(event_bus).publish.with_any_args
         mock(lock_manager).release_lock(aggregate.id)
 
         CurrentUnit.commit
@@ -85,7 +85,7 @@ module Synapse
 
         loaded_aggregate.do_something
 
-        mock(event_bus).publish(is_a(DomainEventMessage))
+        mock(event_bus).publish.with_any_args
         mock(lock_manager).validate_lock(aggregate).returns(true)
         mock(lock_manager).release_lock(aggregate.id)
 
@@ -101,7 +101,7 @@ module Synapse
         mock(lock_manager).obtain_lock(aggregate.id)
         subject.add aggregate
 
-        mock(event_bus).publish(is_a(DomainEventMessage))
+        mock(event_bus).publish.with_any_args
         mock(lock_manager).release_lock(aggregate.id)
 
         CurrentUnit.commit

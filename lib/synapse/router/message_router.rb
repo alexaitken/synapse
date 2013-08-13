@@ -76,7 +76,7 @@ module Synapse
           auto_resolve: @auto_resolve
         }.merge options
 
-        MessageHandler.new subject_type, to, payload_type, options
+        MessageHandler.new subject_type, payload_type, to, options
       end
     end # MessageRouter
   end # Router

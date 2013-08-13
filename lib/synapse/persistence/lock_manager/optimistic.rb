@@ -79,12 +79,14 @@ module Synapse
 
       # @return [Boolean] Returns false if lock is closed
       def lock
+        current = Thread.current
+
         @mutex.synchronize do
           if @closed
             false
           else
-            lock_count = @threads[Thread.current] || 0
-            @threads[Thread.current] = lock_count + 1
+            count = @threads[current] || 0
+            @threads[current] = count + 1
             true
           end
         end
@@ -92,12 +94,14 @@ module Synapse
 
       # @return [undefined]
       def unlock
+        current = Thread.current
+
         @mutex.synchronize do
-          count = @threads[Thread.current]
+          count = @threads[current] || 0
           if count <= 1
-            @threads.delete Thread.current
+            @threads.delete current
           else
-            @threads[Thread.current] = @threads[Thread.current] - 1
+            @threads[current] = count - 1
           end
 
           if @threads.empty?

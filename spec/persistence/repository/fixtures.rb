@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'event_sourcing/stub_aggregate'
+require 'event_sourcing/fixtures'
 
 module Synapse
   module Persistence

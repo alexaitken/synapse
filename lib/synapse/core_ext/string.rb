@@ -1,5 +1,6 @@
 class String
   # Taken from ActiveSupport::Inflector
+  # @return [Module]
   def constantize
     names = self.split('::')
 

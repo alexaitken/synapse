@@ -6,13 +6,8 @@ module Synapse
     # aggregate root and using its event container. Events applied to child entities will be
     # cascaded throughout the entire aggregate.
     module Entity
-      # @param [Module] receiver
-      # @return [undefined]
-      def self.included(receiver)
-        receiver.instance_eval do
-          include Member
-        end
-      end
+      extend Concern
+      include Member
 
       # Handles an aggregate event locally and then cascades to any registered child entities
       #
