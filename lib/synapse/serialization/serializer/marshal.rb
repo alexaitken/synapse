@@ -1,3 +1,5 @@
+require 'base64'
+
 module Synapse
   module Serialization
     # Implementation of a serializer that uses the built-in marshaling library

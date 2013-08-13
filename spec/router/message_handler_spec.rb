@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Synapse
-  module Mapping
+  module Router
 
     describe MessageHandler do
       context 'when using a block as a handler' do

@@ -1,6 +1,9 @@
 module Synapse
   module Serialization
     class SerializedType
+      include Adamantium
+      include Equalizer.new(:name, :revision)
+
       # @return [String]
       attr_reader :name
 
@@ -10,24 +13,9 @@ module Synapse
       # @param [String] name
       # @param [String] revision
       # @return [undefined]
-      def initialize(name, revision)
+      def initialize(name, revision = nil)
         @name = name
         @revision = revision.to_s
-      end
-
-      # @param [Object] other
-      # @return [Boolean]
-      def ==(other)
-        instance_of?(other.class) &&
-          @name == other.name &&
-          @revision == other.revision
-      end
-
-      alias_method :eql?, :==
-
-      # @return [Integer]
-      def hash
-        @name.hash ^ @revision.hash
       end
 
       # @return [String]

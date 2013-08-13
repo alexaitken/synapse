@@ -1,12 +1,12 @@
-require 'synapse/mapping/errors'
-require 'synapse/mapping/message_handler'
-require 'synapse/mapping/message_handler_score'
-require 'synapse/mapping/message_mapper'
-require 'synapse/mapping/parameter_resolver'
-require 'synapse/mapping/parameter_resolver_factory'
+require 'synapse/router/errors'
+require 'synapse/router/message_handler'
+require 'synapse/router/message_handler_score'
+require 'synapse/router/message_router'
+require 'synapse/router/parameter_resolver'
+require 'synapse/router/parameter_resolver_factory'
 
 module Synapse
-  module Mapping
+  module Router
     extend self
 
     # Built-in parameter resolver types
@@ -24,9 +24,9 @@ module Synapse
     attr_accessor :resolver_factory
 
     # @param [Boolean] duplicates_allowed
-    # @return [MessageMapper]
-    def create_mapper(duplicates_allowed = true)
-      MessageMapper.new duplicates_allowed
+    # @return [MessageRouter]
+    def create_router(duplicates_allowed = true)
+      MessageRouter.new duplicates_allowed
     end
 
     # @return [undefined]

@@ -21,13 +21,17 @@ module Synapse
       # @param [SerializedObject] original
       # @return [SerializedObject]
       def convert(original)
-        @delegates.reduce(original) { |a, e| e.convert a }
+        @delegates.reduce(original) { |intermediate, delegate|
+          delegate.convert intermediate
+        }
       end
 
       # @param [Object] original
       # @return [Object]
       def convert_content(original)
-        @delegates.reduce(original) { |a, e| e.convert_content a }
+        @delegates.reduce(original) { |intermediate, delegate|
+          delegate.convert_content intermediate
+        }
       end
     end # ConverterChain
   end # Serialization

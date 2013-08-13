@@ -14,6 +14,8 @@ module Synapse
   #
   # @see MessageBuilder
   class Message
+    include Adamantium
+
     # @param [Object] object
     # @return [Message]
     def self.as_message(object)
@@ -30,11 +32,11 @@ module Synapse
     # @yield [MessageBuilder]
     # @return [Message]
     def self.build(&block)
-      builder.build &block
+      builder_type.build &block
     end
 
     # @return [Class]
-    def self.builder
+    def self.builder_type
       MessageBuilder
     end
 
@@ -90,6 +92,11 @@ module Synapse
       build_duplicate metadata
     end
 
+    # @return [Class]
+    def builder_type
+      self.class.builder_type
+    end
+
     protected
 
     # @param [MessageBuilder] builder
@@ -107,7 +114,7 @@ module Synapse
     # @param [Hash] metadata
     # @return [Message]
     def build_duplicate(metadata)
-      builder = self.class.builder.new
+      builder = builder_type.new
       populate_duplicate builder, metadata
       builder.build
     end

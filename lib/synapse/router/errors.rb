@@ -1,5 +1,5 @@
 module Synapse
-  module Mapping
+  module Router
     class DuplicateHandlerError < NonTransientError; end
     class UnknownParameterTypeError < NonTransientError; end
   end

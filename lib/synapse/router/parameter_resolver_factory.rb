@@ -1,5 +1,5 @@
 module Synapse
-  module Mapping
+  module Router
     class ParameterResolverFactory
       # @return [undefined]
       def initialize
@@ -27,5 +27,5 @@ module Synapse
         }
       end
     end # ParameterResolverFactory
-  end # Mapping
+  end # Router
 end

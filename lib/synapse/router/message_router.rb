@@ -1,6 +1,6 @@
 module Synapse
-  module Mapping
-    class MessageMapper
+  module Router
+    class MessageRouter
       # @param [Boolean] duplicates_allowed
       # @return [undefined]
       def initialize(duplicates_allowed = true)
@@ -9,7 +9,7 @@ module Synapse
         @auto_resolve = true
       end
 
-      # @param [MessageMapper] original
+      # @param [MessageRouter] original
       # @return [undefined]
       def initialize_copy(original)
         super
@@ -30,7 +30,7 @@ module Synapse
       # @param [Class] payload_type
       # @param [Object...] args
       # @return [undefined]
-      def map(subject_type, payload_type, *args, &block)
+      def route(subject_type, payload_type, *args, &block)
         options = args.extract_options!
         handler = create_from subject_type, payload_type, options, &block
 
@@ -78,6 +78,6 @@ module Synapse
 
         MessageHandler.new subject_type, to, payload_type, options
       end
-    end # MessageMapper
-  end # Mapping
+    end # MessageRouter
+  end # Router
 end

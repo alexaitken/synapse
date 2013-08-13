@@ -3,7 +3,7 @@ module Synapse
     # @see DomainEventMessageBuilder
     class DomainEventMessage < Event::EventMessage
       # @return [Class]
-      def self.builder
+      def self.builder_type
         DomainEventMessageBuilder
       end
 

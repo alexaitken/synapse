@@ -1,5 +1,5 @@
 module Synapse
-  module Mapping
+  module Router
     class MessageHandler
       include Comparable
 
@@ -81,7 +81,7 @@ module Synapse
 
         if auto_resolve
           # TODO memoize the resulting parameter resolvers
-          resolvers = Mapping.resolver_factory.resolvers_for parameters
+          resolvers = Router.resolver_factory.resolvers_for parameters
           resolvers.map { |resolver|
             resolver.resolve message
           }
@@ -90,5 +90,5 @@ module Synapse
         end
       end
     end # MessageHandler
-  end # Mapping
+  end # Router
 end

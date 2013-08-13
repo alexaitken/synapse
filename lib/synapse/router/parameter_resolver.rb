@@ -1,5 +1,5 @@
 module Synapse
-  module Mapping
+  module Router
     class ParameterResolver
       include AbstractType
 
@@ -140,5 +140,5 @@ module Synapse
         @resource
       end
     end # ResourceParameterResolver
-  end # Mapping
+  end # Router
 end

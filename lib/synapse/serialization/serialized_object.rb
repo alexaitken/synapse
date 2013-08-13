@@ -1,8 +1,9 @@
 module Synapse
   module Serialization
     class SerializedObject
-      # Convenience method for creating serialized objects
-      #
+      include Adamantium
+      include Equalizer.new(:content, :content_type, :type)
+
       # @param [Object] content
       # @param [Class] content_type
       # @param [String] type_name
@@ -29,22 +30,6 @@ module Synapse
         @content = content
         @content_type = content_type
         @type = type
-      end
-
-      # @param [Object] other
-      # @return [Boolean]
-      def ==(other)
-        instance_of?(other.class) &&
-          @content == other.content &&
-          @content_type == other.content_type &&
-          @type == other.type
-      end
-
-      alias_method :eql?, :==
-
-      # @return [Integer]
-      def hash
-        @content.hash ^ @content_type.hash ^ @type.hash
       end
 
       # @return [String]

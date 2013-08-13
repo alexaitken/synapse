@@ -1,5 +1,5 @@
 module Synapse
-  module Mapping
+  module Router
     class MessageHandlerScore
       # @return [Integer]
       attr_reader :declaration_depth
@@ -61,5 +61,5 @@ module Synapse
         count
       end
     end # MessageHandlerScore
-  end # Mapping
+  end # Router
 end

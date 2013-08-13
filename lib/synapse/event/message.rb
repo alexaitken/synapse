@@ -3,7 +3,7 @@ module Synapse
     # @see EventMessageBuilder
     class EventMessage < Message
       # @return [Class]
-      def self.builder
+      def self.builder_type
         EventMessageBuilder
       end
     end # EventMessage
