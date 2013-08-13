@@ -2,6 +2,7 @@ class String
   # Taken from ActiveSupport::Inflector
   # @return [Module]
   def constantize
+    # :nocov:
     names = self.split('::')
 
     # Trigger a builtin NameError exception including the ill-formed constant in the message.
@@ -30,5 +31,6 @@ class String
         constant.const_get(name, false)
       end
     end
+    # :nocov:
   end unless method_defined? :constantize
 end

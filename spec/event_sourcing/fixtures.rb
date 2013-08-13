@@ -71,7 +71,7 @@ module Synapse
         @event_count = 0
       end
 
-      def change_something
+      def do_something
         apply StubChangedEvent.new
       end
 

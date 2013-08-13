@@ -40,5 +40,11 @@ module Synapse
       end
     end
 
+    describe EmptyDataProvider do
+      it 'provides an empty hash' do
+        subject.provide_data_for(Object.new).should == {}
+      end
+    end
+
   end
 end
