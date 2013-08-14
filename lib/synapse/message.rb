@@ -14,8 +14,6 @@ module Synapse
   #
   # @see MessageBuilder
   class Message
-    include Adamantium
-
     # @param [Object] object
     # @return [Message]
     def self.as_message(object)

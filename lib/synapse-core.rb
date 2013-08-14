@@ -7,7 +7,6 @@ require 'abstract_type'
 require 'adamantium'
 require 'contender'
 require 'equalizer'
-require 'hamster'
 require 'ref'
 require 'thread_safe'
 
@@ -39,7 +38,4 @@ module Synapse
   autoload :Persistence,   'synapse/persistence'
   autoload :Serialization, 'synapse/serialization'
   autoload :UnitOfWork,    'synapse/unit_of_work'
-
-  # An empty, immutable list provided by Hamster
-  EMPTY_LIST = [].to_list
 end

@@ -1,9 +1,13 @@
 module Synapse
   module Concern
+    # @param [Module] base
+    # @return [undefined]
     def self.extended(base)
       base.instance_variable_set :@_dependencies, []
     end
 
+    # @param [Module] base
+    # @return [Boolean]
     def append_features(base)
       if base.instance_variable_defined? :@_dependencies
         base.instance_variable_get(:@_dependencies) << self
@@ -17,6 +21,9 @@ module Synapse
       end
     end
 
+    # @yield
+    # @param [Module] base
+    # @return [undefined]
     def included(base = nil, &block)
       if base.nil?
         @_included_block = block
@@ -24,5 +31,5 @@ module Synapse
         super
       end
     end
-  end
+  end # Concern
 end

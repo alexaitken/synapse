@@ -120,7 +120,7 @@ module Synapse
 
         mock(callback).on_success(result)
 
-        subject.filters = [filter]
+        subject.filters << filter
         subject.subscribe Symbol, handler
         subject.dispatch_with_callback command, callback
       end
@@ -133,7 +133,7 @@ module Synapse
           raise MockError
         end
 
-        subject.filters = [filter]
+        subject.filters << filter
         expect {
           subject.dispatch command
         }.to raise_error MockError

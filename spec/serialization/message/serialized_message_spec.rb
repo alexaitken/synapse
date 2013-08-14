@@ -12,6 +12,15 @@ module Synapse
       end
     end
 
+    describe SerializedCommandMessage do
+      it 'provides a builder for serialized command messages' do
+        message = SerializedCommandMessage.build do |builder|
+          builder.should be_a(SerializedCommandMessageBuilder)
+        end
+        message.should be_a(SerializedCommandMessage)
+      end
+    end
+
     describe SerializedEventMessage do
       it 'provides a builder for serialized event messages' do
         message = SerializedEventMessage.build do |builder|

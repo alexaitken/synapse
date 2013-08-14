@@ -33,4 +33,16 @@ class String
     end
     # :nocov:
   end unless method_defined? :constantize
+
+  # Taken from ActiveSupport::Inflector
+  # @return [String]
+  def demodulize
+    # :nocov:
+    if i = self.rindex('::')
+      self[(i+2)..-1]
+    else
+      self
+    end
+    # :nocov:
+  end unless method_defined? :demodulize
 end

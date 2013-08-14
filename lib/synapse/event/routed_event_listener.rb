@@ -12,13 +12,11 @@ module Synapse
     #     end
     #   end
     module RoutedEventListener
+      extend Concern
       include EventListener
 
-      # @param [Module] receiver
-      # @return [undefined]
-      def self.included(receiver)
-        receiver.extend ClassMethods
-        receiver.inheritable_accessor :event_router do
+      included do
+        inheritable_accessor :event_router do
           Router.create_router
         end
       end

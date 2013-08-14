@@ -11,12 +11,24 @@ module Synapse
     class SimpleCommandBus < CommandBus
       include Loggable
 
+      # @return [Array]
+      attr_reader :filters
+
+      # @return [Array]
+      attr_reader :interceptors
+
+      # @return [RollbackPolicy]
+      attr_writer :rollback_policy
+
+      # @return [UnitFactory]
+      attr_writer :unit_factory
+
       # @return [undefined]
       def initialize
         @unit_factory = UnitFactory.new
 
-        @filters = EMPTY_LIST
-        @interceptors = EMPTY_LIST
+        @filters = Contender::CopyOnWriteArray.new
+        @interceptors = Contender::CopyOnWriteArray.new
         @subscriptions = ThreadSafe::Cache.new
 
         @rollback_policy = RollbackOnAnyExceptionPolicy.new
@@ -62,29 +74,11 @@ module Synapse
         end
       end
 
-      # @param [Enumerable] filters
-      # @return [undefined]
-      def filters=(filters)
-        @filters = filters.to_list
-      end
-
-      # @param [Enumerable] interceptors
-      # @return [undefined]
-      def interceptors=(interceptors)
-        @interceptors = interceptors.to_list
-      end
-
-      # @return [RollbackPolicy]
-      attr_writer :rollback_policy
-
       # @param [TransactionManager] transaction_manager
       # @return [undefined]
       def transaction_manager=(transaction_manager)
         @unit_factory = UnitFactory.new transaction_manager
       end
-
-      # @return [UnitFactory]
-      attr_writer :unit_factory
 
       protected
 

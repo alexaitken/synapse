@@ -7,7 +7,7 @@ module Synapse
       it 'uses interceptors to control the flow of dispatch' do
         unit = Object.new
         interceptor = Object.new
-        interceptors = Hamster.list interceptor
+        interceptors = [interceptor]
         handler = Object.new
 
         command = Object.new
