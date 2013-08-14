@@ -103,7 +103,7 @@ module Synapse
       # @param [Integer] expected_version
       # @return [undefined]
       def ensure_version_expected(aggregate, expected_version)
-        if expected_version && aggregate.version && aggregate.version > expected_version
+        if expected_version && aggregate.version && aggregate.version != expected_version
           raise ConflictingAggregateVersionError
         end
       end
