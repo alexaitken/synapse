@@ -14,7 +14,7 @@ module Synapse
     # @abstract
     class RoutedSaga < Saga
       # @return [MessageRouter]
-      inheritable_accessor :event_router do
+      inherit_accessor :event_router do
         Router.create_router
       end
 

@@ -10,12 +10,12 @@ module Synapse
 
       included do
         # @return [Set]
-        inheritable_accessor :child_fields do
+        inherit_accessor :child_fields do
           Set.new
         end
 
         # @return [MessageRouter]
-        inheritable_accessor :event_router do
+        inherit_accessor :event_router do
           Router.create_router
         end
       end

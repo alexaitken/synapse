@@ -1,7 +1,7 @@
 class Class
   # @param [Symbol...] syms
   # @return [undefined]
-  def inheritable_reader(*syms)
+  def inherit_reader(*syms)
     options = syms.extract_options!
     syms.each do |sym|
       class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
@@ -29,7 +29,7 @@ class Class
   # @yield
   # @param [Symbol...] syms
   # @return [undefined]
-  def inheritable_writer(*syms, &block)
+  def inherit_writer(*syms, &block)
     options = syms.extract_options!
     syms.each do |sym|
       class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
@@ -53,8 +53,8 @@ class Class
   # @yield
   # @param [Symbol...] syms
   # @return [undefined]
-  def inheritable_accessor(*syms, &block)
-    inheritable_reader *syms
-    inheritable_writer *syms, &block
+  def inherit_accessor(*syms, &block)
+    inherit_reader *syms
+    inherit_writer *syms, &block
   end
 end

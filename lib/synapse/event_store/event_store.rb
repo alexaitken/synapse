@@ -19,7 +19,6 @@ module Synapse
 
       # Appends the domain events in the given stream to the event store
       #
-      # @abstract
       # @raise [EventStoreError] If an error occurs while appending the stream to the store
       # @param [String] type_identifier Type descriptor of the aggregate to append to
       # @param [DomainEventStream] stream

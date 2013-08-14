@@ -7,14 +7,13 @@ module Synapse
       include CommandHandler
 
       included do
-        inheritable_accessor :command_router do
+        inherit_accessor :command_router do
           Router.create_router
         end
       end
 
       module ClassMethods
         # @see MessageRouter#route
-        # @param [Object...] args
         # @return [undefined]
         def route_command(*args, &block)
           command_router.route self, *args, &block

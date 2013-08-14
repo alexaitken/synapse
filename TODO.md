@@ -1,47 +1,36 @@
-## Components
+## Soon
 
-- ~~Auditing~~
-- Command
+### Bugs
++ Improve deadlock detection in `IdentifierLock` -- it's very fragile at the moment
 
-  - Async command bus
-  - De-dup
-  - Future callback
-  - Gateway
-  - Mapped handler
-  - Serialization optimizing interceptor
-  - Validation filter
+### Still to be ported
++ Future callback
++ Command gateway
++ Serialization-optimizing interceptor
++ De-duplication filter
++ Validation filter
 
-- ~~Domain~~
-- Event bus
+### Enhancements
++ Write more specs for `Router` component
++ Write spec for `SimpleEventBus`
++ Write specs for `RoutedCommandHandler`, `RoutedEventListener`
++ Improve encapsulation on `EventSourcingRepository`
++ Get YARD to properly document `AbstractType` and `abstract_method`
++ Improve the following exception messages:
 
-  - Clustering bus
-  - Mapped listener
-  - Simple event bus
+  + `AggregateNotFoundError`
+  + `AggregateDeletedError`
+  + `StreamNotFoundError`
+  + `ConcurrencyError`
+  + `ConflictingAggregateVersionError`
+  + `DeadlockError`
 
-- Event sourcing
++ Change `MessageRouter#handler_for` to `first`/`first!`
++ Figure out if Inflecto can be used instead of copied inflection methods from ActiveSupport
++ Move `ReentrantLock` to Contender, write additional specs
 
-  - Mapped entity
-  - Repository
-  - Snapshotting
-
-- Event store
-
-  - In-memory store
-
-- Mapping
-
-  - More tests
-
-- ~~Repository~~
-- Saga
-- Serialization
-
-  - Protobuf serializer
-
-- ~~Unit of work~~
-- Upcasting
-
-- Common
-
-  - Duplication recorder
-  - Message packer
+### New features
++ Find a suitable caching library and re-implement `CachingEventSourcingRepository`
++ Implement an in-memory event store for integration tests
++ Implement a serializer using Protobuf
++ Implement an `EventPublisher` that provides simple access to an event bus

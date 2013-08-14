@@ -16,14 +16,13 @@ module Synapse
       include EventListener
 
       included do
-        inheritable_accessor :event_router do
+        inherit_accessor :event_router do
           Router.create_router
         end
       end
 
       module ClassMethods
         # @see MessageRouter#route
-        # @param [Object...] args
         # @return [undefined]
         def route_event(*args, &block)
           event_router.route self, *args, &block
