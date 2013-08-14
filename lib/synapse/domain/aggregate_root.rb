@@ -40,7 +40,7 @@ module Synapse
       # @return [DomainEventStream]
       def uncommitted_events
         unless @event_container
-          return EmptyStream
+          return EMPTY_STREAM
         end
 
         @event_container.to_stream

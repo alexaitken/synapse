@@ -33,6 +33,6 @@ module Synapse
       end
     end # SimpleDomainEventStream
 
-    EmptyStream = SimpleDomainEventStream.new
+    EMPTY_STREAM = SimpleDomainEventStream.new
   end # Domain
 end
