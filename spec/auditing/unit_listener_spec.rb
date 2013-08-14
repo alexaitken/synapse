@@ -9,7 +9,7 @@ module Synapse
           builder.metadata = Hash[:foo, 0]
         end
 
-        event = Event::EventMessage.build do |builder|
+        event = Event.build_message do |builder|
           builder.metadata = Hash[:bar, 1]
         end
 

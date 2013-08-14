@@ -10,7 +10,7 @@ module Synapse
       end
 
       it 'creates an aggregate from a normal event' do
-        event = Domain::DomainEventMessage.build do |m|
+        event = Domain.build_message do |m|
           m.payload = StubCreatedEvent.new 123
         end
 
@@ -23,7 +23,7 @@ module Synapse
         snapshot.do_something
         snapshot.mark_committed
 
-        snapshot_event = Domain::DomainEventMessage.build do |m|
+        snapshot_event = Domain.build_message do |m|
           m.payload = snapshot
         end
 

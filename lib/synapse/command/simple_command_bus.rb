@@ -1,13 +1,6 @@
 module Synapse
   module Command
     # Implementation of a command bus that dispatches commands in the calling thread
-    #
-    # @!attribute [w] filters
-    #   @return [Enumerable]
-    # @!attribute [w] interceptors
-    #   @return [Enumerable]
-    # @!attribute [w] transaction_manager
-    #   @return [TransactionManager]
     class SimpleCommandBus < CommandBus
       include Loggable
 

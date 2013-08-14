@@ -26,7 +26,7 @@ module Synapse
         aggregate = factory.create_aggregate aggregate_id, stream.peek
         aggregate.initialize_from_stream stream
 
-        Domain::DomainEventMessage.build do |builder|
+        Domain.build_message do |builder|
           builder.payload = aggregate
           builder.aggregate_id = aggregate.id
           builder.sequence_number = aggregate.version

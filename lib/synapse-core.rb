@@ -36,6 +36,7 @@ module Synapse
   autoload :EventStore,    'synapse/event_store'
   autoload :Router,        'synapse/router'
   autoload :Persistence,   'synapse/persistence'
+  autoload :Saga,          'synapse/saga'
   autoload :Serialization, 'synapse/serialization'
   autoload :UnitOfWork,    'synapse/unit_of_work'
 end

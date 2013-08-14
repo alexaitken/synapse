@@ -95,7 +95,7 @@ module Synapse
           handle_recursively event
         else
           # This is a workaround for aggregates that set the aggregate identifier in an event handler
-          event = Domain::DomainEventMessage.build do |builder|
+          event = Domain.build_message do |builder|
             builder.metadata = metadata
             builder.payload = payload
             builder.sequence_number = 0

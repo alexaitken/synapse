@@ -43,7 +43,7 @@ module Synapse
 
     describe AggregateIdParameterResolver do
       it 'resolves an aggregate identifier for parameters named :aggregate_id' do
-        message = Domain::DomainEventMessage.build do |builder|
+        message = Domain.build_message do |builder|
           builder.aggregate_id = Object.new
         end
 
@@ -54,7 +54,7 @@ module Synapse
 
     describe SequenceNumberParameterResolver do
       it 'resolves a sequence number for parameters named :sequence_number' do
-        message = Domain::DomainEventMessage.build do |builder|
+        message = Domain.build_message do |builder|
           builder.sequence_number = 19
         end
 

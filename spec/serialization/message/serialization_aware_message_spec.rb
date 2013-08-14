@@ -5,7 +5,7 @@ module Synapse
 
     describe SerializationAwareDomainEventMessage do
       it 'delegates attributes to the original message' do
-        message = Domain::DomainEventMessage.build do |builder|
+        message = Domain.build_message do |builder|
           builder.payload = Object.new
           builder.aggregate_id = 123
           builder.sequence_number = 0
@@ -25,7 +25,7 @@ module Synapse
       end
 
       it 'caches serialization operations' do
-        message = Domain::DomainEventMessage.build do |builder|
+        message = Domain.build_message do |builder|
           builder.payload = Object.new
           builder.aggregate_id = 123
           builder.sequence_number = 0
@@ -47,7 +47,7 @@ module Synapse
       end
 
       it 'does not wrap messages that are already serialization aware' do
-        message = Domain::DomainEventMessage.build
+        message = Domain.build_message
 
         aware = SerializationAwareDomainEventMessage.decorate message
         new_aware = SerializationAwareDomainEventMessage.decorate aware
@@ -56,7 +56,7 @@ module Synapse
       end
 
       it 'wraps messages that are duplicated to add metadata' do
-        message = Domain::DomainEventMessage.build do |builder|
+        message = Domain.build_message do |builder|
           builder.metadata = Hash[:foo, 0]
         end
 
@@ -71,7 +71,7 @@ module Synapse
       end
 
       it 'wraps messages that are duplicated to replace metadata' do
-        message = Domain::DomainEventMessage.build do |builder|
+        message = Domain.build_message do |builder|
           builder.metadata = Hash[:foo, 0]
         end
 

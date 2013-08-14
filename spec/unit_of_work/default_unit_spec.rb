@@ -225,7 +225,7 @@ module Synapse
       end
 
       it 'cascades rollback from inner unit to nested units' do
-        event = Event::EventMessage.build
+        event = Event.build_message
         event_bus = Object.new
 
         outer_unit = StubOuterUnit.start
@@ -274,8 +274,8 @@ module Synapse
         aggregate = StubAggregate.new 123
         event_bus = Object.new
 
-        event_in = Domain::DomainEventMessage.build
-        event_out = Domain::DomainEventMessage.build
+        event_in = Domain.build_message
+        event_out = Domain.build_message
 
         listener = TestUnitListener.new
         mock(listener).on_event_registered(subject, event_in).returns(event_out)
@@ -291,8 +291,8 @@ module Synapse
 
       it 'publishes events published by a listener' do
         event_bus = Object.new
-        event_a = Event::EventMessage.build
-        event_b = Event::EventMessage.build
+        event_a = Event.build_message
+        event_b = Event.build_message
 
         mock(event_bus).publish(event_a) do
           subject.publish_event event_b, event_bus
@@ -308,7 +308,7 @@ module Synapse
         aggregate = StubAggregate.new 123
         event_bus = Object.new
 
-        event = Domain::DomainEventMessage.build
+        event = Domain.build_message
 
         subject.start
         subject.register_aggregate aggregate, event_bus do
@@ -324,8 +324,8 @@ module Synapse
       end
 
       it 'defers publication of registered events until commit' do
-        event_in = Event::EventMessage.build
-        event_out = Event::EventMessage.build
+        event_in = Event.build_message
+        event_out = Event.build_message
 
         event_bus = Object.new
 

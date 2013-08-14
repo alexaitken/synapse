@@ -58,7 +58,7 @@ module Synapse
     private
 
       def create_domain_event(payload, sequence_number, aggregate_id)
-        Domain::DomainEventMessage.build do |builder|
+        Domain.build_message do |builder|
           builder.payload = payload
           builder.sequence_number = sequence_number
           builder.aggregate_id = aggregate_id
