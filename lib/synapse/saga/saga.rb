@@ -41,7 +41,6 @@ module Synapse
 
       # Correlates this saga instance with the given key and value
       #
-      # @api public
       # @param [Symbol] key
       # @param [String] value
       # @return [undefined]
@@ -51,7 +50,6 @@ module Synapse
 
       # Dissociates this saga instance from the given key and value
       #
-      # @api public
       # @param [Symbol] key
       # @param [String] value
       # @return [undefined]

@@ -22,7 +22,7 @@ module Synapse
       # @param [Thread] thread
       # @param [Array] managers
       # @return [Set]
-      def self.waiters_for_threads_owned_by(thread, managers = nil)
+      def self.waiters_for_locks_owned_by(thread, managers = nil)
         managers ||= instances
         waiters = Set.new
 
@@ -32,7 +32,7 @@ module Synapse
 
             disposable_lock.queued_threads.each do |waiter|
               if waiters.add? waiter
-                waiters = waiters.union(waiters_for_threads_owned_by(waiter, managers))
+                waiters = waiters.union(waiters_for_locks_owned_by(waiter, managers))
               end
             end
           end
@@ -150,7 +150,7 @@ module Synapse
               #
               # Although nearly the same algorithm is used for locking as the original impl in
               # Java, I would venture to say that Ruby and Java thread scheduling work differently,
-              # possibly even in JRuby.
+              # possibly even in JRuby. (Either that or my ReentrantLock impl is broken)
               break if @lock.try_timed_lock(TimeUnit.milliseconds(100 * rand))
             end
           end
@@ -195,7 +195,7 @@ module Synapse
         return if @lock.owned?
         return unless @lock.locked?
 
-        waiters = IdentifierLock.waiters_for_threads_owned_by Thread.current
+        waiters = IdentifierLock.waiters_for_locks_owned_by Thread.current
         waiters.each do |waiter|
           if @lock.owned_by? waiter
             raise DeadlockError, 'Imminent deadlock detected during lock acquisition'

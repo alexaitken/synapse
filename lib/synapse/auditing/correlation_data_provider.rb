@@ -15,7 +15,7 @@ module Synapse
       # @param [CommandMessage] command
       # @return [Hash]
       def provide_data_for(command)
-        return @correlation_key => command.id
+        Hash[@correlation_key, command.id]
       end
     end # CorrelationDataProvider
   end # Auditing

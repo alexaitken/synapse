@@ -4,9 +4,6 @@
 + Improve deadlock detection in `IdentifierLock` -- it's very fragile at the moment
 
 ### Still to be ported
-+ Future callback
-+ Command gateway
-+ Serialization-optimizing interceptor
 + De-duplication filter
 + Validation filter
 

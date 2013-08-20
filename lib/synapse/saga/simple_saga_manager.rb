@@ -15,8 +15,8 @@ module Synapse
       # @param [CorrelationResolver] correlation_resolver
       # @param [Class...] saga_types
       # @return [undefined]
-      def initialize(repository, factory, lock_manager, correlation_resolver, *saga_types)
-        super repository, factory, lock_manager, *saga_types
+      def initialize(repository, factory, lock_manager, correlation_resolver, saga_type)
+        super repository, factory, lock_manager, saga_type
 
         @correlation_resolver = correlation_resolver
         @always_create_events = Set.new

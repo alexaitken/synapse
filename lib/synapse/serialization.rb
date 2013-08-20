@@ -33,10 +33,10 @@ module Synapse
     attr_accessor :converter_factory
 
     # @return [undefined]
-    def setup_converter_factory
+    def setup
       @converter_factory = ConverterFactory.new
     end
 
-    setup_converter_factory
+    setup
   end
 end

@@ -1,12 +1,9 @@
 module Synapse
   # Represents a mechanism for generating unique identifiers for domain objects
-  # @abstract
   class IdentifierFactory
     include AbstractType
 
     # Returns a generated unique identifier
-    #
-    # @abstract
     # @return [String]
     abstract_method :generate
   end
