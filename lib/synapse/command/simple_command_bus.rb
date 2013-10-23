@@ -11,10 +11,10 @@ module Synapse
       attr_reader :interceptors
 
       # @return [RollbackPolicy]
-      attr_writer :rollback_policy
+      attr_accessor :rollback_policy
 
       # @return [UnitFactory]
-      attr_writer :unit_factory
+      attr_accessor :unit_factory
 
       # @return [undefined]
       def initialize

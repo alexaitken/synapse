@@ -11,12 +11,17 @@ module Synapse
 
       # Dispatches the given command to the handler subscribed to its type
       #
+      # Depending on the implementation, this call could be blocking or non-blocking. To receive
+      # the result of the command execution, use {@see #dispatch_with_callback}.
+      #
       # @param [CommandMessage] command
       # @return [undefined]
       abstract_method :dispatch
 
       # Dispatches the given command to the handler subscribed to its type and notifies the
       # given callback of the outcome of the dispatch
+      #
+      # Depending on the implementation, this call could be blocking or non-blocking.
       #
       # @param [CommandMessage] command
       # @param [CommandCallback] callback
