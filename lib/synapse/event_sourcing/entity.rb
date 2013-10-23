@@ -6,7 +6,7 @@ module Synapse
     # aggregate root and using its event container. Events applied to child entities will be
     # cascaded throughout the entire aggregate.
     module Entity
-      extend Concern
+      extend ActiveSupport::Concern
       include Member
 
       # Handles an aggregate event locally and then cascades to any registered child entities

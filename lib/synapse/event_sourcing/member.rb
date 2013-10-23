@@ -6,7 +6,7 @@ module Synapse
     # @see AggregateRoot
     # @see Entity
     module Member
-      extend Concern
+      extend ActiveSupport::Concern
 
       included do
         # @return [Set]

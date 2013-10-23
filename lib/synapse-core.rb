@@ -4,6 +4,8 @@ require 'singleton'
 
 # 3rd party libraries
 require 'abstract_type'
+require 'active_support'
+require 'active_support/core_ext'
 require 'adamantium'
 require 'contender'
 require 'equalizer'
@@ -11,7 +13,6 @@ require 'ref'
 require 'thread_safe'
 
 require 'synapse/version'
-require 'synapse/concern'
 require 'synapse/core_ext'
 
 # Common classes

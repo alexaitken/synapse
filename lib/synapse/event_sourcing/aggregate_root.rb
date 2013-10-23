@@ -2,7 +2,7 @@ module Synapse
   module EventSourcing
     # Mixin for the root entity of an aggregate that is initialized from a historical event stream
     module AggregateRoot
-      extend Concern
+      extend ActiveSupport::Concern
       include Domain::AggregateRoot
       include Member
 

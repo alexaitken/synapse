@@ -3,7 +3,7 @@ module Synapse
     # Base implementation of a command handler that provides the message routing DSL out of
     # the box
     module RoutedCommandHandler
-      extend Concern
+      extend ActiveSupport::Concern
       include CommandHandler
 
       included do

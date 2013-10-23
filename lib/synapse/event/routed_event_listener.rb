@@ -12,7 +12,7 @@ module Synapse
     #     end
     #   end
     module RoutedEventListener
-      extend Concern
+      extend ActiveSupport::Concern
       include EventListener
 
       included do
