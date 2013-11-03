@@ -159,3 +159,7 @@ Synapse is tested and developed on several different runtimes, including:
 - Aggregates as command handlers
 - Event replay and projection framework
 - Event scheduling
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ianunruh/synapse/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
