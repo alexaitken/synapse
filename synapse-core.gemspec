@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '>= 3.0.0'
   s.add_dependency 'adamantium', '~> 0.0.11'
   s.add_dependency 'equalizer', '~> 0.0.5'
+  s.add_dependency 'clasp', '~> 0.2.0'
   s.add_dependency 'contender', '~> 0.2.0'
-  s.add_dependency 'ref', '~> 1.0.5'
   s.add_dependency 'thread_safe', '~> 0.1.2'
 
   # Development dependencies

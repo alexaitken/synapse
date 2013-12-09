@@ -1,3 +1,4 @@
+require 'clasp'
 require 'logger'
 require 'securerandom'
 require 'singleton'
@@ -30,7 +31,6 @@ module Synapse
   # Core components
   autoload :Auditing,      'synapse/auditing'
   autoload :Command,       'synapse/command'
-  autoload :Concurrent,    'synapse/concurrent'
   autoload :Domain,        'synapse/domain'
   autoload :Event,         'synapse/event'
   autoload :EventSourcing, 'synapse/event_sourcing'

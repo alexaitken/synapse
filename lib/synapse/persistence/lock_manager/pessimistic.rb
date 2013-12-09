@@ -4,25 +4,25 @@ module Synapse
     class PessimisticLockManager < LockManager
       # @return [undefined]
       def initialize
-        @lock = Concurrent::IdentifierLock.new
+        @manager = Clasp::LockManager.new
       end
 
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
       def validate_lock(aggregate)
-        @lock.owned? aggregate.id
+        @manager.owned?(aggregate.id)
       end
 
       # @param [Object] aggregate_id
       # @return [undefined]
       def obtain_lock(aggregate_id)
-        @lock.obtain_lock aggregate_id
+        @manager.lock(aggregate_id)
       end
 
       # @param [Object] aggregate_id
       # @return [undefined]
       def release_lock(aggregate_id)
-        @lock.release_lock aggregate_id
+        @manager.unlock(aggregate_id)
       end
     end # PessimisticLockManager
   end # Persistence
