@@ -20,7 +20,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'equalizer', '~> 0.0.5'
   s.add_dependency 'clasp', '~> 0.2.0'
   s.add_dependency 'contender', '~> 0.2.0'
-  s.add_dependency 'thread_safe', '~> 0.1.2'
+  s.add_dependency 'ref', '~> 1.0.5'
+  s.add_dependency 'thread_safe', '~> 0.1.3'
 
   # Development dependencies
   s.add_development_dependency 'rake'
