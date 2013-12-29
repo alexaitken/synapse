@@ -7,7 +7,7 @@ module Synapse
     # Returns the storage hash for the calling thread
     # @return [Hash]
     def current
-      Thread.current[:synapse] ||= Hash.new
+      Thread.current[:synapse] ||= {}
     end
 
     def_delegators :current, :[], :[]=

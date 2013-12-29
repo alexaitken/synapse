@@ -25,8 +25,8 @@ module Synapse
       end
 
       it 'notifies listeners of on_prepare_commit in the correct precedence' do
-        aggregates = Array.new
-        events = Hash.new
+        aggregates = []
+        events = {}
 
         mock(@listener_a).on_prepare_commit(@unit, aggregates, events).ordered
         mock(@listener_b).on_prepare_commit(@unit, aggregates, events).ordered

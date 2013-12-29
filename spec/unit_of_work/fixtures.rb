@@ -24,7 +24,7 @@ module Synapse
 
       def initialize(id)
         @id = id
-        @listeners = Array.new
+        @listeners = []
       end
 
       def add_registration_listener(&block)

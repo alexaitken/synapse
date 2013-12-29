@@ -15,8 +15,8 @@ module Synapse
       # @return [undefined]
       def initialize(aggregate_id)
         @aggregate_id = aggregate_id
-        @events = Array.new
-        @listeners = Array.new
+        @events = []
+        @listeners = []
       end
 
       # Registers an event published by the aggregate to this container

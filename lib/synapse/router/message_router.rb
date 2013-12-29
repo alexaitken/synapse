@@ -4,7 +4,7 @@ module Synapse
       # @param [Boolean] duplicates_allowed
       # @return [undefined]
       def initialize(duplicates_allowed = true)
-        @handlers = Array.new
+        @handlers = []
         @duplicates_allowed = duplicates_allowed
         @auto_resolve = true
       end

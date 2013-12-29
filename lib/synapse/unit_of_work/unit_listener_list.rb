@@ -24,7 +24,7 @@ module Synapse
 
       # @return [undefined]
       def initialize
-        @listeners = Array.new
+        @listeners = []
       end
 
       # Pushes a unit listener onto the end of this list

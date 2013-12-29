@@ -83,7 +83,7 @@ module Synapse
 
       # @return [Array]
       def stack
-        Threaded[:current_unit] ||= Array.new
+        Threaded[:current_unit] ||= []
       end
     end # CurrentUnit
   end # UnitOfWork

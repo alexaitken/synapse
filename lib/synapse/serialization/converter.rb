@@ -5,7 +5,7 @@ module Synapse
 
       # @param [Hash] options
       # @return [undefined]
-      def initialize(options = Hash.new)
+      def initialize(options = {})
         @options = options
       end
 

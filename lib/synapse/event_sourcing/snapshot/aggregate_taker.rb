@@ -11,7 +11,7 @@ module Synapse
       # @param [AggregateFactory] factory
       # @return [undefined]
       def register_factory(factory)
-        @factories.put factory.type_identifier, factory
+        @factories[factory.type_identifier] = factory
       end
 
       protected
@@ -21,10 +21,10 @@ module Synapse
       # @param [DomainEventStream] stream
       # @return [DomainEventMessage]
       def create_snapshot(type_identifier, aggregate_id, stream)
-        factory = @factories.fetch type_identifier
+        factory = @factories.fetch(type_identifier)
 
-        aggregate = factory.create_aggregate aggregate_id, stream.peek
-        aggregate.initialize_from_stream stream
+        aggregate = factory.create_aggregate(aggregate_id, stream.peek)
+        aggregate.initialize_from_stream(stream)
 
         Domain.build_message do |builder|
           builder.payload = aggregate

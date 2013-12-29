@@ -15,7 +15,7 @@ module Synapse
     class EmptyDataProvider < DataProvider
       # @return [Hash]
       def provide_data_for(*)
-        Hash.new
+        {}
       end
     end # EmptyDataProvider
   end # Auditing

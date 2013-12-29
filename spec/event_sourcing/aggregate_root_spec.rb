@@ -25,7 +25,7 @@ module Synapse
       it 'supports initializing state from an event stream' do
         id = SecureRandom.uuid
 
-        events = Array.new
+        events = []
         events.push create_event(id, 0, StubCreatedEvent.new(id))
         events.push create_event(id, 1, StubChangedEvent.new)
         events.push create_event(id, 2, StubChangedEvent.new)

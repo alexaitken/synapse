@@ -3,7 +3,7 @@ module Synapse
     class ParameterResolverFactory
       # @return [undefined]
       def initialize
-        @resolvers = Array.new
+        @resolvers = []
       end
 
       # @param [ParameterResolver] resolver

@@ -10,7 +10,7 @@ module Synapse
         converter.source_type.should == String
         converter.target_type.should == Object
 
-        output = converter.convert_content '{}'
+        output = converter.convert_content('{}')
 
         output.class.should == Hash
       end
@@ -23,7 +23,7 @@ module Synapse
         converter.source_type.should == Object
         converter.target_type.should == String
 
-        output = converter.convert_content Hash.new
+        output = converter.convert_content({})
 
         output.class.should == String
       end

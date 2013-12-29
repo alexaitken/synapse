@@ -35,12 +35,11 @@ module Synapse
       let(:serializer_b) { MarshalSerializer.new }
 
       it 'lazily deserializes metadata and payload' do
-        metadata = Hash[:foo, 0]
-        payload = Hash[:bar, 1]
+        metadata = { foo: 0 }
+        payload = Object.new
 
         metadata_serialized = serializer_a.serialize metadata, String
         payload_serialized = serializer_a.serialize payload, String
-
         metadata_lazy = LazyObject.new metadata_serialized, serializer_a
         payload_lazy = LazyObject.new payload_serialized, serializer_a
 
@@ -53,9 +52,9 @@ module Synapse
         message.metadata.should == metadata
         message.serialized_metadata.should be_deserialized
 
-        message.payload_type.should == Hash
+        message.payload_type.should == Object
         message.serialized_payload.should_not be_deserialized
-        message.payload.should == payload
+        message.payload.should be_a(Object)
         message.serialized_payload.should be_deserialized
 
         message.serialize_metadata(serializer_a, String).should be(metadata_serialized)
@@ -66,13 +65,13 @@ module Synapse
       end
 
       it 'populates attributes of messages duplicated to add metadata' do
-        metadata = Hash[:foo, 0]
-        payload = Hash[:bar, 1]
+        metadata = { foo: 0 }
+        payload = Object.new
 
-        metadata_serialized = serializer_a.serialize metadata, String
-        metadata_lazy = LazyObject.new metadata_serialized, serializer_a
-        payload_serialized = serializer_a.serialize metadata, String
-        payload_lazy = LazyObject.new payload_serialized, serializer_a
+        metadata_serialized = serializer_a.serialize(metadata, String)
+        payload_serialized = serializer_a.serialize(payload, String)
+        metadata_lazy = LazyObject.new(metadata_serialized, serializer_a)
+        payload_lazy = LazyObject.new(payload_serialized, serializer_a)
 
         message = SerializedDomainEventMessage.build do |builder|
           builder.id = 1
@@ -83,25 +82,25 @@ module Synapse
           builder.sequence_number = 3
         end
 
-        new_message = message.and_metadata Hash.new
+        new_message = message.and_metadata({})
         new_message.should be(message)
 
-        new_message = message.and_metadata Hash[:baz, 3]
+        new_message = message.and_metadata(bar: 1)
 
-        merged = Hash[:foo, 0, :baz, 3]
+        merged = { foo: 0, bar: 1 }
 
         new_message.metadata.should == merged
         ensure_equal_message_content message, new_message
       end
 
       it 'populates attributes of messages duplicated to replace metadata' do
-        metadata = Hash[:foo, 0]
-        payload = Hash[:bar, 1]
+        metadata = { foo: 0 }
+        payload = Object.new
 
-        metadata_serialized = serializer_a.serialize metadata, String
-        metadata_lazy = LazyObject.new metadata_serialized, serializer_a
-        payload_serialized = serializer_a.serialize metadata, String
-        payload_lazy = LazyObject.new payload_serialized, serializer_a
+        metadata_serialized = serializer_a.serialize(metadata, String)
+        payload_serialized = serializer_a.serialize(payload, String)
+        metadata_lazy = LazyObject.new(metadata_serialized, serializer_a)
+        payload_lazy = LazyObject.new(payload_serialized, serializer_a)
 
         message = SerializedDomainEventMessage.build do |builder|
           builder.id = 1
@@ -112,15 +111,15 @@ module Synapse
           builder.sequence_number = 3
         end
 
-        new_message = message.with_metadata Hash[:foo, 0]
+        new_message = message.with_metadata(foo: 0)
         new_message.should be(message)
 
-        replaced = Hash[:baz, 3]
+        replaced = { bar: 1 }
 
-        new_message = message.with_metadata replaced
+        new_message = message.with_metadata(replaced)
 
         new_message.metadata.should == replaced
-        ensure_equal_message_content message, new_message
+        ensure_equal_message_content(message, new_message)
       end
 
     private

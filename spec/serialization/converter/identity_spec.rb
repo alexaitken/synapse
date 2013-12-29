@@ -6,7 +6,7 @@ module Synapse
     describe IdentityConverter do
       it 'passes through objects unchanged' do
         converter = IdentityConverter.new Hash
-        content = Hash.new
+        content = {}
 
         converter.source_type.should == Hash
         converter.target_type.should == Hash

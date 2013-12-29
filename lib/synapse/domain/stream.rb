@@ -41,7 +41,7 @@ module Synapse
       # Returns the domain events in this stream as an array
       # @return [Array]
       def to_a
-        events = Array.new
+        events = []
         each do |event|
           events.push event
         end

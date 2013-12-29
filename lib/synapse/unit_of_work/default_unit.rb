@@ -8,7 +8,7 @@ module Synapse
       # @param [TransactionManager] transaction_manager
       # @return [DefaultUnit]
       def self.start(transaction_manager = nil)
-        unit = new transaction_manager
+        unit = new(transaction_manager)
         unit.start
 
         unit
@@ -21,9 +21,9 @@ module Synapse
 
         @transaction_manager = transaction_manager
 
-        @registered_aggregates = Hash.new
-        @deferred_events = Hash.new do |hash, key|
-          hash.put key, Array.new
+        @registered_aggregates = {}
+        @deferred_events = Hash.new do |hash, k|
+          hash[k] = []
         end
         @listeners = UnitListenerList.new
       end
@@ -33,7 +33,7 @@ module Synapse
       # @param [EventBus] event_bus
       # @return [AggregateRoot] The aggregate being tracked by this unit of work
       def register_aggregate(aggregate, event_bus, &block)
-        similar_aggregate = find_similar_aggregate aggregate.class, aggregate.id
+        similar_aggregate = find_similar_aggregate(aggregate.class, aggregate.id)
         if similar_aggregate
           logger.info "Ignoring aggregate registration, similar aggregate already registered: " +
             "{#{aggregate.class}} {#{aggregate.id}}"
@@ -41,11 +41,11 @@ module Synapse
           return similar_aggregate
         end
 
-        @registered_aggregates.put aggregate, block
+        @registered_aggregates[aggregate] = block
 
         aggregate.add_registration_listener do |event|
-          event = notify_event_registered event
-          defer_publication event, event_bus
+          event = notify_event_registered(event)
+          defer_publication(event, event_bus)
           event
         end
 
@@ -58,14 +58,14 @@ module Synapse
       def publish_event(event, event_bus)
         logger.debug "Staging event {#{event.class}} for publication on {#{event_bus.class}}"
 
-        event = notify_event_registered event
-        defer_publication event, event_bus
+        event = notify_event_registered(event)
+        defer_publication(event, event_bus)
       end
 
       # @param [UnitListener] listener
       # @return [undefined]
       def register_listener(listener)
-        @listeners.push listener
+        @listeners.push(listener)
       end
 
       # @return [Boolean]
@@ -102,7 +102,7 @@ module Synapse
 
         if transactional?
           notify_prepare_transaction_commit
-          @transaction_manager.commit @transaction
+          @transaction_manager.commit(@transaction)
         end
 
         notify_after_commit
@@ -111,14 +111,14 @@ module Synapse
       # @param [Exception] cause
       # @return [undefined]
       def perform_rollback(cause)
-        rollback_inner_units cause
+        rollback_inner_units(cause)
 
         @registered_aggregates.clear
         @deferred_events.clear
 
         begin
           if @transaction
-            @transaction_manager.rollback @transaction
+            @transaction_manager.rollback(@transaction)
           end
         ensure
           notify_rollback cause
@@ -130,7 +130,7 @@ module Synapse
       # @param [EventMessage] event
       # @return [EventMessage]
       def notify_event_registered(event)
-        @listeners.on_event_registered self, event
+        @listeners.on_event_registered(self, event)
       end
 
       # @return [undefined]
@@ -138,28 +138,28 @@ module Synapse
         aggregates = @registered_aggregates.keys
         events = @deferred_events.values.flatten
 
-        @listeners.on_prepare_commit self, aggregates, events
+        @listeners.on_prepare_commit(self, aggregates, events)
       end
 
       # @return [undefined]
       def notify_prepare_transaction_commit
-        @listeners.on_prepare_transaction_commit self, @transaction
+        @listeners.on_prepare_transaction_commit(self, @transaction)
       end
 
       # @return [undefined]
       def notify_after_commit
-        @listeners.after_commit self
+        @listeners.after_commit(self)
       end
 
       # @param [Exception] cause
       # @return [undefined]
       def notify_rollback(cause)
-        @listeners.on_rollback self, cause
+        @listeners.on_rollback(self, cause)
       end
 
       # @return [undefined]
       def notify_cleanup
-        @listeners.on_cleanup self
+        @listeners.on_cleanup(self)
       end
 
       #!endgroup
@@ -181,8 +181,8 @@ module Synapse
         until @deferred_events.empty?
           @deferred_events.keys.each do |event_bus|
             logger.debug "Publishing deferred events to {#{event_bus.class}}"
-            events = @deferred_events.delete event_bus
-            event_bus.publish *events
+            events = @deferred_events.delete(event_bus)
+            event_bus.publish(*events)
           end
         end
 

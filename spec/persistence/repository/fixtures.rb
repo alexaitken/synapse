@@ -10,7 +10,7 @@ module Synapse
       def initialize(lock_manager)
         super
 
-        @aggregates = Hash.new
+        @aggregates = {}
         @save_count = 0
       end
 

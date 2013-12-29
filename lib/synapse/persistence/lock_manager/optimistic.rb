@@ -13,7 +13,7 @@ module Synapse
       # @param [AggregateRoot] aggregate
       # @return [Boolean]
       def validate_lock(aggregate)
-        lock = @locks.get aggregate.id
+        lock = @locks.get(aggregate.id)
         lock && lock.validate(aggregate)
       end
 
@@ -22,12 +22,12 @@ module Synapse
       def obtain_lock(aggregate_id)
         obtained = false
         until obtained
-          @locks.put_if_absent aggregate_id, OptimisticLock.new
-          lock = @locks.get aggregate_id
+          @locks.put_if_absent(aggregate_id, OptimisticLock.new)
+          lock = @locks.get(aggregate_id)
           obtained = lock && lock.lock
 
           unless obtained
-            @locks.delete_pair aggregate_id, lock
+            @locks.delete_pair(aggregate_id, lock)
           end
         end
       end
@@ -35,11 +35,11 @@ module Synapse
       # @param [Object] aggregate_id
       # @return [undefined]
       def release_lock(aggregate_id)
-        lock = @locks.get aggregate_id
+        lock = @locks.get(aggregate_id)
         if lock
           lock.unlock
           if lock.closed?
-            @locks.delete_pair aggregate_id, lock
+            @locks.delete_pair(aggregate_id, lock)
           end
         end
       end
@@ -85,8 +85,7 @@ module Synapse
           if @closed
             false
           else
-            count = @threads[current] || 0
-            @threads[current] = count + 1
+            @threads[current] = @threads.fetch(current, 0) + 1
             true
           end
         end
@@ -97,9 +96,9 @@ module Synapse
         current = Thread.current
 
         @mutex.synchronize do
-          count = @threads[current] || 0
+          count = @threads.fetch(current, 0)
           if count <= 1
-            @threads.delete current
+            @threads.delete(current)
           else
             @threads[current] = count - 1
           end

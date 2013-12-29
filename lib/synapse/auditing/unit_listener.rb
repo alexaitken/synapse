@@ -18,7 +18,7 @@ module Synapse
         @command = command
         @data_provider = data_provider
         @logger = logger
-        @recorded_events = Array.new
+        @recorded_events = []
       end
 
       # @param [Unit] unit

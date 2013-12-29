@@ -39,9 +39,9 @@ module Synapse
 
       # @return [Hash]
       def to_hash
-        hash = Hash.new
-        @properties.each_pair do |key, value|
-          hash.put key, value
+        hash = {}
+        @properties.each_pair do |k, v|
+          hash[k] = v
         end
 
         hash

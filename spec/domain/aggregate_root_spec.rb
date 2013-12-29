@@ -14,7 +14,7 @@ module Synapse
 
         subject.change_name 'Leela'
 
-        events = Array.new
+        events = []
 
         subject.add_registration_listener do |event|
           events.push event

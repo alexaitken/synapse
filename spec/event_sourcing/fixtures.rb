@@ -45,7 +45,7 @@ module Synapse
 
       def pre_initialize
         @event_count = 0
-        @stub_entities = Array.new
+        @stub_entities = []
       end
 
       route_event StubCreatedEvent do |event|

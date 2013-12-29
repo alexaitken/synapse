@@ -9,7 +9,7 @@ module Synapse
       # @return [undefined]
       def initialize
         @active = false
-        @inner_units = Array.new
+        @inner_units = []
       end
 
       # @raise [InvalidStateError] If this unit of work is already active

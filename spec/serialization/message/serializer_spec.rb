@@ -8,7 +8,7 @@ module Synapse
         delegate = Object.new
         serializer = MessageSerializer.new delegate
 
-        metadata = Hash.new
+        metadata = {}
         payload = Object.new
 
         m = MessageBuilder.build do |b|

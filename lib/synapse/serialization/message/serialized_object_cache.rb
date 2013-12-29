@@ -8,9 +8,9 @@ module Synapse
       def initialize(message)
         @message = message
 
-        @metadata_cache = Hash.new
+        @metadata_cache = {}
         @metadata_mutex = Mutex.new
-        @payload_cache = Hash.new
+        @payload_cache = {}
         @payload_mutex = Mutex.new
       end
 

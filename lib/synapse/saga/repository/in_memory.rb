@@ -17,8 +17,8 @@ module Synapse
         matching = Set.new
 
         @managed_sagas.each_value do |saga|
-          if saga.correlations.include? correlation
-            matching.add saga.id
+          if saga.correlations.include?(correlation)
+            matching.add(saga.id)
           end
         end
 
@@ -28,16 +28,16 @@ module Synapse
       # @param [String] id
       # @return [Saga] Returns nil if saga could not be found
       def load(id)
-        @managed_sagas.get id
+        @managed_sagas.get(id)
       end
 
       # @param [Saga] saga
       # @return [undefined]
       def commit(saga)
         if saga.active?
-          @managed_sagas.put saga.id, saga
+          @managed_sagas.put(saga.id, saga)
         else
-          @managed_sagas.delete saga.id
+          @managed_sagas.delete(saga.id)
         end
 
         saga.correlations.commit
@@ -46,7 +46,7 @@ module Synapse
       # @param [Saga] saga
       # @return [undefined]
       def add(saga)
-        commit saga
+        commit(saga)
       end
 
       # Returns the number of sagas managed by this repository
@@ -54,8 +54,6 @@ module Synapse
       def size
         @managed_sagas.size
       end
-
-      alias_method :length, :size
     end # InMemorySagaRepository
   end # Saga
 end

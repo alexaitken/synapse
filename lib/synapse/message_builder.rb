@@ -36,7 +36,7 @@ module Synapse
     # @return [undefined]
     def populate_defaults
       @id ||= Synapse.identifier_factory.generate
-      @metadata ||= Hash.new
+      @metadata ||= {}
       @timestamp ||= Time.now
     end
   end # MessageBuilder

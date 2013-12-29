@@ -5,7 +5,7 @@ module Synapse
 
     describe ConverterChain do
       it 'converts using a chain of converters' do
-        converters = Array.new
+        converters = []
         converters << ObjectToJsonConverter.new << JsonToObjectConverter.new
 
         chain = ConverterChain.new converters

@@ -19,7 +19,7 @@ module Synapse
         type_identifier = aggregate_factory.type_identifier
         id = SecureRandom.uuid
 
-        events = Array.new
+        events = []
         events.push create_domain_event StubCreatedEvent.new(id), 0, id
         events.push create_domain_event StubChangedEvent.new, 1, id
         events.push create_domain_event StubChangedEvent.new, 2, id
@@ -43,7 +43,7 @@ module Synapse
         type_identifier = aggregate_factory.type_identifier
         id = SecureRandom.uuid
 
-        events = Array.new
+        events = []
         events.push create_domain_event StubCreatedEvent.new(id), 0, id
 
         stream = Domain::SimpleDomainEventStream.new events

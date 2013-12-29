@@ -141,7 +141,7 @@ module Synapse
         resolver = @conflict_resolver
 
         if expected_version && resolver
-          unseen_events = Array.new
+          unseen_events = []
 
           stream = CapturingEventStream.new stream, unseen_events, expected_version
           listener = ConflictResolvingUnitListener.new aggregate, unseen_events, resolver
